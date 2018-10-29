@@ -23,8 +23,8 @@ import javax.swing.Timer;
  *
  * @author Yonshisoru
  */
-public class LoginFrom extends javax.swing.JFrame {
-            int logincheck = 0;
+public class LoginFrom extends javax.swing.JFrame {     
+    int logincheck = 0;
     Connection con = null;
     PreparedStatement pat = null;
     ResultSet rs = null;
@@ -35,6 +35,7 @@ public class LoginFrom extends javax.swing.JFrame {
            if(i==100&&i>=0){
                dispose();
                Main m = new Main();
+               
                m.setVisible(true);
            }
            i++;
@@ -154,12 +155,24 @@ public class LoginFrom extends javax.swing.JFrame {
         rs = pat.executeQuery();
         if(rs.next())
         {
-            JOptionPane.showMessageDialog(null, "Welcome "+rs.getString("EMP_NAME"));
+            JOptionPane.showMessageDialog(null, "Welcome "+rs.getString("EMP_FNAME")+" "+rs.getString("EMP_LNAME"));
             Jusername.setEnabled(false);
             Jpassword.setEnabled(false);
             Login.setEnabled(false);
             Reset.setEnabled(false);
             Exit.setLabel("Cancel");
+            Employee em = new Employee();
+            em.setid(rs.getInt("EMP_ID"));
+            em.setposition(rs.getInt("POS_ID"));
+            em.setfname(rs.getString("EMP_FNAME"));
+            em.setlname(rs.getString("EMP_LNAME"));
+            em.setphone(rs.getString("EMP_PHONE"));
+            em.setaddress(rs.getString("EMP_ADDRESS"));
+            em.setemail(rs.getString("EMP_EMAIL"));
+            em.setdate(rs.getString("EMP_STARTDATE"));
+            em.setage(rs.getInt("EMP_AGE"));
+            em.setgender(rs.getString("EMP_GENDER"));
+            em.setduration(rs.getInt("EMP_DULATION"));
             timer.start();
             
         }else{
