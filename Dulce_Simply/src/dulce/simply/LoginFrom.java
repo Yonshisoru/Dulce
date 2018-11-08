@@ -145,8 +145,8 @@ public class LoginFrom extends javax.swing.JFrame {
     private void LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginActionPerformed
 
         MySQLConnect check = new MySQLConnect();
-        String sql  ="select * from employee where EMP_ID=? and EMP_PASSWORD=?";
-        try{
+        String sql  ="select * from EMPLOYEE where EMP_ID=? and EMP_PASS=?";
+        try{  
                 
         con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
         pat = con.prepareStatement(sql);
@@ -166,13 +166,6 @@ public class LoginFrom extends javax.swing.JFrame {
             em.setposition(rs.getInt("POS_ID"));
             em.setfname(rs.getString("EMP_FNAME"));
             em.setlname(rs.getString("EMP_LNAME"));
-            em.setphone(rs.getString("EMP_PHONE"));
-            em.setaddress(rs.getString("EMP_ADDRESS"));
-            em.setemail(rs.getString("EMP_EMAIL"));
-            em.setdate(rs.getString("EMP_STARTDATE"));
-            em.setage(rs.getInt("EMP_AGE"));
-            em.setgender(rs.getString("EMP_GENDER"));
-            em.setduration(rs.getInt("EMP_DULATION"));
             timer.start();
             
         }else{

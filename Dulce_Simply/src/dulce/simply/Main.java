@@ -5,18 +5,42 @@
  */
 package dulce.simply;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.Timer;
+
 /**
  *
  * @author Yonshisoru
  */
-public class Main extends javax.swing.JFrame {
+public class Main extends javax.swing.JFrame{
 
     /**
      * Creates new form Main
      */
     public Main() {
-        this.setLocationRelativeTo(null);
         initComponents();
+        Menu_Ordering.setVisible(false);
+        Schedule.setVisible(false);
+        Orderingproduct_panel.setVisible(false);
+        Inventory_panel.setVisible(false);
+        Management_Panel.setVisible(false);
+        Employee e = new Employee();
+        showname.setText(e.getfname()+" "+e.getlname());
+        showTime();
+    }
+    void showTime(){
+        new Timer(0,new ActionListener(){
+            
+            @Override
+            public void actionPerformed(ActionEvent e){
+        Date d = new Date();
+        SimpleDateFormat s = new SimpleDateFormat("dd-MMM-YYYY HH:mm:ss");
+        Showtime.setText(s.format(d));
+            }
+        }).start();
     }
 
     /**
@@ -28,42 +52,387 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        TopPanel = new javax.swing.JPanel();
+        name = new javax.swing.JLabel();
+        Showtime = new javax.swing.JLabel();
+        Showdate = new javax.swing.JLabel();
+        jButton16 = new javax.swing.JButton();
+        Time1 = new javax.swing.JLabel();
+        showname = new javax.swing.JLabel();
+        ButtonPanel = new javax.swing.JPanel();
+        Menu_Ordering_btn = new javax.swing.JButton();
+        Schedule_btn = new javax.swing.JButton();
+        Inventory_btn = new javax.swing.JButton();
+        Management_btn = new javax.swing.JButton();
+        Ordering_Product_btn = new javax.swing.JButton();
+        Selection = new javax.swing.JPanel();
+        Firstpage = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        Menu_Ordering = new javax.swing.JPanel();
+        Heading_MO = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        jButton12 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton13 = new javax.swing.JButton();
+        jButton14 = new javax.swing.JButton();
+        jButton15 = new javax.swing.JButton();
+        Schedule = new javax.swing.JPanel();
+        Heading_Sc = new javax.swing.JLabel();
+        Orderingproduct_panel = new javax.swing.JPanel();
+        Heading_OP = new javax.swing.JLabel();
+        Inventory_panel = new javax.swing.JPanel();
+        Heading_INV = new javax.swing.JLabel();
+        Management_Panel = new javax.swing.JPanel();
+        Heading_Manage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1070, 730));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        TopPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        name.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        name.setText("Name:");
+        TopPanel.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+
+        Showtime.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        TopPanel.add(Showtime, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 10, 210, 20));
+        TopPanel.add(Showdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 10, 130, 20));
+
+        jButton16.setText("Logout");
+        jButton16.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton16ActionPerformed(evt);
+            }
+        });
+        TopPanel.add(jButton16, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 10, -1, -1));
+
+        Time1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        Time1.setText("Time:");
+        TopPanel.add(Time1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 10, -1, -1));
+
+        showname.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        showname.setText("   ");
+        TopPanel.add(showname, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 260, -1));
+
+        getContentPane().add(TopPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 1040, 40));
+
+        Menu_Ordering_btn.setText("Menu Ordering");
+        Menu_Ordering_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Menu_Ordering_btnActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addComponent(jButton1)
-                .addContainerGap(401, Short.MAX_VALUE))
+        Schedule_btn.setText("Schedule");
+        Schedule_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Schedule_btnActionPerformed(evt);
+            }
+        });
+
+        Inventory_btn.setText("Inventory");
+        Inventory_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Inventory_btnActionPerformed(evt);
+            }
+        });
+
+        Management_btn.setText("Management");
+        Management_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Management_btnActionPerformed(evt);
+            }
+        });
+
+        Ordering_Product_btn.setText("Ordering Product");
+        Ordering_Product_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Ordering_Product_btnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ButtonPanelLayout = new javax.swing.GroupLayout(ButtonPanel);
+        ButtonPanel.setLayout(ButtonPanelLayout);
+        ButtonPanelLayout.setHorizontalGroup(
+            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ButtonPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Management_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Inventory_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Schedule_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Menu_Ordering_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Ordering_Product_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE))
+                .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(284, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(77, 77, 77))
+        ButtonPanelLayout.setVerticalGroup(
+            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ButtonPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Menu_Ordering_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
+                .addComponent(Schedule_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(Ordering_Product_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(Inventory_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(Management_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(288, Short.MAX_VALUE))
         );
+
+        getContentPane().add(ButtonPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 62, -1, 678));
+
+        Selection.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        Selection.setPreferredSize(new java.awt.Dimension(800, 500));
+
+        Firstpage.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 570, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 320, Short.MAX_VALUE)
+        );
+
+        Firstpage.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 570, 320));
+
+        Menu_Ordering.setOpaque(false);
+        Menu_Ordering.setPreferredSize(new java.awt.Dimension(1000, 700));
+        Menu_Ordering.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Heading_MO.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        Heading_MO.setText("Menu Ordering");
+        Menu_Ordering.add(Heading_MO, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, -1, -1));
+
+        jButton2.setText("Menu Ordering");
+        Menu_Ordering.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 150, 160, 90));
+
+        jButton11.setText("Table");
+        Menu_Ordering.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, 170, 90));
+
+        jButton12.setText("Promotion");
+        Menu_Ordering.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 150, 170, 90));
+        jButton12.getAccessibleContext().setAccessibleName("Promotion");
+
+        jButton3.setText("Payment");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        Menu_Ordering.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, 180, 90));
+
+        jButton13.setText("Report");
+        Menu_Ordering.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 280, 170, 100));
+
+        jButton14.setText("History");
+        Menu_Ordering.add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 290, 160, 90));
+
+        jButton15.setText("Ordering management");
+        Menu_Ordering.add(jButton15, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 410, 180, 90));
+
+        Heading_Sc.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        Heading_Sc.setText("Schedule");
+
+        javax.swing.GroupLayout ScheduleLayout = new javax.swing.GroupLayout(Schedule);
+        Schedule.setLayout(ScheduleLayout);
+        ScheduleLayout.setHorizontalGroup(
+            ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ScheduleLayout.createSequentialGroup()
+                .addGap(306, 306, 306)
+                .addComponent(Heading_Sc)
+                .addContainerGap(319, Short.MAX_VALUE))
+        );
+        ScheduleLayout.setVerticalGroup(
+            ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ScheduleLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(Heading_Sc)
+                .addContainerGap(497, Short.MAX_VALUE))
+        );
+
+        Heading_OP.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        Heading_OP.setText("Ordering Product");
+
+        javax.swing.GroupLayout Orderingproduct_panelLayout = new javax.swing.GroupLayout(Orderingproduct_panel);
+        Orderingproduct_panel.setLayout(Orderingproduct_panelLayout);
+        Orderingproduct_panelLayout.setHorizontalGroup(
+            Orderingproduct_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Orderingproduct_panelLayout.createSequentialGroup()
+                .addGap(227, 227, 227)
+                .addComponent(Heading_OP)
+                .addContainerGap(228, Short.MAX_VALUE))
+        );
+        Orderingproduct_panelLayout.setVerticalGroup(
+            Orderingproduct_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Orderingproduct_panelLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(Heading_OP)
+                .addContainerGap(536, Short.MAX_VALUE))
+        );
+
+        Heading_INV.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        Heading_INV.setText("Inventory");
+
+        javax.swing.GroupLayout Inventory_panelLayout = new javax.swing.GroupLayout(Inventory_panel);
+        Inventory_panel.setLayout(Inventory_panelLayout);
+        Inventory_panelLayout.setHorizontalGroup(
+            Inventory_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Inventory_panelLayout.createSequentialGroup()
+                .addGap(302, 302, 302)
+                .addComponent(Heading_INV)
+                .addContainerGap(310, Short.MAX_VALUE))
+        );
+        Inventory_panelLayout.setVerticalGroup(
+            Inventory_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Inventory_panelLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(Heading_INV)
+                .addContainerGap(528, Short.MAX_VALUE))
+        );
+
+        Heading_Manage.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        Heading_Manage.setText("Management");
+
+        javax.swing.GroupLayout Management_PanelLayout = new javax.swing.GroupLayout(Management_Panel);
+        Management_Panel.setLayout(Management_PanelLayout);
+        Management_PanelLayout.setHorizontalGroup(
+            Management_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Management_PanelLayout.createSequentialGroup()
+                .addContainerGap(265, Short.MAX_VALUE)
+                .addComponent(Heading_Manage)
+                .addGap(257, 257, 257))
+        );
+        Management_PanelLayout.setVerticalGroup(
+            Management_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Management_PanelLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(Heading_Manage)
+                .addContainerGap(514, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout SelectionLayout = new javax.swing.GroupLayout(Selection);
+        Selection.setLayout(SelectionLayout);
+        SelectionLayout.setHorizontalGroup(
+            SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SelectionLayout.createSequentialGroup()
+                .addGap(0, 5, Short.MAX_VALUE)
+                .addComponent(Menu_Ordering, javax.swing.GroupLayout.PREFERRED_SIZE, 806, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 5, Short.MAX_VALUE))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(Schedule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(Firstpage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(Orderingproduct_panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(Inventory_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SelectionLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(Management_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+        SelectionLayout.setVerticalGroup(
+            SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SelectionLayout.createSequentialGroup()
+                .addComponent(Menu_Ordering, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 33, Short.MAX_VALUE))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SelectionLayout.createSequentialGroup()
+                    .addComponent(Schedule, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 32, Short.MAX_VALUE)))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SelectionLayout.createSequentialGroup()
+                    .addComponent(Firstpage, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 33, Short.MAX_VALUE)))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SelectionLayout.createSequentialGroup()
+                    .addComponent(Orderingproduct_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SelectionLayout.createSequentialGroup()
+                    .addComponent(Inventory_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SelectionLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(Management_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
+        getContentPane().add(Selection, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 65, 820, 600));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void Menu_Ordering_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_Ordering_btnActionPerformed
+        Menu_Ordering.setVisible(true);
+        Schedule.setVisible(false);
+        Firstpage.setVisible(false);
+        Orderingproduct_panel.setVisible(false);
+        Inventory_panel.setVisible(false);
+        Management_Panel.setVisible(false);
+                
+    }//GEN-LAST:event_Menu_Ordering_btnActionPerformed
+
+    private void Schedule_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Schedule_btnActionPerformed
+        Menu_Ordering.setVisible(false);
+        Schedule.setVisible(true);
+        Firstpage.setVisible(false);
+        Orderingproduct_panel.setVisible(false);
+        Inventory_panel.setVisible(false);
+        Management_Panel.setVisible(false);
+    }//GEN-LAST:event_Schedule_btnActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        informations info = new informations();
-        info.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void Ordering_Product_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ordering_Product_btnActionPerformed
+        Menu_Ordering.setVisible(false);
+        Schedule.setVisible(false);
+        Firstpage.setVisible(false);
+        Orderingproduct_panel.setVisible(true);
+        Inventory_panel.setVisible(false);
+        Management_Panel.setVisible(false);
+    }//GEN-LAST:event_Ordering_Product_btnActionPerformed
+
+    private void Inventory_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Inventory_btnActionPerformed
+        Menu_Ordering.setVisible(false);
+        Schedule.setVisible(false);
+        Firstpage.setVisible(false);
+        Orderingproduct_panel.setVisible(false);
+        Inventory_panel.setVisible(true);
+        Management_Panel.setVisible(false);
+    }//GEN-LAST:event_Inventory_btnActionPerformed
+
+    private void Management_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Management_btnActionPerformed
+        Menu_Ordering.setVisible(false);
+        Schedule.setVisible(false);
+        Firstpage.setVisible(false);
+        Orderingproduct_panel.setVisible(false);
+        Inventory_panel.setVisible(false);
+        Management_Panel.setVisible(true);
+    }//GEN-LAST:event_Management_btnActionPerformed
+
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+        this.setVisible(false);
+        Employee em =new Employee();
+            em.setid(0);
+            em.setfname("");
+            em.setlname("");
+            em.setposition(99);
+        LoginFrom f = new LoginFrom();
+        f.setVisible(true);
+    }//GEN-LAST:event_jButton16ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -76,7 +445,7 @@ public class Main extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -97,10 +466,43 @@ public class Main extends javax.swing.JFrame {
             public void run() {
                 new Main().setVisible(true);
             }
+            
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JPanel ButtonPanel;
+    private javax.swing.JPanel Firstpage;
+    private javax.swing.JLabel Heading_INV;
+    private javax.swing.JLabel Heading_MO;
+    private javax.swing.JLabel Heading_Manage;
+    private javax.swing.JLabel Heading_OP;
+    private javax.swing.JLabel Heading_Sc;
+    private javax.swing.JButton Inventory_btn;
+    private javax.swing.JPanel Inventory_panel;
+    private javax.swing.JPanel Management_Panel;
+    private javax.swing.JButton Management_btn;
+    private javax.swing.JPanel Menu_Ordering;
+    private javax.swing.JButton Menu_Ordering_btn;
+    private javax.swing.JButton Ordering_Product_btn;
+    private javax.swing.JPanel Orderingproduct_panel;
+    private javax.swing.JPanel Schedule;
+    private javax.swing.JButton Schedule_btn;
+    private javax.swing.JPanel Selection;
+    private javax.swing.JLabel Showdate;
+    private javax.swing.JLabel Showtime;
+    private javax.swing.JLabel Time1;
+    private javax.swing.JPanel TopPanel;
+    private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
+    private javax.swing.JButton jButton15;
+    private javax.swing.JButton jButton16;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel name;
+    private javax.swing.JLabel showname;
     // End of variables declaration//GEN-END:variables
 }
