@@ -10,8 +10,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
-import static javax.swing.JOptionPane.ERROR_MESSAGE;
-import static javax.swing.JOptionPane.PLAIN_MESSAGE;
 
 /**
  *
@@ -25,9 +23,6 @@ public class MySQLConnect {
      static private String username = "u787124245_gg";
      static private String password = "death123";
      private static final  Connection con = null;
-    public static Connection getcon(){
-        return con;
-    }
     public static String getusername(){
         return username;
     }

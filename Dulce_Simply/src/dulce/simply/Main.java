@@ -5,18 +5,44 @@
  */
 package dulce.simply;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
+
 /**
  *
  * @author Yonshisoru
  */
-public class Main extends javax.swing.JFrame {
+public class Main extends javax.swing.JFrame{
 
     /**
      * Creates new form Main
      */
     public Main() {
-        this.setLocationRelativeTo(null);
         initComponents();
+        Menu_Ordering.setVisible(false);
+        Schedule.setVisible(false);
+        Orderingproduct_panel.setVisible(false);
+        Inventory_panel.setVisible(false);
+        Employee_panel.setVisible(false);
+        Employee_admin.setVisible(false);
+        Employee e = new Employee();
+        showname.setText(e.getfname()+" "+e.getlname());
+        showTime();
+    }
+    void showTime(){
+        new Timer(0,new ActionListener(){
+            
+            @Override
+            public void actionPerformed(ActionEvent e){
+        Date d = new Date();
+        SimpleDateFormat s = new SimpleDateFormat("dd-MMM-YYYY HH:mm:ss");
+        Showtime.setText(s.format(d));
+            }
+        }).start();
     }
 
     /**
@@ -28,21 +54,568 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        TopPanel = new javax.swing.JPanel();
+        name = new javax.swing.JLabel();
+        Showtime = new javax.swing.JLabel();
+        Showdate = new javax.swing.JLabel();
+        jButton16 = new javax.swing.JButton();
+        Time1 = new javax.swing.JLabel();
+        showname = new javax.swing.JLabel();
+        ButtonPanel = new javax.swing.JPanel();
+        Menu_Ordering_btn = new javax.swing.JButton();
+        Schedule_btn = new javax.swing.JButton();
+        Inventory_btn = new javax.swing.JButton();
+        Ordering_Product_btn = new javax.swing.JButton();
+        Employee_btn = new javax.swing.JButton();
+        Selection = new javax.swing.JPanel();
+        Firstpage = new javax.swing.JPanel();
+        Menu_Ordering = new javax.swing.JPanel();
+        Heading_MO = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        jButton12 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton13 = new javax.swing.JButton();
+        jButton14 = new javax.swing.JButton();
+        jButton15 = new javax.swing.JButton();
+        Employee_admin = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jButton21 = new javax.swing.JButton();
+        jButton30 = new javax.swing.JButton();
+        jButton31 = new javax.swing.JButton();
+        jButton32 = new javax.swing.JButton();
+        Schedule = new javax.swing.JPanel();
+        Heading_Sc = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        Orderingproduct_panel = new javax.swing.JPanel();
+        Heading_OP = new javax.swing.JLabel();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
+        jButton17 = new javax.swing.JButton();
+        jButton18 = new javax.swing.JButton();
+        jButton19 = new javax.swing.JButton();
+        jButton20 = new javax.swing.JButton();
+        Inventory_panel = new javax.swing.JPanel();
+        Heading_INV = new javax.swing.JLabel();
+        jButton22 = new javax.swing.JButton();
+        jButton23 = new javax.swing.JButton();
+        jButton24 = new javax.swing.JButton();
+        jButton25 = new javax.swing.JButton();
+        jButton26 = new javax.swing.JButton();
+        jButton27 = new javax.swing.JButton();
+        jButton28 = new javax.swing.JButton();
+        jButton29 = new javax.swing.JButton();
+        Employee_panel = new javax.swing.JPanel();
+        Heading_INV1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 542, Short.MAX_VALUE)
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1070, 730));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        TopPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        name.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        name.setText("Name:");
+        TopPanel.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+
+        Showtime.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        TopPanel.add(Showtime, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 10, 210, 20));
+        TopPanel.add(Showdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 10, 130, 20));
+
+        jButton16.setText("Logout");
+        jButton16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton16ActionPerformed(evt);
+            }
+        });
+        TopPanel.add(jButton16, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 10, -1, -1));
+
+        Time1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        Time1.setText("Time:");
+        TopPanel.add(Time1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 10, -1, -1));
+
+        showname.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        showname.setText("   ");
+        TopPanel.add(showname, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 260, -1));
+
+        getContentPane().add(TopPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 1040, 40));
+
+        Menu_Ordering_btn.setText("Menu Ordering");
+        Menu_Ordering_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Menu_Ordering_btnActionPerformed(evt);
+            }
+        });
+
+        Schedule_btn.setText("Schedule");
+        Schedule_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Schedule_btnActionPerformed(evt);
+            }
+        });
+
+        Inventory_btn.setText("Inventory");
+        Inventory_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Inventory_btnActionPerformed(evt);
+            }
+        });
+
+        Ordering_Product_btn.setText("Ordering Product");
+        Ordering_Product_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Ordering_Product_btnActionPerformed(evt);
+            }
+        });
+
+        Employee_btn.setText("Employee");
+        Employee_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Employee_btnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ButtonPanelLayout = new javax.swing.GroupLayout(ButtonPanel);
+        ButtonPanel.setLayout(ButtonPanelLayout);
+        ButtonPanelLayout.setHorizontalGroup(
+            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ButtonPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Employee_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Inventory_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Schedule_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Menu_Ordering_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Ordering_Product_btn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE))
+                .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 384, Short.MAX_VALUE)
+        ButtonPanelLayout.setVerticalGroup(
+            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ButtonPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Menu_Ordering_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(Schedule_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(Inventory_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(Employee_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Ordering_Product_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(345, Short.MAX_VALUE))
         );
+
+        getContentPane().add(ButtonPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 62, -1, 678));
+
+        Selection.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        Selection.setPreferredSize(new java.awt.Dimension(800, 500));
+
+        Firstpage.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Menu_Ordering.setOpaque(false);
+        Menu_Ordering.setPreferredSize(new java.awt.Dimension(1000, 700));
+        Menu_Ordering.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Heading_MO.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        Heading_MO.setText("Menu Ordering");
+        Menu_Ordering.add(Heading_MO, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, -1, -1));
+
+        jButton2.setText("Menu Ordering");
+        Menu_Ordering.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 150, 160, 90));
+
+        jButton11.setText("Table");
+        Menu_Ordering.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, 170, 90));
+
+        jButton12.setText("Promotion");
+        Menu_Ordering.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 150, 170, 90));
+        jButton12.getAccessibleContext().setAccessibleName("Promotion");
+
+        jButton3.setText("Payment");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        Menu_Ordering.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, 180, 90));
+
+        jButton13.setText("Report");
+        Menu_Ordering.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 280, 170, 100));
+
+        jButton14.setText("History");
+        Menu_Ordering.add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 290, 160, 90));
+
+        jButton15.setText("Ordering management");
+        Menu_Ordering.add(jButton15, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 410, 180, 90));
+
+        Employee_admin.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        jLabel1.setText("Employee");
+        Employee_admin.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 30, -1, -1));
+
+        jButton21.setText("Position Editor");
+        Employee_admin.add(jButton21, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 140, 150, 60));
+
+        jButton30.setText("Employee Management");
+        Employee_admin.add(jButton30, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 150, 60));
+
+        jButton31.setText("Salary Management");
+        Employee_admin.add(jButton31, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 140, 150, 60));
+
+        jButton32.setText("Schedule Management");
+        Employee_admin.add(jButton32, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 140, 150, 60));
+
+        Heading_Sc.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        Heading_Sc.setText("Schedule");
+
+        jButton1.setText("Leave");
+
+        jButton4.setText("Pre-enroll\n time shift");
+
+        jButton5.setText("Editor Schedule");
+
+        jButton6.setText("Create Schedule");
+
+        javax.swing.GroupLayout ScheduleLayout = new javax.swing.GroupLayout(Schedule);
+        Schedule.setLayout(ScheduleLayout);
+        ScheduleLayout.setHorizontalGroup(
+            ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ScheduleLayout.createSequentialGroup()
+                .addGap(87, 87, 87)
+                .addGroup(ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(85, 85, 85)
+                .addGroup(ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ScheduleLayout.createSequentialGroup()
+                        .addComponent(Heading_Sc)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ScheduleLayout.createSequentialGroup()
+                        .addGap(0, 32, Short.MAX_VALUE)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(113, 113, 113)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(107, 107, 107))))
+        );
+        ScheduleLayout.setVerticalGroup(
+            ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ScheduleLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(Heading_Sc)
+                .addGap(47, 47, 47)
+                .addGroup(ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(54, 54, 54)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(268, Short.MAX_VALUE))
+        );
+
+        Orderingproduct_panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Heading_OP.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        Heading_OP.setText("Ordering Product");
+        Orderingproduct_panel.add(Heading_OP, new org.netbeans.lib.awtextra.AbsoluteConstraints(227, 23, -1, -1));
+
+        jButton7.setText("Claim Product");
+        Orderingproduct_panel.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 140, 150, 60));
+
+        jButton8.setText("Product issue");
+        Orderingproduct_panel.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 220, 150, 60));
+
+        jButton9.setText("Product");
+        Orderingproduct_panel.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 160, 60));
+
+        jButton10.setText("Recieve Product");
+        Orderingproduct_panel.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 140, 140, 60));
+
+        jButton17.setText("Recieve claimed Product");
+        Orderingproduct_panel.add(jButton17, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 160, 60));
+
+        jButton18.setText("Adding vendor");
+        Orderingproduct_panel.add(jButton18, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 220, 140, 60));
+
+        jButton19.setText("Ordering Payment");
+        jButton19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton19ActionPerformed(evt);
+            }
+        });
+        Orderingproduct_panel.add(jButton19, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 220, 140, 60));
+
+        jButton20.setText("Ordering");
+        Orderingproduct_panel.add(jButton20, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 140, 140, 60));
+
+        Inventory_panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Heading_INV.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        Heading_INV.setText("Inventory");
+        Inventory_panel.add(Heading_INV, new org.netbeans.lib.awtextra.AbsoluteConstraints(302, 20, -1, -1));
+
+        jButton22.setText("Product");
+        Inventory_panel.add(jButton22, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 120, 150, 70));
+
+        jButton23.setText("Stock");
+        Inventory_panel.add(jButton23, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, 150, 70));
+
+        jButton24.setText("Order list");
+        Inventory_panel.add(jButton24, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, 150, 70));
+
+        jButton25.setText("Ordering Receive");
+        Inventory_panel.add(jButton25, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 120, 150, 70));
+
+        jButton26.setText("Waste");
+        Inventory_panel.add(jButton26, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 210, 150, 70));
+
+        jButton27.setText("Claim");
+        Inventory_panel.add(jButton27, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, 150, 70));
+
+        jButton28.setText("Menu");
+        Inventory_panel.add(jButton28, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 210, 150, 70));
+
+        jButton29.setText("Promotion");
+        Inventory_panel.add(jButton29, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 210, 150, 70));
+
+        Heading_INV1.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        Heading_INV1.setText("Employee");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Position", "Given name", "Family name", "Age", "Gender", "Phone number", "Email", "Hired date"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, true, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.setEnabled(false);
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jTable1);
+
+        javax.swing.GroupLayout Employee_panelLayout = new javax.swing.GroupLayout(Employee_panel);
+        Employee_panel.setLayout(Employee_panelLayout);
+        Employee_panelLayout.setHorizontalGroup(
+            Employee_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Employee_panelLayout.createSequentialGroup()
+                .addGap(302, 302, 302)
+                .addComponent(Heading_INV1)
+                .addContainerGap(299, Short.MAX_VALUE))
+            .addComponent(jScrollPane1)
+        );
+        Employee_panelLayout.setVerticalGroup(
+            Employee_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Employee_panelLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(Heading_INV1)
+                .addGap(29, 29, 29)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(49, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 826, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 593, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout SelectionLayout = new javax.swing.GroupLayout(Selection);
+        Selection.setLayout(SelectionLayout);
+        SelectionLayout.setHorizontalGroup(
+            SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SelectionLayout.createSequentialGroup()
+                .addGap(0, 10, Short.MAX_VALUE)
+                .addComponent(Menu_Ordering, javax.swing.GroupLayout.PREFERRED_SIZE, 806, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 10, Short.MAX_VALUE))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(Schedule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(Firstpage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(Orderingproduct_panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(Inventory_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SelectionLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(Employee_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SelectionLayout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Employee_admin, javax.swing.GroupLayout.PREFERRED_SIZE, 806, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        SelectionLayout.setVerticalGroup(
+            SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SelectionLayout.createSequentialGroup()
+                .addComponent(Menu_Ordering, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 32, Short.MAX_VALUE))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SelectionLayout.createSequentialGroup()
+                    .addComponent(Schedule, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 31, Short.MAX_VALUE)))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SelectionLayout.createSequentialGroup()
+                    .addComponent(Firstpage, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 32, Short.MAX_VALUE)))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SelectionLayout.createSequentialGroup()
+                    .addComponent(Orderingproduct_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SelectionLayout.createSequentialGroup()
+                    .addComponent(Inventory_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SelectionLayout.createSequentialGroup()
+                    .addGap(16, 16, 16)
+                    .addComponent(Employee_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(17, 17, 17)))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(SelectionLayout.createSequentialGroup()
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 23, Short.MAX_VALUE)))
+            .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SelectionLayout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Employee_admin, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(53, Short.MAX_VALUE)))
+        );
+
+        getContentPane().add(Selection, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 65, 830, 620));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void Menu_Ordering_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_Ordering_btnActionPerformed
+        Menu_Ordering.setVisible(true);
+        Schedule.setVisible(false);
+        Firstpage.setVisible(false);
+        Orderingproduct_panel.setVisible(false);
+        Inventory_panel.setVisible(false);
+        Employee_panel.setVisible(false);
+        Employee_admin.setVisible(false);
+                
+    }//GEN-LAST:event_Menu_Ordering_btnActionPerformed
+
+    private void Schedule_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Schedule_btnActionPerformed
+        Menu_Ordering.setVisible(false);
+        Schedule.setVisible(true);
+        Firstpage.setVisible(false);
+        Orderingproduct_panel.setVisible(false);
+        Inventory_panel.setVisible(false);
+        Employee_panel.setVisible(false);
+        Employee_admin.setVisible(false);
+    }//GEN-LAST:event_Schedule_btnActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void Ordering_Product_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ordering_Product_btnActionPerformed
+        Menu_Ordering.setVisible(false);
+        Schedule.setVisible(false);
+        Firstpage.setVisible(false);
+        Orderingproduct_panel.setVisible(true);
+        Inventory_panel.setVisible(false);
+        Employee_panel.setVisible(false);
+        Employee_admin.setVisible(false);
+    }//GEN-LAST:event_Ordering_Product_btnActionPerformed
+
+    private void Inventory_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Inventory_btnActionPerformed
+        Menu_Ordering.setVisible(false);
+        Schedule.setVisible(false);
+        Firstpage.setVisible(false);
+        Orderingproduct_panel.setVisible(false);
+        Inventory_panel.setVisible(true);
+        Employee_panel.setVisible(false);
+        Employee_admin.setVisible(false);
+    }//GEN-LAST:event_Inventory_btnActionPerformed
+
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+        this.setVisible(false);
+        Employee em =new Employee();
+            em.setid(0);
+            em.setfname("");
+            em.setlname("");
+            em.setposition(99);
+        LoginFrom f = new LoginFrom();
+        JOptionPane.showMessageDialog(null,"Logout Success");
+        f.setVisible(true);
+    }//GEN-LAST:event_jButton16ActionPerformed
+
+    private void Employee_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Employee_btnActionPerformed
+        Employee e = new Employee();
+        Menu_Ordering.setVisible(false);
+        Schedule.setVisible(false);
+        Firstpage.setVisible(false);
+        Orderingproduct_panel.setVisible(false);
+        Inventory_panel.setVisible(false);
+        Employee_admin.setVisible(false);
+        Employee_panel.setVisible(true);
+        if(e.getposition()==00||e.getposition()==01){
+        Employee_admin.setVisible(true);
+        Employee_panel.setVisible(false);  
+    }//GEN-LAST:event_Employee_btnActionPerformed
+
+    }
+    private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
+
+    }//GEN-LAST:event_jButton19ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -55,7 +628,7 @@ public class Main extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -76,9 +649,71 @@ public class Main extends javax.swing.JFrame {
             public void run() {
                 new Main().setVisible(true);
             }
+            
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel ButtonPanel;
+    private javax.swing.JPanel Employee_admin;
+    private javax.swing.JButton Employee_btn;
+    private javax.swing.JPanel Employee_panel;
+    private javax.swing.JPanel Firstpage;
+    private javax.swing.JLabel Heading_INV;
+    private javax.swing.JLabel Heading_INV1;
+    private javax.swing.JLabel Heading_MO;
+    private javax.swing.JLabel Heading_OP;
+    private javax.swing.JLabel Heading_Sc;
+    private javax.swing.JButton Inventory_btn;
+    private javax.swing.JPanel Inventory_panel;
+    private javax.swing.JPanel Menu_Ordering;
+    private javax.swing.JButton Menu_Ordering_btn;
+    private javax.swing.JButton Ordering_Product_btn;
+    private javax.swing.JPanel Orderingproduct_panel;
+    private javax.swing.JPanel Schedule;
+    private javax.swing.JButton Schedule_btn;
+    private javax.swing.JPanel Selection;
+    private javax.swing.JLabel Showdate;
+    private javax.swing.JLabel Showtime;
+    private javax.swing.JLabel Time1;
+    private javax.swing.JPanel TopPanel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
+    private javax.swing.JButton jButton15;
+    private javax.swing.JButton jButton16;
+    private javax.swing.JButton jButton17;
+    private javax.swing.JButton jButton18;
+    private javax.swing.JButton jButton19;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton20;
+    private javax.swing.JButton jButton21;
+    private javax.swing.JButton jButton22;
+    private javax.swing.JButton jButton23;
+    private javax.swing.JButton jButton24;
+    private javax.swing.JButton jButton25;
+    private javax.swing.JButton jButton26;
+    private javax.swing.JButton jButton27;
+    private javax.swing.JButton jButton28;
+    private javax.swing.JButton jButton29;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton30;
+    private javax.swing.JButton jButton31;
+    private javax.swing.JButton jButton32;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel name;
+    private javax.swing.JLabel showname;
     // End of variables declaration//GEN-END:variables
 }

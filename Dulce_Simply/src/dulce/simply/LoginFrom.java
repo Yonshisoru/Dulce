@@ -23,8 +23,8 @@ import javax.swing.Timer;
  *
  * @author Yonshisoru
  */
-public class LoginFrom extends javax.swing.JFrame {
-            int logincheck = 0;
+public class LoginFrom extends javax.swing.JFrame {     
+    int logincheck = 0;
     Connection con = null;
     PreparedStatement pat = null;
     ResultSet rs = null;
@@ -35,6 +35,7 @@ public class LoginFrom extends javax.swing.JFrame {
            if(i==100&&i>=0){
                dispose();
                Main m = new Main();
+               
                m.setVisible(true);
            }
            i++;
@@ -144,8 +145,8 @@ public class LoginFrom extends javax.swing.JFrame {
     private void LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginActionPerformed
 
         MySQLConnect check = new MySQLConnect();
-        String sql  ="select * from employee where EMP_ID=? and EMP_PASSWORD=?";
-        try{
+        String sql  ="select * from EMPLOYEE where EMP_ID=? and EMP_PASS=?";
+        try{  
                 
         con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
         pat = con.prepareStatement(sql);
@@ -154,12 +155,17 @@ public class LoginFrom extends javax.swing.JFrame {
         rs = pat.executeQuery();
         if(rs.next())
         {
-            JOptionPane.showMessageDialog(null, "Welcome "+rs.getString("EMP_NAME"));
+            JOptionPane.showMessageDialog(null, "Welcome "+rs.getString("EMP_FNAME")+" "+rs.getString("EMP_LNAME"));
             Jusername.setEnabled(false);
             Jpassword.setEnabled(false);
             Login.setEnabled(false);
             Reset.setEnabled(false);
             Exit.setLabel("Cancel");
+            Employee em = new Employee();
+            em.setid(rs.getInt("EMP_ID"));
+            em.setposition(rs.getInt("POS_ID"));
+            em.setfname(rs.getString("EMP_FNAME"));
+            em.setlname(rs.getString("EMP_LNAME"));
             timer.start();
             
         }else{
