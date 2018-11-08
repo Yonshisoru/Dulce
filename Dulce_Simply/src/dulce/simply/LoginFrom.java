@@ -144,7 +144,6 @@ public class LoginFrom extends javax.swing.JFrame {
 
     private void LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginActionPerformed
 
-        MySQLConnect check = new MySQLConnect();
         String sql  ="select * from EMPLOYEE where EMP_ID=? and EMP_PASS=?";
         try{  
                 
@@ -162,8 +161,8 @@ public class LoginFrom extends javax.swing.JFrame {
             Reset.setEnabled(false);
             Exit.setLabel("Cancel");
             Employee em = new Employee();
-            em.setid(rs.getInt("EMP_ID"));
-            em.setposition(rs.getInt("POS_ID"));
+            em.setid(rs.getString("EMP_ID"));
+            em.setposition_id(rs.getInt("POS_ID"));
             em.setfname(rs.getString("EMP_FNAME"));
             em.setlname(rs.getString("EMP_LNAME"));
             timer.start();
@@ -196,7 +195,7 @@ public class LoginFrom extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
