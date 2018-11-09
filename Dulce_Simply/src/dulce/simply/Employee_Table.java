@@ -21,7 +21,7 @@ public class Employee_Table extends javax.swing.JFrame {
     Connection con = null;
     Statement pat = null;
     ResultSet rs = null;
-
+    ArrayList<Employee> EmployeeList = new ArrayList<>();
     /**
      * Creates new form Employee_Table
      */
@@ -30,38 +30,39 @@ public class Employee_Table extends javax.swing.JFrame {
         show_employee();
     }
     public ArrayList<Employee>EmployeeList(){
-        ArrayList<Employee> EmployeeList = new ArrayList<>();
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="select * from EMPLOYEE NATURAL JOIN EMP_POSITION";         
+        String sql  ="select EMP_ID,EMP_FNAME,EMP_LNAME,POS_NAME,EMP_AGE,EMP_GENDER,EMP_START,EMP_PHONE,EMP_EMAIL from EMPLOYEE NATURAL JOIN EMP_POSITION WHERE EMP_DEL = 'N'";         
+        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
         con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
         pat = con.createStatement();
         rs = pat.executeQuery(sql);
-        Employee employee;
         while(rs.next()){
-            employee=new Employee(rs.getString("EMP_ID"),rs.getString("EMP_FNAME"),rs.getString("EMP_LNAME"),rs.getString("POS_NAME"),rs.getInt("EMP_AGE"),rs.getString("EMP_GENDER"),rs.getString("EMP_PHONE"),rs.getString("EMP_EMAIL"),rs.getString("EMP_START"));
-            EmployeeList.add(employee);
+            Employee e = new Employee(rs.getString("EMP_ID"),rs.getString("EMP_FNAME"),rs.getString("EMP_LNAME"),rs.getString("POS_NAME"),rs.getInt("EMP_AGE"),rs.getString("EMP_GENDER"),rs.getString("EMP_PHONE"),rs.getString("EMP_EMAIL"),rs.getString("EMP_START"));
+            EmployeeList.add(e);
         }
         con.close();
+        pat.close();
+        rs.close();
         }catch(Exception e){
             e.printStackTrace();
         }
         return EmployeeList;
 }
     public void show_employee(){
-        ArrayList<Employee> list = EmployeeList();
         DefaultTableModel model = (DefaultTableModel)emp_table.getModel();
+        EmployeeList = EmployeeList();
         Object[] row = new Object[9];
-        for(int i=0;i<list.size();i++){
-            row[0]=list.get(i).getid();
-            row[1]=list.get(i).getposition();
-            row[2]=list.get(i).getfname();
-            row[3]=list.get(i).getlname();
-            row[4]=list.get(i).getage();
-            row[5]=list.get(i).getgender();
-            row[6]=list.get(i).getphone();
-            row[7]=list.get(i).getemail();
-            row[8]=list.get(i).getdate();
+        for(int i=0;i<EmployeeList.size();i++){
+            row[0]=EmployeeList.get(i).getid();
+            row[1]=EmployeeList.get(i).getposition();
+            row[2]=EmployeeList.get(i).getfname();
+            row[3]=EmployeeList.get(i).getlname();
+            row[4]=EmployeeList.get(i).getage();
+            row[5]=EmployeeList.get(i).getgender();
+            row[6]=EmployeeList.get(i).getphone();
+            row[7]=EmployeeList.get(i).getemail();
+            row[8]=EmployeeList.get(i).getdate();
             model.addRow(row);
         }
     }

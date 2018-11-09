@@ -68,12 +68,17 @@ public class LoginFrom extends javax.swing.JFrame {
         processlogin = new javax.swing.JProgressBar();
         processlogin_label = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Dulce Simply");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setLocation(new java.awt.Point(0, 0));
         setMinimumSize(new java.awt.Dimension(500, 350));
         setPreferredSize(new java.awt.Dimension(500, 350));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Jusername.setFont(new java.awt.Font("Georgia", 0, 10)); // NOI18N
@@ -129,7 +134,6 @@ public class LoginFrom extends javax.swing.JFrame {
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
         timer.stop();
-        Exit.setEnabled(false);
         if(JOptionPane.showConfirmDialog(null,"Exit Confirm","System",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
                     JOptionPane.showMessageDialog(this, "Closing Software","System",INFORMATION_MESSAGE);
         this.setVisible(false);
@@ -144,9 +148,10 @@ public class LoginFrom extends javax.swing.JFrame {
 
     private void LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginActionPerformed
 
-        String sql  ="select * from EMPLOYEE where EMP_ID=? and EMP_PASS=?";
+        String sql  ="select EMP_ID,EMP_PASS,EMP_FNAME,EMP_LNAME,POS_ID from EMPLOYEE where EMP_ID=? and EMP_PASS=?";
         try{  
                 
+        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
         con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
         pat = con.prepareStatement(sql);
         pat.setString(1, Jusername.getText());
@@ -155,6 +160,7 @@ public class LoginFrom extends javax.swing.JFrame {
         if(rs.next())
         {
             JOptionPane.showMessageDialog(null, "Welcome "+rs.getString("EMP_FNAME")+" "+rs.getString("EMP_LNAME"));
+            logincheck=1;
             Jusername.setEnabled(false);
             Jpassword.setEnabled(false);
             Login.setEnabled(false);
@@ -163,8 +169,12 @@ public class LoginFrom extends javax.swing.JFrame {
             Employee em = new Employee();
             em.setid(rs.getString("EMP_ID"));
             em.setposition_id(rs.getInt("POS_ID"));
-            em.setfname(rs.getString("EMP_FNAME"));
-            em.setlname(rs.getString("EMP_LNAME"));
+            em.settype_id(rs.getInt("POS_ID"));
+            em.setdisfname(rs.getString("EMP_FNAME"));
+            em.setdislname(rs.getString("EMP_LNAME"));
+            con.close();
+            pat.close();
+            rs.close();
             timer.start();
             
         }else{
@@ -183,6 +193,22 @@ public class LoginFrom extends javax.swing.JFrame {
     private void JusernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JusernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JusernameActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+         if(logincheck==0){
+        JOptionPane.showMessageDialog(null,"You can't eliminate software from here!!","System",ERROR_MESSAGE);
+         }else {
+             timer.stop();
+             if (JOptionPane.showConfirmDialog(this, 
+            "Current in loading process.\nAre you sure to quit?", "Close Window?", 
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){ 
+            System.exit(0);
+         }else if(logincheck==1){
+        timer.start();
+        }
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

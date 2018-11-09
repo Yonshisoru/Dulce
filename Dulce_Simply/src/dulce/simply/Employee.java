@@ -10,16 +10,19 @@ package dulce.simply;
  * @author Yonshisoru
  */
 public class Employee {
-    static private String employee_id;
-    static private String firstname;
-    static private String lastname ;
-    static private String position;
-    static private int position_id;
-    static private int age;
-    static private String gender;
-    static private String phone;
-    static private String email;
-    static private String date;
+     private String employee_id;
+     private String firstname;
+     private String lastname ;
+     static String displayfname;
+     static String displaylname;
+    private String position;
+   static private int typeposition;
+    private int position_id;
+     private int age;
+     private String gender;
+    private String phone;
+     private String email;
+    private String date;
     public Employee(String employee_id,String fname,String lname,String position,int age,String gender,String phone,String email,String date){
     this.employee_id = employee_id;
     this.firstname = fname;
@@ -44,6 +47,18 @@ public class Employee {
     }
     public void setposition(String position){
         this.position = position;
+    }
+    public String getdisfname(){
+        return displayfname;
+    }
+    public void setdisfname(String name){
+        this.displayfname = name;
+    }
+    public void setdislname(String name){
+        this.displaylname = name;
+    }
+    public String getdislname(){
+        return displaylname;
     }
     public String getfname(){
         return firstname;
@@ -92,5 +107,11 @@ public class Employee {
     }
     public void setposition_id(int position_id){
         this.position_id = position_id;
-    }   
+    }
+         public int gettype_id (){
+        return typeposition;
+    }
+    public void settype_id(int position_id){
+        this.typeposition = position_id;
+    }  
 }

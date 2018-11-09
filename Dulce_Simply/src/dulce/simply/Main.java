@@ -30,7 +30,7 @@ public class Main extends javax.swing.JFrame{
         Employee_panel.setVisible(false);
         jPanel1.setVisible(false);
         Employee e = new Employee();
-        showname.setText(e.getfname()+" "+e.getlname());
+        showname.setText(e.getdisfname()+" "+e.getdislname());
         showTime();
     }
     void showTime(){
@@ -632,7 +632,7 @@ public class Main extends javax.swing.JFrame{
         Orderingproduct_panel.setVisible(false);
         Inventory_panel.setVisible(false);
         Employee_panel.setVisible(false);
-        if(e.getposition_id()==0||e.getposition_id()==1){
+        if(e.gettype_id()==0||e.gettype_id()==1){
         jPanel1.setVisible(true);
         }else{
             Employee_Table k = new Employee_Table();
@@ -646,10 +646,12 @@ public class Main extends javax.swing.JFrame{
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
  if (JOptionPane.showConfirmDialog(this, 
-            "Are you sure you want to close without sighout?", "Close Window?", 
+            "Are you sure you want to close without signout?", "Close Window?", 
             JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-            System.exit(0);
+            LoginFrom l = new LoginFrom();
+            l.setVisible(true);
+            this.setVisible(false);
         }
     }//GEN-LAST:event_formWindowClosing
 
