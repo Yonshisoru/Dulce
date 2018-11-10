@@ -270,6 +270,11 @@ public class Main extends javax.swing.JFrame{
         jButton5.setText("Editor Schedule");
 
         jButton6.setText("Create Schedule");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout ScheduleLayout = new javax.swing.GroupLayout(Schedule);
         Schedule.setLayout(ScheduleLayout);
@@ -654,6 +659,11 @@ public class Main extends javax.swing.JFrame{
             this.setVisible(false);
         }
     }//GEN-LAST:event_formWindowClosing
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        CreateSchedule c = new CreateSchedule();
+        c.setVisible(true);
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
