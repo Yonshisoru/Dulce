@@ -15,9 +15,9 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
-
 /**
  *
  * @author Yonshisoru
@@ -26,20 +26,57 @@ public class CreateSchedule extends javax.swing.JFrame {
     int max = Integer.MIN_VALUE;
     String eid = null;
     int oldsize = 0;
-   String date;
+    String date;
+    String output = null; 
+    Connection con = null;
+    PreparedStatement pat = null;
+    ResultSet rs = null;
+    Statement st = null;
     /**
      * Creates new form CreateSchedule
      */
     public CreateSchedule() {
         initComponents();
-        showSchedule();
-        date = Schedule_date.getText();
+    showSchedule();
+}
+   public String id(){
+          String sql  ="select SC_ID from SCHEDULE";
+    try{
+    Class.forName("com.mysql.jdbc.Driver");
+    con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
+    pat = con.prepareStatement(sql);
+     rs = pat.executeQuery(sql);
+    if(rs.next()){
+    while(rs.next()){
+        if(Integer.parseInt(rs.getString("SC_ID").substring(1,4))>max){
+            max = Integer.parseInt(rs.getString("SC_ID").substring(1,4));
+        }
     }
-    
-    Connection con = null;
-    PreparedStatement pat = null;
-    ResultSet rs = null;
-    /**
+    }
+    else{
+            max = 0;
+    }
+    max += 1;
+    if(max<10){
+        output = "E00"+max;
+    }else if(max<100){
+        output = "E0"+max;
+    }else{
+        output = "E"+max;
+    }
+    Schedule_showid.setText(output);
+    con.close();
+    pat.close();
+    rs.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+    return output;
+   } 
+
+
+
+            /**
      * Creates new form Employee_Table
      */
     public ArrayList<Schedule>ScheduleList(){
@@ -52,13 +89,13 @@ public class CreateSchedule extends javax.swing.JFrame {
         pat = con.prepareStatement(sql);
         rs = pat.executeQuery(sql);
         while(rs.next()){
-            int id = Integer.parseInt(rs.getString("SC_ID").substring(1,4));
+            /*int id = Integer.parseInt(rs.getString("SC_ID").substring(1,4));
             if(id>max){
                 max = id;
-            }
+            }*/
             Schedule e = new Schedule(rs.getString("SC_ID"),rs.getString("SC_DATE"),rs.getString("SCS_NAME"),rs.getInt("SC_EMPLIMIT"),rs.getInt("SC_EMPCUR"),rs.getInt("SC_EMPCUR"));
             Schedulelist.add(e);
-        }
+        }/*
         max += 1;
         if(max<10){
             eid = "00"+(max);
@@ -67,10 +104,11 @@ public class CreateSchedule extends javax.swing.JFrame {
         }else if(max<=100){
                 eid = ""+(max);
         }
-        Schedule_showid.setText("E"+(eid));
+        Schedule_showid.setText("E"+(eid));*/
         con.close();
         pat.close();
         rs.close();
+        Schedule_showid.setText(id());
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -112,6 +150,9 @@ public class CreateSchedule extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 600));
@@ -238,6 +279,13 @@ public class CreateSchedule extends javax.swing.JFrame {
     });
     getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 280, 70, 40));
 
+    jLabel5.setText("jLabel5");
+    getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 370, 160, 30));
+
+    jLabel6.setText("jLabel6");
+    getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 450, -1, -1));
+    getContentPane().add(dateChooserCombo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 410, -1, -1));
+
     pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -246,16 +294,50 @@ public class CreateSchedule extends javax.swing.JFrame {
     }//GEN-LAST:event_Schedule_showidActionPerformed
 
     private void CreateScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateScheduleActionPerformed
-
-        String sql  ="Insert into SCHEDULE(SC_ID,SC_DATE,SCS_ID,SC_EMPLIMIT) VALUES (?,?,?,?)";         
+        boolean createallow = false;
+        int chooseperiod = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String gg = sdf.format(Schedule_date.getSelectedDate().getTime());
+        System.out.print("SELECT SC_ID,SCS_ID FROM SCHEDULE WHERE SC_DATE ='"+(Integer.parseInt(gg.substring(0,4))-543)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length())+"' AND SC_DEL='N'");
+        int count = 0;
+        boolean firstperiod = false;
+        boolean secondperiod = false;
+        System.out.print((Integer.parseInt(gg.substring(0,4))-543)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length()));
+        String sql  ="Insert into SCHEDULE(SC_ID,SC_DATE,SCS_ID,SC_EMPLIMIT,SC_DEL) VALUES (?,?,?,?,'N')";  
+        String check = "SELECT SC_ID,SCS_ID FROM SCHEDULE WHERE SC_DATE ='"+(Integer.parseInt(gg.substring(0,4))-543)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length())+"' AND SC_DEL='N'";
         try{
         Class.forName("com.mysql.jdbc.Driver");
         con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
+        pat = con.prepareStatement(check);
+        rs =  pat.executeQuery();
+        while(rs.next()){
+            if(rs.getInt("SCS_ID")==1){
+                count++;
+                firstperiod = true;
+            }else if(rs.getInt("SCS_ID")==2){
+                count++;
+                secondperiod = true; 
+            }
+        }
+        if(ChoosePeriod.getSelectedItem().equals("08.00-15.30")){
+        chooseperiod = 1;
+        }else if(ChoosePeriod.getSelectedItem().equals("15.00-22.30")){
+        chooseperiod = 2;
+        }
+        pat.close();
+        rs.close();
+            if(firstperiod==true&&secondperiod==true){
+                JOptionPane.showMessageDialog(null, "Create all periods this day already!");
+            }else if(firstperiod==true&&chooseperiod==1){
+                JOptionPane.showMessageDialog(null, "Create first period this day already!");
+            }else if(secondperiod==true&&chooseperiod==2){
+                JOptionPane.showMessageDialog(null, "Create second period this day already!");
+            }else{
+        Class.forName("com.mysql.jdbc.Driver");
         pat = con.prepareStatement(sql);
         pat.setString(1, Schedule_showid.getText());
         String date = Schedule_date.getText();
-        String setdate = ("20"+date.substring(date.length()-2,date.length())+"-"+date.substring(0,2)+"-"+date.substring(3,5));
-        pat.setString(2, setdate);
+        pat.setString(2, (Integer.parseInt(gg.substring(0,4))-543)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length()));
         if(ChoosePeriod.getSelectedItem().equals("08.00-15.30")){
             pat.setString(3,"1");
         }else if(ChoosePeriod.getSelectedItem().equals("15.00-22.30")){
@@ -266,22 +348,16 @@ public class CreateSchedule extends javax.swing.JFrame {
         con.close();
         pat.close();
         rs.close();
-        this.setVisible(false);
-        this.setVisible(true);
         DefaultTableModel dm = (DefaultTableModel)ScheduleTable.getModel();
         while(dm.getRowCount() > 0)
         {       
         dm.removeRow(0);
         }
-        showSchedule();
+        showSchedule();  
+            }
         }catch(Exception e){
-            System.out.print(e);
-        }
+    }
     }//GEN-LAST:event_CreateScheduleActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       this.setVisible(false);
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         max--;
@@ -312,6 +388,11 @@ public class CreateSchedule extends javax.swing.JFrame {
         }
         showSchedule();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.setVisible(false);
+
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -355,12 +436,15 @@ public class CreateSchedule extends javax.swing.JFrame {
     private javax.swing.JTable ScheduleTable;
     private datechooser.beans.DateChooserCombo Schedule_date;
     private javax.swing.JTextField Schedule_showid;
+    private datechooser.beans.DateChooserCombo dateChooserCombo1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

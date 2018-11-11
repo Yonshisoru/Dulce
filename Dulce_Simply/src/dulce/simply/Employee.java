@@ -10,7 +10,8 @@ package dulce.simply;
  * @author Yonshisoru
  */
 public class Employee {
-     private String employee_id;
+    private String employee_id;
+    static private String showemployee_id = "E001";
      private String firstname;
      private String lastname ;
      static String displayfname;
@@ -41,6 +42,12 @@ public class Employee {
     }
     public void setid(String id){
         this.employee_id = id;
+    }
+    public String getshowid (){
+        return showemployee_id;
+    }
+    public void setshowid(String id){
+        this.showemployee_id = id;
     }
     public String getposition(){
         return position;

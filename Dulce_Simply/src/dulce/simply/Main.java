@@ -84,7 +84,7 @@ public class Main extends javax.swing.JFrame{
         jButton1 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        CreateSchedule = new javax.swing.JButton();
         Orderingproduct_panel = new javax.swing.JPanel();
         Heading_OP = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
@@ -266,13 +266,18 @@ public class Main extends javax.swing.JFrame{
         jButton1.setText("Leave");
 
         jButton4.setText("Pre-enroll\n time shift");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Editor Schedule");
 
-        jButton6.setText("Create Schedule");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        CreateSchedule.setText("Create Schedule");
+        CreateSchedule.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                CreateScheduleActionPerformed(evt);
             }
         });
 
@@ -283,7 +288,7 @@ public class Main extends javax.swing.JFrame{
             .addGroup(ScheduleLayout.createSequentialGroup()
                 .addGap(87, 87, 87)
                 .addGroup(ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CreateSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(85, 85, 85)
                 .addGroup(ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -308,7 +313,7 @@ public class Main extends javax.swing.JFrame{
                     .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(54, 54, 54)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(CreateSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(268, Short.MAX_VALUE))
         );
 
@@ -517,9 +522,9 @@ public class Main extends javax.swing.JFrame{
         SelectionLayout.setHorizontalGroup(
             SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SelectionLayout.createSequentialGroup()
-                .addGap(0, 10, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(Menu_Ordering, javax.swing.GroupLayout.PREFERRED_SIZE, 806, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 10, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(Schedule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -584,6 +589,7 @@ public class Main extends javax.swing.JFrame{
     }//GEN-LAST:event_Menu_Ordering_btnActionPerformed
 
     private void Schedule_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Schedule_btnActionPerformed
+        Employee e = new Employee();
         Menu_Ordering.setVisible(false);
         Schedule.setVisible(true);
         Firstpage.setVisible(false);
@@ -591,6 +597,11 @@ public class Main extends javax.swing.JFrame{
         Inventory_panel.setVisible(false);
         Employee_panel.setVisible(false);
         jPanel1.setVisible(false);
+        if(e.gettype_id()==0||e.gettype_id()==1){
+        CreateSchedule.setVisible(true);
+        }else{
+            CreateSchedule.setVisible(false);
+    }    
     }//GEN-LAST:event_Schedule_btnActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -660,10 +671,15 @@ public class Main extends javax.swing.JFrame{
         }
     }//GEN-LAST:event_formWindowClosing
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void CreateScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateScheduleActionPerformed
         CreateSchedule c = new CreateSchedule();
         c.setVisible(true);
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_CreateScheduleActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    Enroll_timeshift e = new Enroll_timeshift();
+    e.setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -703,6 +719,7 @@ public class Main extends javax.swing.JFrame{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ButtonPanel;
+    private javax.swing.JButton CreateSchedule;
     private javax.swing.JButton Employee_btn;
     private javax.swing.JPanel Employee_panel;
     private javax.swing.JPanel Firstpage;
@@ -752,7 +769,6 @@ public class Main extends javax.swing.JFrame{
     private javax.swing.JButton jButton32;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
