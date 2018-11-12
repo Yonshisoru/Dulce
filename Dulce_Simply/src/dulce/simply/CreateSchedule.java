@@ -139,7 +139,6 @@ public class CreateSchedule extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         ScheduleTable = new javax.swing.JTable();
-        Schedule_date = new datechooser.beans.DateChooserCombo();
         CreateSchedule = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         Schedule_showid = new javax.swing.JTextField();
@@ -150,9 +149,7 @@ public class CreateSchedule extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
+        Schedule_date = new datechooser.beans.DateChooserCombo();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 600));
@@ -179,114 +176,65 @@ public class CreateSchedule extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, 460, 496));
 
-        Schedule_date.setCurrentView(new datechooser.view.appearance.AppearancesList("Contrast",
-            new datechooser.view.appearance.ViewAppearance("custom",
-                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
-                    new java.awt.Color(0, 0, 0),
-                    new java.awt.Color(0, 0, 255),
-                    false,
-                    true,
-                    new datechooser.view.appearance.swing.ButtonPainter()),
-                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
-                    new java.awt.Color(0, 0, 0),
-                    new java.awt.Color(0, 0, 255),
-                    true,
-                    true,
-                    new datechooser.view.appearance.swing.ButtonPainter()),
-                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
-                    new java.awt.Color(0, 0, 255),
-                    new java.awt.Color(0, 0, 255),
-                    false,
-                    true,
-                    new datechooser.view.appearance.swing.ButtonPainter()),
-                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
-                    new java.awt.Color(128, 128, 128),
-                    new java.awt.Color(0, 0, 255),
-                    false,
-                    true,
-                    new datechooser.view.appearance.swing.LabelPainter()),
-                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
-                    new java.awt.Color(0, 0, 0),
-                    new java.awt.Color(0, 0, 255),
-                    false,
-                    true,
-                    new datechooser.view.appearance.swing.LabelPainter()),
-                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 11),
-                    new java.awt.Color(0, 0, 0),
-                    new java.awt.Color(255, 0, 0),
-                    false,
-                    false,
-                    new datechooser.view.appearance.swing.ButtonPainter()),
-                (datechooser.view.BackRenderer)null,
-                false,
-                true)));
-    Schedule_date.setCalendarPreferredSize(new java.awt.Dimension(330, 220));
-    Schedule_date.setFieldFont(new java.awt.Font("Tahoma", java.awt.Font.BOLD, 14));
-    Schedule_date.setShowOneMonth(true);
-    getContentPane().add(Schedule_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 110, 170, 30));
+        CreateSchedule.setText("Create");
+        CreateSchedule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CreateScheduleActionPerformed(evt);
+            }
+        });
+        getContentPane().add(CreateSchedule, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 70, 40));
 
-    CreateSchedule.setText("Create");
-    CreateSchedule.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            CreateScheduleActionPerformed(evt);
-        }
-    });
-    getContentPane().add(CreateSchedule, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 70, 40));
+        jButton2.setText("Close");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 280, 70, 40));
 
-    jButton2.setText("Close");
-    jButton2.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            jButton2ActionPerformed(evt);
-        }
-    });
-    getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 280, 70, 40));
+        Schedule_showid.setEnabled(false);
+        Schedule_showid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Schedule_showidActionPerformed(evt);
+            }
+        });
+        getContentPane().add(Schedule_showid, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 170, 30));
 
-    Schedule_showid.setEnabled(false);
-    Schedule_showid.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            Schedule_showidActionPerformed(evt);
-        }
-    });
-    getContentPane().add(Schedule_showid, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 170, 30));
+        MaxEmployee.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
+        getContentPane().add(MaxEmployee, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210, 170, 30));
 
-    MaxEmployee.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
-    getContentPane().add(MaxEmployee, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210, 170, 30));
+        ChoosePeriod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08.00-15.30", "15.00-22.30" }));
+        getContentPane().add(ChoosePeriod, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 160, 170, 30));
 
-    ChoosePeriod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08.00-15.30", "15.00-22.30" }));
-    getContentPane().add(ChoosePeriod, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 160, 170, 30));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel1.setText("Max Employee:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, -1, -1));
 
-    jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-    jLabel1.setText("Max Employee:");
-    getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, -1, -1));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setText("ID:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, -1, -1));
 
-    jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-    jLabel2.setText("ID:");
-    getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, -1, -1));
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel3.setText("Date:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, 40, -1));
 
-    jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-    jLabel3.setText("Date:");
-    getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, 40, -1));
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel4.setText("Period:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 170, -1, -1));
 
-    jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-    jLabel4.setText("Period:");
-    getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 170, -1, -1));
+        jButton4.setText("Delete");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 280, 70, 40));
 
-    jButton4.setText("Delete");
-    jButton4.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            jButton4ActionPerformed(evt);
-        }
-    });
-    getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 280, 70, 40));
+        Schedule_date.setCalendarPreferredSize(new java.awt.Dimension(280, 230));
+        Schedule_date.setFieldFont(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 14));
+        getContentPane().add(Schedule_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 110, 170, 30));
 
-    jLabel5.setText("jLabel5");
-    getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 370, 160, 30));
-
-    jLabel6.setText("jLabel6");
-    getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 450, -1, -1));
-    getContentPane().add(dateChooserCombo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 410, -1, -1));
-
-    pack();
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void Schedule_showidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Schedule_showidActionPerformed
@@ -302,9 +250,9 @@ public class CreateSchedule extends javax.swing.JFrame {
         int count = 0;
         boolean firstperiod = false;
         boolean secondperiod = false;
-        System.out.print((Integer.parseInt(gg.substring(0,4))-543)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length()));
+        System.out.print((Integer.parseInt(gg.substring(0,4))/*-543*/)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length()));
         String sql  ="Insert into SCHEDULE(SC_ID,SC_DATE,SCS_ID,SC_EMPLIMIT,SC_DEL) VALUES (?,?,?,?,'N')";  
-        String check = "SELECT SC_ID,SCS_ID FROM SCHEDULE WHERE SC_DATE ='"+(Integer.parseInt(gg.substring(0,4))-543)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length())+"' AND SC_DEL='N'";
+        String check = "SELECT SC_ID,SCS_ID FROM SCHEDULE WHERE SC_DATE ='"+(Integer.parseInt(gg.substring(0,4))/*-543*/)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length())+"' AND SC_DEL='N'";
         try{
         Class.forName("com.mysql.jdbc.Driver");
         con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
@@ -436,15 +384,12 @@ public class CreateSchedule extends javax.swing.JFrame {
     private javax.swing.JTable ScheduleTable;
     private datechooser.beans.DateChooserCombo Schedule_date;
     private javax.swing.JTextField Schedule_showid;
-    private datechooser.beans.DateChooserCombo dateChooserCombo1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

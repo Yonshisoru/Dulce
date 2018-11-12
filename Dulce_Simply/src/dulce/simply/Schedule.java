@@ -24,7 +24,7 @@ public class Schedule {
         this.period = period;
         this.limit = limit;
         this.current = current;
-        this.leave = current;
+        this.leave = leave;
     }
     public String getSid(){
         return id;
