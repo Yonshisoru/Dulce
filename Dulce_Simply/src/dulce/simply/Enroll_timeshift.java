@@ -31,6 +31,7 @@ public class Enroll_timeshift extends javax.swing.JFrame {
     int year = 0;
     int month = 0;
     int day = 0;
+    int max = Integer.MIN_VALUE;
     String id = null;
     /**
      * Creates new form Enroll_timeshift
@@ -44,7 +45,7 @@ public class Enroll_timeshift extends javax.swing.JFrame {
     void showTime(){
         Date d = new Date();
         SimpleDateFormat s = new SimpleDateFormat("YYYY-MM-dd");
-        year = Integer.parseInt(s.format(d).substring(0,4))-543;
+        year = Integer.parseInt(s.format(d).substring(0,4))/*-543*/;
         month = Integer.parseInt(s.format(d).substring(5,7));
         day = Integer.parseInt(s.format(d).substring(s.format(d).length()-2,s.format(d).length()));
         System.out.print(year);
@@ -62,7 +63,7 @@ public class Enroll_timeshift extends javax.swing.JFrame {
         pat = con.prepareStatement(sql);
         rs = pat.executeQuery(sql);
         while(rs.next()){
-            Schedule e = new Schedule(rs.getString("SC_ID"),rs.getString("SC_DATE"),rs.getString("SCS_NAME"),rs.getInt("SC_EMPLIMIT"),rs.getInt("SC_EMPCUR"),rs.getInt("SC_EMPCUR"));
+            Schedule e = new Schedule(rs.getString("SC_ID"),rs.getString("SC_DATE"),rs.getString("SCS_NAME"),rs.getInt("SC_EMPLIMIT"),rs.getInt("SC_EMPCUR"),rs.getInt("SC_LEAVE"));
             Schedulelist.add(e);
         }
         con.close();
@@ -250,15 +251,16 @@ public class Enroll_timeshift extends javax.swing.JFrame {
     private void Enroll_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Enroll_btnActionPerformed
         Employee em = new Employee();
         int period = 0;
+        int current = 0;
+        int checkmax = 0;
+        int checkduplicated = 0;
         String ID = null;
-        int max = Integer.MIN_VALUE;
         if(Period_txt.getText().equals("08.00-15.30")){
             period = 1;
         }else{
              period = 2;
         }
-        String findid = "SELECT SC_ID FROM SCHEDULE WHERE SC_DATE ='"+Date_txt.getText()+"' AND SCS_ID ='"+ period+ "'";
-            String checkid = "SELECT SL_NUMBER FROM SCHEDULE_LIST";
+        String findid = "SELECT SC_ID,SC_EMPLIMIT,SC_EMPCUR FROM SCHEDULE WHERE SC_DATE ='"+Date_txt.getText()+"' AND SCS_ID ='"+ period+ "'";
         try{
         Class.forName("com.mysql.jdbc.Driver");
         con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
@@ -266,26 +268,62 @@ public class Enroll_timeshift extends javax.swing.JFrame {
         rs = pat.executeQuery(findid);
         while(rs.next()){
           ID = rs.getString("SC_ID");
+          checkmax = rs.getInt("SC_EMPLIMIT");
+          current = rs.getInt("SC_EMPCUR");
         }
         rs.close();
         pat.close();
+        String checkid = "SELECT SL_NUMBER FROM SCHEDULE_LIST";
         pat = con.prepareStatement(checkid);
         rs = pat.executeQuery(checkid);
         if(rs.next()){
-            while(rs.next()){
-               if(rs.getInt("SL_NUMBER")>max){
-                   max = rs.getInt("SL_NUMBER");
+        }else{
+          max = 0; 
+        }
+        while(rs.next()){
+            System.out.print("SL_NUMBER");
+            if((rs.getInt("SL_NUMBER"))>max){
+               max = rs.getInt("SL_NUMBER");
                } 
             }
-        }else{
-            max = 0;
-        }
         max++;
         rs.close();
         pat.close();
         con.close();
         }catch(Exception e){
         }
+        //System.out.print("SELECT SL_NUMBER FROM SCHEDULE_LIST NATURAL JOIN SCHEDULE WHERE SC_DATE = '"+Date_txt.getText()+"' AND EMP_ID = '"+em.getshowid()+"'");
+        String checkduplicate = "SELECT SL_NUMBER FROM SCHEDULE_LIST NATURAL JOIN SCHEDULE WHERE SC_DATE = '"+Date_txt.getText()+"' AND EMP_ID = '"+em.getshowid()+"'";
+        try{
+        Class.forName("com.mysql.jdbc.Driver");
+        con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
+        pat = con.prepareStatement(checkduplicate);
+        rs = pat.executeQuery(checkduplicate);
+        while(rs.next()){
+            checkduplicated ++;
+        }
+        con.close();
+        pat.close();
+        rs.close();
+               String updatecurrent = "UPDATE SCHEDULE SET SC_EMPCUR ='"+(current+1)+"' WHERE SC_ID = '"+ID+"';";
+        try{
+        con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
+        pat = con.prepareStatement(updatecurrent);
+        pat.executeUpdate(updatecurrent);
+        pat.close();
+        con.close();
+        DefaultTableModel dm = (DefaultTableModel)ScheduleTable.getModel();
+        while(dm.getRowCount() > 0)
+        {       
+        dm.removeRow(0);
+        }
+        showSchedule();  
+       }catch(Exception e){
+       }
+        }catch(Exception e){
+        }
+        if(current<checkmax){
+        if(checkduplicated==0){
         String sql = "INSERT INTO SCHEDULE_LIST VALUE('"+max+"','"+ID+"','"+em.getshowid().toString()+"',"+"'N',"+"'NULL',"+"'N')";
         try{
             
@@ -299,6 +337,15 @@ public class Enroll_timeshift extends javax.swing.JFrame {
         }catch(Exception e){
             
         }
+        
+                }else{
+                JOptionPane.showMessageDialog(null,"You enrolled in this day already!");
+                }    
+        }else{
+            JOptionPane.showMessageDialog(null,"This period was limited.\nYou can't enrolled to this period!");
+        }
+            
+        
     }//GEN-LAST:event_Enroll_btnActionPerformed
 
     /**
