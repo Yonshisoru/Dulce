@@ -18,6 +18,8 @@ public class Schedule {
     private int limit;
     private int current;
     private int leave;
+    private String status;
+    private int scheduleoflist;
     Schedule(String id,String date,String period,int limit,int current,int leave){
         this.id = id;
         this.date = date;
@@ -67,5 +69,17 @@ public class Schedule {
     }
     public void setleave(int leave){
         this.leave = leave;
+    }
+     public int getlistid(){
+        return scheduleoflist;
+    }
+    public void setlistid(int id){
+        this.scheduleoflist = id;
+    }
+         public String getstatus(){
+        return status;
+    }
+    public void setstatus(String status){
+        this.status = status;
     } 
 }

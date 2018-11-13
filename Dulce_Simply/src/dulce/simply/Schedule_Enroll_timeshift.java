@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Yonshisoru
  */
-public class Enroll_timeshift extends javax.swing.JFrame {
+public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
     Connection con = null;
     PreparedStatement pat = null;
     ResultSet rs = null;
@@ -36,7 +36,7 @@ public class Enroll_timeshift extends javax.swing.JFrame {
     /**
      * Creates new form Enroll_timeshift
      */
-    public Enroll_timeshift() {
+    public Schedule_Enroll_timeshift() {
         initComponents();
         showTime();
         showSchedule();
@@ -45,7 +45,7 @@ public class Enroll_timeshift extends javax.swing.JFrame {
     void showTime(){
         Date d = new Date();
         SimpleDateFormat s = new SimpleDateFormat("YYYY-MM-dd");
-        year = Integer.parseInt(s.format(d).substring(0,4))/*-543*/;
+        year = Integer.parseInt(s.format(d).substring(0,4))-543;
         month = Integer.parseInt(s.format(d).substring(5,7));
         day = Integer.parseInt(s.format(d).substring(s.format(d).length()-2,s.format(d).length()));
         System.out.print(year);
@@ -139,7 +139,7 @@ public class Enroll_timeshift extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(ScheduleTable);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, 460, 496));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 10, 460, 496));
 
         Date_txt.setText(" ");
         Date_txt.setEnabled(false);
@@ -250,6 +250,7 @@ public class Enroll_timeshift extends javax.swing.JFrame {
 
     private void Enroll_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Enroll_btnActionPerformed
         Employee em = new Employee();
+        int count = 0;
         int period = 0;
         int current = 0;
         int checkmax = 0;
@@ -276,23 +277,21 @@ public class Enroll_timeshift extends javax.swing.JFrame {
         String checkid = "SELECT SL_NUMBER FROM SCHEDULE_LIST";
         pat = con.prepareStatement(checkid);
         rs = pat.executeQuery(checkid);
-        if(rs.next()){
-        }else{
-          max = 0; 
-        }
         while(rs.next()){
+            count++;
             System.out.print("SL_NUMBER");
             if((rs.getInt("SL_NUMBER"))>max){
                max = rs.getInt("SL_NUMBER");
                } 
             }
-        max++;
+        if(count==0){
+            max =0;
+        }
         rs.close();
         pat.close();
         con.close();
         }catch(Exception e){
         }
-        //System.out.print("SELECT SL_NUMBER FROM SCHEDULE_LIST NATURAL JOIN SCHEDULE WHERE SC_DATE = '"+Date_txt.getText()+"' AND EMP_ID = '"+em.getshowid()+"'");
         String checkduplicate = "SELECT SL_NUMBER FROM SCHEDULE_LIST NATURAL JOIN SCHEDULE WHERE SC_DATE = '"+Date_txt.getText()+"' AND EMP_ID = '"+em.getshowid()+"'";
         try{
         Class.forName("com.mysql.jdbc.Driver");
@@ -305,12 +304,31 @@ public class Enroll_timeshift extends javax.swing.JFrame {
         con.close();
         pat.close();
         rs.close();
-               String updatecurrent = "UPDATE SCHEDULE SET SC_EMPCUR ='"+(current+1)+"' WHERE SC_ID = '"+ID+"';";
+        }catch(Exception e){
+        }
+        //System.out.print("SELECT SL_NUMBER FROM SCHEDULE_LIST NATURAL JOIN SCHEDULE WHERE SC_DATE = '"+Date_txt.getText()+"' AND EMP_ID = '"+em.getshowid()+"'");
+        if(current<checkmax){
+        if(checkduplicated==0){
+        max++;
+        String sql = "INSERT INTO SCHEDULE_LIST VALUE('"+max+"','"+ID+"','"+em.getshowid().toString()+"',"+"'N',"+"'NULL',"+"'N')";
+        try{
+            
+        con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
+        pat = con.prepareStatement(sql);
+        System.out.print("INSERT INTO SCHEDULE_LIST VALUE('"+max+"','"+ID+"','"+em.getshowid().toString()+"',"+"'N',"+"'NULL',"+"'N')");
+        pat.executeUpdate(sql);
+        pat.close();
+        con.close();
+        }catch(Exception e){
+            
+        }
+        String updatecurrent = "UPDATE SCHEDULE SET SC_EMPCUR ='"+(current+1)+"' WHERE SC_ID = '"+ID+"';";
         try{
         con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
         pat = con.prepareStatement(updatecurrent);
         pat.executeUpdate(updatecurrent);
         pat.close();
+        JOptionPane.showMessageDialog(null, "Enroll successd");
         con.close();
         DefaultTableModel dm = (DefaultTableModel)ScheduleTable.getModel();
         while(dm.getRowCount() > 0)
@@ -320,23 +338,6 @@ public class Enroll_timeshift extends javax.swing.JFrame {
         showSchedule();  
        }catch(Exception e){
        }
-        }catch(Exception e){
-        }
-        if(current<checkmax){
-        if(checkduplicated==0){
-        String sql = "INSERT INTO SCHEDULE_LIST VALUE('"+max+"','"+ID+"','"+em.getshowid().toString()+"',"+"'N',"+"'NULL',"+"'N')";
-        try{
-            
-        con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
-        pat = con.prepareStatement(sql);
-        System.out.print("INSERT INTO SCHEDULE_LIST VALUE('"+max+"','"+ID+"','"+em.getshowid().toString()+"',"+"'N',"+"'NULL',"+"'N')");
-        pat.executeUpdate(sql);
-        JOptionPane.showMessageDialog(null, "Enroll successd");
-        pat.close();
-        con.close();
-        }catch(Exception e){
-            
-        }
         
                 }else{
                 JOptionPane.showMessageDialog(null,"You enrolled in this day already!");
@@ -365,20 +366,21 @@ public class Enroll_timeshift extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Enroll_timeshift.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Schedule_Enroll_timeshift.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Enroll_timeshift.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Schedule_Enroll_timeshift.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Enroll_timeshift.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Schedule_Enroll_timeshift.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Enroll_timeshift.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Schedule_Enroll_timeshift.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Enroll_timeshift().setVisible(true);
+                new Schedule_Enroll_timeshift().setVisible(true);
             }
         });
     }

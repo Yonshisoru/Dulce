@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Yonshisoru
  */
-public class CreateSchedule extends javax.swing.JFrame {
+public class Schedule_CreateSchedule extends javax.swing.JFrame {
     int max = Integer.MIN_VALUE;
     String eid = null;
     int oldsize = 0;
@@ -35,25 +35,25 @@ public class CreateSchedule extends javax.swing.JFrame {
     /**
      * Creates new form CreateSchedule
      */
-    public CreateSchedule() {
+    public Schedule_CreateSchedule() {
         initComponents();
     showSchedule();
 }
    public String id(){
+       int count=0;
           String sql  ="select SC_ID from SCHEDULE";
     try{
     Class.forName("com.mysql.jdbc.Driver");
     con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
     pat = con.prepareStatement(sql);
      rs = pat.executeQuery(sql);
-    if(rs.next()){
     while(rs.next()){
+        count++;
         if(Integer.parseInt(rs.getString("SC_ID").substring(1,4))>max){
             max = Integer.parseInt(rs.getString("SC_ID").substring(1,4));
         }
     }
-    }
-    else{
+    if(count==0){
             max = 0;
     }
     max += 1;
@@ -93,7 +93,7 @@ public class CreateSchedule extends javax.swing.JFrame {
             if(id>max){
                 max = id;
             }*/
-            Schedule e = new Schedule(rs.getString("SC_ID"),rs.getString("SC_DATE"),rs.getString("SCS_NAME"),rs.getInt("SC_EMPLIMIT"),rs.getInt("SC_EMPCUR"),rs.getInt("SC_EMPCUR"));
+            Schedule e = new Schedule(rs.getString("SC_ID"),rs.getString("SC_DATE"),rs.getString("SCS_NAME"),rs.getInt("SC_EMPLIMIT"),rs.getInt("SC_EMPCUR"),rs.getInt("SC_LEAVE"));
             Schedulelist.add(e);
         }/*
         max += 1;
@@ -230,8 +230,10 @@ public class CreateSchedule extends javax.swing.JFrame {
         });
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 280, 70, 40));
 
-        Schedule_date.setCalendarPreferredSize(new java.awt.Dimension(280, 230));
+        Schedule_date.setCalendarPreferredSize(new java.awt.Dimension(350, 220));
+        Schedule_date.setNothingAllowed(false);
         Schedule_date.setFieldFont(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 14));
+        Schedule_date.setNavigateFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 11));
         getContentPane().add(Schedule_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 110, 170, 30));
 
         pack();
@@ -250,9 +252,9 @@ public class CreateSchedule extends javax.swing.JFrame {
         int count = 0;
         boolean firstperiod = false;
         boolean secondperiod = false;
-        System.out.print((Integer.parseInt(gg.substring(0,4))/*-543*/)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length()));
+        System.out.print((Integer.parseInt(gg.substring(0,4))-543)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length()));
         String sql  ="Insert into SCHEDULE(SC_ID,SC_DATE,SCS_ID,SC_EMPLIMIT,SC_DEL) VALUES (?,?,?,?,'N')";  
-        String check = "SELECT SC_ID,SCS_ID FROM SCHEDULE WHERE SC_DATE ='"+(Integer.parseInt(gg.substring(0,4))/*-543*/)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length())+"' AND SC_DEL='N'";
+        String check = "SELECT SC_ID,SCS_ID FROM SCHEDULE WHERE SC_DATE ='"+(Integer.parseInt(gg.substring(0,4))-543)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length())+"' AND SC_DEL='N'";
         try{
         Class.forName("com.mysql.jdbc.Driver");
         con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
@@ -301,7 +303,8 @@ public class CreateSchedule extends javax.swing.JFrame {
         {       
         dm.removeRow(0);
         }
-        showSchedule();  
+        showSchedule();
+        JOptionPane.showMessageDialog(null, "Create period success!");
             }
         }catch(Exception e){
     }
@@ -359,20 +362,23 @@ public class CreateSchedule extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CreateSchedule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Schedule_CreateSchedule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CreateSchedule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Schedule_CreateSchedule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CreateSchedule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Schedule_CreateSchedule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CreateSchedule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Schedule_CreateSchedule.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CreateSchedule().setVisible(true);
+                new Schedule_CreateSchedule().setVisible(true);
             }
         });
     }

@@ -85,6 +85,7 @@ public class Main extends javax.swing.JFrame{
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         CreateSchedule = new javax.swing.JButton();
+        ShowSchedule = new javax.swing.JButton();
         Orderingproduct_panel = new javax.swing.JPanel();
         Heading_OP = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
@@ -260,10 +261,14 @@ public class Main extends javax.swing.JFrame{
         jButton15.setText("Ordering management");
         Menu_Ordering.add(jButton15, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 410, 180, 90));
 
+        Schedule.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         Heading_Sc.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
         Heading_Sc.setText("Schedule");
+        Schedule.add(Heading_Sc, new org.netbeans.lib.awtextra.AbsoluteConstraints(306, 30, -1, -1));
 
         jButton1.setText("Leave");
+        Schedule.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 250, 150, 64));
 
         jButton4.setText("Pre-enroll\n time shift");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -271,8 +276,15 @@ public class Main extends javax.swing.JFrame{
                 jButton4ActionPerformed(evt);
             }
         });
+        Schedule.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 140, 140, 64));
 
-        jButton5.setText("Editor Schedule");
+        jButton5.setText("Edit Enrolled Schedule");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        Schedule.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 140, 150, 64));
 
         CreateSchedule.setText("Create Schedule");
         CreateSchedule.addActionListener(new java.awt.event.ActionListener() {
@@ -280,42 +292,10 @@ public class Main extends javax.swing.JFrame{
                 CreateScheduleActionPerformed(evt);
             }
         });
+        Schedule.add(CreateSchedule, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 250, 140, 60));
 
-        javax.swing.GroupLayout ScheduleLayout = new javax.swing.GroupLayout(Schedule);
-        Schedule.setLayout(ScheduleLayout);
-        ScheduleLayout.setHorizontalGroup(
-            ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ScheduleLayout.createSequentialGroup()
-                .addGap(87, 87, 87)
-                .addGroup(ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(CreateSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(85, 85, 85)
-                .addGroup(ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ScheduleLayout.createSequentialGroup()
-                        .addComponent(Heading_Sc)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ScheduleLayout.createSequentialGroup()
-                        .addGap(0, 32, Short.MAX_VALUE)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(113, 113, 113)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(107, 107, 107))))
-        );
-        ScheduleLayout.setVerticalGroup(
-            ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ScheduleLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(Heading_Sc)
-                .addGap(47, 47, 47)
-                .addGroup(ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(54, 54, 54)
-                .addComponent(CreateSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(268, Short.MAX_VALUE))
-        );
+        ShowSchedule.setText("Schedule");
+        Schedule.add(ShowSchedule, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 140, 150, 70));
 
         Orderingproduct_panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -672,14 +652,18 @@ public class Main extends javax.swing.JFrame{
     }//GEN-LAST:event_formWindowClosing
 
     private void CreateScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateScheduleActionPerformed
-        CreateSchedule c = new CreateSchedule();
+        Schedule_CreateSchedule c = new Schedule_CreateSchedule();
         c.setVisible(true);
     }//GEN-LAST:event_CreateScheduleActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-    Enroll_timeshift e = new Enroll_timeshift();
+    Schedule_Enroll_timeshift e = new Schedule_Enroll_timeshift();
     e.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -737,6 +721,7 @@ public class Main extends javax.swing.JFrame{
     private javax.swing.JPanel Schedule;
     private javax.swing.JButton Schedule_btn;
     private javax.swing.JPanel Selection;
+    private javax.swing.JButton ShowSchedule;
     private javax.swing.JLabel Showdate;
     private javax.swing.JLabel Showtime;
     private javax.swing.JLabel Time1;
