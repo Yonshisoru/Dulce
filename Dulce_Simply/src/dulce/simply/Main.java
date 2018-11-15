@@ -17,7 +17,7 @@ import javax.swing.Timer;
  * @author Yonshisoru
  */
 public class Main extends javax.swing.JFrame{
-
+Main_variable m = new Main_variable();
     /**
      * Creates new form Main
      */
@@ -81,11 +81,13 @@ public class Main extends javax.swing.JFrame{
         jButton15 = new javax.swing.JButton();
         Schedule = new javax.swing.JPanel();
         Heading_Sc = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        leave = new javax.swing.JButton();
+        preenrolled = new javax.swing.JButton();
+        editenrolled = new javax.swing.JButton();
         CreateSchedule = new javax.swing.JButton();
         ShowSchedule = new javax.swing.JButton();
+        Change_schedule = new javax.swing.JButton();
+        Leave_list = new javax.swing.JButton();
         Orderingproduct_panel = new javax.swing.JPanel();
         Heading_OP = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
@@ -267,24 +269,29 @@ public class Main extends javax.swing.JFrame{
         Heading_Sc.setText("Schedule");
         Schedule.add(Heading_Sc, new org.netbeans.lib.awtextra.AbsoluteConstraints(306, 30, -1, -1));
 
-        jButton1.setText("Leave");
-        Schedule.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 250, 150, 64));
-
-        jButton4.setText("Pre-enroll\n time shift");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        leave.setText("Leave");
+        leave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                leaveActionPerformed(evt);
             }
         });
-        Schedule.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 140, 140, 64));
+        Schedule.add(leave, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 250, 150, 64));
 
-        jButton5.setText("Edit Enrolled Schedule");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        preenrolled.setText("Pre-enroll\n time shift");
+        preenrolled.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                preenrolledActionPerformed(evt);
             }
         });
-        Schedule.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 140, 150, 64));
+        Schedule.add(preenrolled, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 140, 140, 64));
+
+        editenrolled.setText("Edit Enrolled Schedule");
+        editenrolled.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editenrolledActionPerformed(evt);
+            }
+        });
+        Schedule.add(editenrolled, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 140, 150, 64));
 
         CreateSchedule.setText("Create Schedule");
         CreateSchedule.addActionListener(new java.awt.event.ActionListener() {
@@ -295,7 +302,28 @@ public class Main extends javax.swing.JFrame{
         Schedule.add(CreateSchedule, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 250, 140, 60));
 
         ShowSchedule.setText("Schedule");
+        ShowSchedule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ShowScheduleActionPerformed(evt);
+            }
+        });
         Schedule.add(ShowSchedule, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 140, 150, 70));
+
+        Change_schedule.setText("<html><center>Change Employee Schedule</center></br></html>");
+        Change_schedule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Change_scheduleActionPerformed(evt);
+            }
+        });
+        Schedule.add(Change_schedule, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 250, 150, 60));
+
+        Leave_list.setText("Leave List");
+        Leave_list.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Leave_listActionPerformed(evt);
+            }
+        });
+        Schedule.add(Leave_list, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 350, 150, 60));
 
         Orderingproduct_panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -423,7 +451,7 @@ public class Main extends javax.swing.JFrame{
             .addGroup(Employee_panelLayout.createSequentialGroup()
                 .addGap(302, 302, 302)
                 .addComponent(Heading_INV1)
-                .addContainerGap(299, Short.MAX_VALUE))
+                .addContainerGap(279, Short.MAX_VALUE))
             .addComponent(jScrollPane1)
         );
         Employee_panelLayout.setVerticalGroup(
@@ -433,7 +461,7 @@ public class Main extends javax.swing.JFrame{
                 .addComponent(Heading_INV1)
                 .addGap(29, 29, 29)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         jToggleButton1.setText("jToggleButton1");
@@ -453,7 +481,7 @@ public class Main extends javax.swing.JFrame{
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 826, Short.MAX_VALUE)
+            .addGap(0, 806, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(360, 360, 360)
@@ -525,15 +553,15 @@ public class Main extends javax.swing.JFrame{
             SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SelectionLayout.createSequentialGroup()
                 .addComponent(Menu_Ordering, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 32, Short.MAX_VALUE))
+                .addGap(0, 9, Short.MAX_VALUE))
             .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(SelectionLayout.createSequentialGroup()
                     .addComponent(Schedule, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 31, Short.MAX_VALUE)))
+                    .addGap(0, 279, Short.MAX_VALUE)))
             .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(SelectionLayout.createSequentialGroup()
                     .addComponent(Firstpage, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 32, Short.MAX_VALUE)))
+                    .addGap(0, 9, Short.MAX_VALUE)))
             .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(SelectionLayout.createSequentialGroup()
                     .addComponent(Orderingproduct_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -579,8 +607,10 @@ public class Main extends javax.swing.JFrame{
         jPanel1.setVisible(false);
         if(e.gettype_id()==0||e.gettype_id()==1){
         CreateSchedule.setVisible(true);
+        Change_schedule.setVisible(true);
         }else{
             CreateSchedule.setVisible(false);
+            Change_schedule.setVisible(false);
     }    
     }//GEN-LAST:event_Schedule_btnActionPerformed
 
@@ -656,14 +686,49 @@ public class Main extends javax.swing.JFrame{
         c.setVisible(true);
     }//GEN-LAST:event_CreateScheduleActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void preenrolledActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preenrolledActionPerformed
     Schedule_Enroll_timeshift e = new Schedule_Enroll_timeshift();
     e.setVisible(true);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_preenrolledActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void editenrolledActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editenrolledActionPerformed
+    Schedule_Edit e = new Schedule_Edit();
+    e.setVisible(true);
+    }//GEN-LAST:event_editenrolledActionPerformed
+
+    private void ShowScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowScheduleActionPerformed
+        Schedule_show e = new Schedule_show();
+    e.setVisible(true);
+    }//GEN-LAST:event_ShowScheduleActionPerformed
+
+    private void leaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leaveActionPerformed
+    Schedule_leave e  = new Schedule_leave();
+    e.setVisible(true);
+    }//GEN-LAST:event_leaveActionPerformed
+
+    private void Change_scheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Change_scheduleActionPerformed
+    if(m.editenable()==0&&m.getleavenaja()==false){
+    m.seteditenable(1);
+    m.setchange(true);
+    Employee_Table e = new Employee_Table();
+    e.setVisible(true);
+    System.out.print(m.editenable()+" "+m.getchange()+" "+m.getleave()+" "+m.getleavenaja());
+        }else{
+        JOptionPane.showMessageDialog(null, "You can't use editor function more than once!");
+    }
+    }//GEN-LAST:event_Change_scheduleActionPerformed
+
+    private void Leave_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Leave_listActionPerformed
+    if(m.getleave()==0&&m.getchange()==false){
+    m.setleave(1);
+    m.setleavenaja(true);
+    Employee_Table e = new Employee_Table();
+    e.setVisible(true);
+    System.out.print(m.editenable()+" "+m.getchange()+" "+m.getleave()+" "+m.getleavenaja());
+    }else{
+        JOptionPane.showMessageDialog(null, "You can't use editor function more than once!");
+    }
+    }//GEN-LAST:event_Leave_listActionPerformed
 
     /**
      * @param args the command line arguments
@@ -703,6 +768,7 @@ public class Main extends javax.swing.JFrame{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ButtonPanel;
+    private javax.swing.JButton Change_schedule;
     private javax.swing.JButton CreateSchedule;
     private javax.swing.JButton Employee_btn;
     private javax.swing.JPanel Employee_panel;
@@ -714,6 +780,7 @@ public class Main extends javax.swing.JFrame{
     private javax.swing.JLabel Heading_Sc;
     private javax.swing.JButton Inventory_btn;
     private javax.swing.JPanel Inventory_panel;
+    private javax.swing.JButton Leave_list;
     private javax.swing.JPanel Menu_Ordering;
     private javax.swing.JButton Menu_Ordering_btn;
     private javax.swing.JButton Ordering_Product_btn;
@@ -726,7 +793,7 @@ public class Main extends javax.swing.JFrame{
     private javax.swing.JLabel Showtime;
     private javax.swing.JLabel Time1;
     private javax.swing.JPanel TopPanel;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton editenrolled;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
@@ -752,8 +819,6 @@ public class Main extends javax.swing.JFrame{
     private javax.swing.JButton jButton30;
     private javax.swing.JButton jButton31;
     private javax.swing.JButton jButton32;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
@@ -762,7 +827,9 @@ public class Main extends javax.swing.JFrame{
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JButton leave;
     private javax.swing.JLabel name;
+    private javax.swing.JButton preenrolled;
     private javax.swing.JLabel showname;
     // End of variables declaration//GEN-END:variables
 }

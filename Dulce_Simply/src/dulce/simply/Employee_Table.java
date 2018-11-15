@@ -5,12 +5,15 @@
  */
 package dulce.simply;
 
+import java.awt.Point;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -18,9 +21,15 @@ import javax.swing.table.DefaultTableModel;
  * @author Yonshisoru
  */
 public class Employee_Table extends javax.swing.JFrame {
+    Employee e = new Employee();
+    Main_variable m = new Main_variable();
+    public String id = null;
     Connection con = null;
     Statement pat = null;
     ResultSet rs = null;
+    int count = 0;
+    static public String usingid = null;
+    String old = null;
     ArrayList<Employee> EmployeeList = new ArrayList<>();
     /**
      * Creates new form Employee_Table
@@ -28,6 +37,12 @@ public class Employee_Table extends javax.swing.JFrame {
     public Employee_Table() {
         initComponents();
         show_employee();
+        if(m.getleave()==1){
+            jLabel1.setText("Employee Leave List");
+        }
+        if(m.editenable()==1){
+            jLabel1.setText("Editing Schedule");
+        }
     }
     public ArrayList<Employee>EmployeeList(){
         try{
@@ -88,6 +103,9 @@ public class Employee_Table extends javax.swing.JFrame {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
+            public void windowDeactivated(java.awt.event.WindowEvent evt) {
+                formWindowDeactivated(evt);
+            }
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -114,10 +132,13 @@ public class Employee_Table extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        emp_table.setColumnSelectionAllowed(true);
         emp_table.getTableHeader().setReorderingAllowed(false);
+        emp_table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                emp_tableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(emp_table);
-        emp_table.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         if (emp_table.getColumnModel().getColumnCount() > 0) {
             emp_table.getColumnModel().getColumn(0).setMinWidth(30);
             emp_table.getColumnModel().getColumn(0).setMaxWidth(40);
@@ -131,15 +152,70 @@ public class Employee_Table extends javax.swing.JFrame {
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 860, -1));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Employee");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 10, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 10, 830, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        this.setVisible(false);
+        Main_variable mk = new Main_variable();
+        mk.setleavenaja(false);
+        mk.setleave(0);
+        mk.setchange(false);
+        mk.seteditenable(0);
     }//GEN-LAST:event_formWindowClosing
+
+    private void emp_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_emp_tableMouseClicked
+        if(m.editenable()==1&&m.geton()==0){
+        if(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),0).toString().equals(old)&&count==1){
+           count=0;
+            if(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),0).toString().equals(e.getshowid())){
+                JOptionPane.showMessageDialog(null, "That's you!!\n You can't do that.", "System", ERROR_MESSAGE);
+            }else{
+            m.setid(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),0).toString());
+            m.setname(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),2).toString()+" "+emp_table.getModel().getValueAt(emp_table.getSelectedRow(),3).toString());
+            System.out.print(m.getid());
+            m.seton(1);
+            Schedule_Edit_admin sc = new Schedule_Edit_admin();
+            sc.setVisible(true);
+            }
+        }else{
+            old = emp_table.getModel().getValueAt(emp_table.getSelectedRow(),0).toString();
+            count=1;
+        };
+        }else if(m.getleave()==1&&m.geton()==0){
+           if(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),0).toString().equals(old)&&count==1){
+            /*if(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),0).toString().equals(e.getshowid())){
+                JOptionPane.showMessageDialog(null, "That's you!!\n You can't do that.", "System", ERROR_MESSAGE);
+            }else{*/
+            m.setid(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),0).toString());
+            m.setname(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),2).toString()+" "+emp_table.getModel().getValueAt(emp_table.getSelectedRow(),3).toString());
+            System.out.print(m.getid());
+            m.seton(1);
+            Schedule_show_leave sc = new Schedule_show_leave();
+            sc.setVisible(true);
+            count=0;
+            }else{
+            old = emp_table.getModel().getValueAt(emp_table.getSelectedRow(),0).toString();
+            count=1;
+        }
+        /*}*/
+        }
+    /*if(mk.editenable()==1){  */  
+        /*}/*
+        if(count==2){
+            usingid = emp_table.getModel().getValueAt(emp_table.getSelectedRow(),0).toString();
+        System.out.print(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),0).toString());
+        s.setVisible(true);
+        count=0;
+        }*/
+    }//GEN-LAST:event_emp_tableMouseClicked
+
+    private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
+
+    }//GEN-LAST:event_formWindowDeactivated
 
     /**
      * @param args the command line arguments

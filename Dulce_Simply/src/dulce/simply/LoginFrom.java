@@ -23,7 +23,8 @@ import javax.swing.Timer;
  *
  * @author Yonshisoru
  */
-public class LoginFrom extends javax.swing.JFrame {     
+public class LoginFrom extends javax.swing.JFrame {    
+    Database d = new Database();
     int logincheck = 0;
     Connection con = null;
     PreparedStatement pat = null;
@@ -147,12 +148,18 @@ public class LoginFrom extends javax.swing.JFrame {
     }//GEN-LAST:event_ExitActionPerformed
 
     private void LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginActionPerformed
-
+        if(Jusername.getText().equals("")&&Jpassword.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Username and password was empty.\nPlease fill your username and password.","System",ERROR_MESSAGE);
+        }else if(Jpassword.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Password was empty!!","System",ERROR_MESSAGE);
+    }else if(Jusername.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Username was empty!!","System",ERROR_MESSAGE);
+    }else{
         String sql  ="select EMP_ID,EMP_PASS,EMP_FNAME,EMP_LNAME,POS_ID from EMPLOYEE where EMP_ID=? and EMP_PASS=?";
         try{  
                 
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
-        con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(sql);
         pat.setString(1, Jusername.getText());
         pat.setString(2,Jpassword.getText());
@@ -172,6 +179,7 @@ public class LoginFrom extends javax.swing.JFrame {
             em.settype_id(rs.getInt("POS_ID"));
             em.setdisfname(rs.getString("EMP_FNAME"));
             em.setdislname(rs.getString("EMP_LNAME"));
+            em.setshowid(rs.getString("EMP_ID"));
             con.close();
             pat.close();
             rs.close();
@@ -183,6 +191,7 @@ public class LoginFrom extends javax.swing.JFrame {
        }catch(Exception ex){
            JOptionPane.showMessageDialog(null,ex);
        }
+    }
     }//GEN-LAST:event_LoginActionPerformed
 
     private void ResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetActionPerformed
@@ -196,7 +205,7 @@ public class LoginFrom extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
          if(logincheck==0){
-        JOptionPane.showMessageDialog(null,"You can't eliminate software from here!!","System",ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null,"Please press exit button for close.","System",ERROR_MESSAGE);
          }else {
              timer.stop();
              if (JOptionPane.showConfirmDialog(this, 

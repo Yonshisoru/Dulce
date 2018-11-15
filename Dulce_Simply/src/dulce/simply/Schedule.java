@@ -19,6 +19,7 @@ public class Schedule {
     private int current;
     private int leave;
     private String status;
+    private String cause;
     private int scheduleoflist;
     Schedule(String id,String date,String period,int limit,int current,int leave){
         this.id = id;
@@ -27,6 +28,9 @@ public class Schedule {
         this.limit = limit;
         this.current = current;
         this.leave = leave;
+    }
+    Schedule(){
+        
     }
     public String getSid(){
         return id;
@@ -39,6 +43,12 @@ public class Schedule {
     }
     public void setDate(String date){
         this.date = date;
+    }
+    public String getcause(){
+        return cause;
+    }
+    public void setcause(String cause){
+        this.cause = cause;
     }
     public int getperiodid(){
         return periodid;
@@ -76,7 +86,7 @@ public class Schedule {
     public void setlistid(int id){
         this.scheduleoflist = id;
     }
-         public String getstatus(){
+    public String getstatus(){
         return status;
     }
     public void setstatus(String status){

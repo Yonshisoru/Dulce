@@ -23,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Yonshisoru
  */
 public class Schedule_CreateSchedule extends javax.swing.JFrame {
+    Database d = new Database();
     int max = Integer.MIN_VALUE;
     String eid = null;
     int oldsize = 0;
@@ -44,7 +45,7 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
           String sql  ="select SC_ID from SCHEDULE";
     try{
     Class.forName("com.mysql.jdbc.Driver");
-    con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
+    con = DriverManager.getConnection(d.url(),d.username(),d.password());
     pat = con.prepareStatement(sql);
      rs = pat.executeQuery(sql);
     while(rs.next()){
@@ -85,7 +86,7 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
         Class.forName("com.mysql.jdbc.Driver");
         String sql  ="select SC_ID,SC_DATE,SCS_ID,SCS_NAME,SC_EMPLIMIT,SC_EMPCUR,SC_LEAVE,SC_DEL FROM SCHEDULE NATURAL JOIN SC_SHIFT WHERE SC_DEL = 'N'";         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
-        con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(sql);
         rs = pat.executeQuery(sql);
         while(rs.next()){
@@ -257,7 +258,7 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
         String check = "SELECT SC_ID,SCS_ID FROM SCHEDULE WHERE SC_DATE ='"+(Integer.parseInt(gg.substring(0,4))-543)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length())+"' AND SC_DEL='N'";
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(check);
         rs =  pat.executeQuery();
         while(rs.next()){
@@ -316,7 +317,7 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
         Class.forName("com.mysql.jdbc.Driver");
         String sql  ="UPDATE SCHEDULE SET SC_DEL=? WHERE SC_ID= ?";         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
-        con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(sql);
         pat.setString(1,"Y");
         pat.setString(2,ScheduleTable.getModel().getValueAt(ScheduleTable.getSelectedRow(),0).toString());

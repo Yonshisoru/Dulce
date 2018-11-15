@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Yonshisoru
  */
 public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
+    Database d = new Database();
     Connection con = null;
     PreparedStatement pat = null;
     ResultSet rs = null;
@@ -57,9 +58,9 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
         ArrayList<Schedule> Schedulelist = new ArrayList<>();
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  = "select SC_ID,SC_DATE,SCS_ID,SCS_NAME,SC_EMPLIMIT,SC_EMPCUR,SC_LEAVE,SC_DEL FROM SCHEDULE NATURAL JOIN SC_SHIFT WHERE SC_DEL = 'N' AND SC_DATE BETWEEN '"+year+"-"+month+"-"+(day-1)+"' AND '"+year+"-"+month+"-"+(day+5)+"';" ;         
+        String sql  = "select SC_ID,SC_DATE,SCS_ID,SCS_NAME,SC_EMPLIMIT,SC_EMPCUR,SC_LEAVE,SC_DEL FROM SCHEDULE NATURAL JOIN SC_SHIFT WHERE SC_DEL = 'N' AND SC_DATE BETWEEN '"+year+"-"+month+"-"+(day+1)+"' AND '"+year+"-"+month+"-"+(day+8)+"';" ;         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
-        con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(sql);
         rs = pat.executeQuery(sql);
         while(rs.next()){
@@ -264,7 +265,7 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
         String findid = "SELECT SC_ID,SC_EMPLIMIT,SC_EMPCUR FROM SCHEDULE WHERE SC_DATE ='"+Date_txt.getText()+"' AND SCS_ID ='"+ period+ "'";
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(findid);
         rs = pat.executeQuery(findid);
         while(rs.next()){
@@ -295,7 +296,7 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
         String checkduplicate = "SELECT SL_NUMBER FROM SCHEDULE_LIST NATURAL JOIN SCHEDULE WHERE SC_DATE = '"+Date_txt.getText()+"' AND EMP_ID = '"+em.getshowid()+"'";
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(checkduplicate);
         rs = pat.executeQuery(checkduplicate);
         while(rs.next()){
@@ -313,7 +314,7 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
         String sql = "INSERT INTO SCHEDULE_LIST VALUE('"+max+"','"+ID+"','"+em.getshowid().toString()+"',"+"'N',"+"'NULL',"+"'N')";
         try{
             
-        con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(sql);
         System.out.print("INSERT INTO SCHEDULE_LIST VALUE('"+max+"','"+ID+"','"+em.getshowid().toString()+"',"+"'N',"+"'NULL',"+"'N')");
         pat.executeUpdate(sql);
@@ -324,7 +325,7 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
         }
         String updatecurrent = "UPDATE SCHEDULE SET SC_EMPCUR ='"+(current+1)+"' WHERE SC_ID = '"+ID+"';";
         try{
-        con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(updatecurrent);
         pat.executeUpdate(updatecurrent);
         pat.close();
