@@ -120,6 +120,8 @@ Main_variable m = new Main_variable();
         jButton31 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        Employee_salary = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1070, 730));
@@ -491,10 +493,21 @@ Main_variable m = new Main_variable();
         Employee.add(jButton31, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 150, 150, 60));
 
         jButton4.setText("Payment");
-        Employee.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 150, 60));
+        Employee.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 250, 150, 60));
 
         jButton5.setText("<html><center>Employee Clock-in & Clock-out</center></br></html>");
         Employee.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, 160, 70));
+
+        Employee_salary.setText("Employee Salary");
+        Employee_salary.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Employee_salaryActionPerformed(evt);
+            }
+        });
+        Employee.add(Employee_salary, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 150, 60));
+
+        jButton6.setText("jButton6");
+        Employee.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 250, 150, 60));
 
         javax.swing.GroupLayout SelectionLayout = new javax.swing.GroupLayout(Selection);
         Selection.setLayout(SelectionLayout);
@@ -706,6 +719,11 @@ Main_variable m = new Main_variable();
     e.setVisible(true);
     }//GEN-LAST:event_view_leaveActionPerformed
 
+    private void Employee_salaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Employee_salaryActionPerformed
+    Employee_Salary e = new Employee_Salary();
+    e.setVisible(true);
+    }//GEN-LAST:event_Employee_salaryActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -749,6 +767,7 @@ Main_variable m = new Main_variable();
     private javax.swing.JPanel Employee;
     private javax.swing.JButton Employee_btn;
     private javax.swing.JPanel Employee_panel;
+    private javax.swing.JButton Employee_salary;
     private javax.swing.JPanel Firstpage;
     private javax.swing.JLabel Heading_INV;
     private javax.swing.JLabel Heading_INV1;
@@ -797,6 +816,7 @@ Main_variable m = new Main_variable();
     private javax.swing.JButton jButton31;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;

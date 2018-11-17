@@ -46,6 +46,8 @@ public class LoginFrom extends javax.swing.JFrame {
         });
     public LoginFrom() {
         initComponents();
+            processlogin.setVisible(false);
+            processlogin_label.setVisible(false);
         //Set frame at center of screen
         this.setLocationRelativeTo(null);
     }
@@ -68,13 +70,14 @@ public class LoginFrom extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         processlogin = new javax.swing.JProgressBar();
         processlogin_label = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Dulce Simply");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setLocation(new java.awt.Point(0, 0));
         setMinimumSize(new java.awt.Dimension(500, 350));
-        setPreferredSize(new java.awt.Dimension(500, 350));
+        setPreferredSize(new java.awt.Dimension(500, 400));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -89,10 +92,10 @@ public class LoginFrom extends javax.swing.JFrame {
                 JusernameActionPerformed(evt);
             }
         });
-        getContentPane().add(Jusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 210, 140, -1));
+        getContentPane().add(Jusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 150, 140, -1));
 
         Jpassword.setFont(new java.awt.Font("Georgia", 0, 10)); // NOI18N
-        getContentPane().add(Jpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 140, -1));
+        getContentPane().add(Jpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 180, 140, -1));
 
         Login.setText("Login");
         Login.addActionListener(new java.awt.event.ActionListener() {
@@ -100,7 +103,7 @@ public class LoginFrom extends javax.swing.JFrame {
                 LoginActionPerformed(evt);
             }
         });
-        getContentPane().add(Login, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 210, 69, 50));
+        getContentPane().add(Login, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 230, 80, 30));
 
         Reset.setText("Reset");
         Reset.addActionListener(new java.awt.event.ActionListener() {
@@ -108,7 +111,7 @@ public class LoginFrom extends javax.swing.JFrame {
                 ResetActionPerformed(evt);
             }
         });
-        getContentPane().add(Reset, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 210, 70, 50));
+        getContentPane().add(Reset, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 230, 80, 30));
 
         Exit.setText("Exit");
         Exit.addActionListener(new java.awt.event.ActionListener() {
@@ -116,19 +119,23 @@ public class LoginFrom extends javax.swing.JFrame {
                 ExitActionPerformed(evt);
             }
         });
-        getContentPane().add(Exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 210, 70, 50));
+        getContentPane().add(Exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 230, 70, 30));
 
         jLabel1.setText("Username:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 150, -1, -1));
 
         jLabel2.setText("Password:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, -1, 20));
-        getContentPane().add(processlogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 295, 460, 10));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, -1, 20));
+        getContentPane().add(processlogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 450, 10));
 
         processlogin_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         processlogin_label.setText("0%");
         processlogin_label.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
-        getContentPane().add(processlogin_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 276, 40, -1));
+        getContentPane().add(processlogin_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 290, 40, -1));
+
+        jLabel3.setFont(new java.awt.Font("Rockwell", 0, 36)); // NOI18N
+        jLabel3.setText("Dulce Simply System");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -167,6 +174,8 @@ public class LoginFrom extends javax.swing.JFrame {
         if(rs.next())
         {
             JOptionPane.showMessageDialog(null, "Welcome "+rs.getString("EMP_FNAME")+" "+rs.getString("EMP_LNAME"));
+            processlogin.setVisible(true);
+            processlogin_label.setVisible(true);
             logincheck=1;
             Jusername.setEnabled(false);
             Jpassword.setEnabled(false);
@@ -262,6 +271,7 @@ public class LoginFrom extends javax.swing.JFrame {
     private javax.swing.JButton Reset;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JProgressBar processlogin;
     private javax.swing.JLabel processlogin_label;
     // End of variables declaration//GEN-END:variables

@@ -24,6 +24,9 @@ public class Employee {
     private String phone;
      private String email;
     private String date;
+    private int salary;
+    private double sumsalary;
+    private double worktime;
     public Employee(String employee_id,String fname,String lname,String position,int age,String gender,String phone,String email,String date){
     this.employee_id = employee_id;
     this.firstname = fname;
@@ -120,5 +123,23 @@ public class Employee {
     }
     public void settype_id(int position_id){
         this.typeposition = position_id;
-    }  
+    } 
+    public int getsalary (){
+        return salary;
+    }
+    public void setsalary(int salary){
+        this.salary = salary;
+    } 
+    public double getsumsalary (){
+        return sumsalary;
+    }
+    public void setsumsalary(double sumsalary){
+        this.sumsalary = sumsalary;
+    } 
+    public double getworktime (){
+        return worktime;
+    }
+    public void setworktime(double worktime){
+        this.worktime = worktime;
+    } 
 }

@@ -250,9 +250,15 @@ public class Firstpanel extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    id = JOptionPane.showInputDialog(null, "Input your Employee ID!!");
+       int schedulestatus = 1;
+       String scheduleid = null;
+        if((Integer.parseInt(time.substring(0,2))==8)||(Integer.parseInt(time.substring(0,2))==15)||(Integer.parseInt(time.substring(0,2))>=22)&&(Integer.parseInt(time.substring(0,2))<=24)){
+        id = JOptionPane.showInputDialog("Input your Employee ID!!");
+        if(id.isEmpty()){
+            System.out.print("Empty");
+        }
     int count = 0;
-    int hour = 0;
+    double hour = 0;
     int checkclock = 0;
     if(id.length()==4){
         id = id.substring(0,4);
@@ -276,6 +282,28 @@ public class Firstpanel extends javax.swing.JFrame {
         }
          if(count!=1){
             JOptionPane.showMessageDialog(null, "Not Found This ID.");
+        }else{
+       String checkschedule  ="select SL_NUMBER,SC_ID from (SCHEDULE_LIST NATURAL JOIN SCHEDULE)NATURAL JOIN EMPLOYEE where EMP_ID = '"+id+"' AND SC_DATE = '"+year+"-"+month+"-"+day+"' AND SL_STATUS = 'N'";
+       System.out.println(schedulestatus);
+       System.out.print(checkschedule);
+        try{            
+        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(checkschedule);
+        rs = pat.executeQuery();
+        while(rs.next()){
+            System.out.print("EIEI");
+            scheduleid = rs.getString("SC_ID");
+            schedulestatus = 0;
+        }
+        rs.close();
+        pat.close();
+        con.close();
+        }catch(Exception e){
+            System.out.print(e);
+        }
+        if(schedulestatus!=0){
+            JOptionPane.showMessageDialog(null, "You didn't enroll schedule today!!\nDenied process");
         }else{
              String checkclockinout  ="select W_ID,W_STATUS from WORKTIME where EMP_ID = '"+id+"' AND W_DATE = '"+year+"-"+month+"-"+day+"'";
         try{            
@@ -322,16 +350,20 @@ public class Firstpanel extends javax.swing.JFrame {
         }catch(Exception e){
                 System.out.print(e);
                 }
-        String searchtime = "SELECT W_ID,TIMESTAMPDIFF(HOUR, W_CLOCKIN, W_CLOCKOUT) FROM WORKTIME WHERE EMP_ID = '"+id+"' AND W_DATE = '"+(year+"-"+month+"-"+day)+"'"; 
+        String searchtime = "SELECT W_ID,TIMESTAMPDIFF(MINUTE, W_CLOCKIN, W_CLOCKOUT) FROM WORKTIME WHERE EMP_ID = '"+id+"' AND W_DATE = '"+(year+"-"+month+"-"+day)+"'"; 
         System.out.println(searchtime);
         try{
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(searchtime); 
         rs = pat.executeQuery();
         while(rs.next()){
-            System.out.print(rs.getString("W_ID"));
-        System.out.println(rs.getDouble("TIMESTAMPDIFF(HOUR, W_CLOCKIN, W_CLOCKOUT)"));
-            hour = rs.getInt("TIMESTAMPDIFF(HOUR, W_CLOCKIN, W_CLOCKOUT)");
+            System.out.println(rs.getString("W_ID"));
+        System.out.println(rs.getDouble("TIMESTAMPDIFF(MINUTE, W_CLOCKIN, W_CLOCKOUT)"));
+            hour = (rs.getInt("TIMESTAMPDIFF(MINUTE, W_CLOCKIN, W_CLOCKOUT)")/60);
+            if((rs.getDouble("TIMESTAMPDIFF(MINUTE, W_CLOCKIN, W_CLOCKOUT)")/60)%1>=0.4){
+                hour += 0.5;
+            }
+            System.out.print(hour);
         }
         rs.close();
         pat.close();
@@ -340,20 +372,31 @@ public class Firstpanel extends javax.swing.JFrame {
             System.out.print(e);
         }
         String updatehour = "UPDATE WORKTIME SET W_TOTALTIME = '"+hour+"' WHERE EMP_ID = '"+id+"'AND W_DATE = '"+(year+"-"+month+"-"+day)+"'"; 
+        String updatestatus = "UPDATE SCHEDULE_LIST SET SL_STATUS = 'Y' WHERE EMP_ID = '"+id+"'AND SC_ID = '"+scheduleid+"'"; 
+        System.out.println(updatestatus);
         System.out.println(updatehour);
         try{
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(updatehour);
         pat.executeUpdate(updatehour);
         pat.close();
-        JOptionPane.showMessageDialog(null, "Update Success");
         con.close();
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(updatestatus);
+        pat.executeUpdate(updatehour);
+        pat.close();
+                JOptionPane.showMessageDialog(null, "Update Success");
+                con.close();
         }catch(Exception e){
                 System.out.print(e);
                 }
         }
         }
          }
+        }
+         }else{
+                 JOptionPane.showMessageDialog(null,"This isn't time for clock-in/out!","System",ERROR_MESSAGE);
+     }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
