@@ -61,7 +61,7 @@ String status = null;    /**
         ArrayList<Schedule> Schedulelist = new ArrayList<>();
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="select SC_ID,SC_DATE,SCS_ID,SCS_NAME,SC_EMPLIMIT,SC_EMPCUR,SC_LEAVE,SC_DEL,SL_NUMBER FROM (SCHEDULE NATURAL JOIN SC_SHIFT)NATURAL JOIN SCHEDULE_LIST WHERE SC_DATE > '"+year+"-"+month+"-"+day+"'AND SC_DEL = 'N' AND EMP_ID ='"+ep.getshowid()+"' ORDER BY SL_NUMBER;";         
+        String sql  ="select SC_ID,SC_DATE,SCS_ID,SCS_NAME,SC_EMPLIMIT,SC_EMPCUR,SC_LEAVE,SC_DEL,SL_NUMBER,SL_STATUS FROM (SCHEDULE NATURAL JOIN SC_SHIFT)NATURAL JOIN SCHEDULE_LIST WHERE SC_DATE > '"+year+"-"+month+"-"+day+"'AND SC_DEL = 'N' AND SL_STATUS = 'N' AND EMP_ID ='"+ep.getshowid()+"' ORDER BY SL_NUMBER;";         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(sql);

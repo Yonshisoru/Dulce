@@ -29,9 +29,9 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
     PreparedStatement pat = null;
     ResultSet rs = null;
     Statement st = null;
-    int year = 0;
-    int month = 0;
-    int day = 0;
+    String year = null;
+    String month = null;
+    String day = null;
     int max = Integer.MIN_VALUE;
     String id = null;
     /**
@@ -43,12 +43,12 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
         showSchedule();
         
     }
-    void showTime(){
+        void showTime(){
         Date d = new Date();
         SimpleDateFormat s = new SimpleDateFormat("YYYY-MM-dd");
-        year = Integer.parseInt(s.format(d).substring(0,4))-543;
-        month = Integer.parseInt(s.format(d).substring(5,7));
-        day = Integer.parseInt(s.format(d).substring(s.format(d).length()-2,s.format(d).length()));
+        year = String.valueOf(Integer.parseInt(s.format(d).substring(0,4))-543);
+        month = String.valueOf(Integer.parseInt(s.format(d).substring(5,7)));
+        day = String.valueOf(Integer.parseInt(s.format(d).substring(s.format(d).length()-2,s.format(d).length())));
         System.out.print(year);
         System.out.print(month);
         System.out.print(day);

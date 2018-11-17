@@ -5,19 +5,109 @@
  */
 package dulce.simply;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import javax.swing.Timer;
+
 /**
  *
  * @author Yonshisoru
  */
 public class Firstpanel extends javax.swing.JFrame {
-
+    Database d = new Database();
+    Connection con = null;
+    PreparedStatement pat = null;
+    ResultSet rs = null;
+    int max = 0;
+    String output = null;
+    String id = null;
+    String year = null;
+    String month = null;
+    String day = null;
+    String time = null;
     /**
      * Creates new form Firstpanel
      */
     public Firstpanel() {
         initComponents();
+        showTime();
     }
-
+        void showTime(){
+        Date d = new Date();
+        SimpleDateFormat s = new SimpleDateFormat("YYYY-MM-dd");
+        year = String.valueOf(Integer.parseInt(s.format(d).substring(0,4))-543);
+        month = String.valueOf(Integer.parseInt(s.format(d).substring(5,7)));
+        day = String.valueOf(Integer.parseInt(s.format(d).substring(s.format(d).length()-2,s.format(d).length())));
+                new Timer(0,new ActionListener(){
+            
+            @Override
+            public void actionPerformed(ActionEvent e){
+        Date d = new Date();
+        SimpleDateFormat s = new SimpleDateFormat("HH:mm:ss");
+        time = s.format(d);
+        jLabel2.setText(s.format(d));
+            }
+        }).start();
+    }
+   public int check(){
+           int count=0;
+          String sql  ="select W_ID from WORKTIME WHERE EMP_ID ='"+id+"' AND W_DATE ='"+year+"-"+month+"-"+day+""+"' AND W_STATUS = 'N'";
+    try{
+    Class.forName("com.mysql.jdbc.Driver");
+    con = DriverManager.getConnection(d.url(),d.username(),d.password());
+    pat = con.prepareStatement(sql);
+     rs = pat.executeQuery(sql);
+     while(rs.next()){
+         count=1;
+     }
+     System.out.print(count);
+    }catch (Exception e){
+        
+    }
+    return count;
+   }
+   public String id(){
+       int count=0;
+          String sql  ="select W_ID from WORKTIME";
+    try{
+    Class.forName("com.mysql.jdbc.Driver");
+    con = DriverManager.getConnection(d.url(),d.username(),d.password());
+    pat = con.prepareStatement(sql);
+     rs = pat.executeQuery(sql);
+    while(rs.next()){
+        count++;
+        if(Integer.parseInt(rs.getString("W_ID").substring(1,4))>max){
+            max = Integer.parseInt(rs.getString("W_ID").substring(1,4));
+        }
+    }
+    if(count==0){
+            max = 0;
+    }
+    max++;
+    if(max<10){
+        output = "W00"+max;
+    }else if(max<100){
+        output = "W0"+max;
+    }else{
+        output = "W"+max;
+    }
+    rs.close();
+    pat.close();
+    con.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+    return output;
+   } 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,12 +118,15 @@ public class Firstpanel extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel3 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
+        Main = new javax.swing.JPanel();
+        Select = new javax.swing.JPanel();
+        Clockin_out = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
+        Sign_in = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -47,6 +140,8 @@ public class Firstpanel extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(650, 500));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton1.setText("Clock-In/Clock-Out");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -55,103 +150,221 @@ public class Firstpanel extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        javax.swing.GroupLayout Clockin_outLayout = new javax.swing.GroupLayout(Clockin_out);
+        Clockin_out.setLayout(Clockin_outLayout);
+        Clockin_outLayout.setHorizontalGroup(
+            Clockin_outLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Clockin_outLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        Clockin_outLayout.setVerticalGroup(
+            Clockin_outLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Clockin_outLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jButton2.setText("Management");
+        jButton2.setText("Sign-in");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        javax.swing.GroupLayout Sign_inLayout = new javax.swing.GroupLayout(Sign_in);
+        Sign_in.setLayout(Sign_inLayout);
+        Sign_inLayout.setHorizontalGroup(
+            Sign_inLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Sign_inLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        Sign_inLayout.setVerticalGroup(
+            Sign_inLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Sign_inLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout SelectLayout = new javax.swing.GroupLayout(Select);
+        Select.setLayout(SelectLayout);
+        SelectLayout.setHorizontalGroup(
+            SelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SelectLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Clockin_out, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Sign_in, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        SelectLayout.setVerticalGroup(
+            SelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SelectLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(SelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Clockin_out, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Sign_in, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout MainLayout = new javax.swing.GroupLayout(Main);
+        Main.setLayout(MainLayout);
+        MainLayout.setHorizontalGroup(
+            MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MainLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Select, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        MainLayout.setVerticalGroup(
+            MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MainLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Select, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(113, 113, 113)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        getContentPane().add(Main, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel1.setText("Dulce Simply ");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 60, 230, 32));
+
+        jLabel2.setText("jLabel2");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 80, -1, -1));
+
+        jButton3.setText("jButton3");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 420, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+    id = JOptionPane.showInputDialog(null, "Input your Employee ID!!");
+    int count = 0;
+    int hour = 0;
+    int checkclock = 0;
+    if(id.length()==4){
+        id = id.substring(0,4);
+        System.out.print(id);
+    }else{
+        System.out.print("Out of bond");
+    }
+          String sql  ="select EMP_ID from EMPLOYEE where EMP_ID = '"+id+"'";
+        try{            
+        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(sql);
+        rs = pat.executeQuery();
+        while(rs.next()){
+            count=1;
+        }
+        rs.close();
+        pat.close();
+        con.close();
+        }catch(Exception e){
+        }
+         if(count!=1){
+            JOptionPane.showMessageDialog(null, "Not Found This ID.");
+        }else{
+             String checkclockinout  ="select W_ID,W_STATUS from WORKTIME where EMP_ID = '"+id+"' AND W_DATE = '"+year+"-"+month+"-"+day+"'";
+        try{            
+        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(checkclockinout);
+        rs = pat.executeQuery();
+        while(rs.next()){
+            if(rs.getString("W_STATUS").equals("Y")){
+            checkclock=1;
+        }
+        }
+        rs.close();
+        pat.close();
+        con.close();
+        }catch(Exception e){
+            System.out.print(e);
+        }
+        if(checkclock==1){
+            JOptionPane.showMessageDialog(null, "You already Clock-in/Clock-out today!!","System",ERROR_MESSAGE);
+        }else{
+        String create = "INSERT INTO WORKTIME VALUE('"+id()+"','"+id+"','"+time+"',"+null+",'"+(year+"-"+month+"-"+day)+"','0','N','N')";
+        if(check()==0){
+                   try{            
+        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(create);
+        pat.executeUpdate(create);
+        pat.close();
+        JOptionPane.showMessageDialog(null, "Insert Success");
+        con.close();
+                   }catch(Exception e){
+                       System.out.print(e);
+                   }
+        }else if(check()==1){
+        String update = "UPDATE WORKTIME SET W_CLOCKOUT = '"+time+"',W_STATUS = 'Y',W_TOTALTIME = '"+hour+"' WHERE EMP_ID = '"+id+"';"; 
+        System.out.println(update);
+        try{
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(update);
+        pat.executeUpdate(update);
+        pat.close();
+        con.close();
+        }catch(Exception e){
+                System.out.print(e);
+                }
+        String searchtime = "SELECT W_ID,TIMESTAMPDIFF(HOUR, W_CLOCKIN, W_CLOCKOUT) FROM WORKTIME WHERE EMP_ID = '"+id+"' AND W_DATE = '"+(year+"-"+month+"-"+day)+"'"; 
+        System.out.println(searchtime);
+        try{
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(searchtime); 
+        rs = pat.executeQuery();
+        while(rs.next()){
+            System.out.print(rs.getString("W_ID"));
+        System.out.println(rs.getDouble("TIMESTAMPDIFF(HOUR, W_CLOCKIN, W_CLOCKOUT)"));
+            hour = rs.getInt("TIMESTAMPDIFF(HOUR, W_CLOCKIN, W_CLOCKOUT)");
+        }
+        rs.close();
+        pat.close();
+        con.close();
+        }catch(Exception e){
+            System.out.print(e);
+        }
+        String updatehour = "UPDATE WORKTIME SET W_TOTALTIME = '"+hour+"' WHERE EMP_ID = '"+id+"'AND W_DATE = '"+(year+"-"+month+"-"+day)+"'"; 
+        System.out.println(updatehour);
+        try{
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(updatehour);
+        pat.executeUpdate(updatehour);
+        pat.close();
+        JOptionPane.showMessageDialog(null, "Update Success");
+        con.close();
+        }catch(Exception e){
+                System.out.print(e);
+                }
+        }
+        }
+         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    LoginFrom l = new LoginFrom();
+    l.setVisible(true);
+    this.setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -164,7 +377,7 @@ public class Firstpanel extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -189,12 +402,15 @@ public class Firstpanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Clockin_out;
+    private javax.swing.JPanel Main;
+    private javax.swing.JPanel Select;
+    private javax.swing.JPanel Sign_in;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     // End of variables declaration//GEN-END:variables
 }

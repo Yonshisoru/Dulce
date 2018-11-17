@@ -5,6 +5,9 @@
  */
 package dulce.simply;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  *
  * @author Yonshisoru
