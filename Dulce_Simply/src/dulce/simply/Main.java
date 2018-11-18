@@ -7,7 +7,12 @@ package dulce.simply;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
@@ -18,6 +23,18 @@ import javax.swing.Timer;
  */
 public class Main extends javax.swing.JFrame{
 Main_variable m = new Main_variable();
+    Connection con = null;
+    PreparedStatement pat = null;
+    ResultSet rs = null;
+    Database d = new Database();
+    ArrayList<Employee> em = new ArrayList<Employee>();
+    int max = 0;
+    String output = null;
+    String start = null;
+    String end = null;
+    String year = null;
+    String month = null;
+    String day = null;
     /**
      * Creates new form Main
      */
@@ -32,6 +49,7 @@ Main_variable m = new Main_variable();
         Employee e = new Employee();
         showname.setText(e.getdisfname()+" "+e.getdislname());
         showTime();
+        showtime();
     }
     void showTime(){
         new Timer(0,new ActionListener(){
@@ -44,7 +62,50 @@ Main_variable m = new Main_variable();
             }
         }).start();
     }
-
+        void showtime(){
+         Date d = new Date();
+        SimpleDateFormat s = new SimpleDateFormat("YYYY-MM-dd");
+        year = String.valueOf(Integer.parseInt(s.format(d).substring(0,4))-543);
+        month = String.valueOf(Integer.parseInt(s.format(d).substring(5,7)));
+        day = String.valueOf(Integer.parseInt(s.format(d).substring(s.format(d).length()-2,s.format(d).length())));
+        start = "'"+year+"-01-01'";
+        end = "'"+year+"-12-31'";
+        System.out.print(year+month+day);
+    }
+   public String id(){
+       int count=0;
+          String sql  ="select SP_ID from SALARY_PAYMENT";
+    try{
+    Class.forName("com.mysql.jdbc.Driver");
+    con = DriverManager.getConnection(d.url(),d.username(),d.password());
+    pat = con.prepareStatement(sql);
+     rs = pat.executeQuery(sql);
+    while(rs.next()){
+        count++;
+        if(Integer.parseInt(rs.getString("SP_ID").substring(1,4))>max){
+            max = Integer.parseInt(rs.getString("SP_ID").substring(1,4));
+        }
+    }
+    if(count==0){
+            max = 0;
+    }
+    max += 1;
+    if(max<10){
+        output = "S00"+max;
+    }else if(max<100){
+        output = "S0"+max;
+    }else{
+        output = "S"+max;
+    }
+    System.out.print(output);
+    con.close();
+    pat.close();
+    rs.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+    return output;
+   } 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -493,6 +554,11 @@ Main_variable m = new Main_variable();
         Employee.add(jButton31, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 150, 150, 60));
 
         jButton4.setText("Payment");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         Employee.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 250, 150, 60));
 
         jButton5.setText("<html><center>Employee Clock-in & Clock-out</center></br></html>");
@@ -506,7 +572,12 @@ Main_variable m = new Main_variable();
         });
         Employee.add(Employee_salary, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 150, 60));
 
-        jButton6.setText("jButton6");
+        jButton6.setText("View Payment");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
         Employee.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 250, 150, 60));
 
         javax.swing.GroupLayout SelectionLayout = new javax.swing.GroupLayout(Selection);
@@ -723,6 +794,138 @@ Main_variable m = new Main_variable();
     Employee_Salary e = new Employee_Salary();
     e.setVisible(true);
     }//GEN-LAST:event_Employee_salaryActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+Object[] possibilities = {"First Period", "Second Period"};
+String s = (String)JOptionPane.showInputDialog(
+                    null,
+                    "What did period you want?"
+                    ,
+                    "System",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    possibilities,
+                    "ham");
+
+//If a string was returned, say so.
+if ((s != null) && (s.length() > 0)) {
+           String sql  ="select EMP_ID from EMPLOYEE WHERE EMP_DEL = 'N'";
+        try{        
+        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(sql);
+        rs = pat.executeQuery();
+        while(rs.next()){
+            Employee n = new Employee();
+            n.setid(rs.getString("EMP_ID"));
+            em.add(n);
+        }
+        rs.close();
+        pat.close();
+        con.close();
+        }catch(Exception e){
+            
+        }
+    if(s.equals("First Period")){
+        if(month.equals("01")){
+        start = "'"+year+"-01-01'";
+        end = "'"+year+"-01-15'"; 
+        }else if(month.equals("02")){
+        start = "'"+year+"-02-01'";
+        end = "'"+year+"-02-15'";     
+        }else if(month.equals("03")){
+        start = "'"+year+"-03-01'";
+        end = "'"+year+"-03-15'";    
+        }else if(month.equals("04")){
+        start = "'"+year+"-04-01'";
+        end = "'"+year+"-04-15'";     
+        }else if(month.equals("05")){
+        start = "'"+year+"-05-01'";
+        end = "'"+year+"-05-15'";     
+        }else if(month.equals("06")){
+         start = "'"+year+"-06-01'";
+        end = "'"+year+"-06-15'";    
+        }else if(month.equals("07")){
+        start = "'"+year+"-07-01'";
+        end = "'"+year+"-07-15'";     
+        }else if(month.equals("08")){
+         start = "'"+year+"-08-01'";
+        end = "'"+year+"-08-15'";     
+        }else if(month.equals("09")){
+         start = "'"+year+"-09-01'";
+        end = "'"+year+"-09-15'";    
+        }else if(month.equals("10")){
+         start = "'"+year+"-10-01'";
+        end = "'"+year+"-10-15'";    
+        }else if(month.equals("11")){
+        start = "'"+year+"-11-01'";
+        end = "'"+year+"-11-15'";     
+        }else if(month.equals("12")){
+        start = "'"+year+"-12-01'";
+        end = "'"+year+"-12-15'";     
+        }
+    }else if(s.equals("Second Period")){ 
+        if(month.equals("01")){
+        start = "'"+year+"-01-15'";
+        end = "'"+year+"-01-31'"; 
+        }else if(month.equals("02")){
+        start = "'"+year+"-02-15'";
+        end = "'"+year+"-02-28'";     
+        }else if(month.equals("03")){
+        start = "'"+year+"-03-15'";
+        end = "'"+year+"-03-31'";    
+        }else if(month.equals("04")){
+        start = "'"+year+"-04-15'";
+        end = "'"+year+"-04-30'";     
+        }else if(month.equals("05")){
+        start = "'"+year+"-05-15'";
+        end = "'"+year+"-05-31'";     
+        }else if(month.equals("06")){
+         start = "'"+year+"-06-15'";
+        end = "'"+year+"-06-30'";    
+        }else if(month.equals("07")){
+        start = "'"+year+"-07-15'";
+        end = "'"+year+"-07-31'";     
+        }else if(month.equals("08")){
+         start = "'"+year+"-08-15'";
+        end = "'"+year+"-08-31'";     
+        }else if(month.equals("09")){
+         start = "'"+year+"-09-15'";
+        end = "'"+year+"-09-31'";    
+        }else if(month.equals("10")){
+         start = "'"+year+"-10-15'";
+        end = "'"+year+"-10-31'";    
+        }else if(month.equals("11")){
+        start = "'"+year+"-11-15'";
+        end = "'"+year+"-11-30'";     
+        }else if(month.equals("12")){
+        start = "'"+year+"-12-15'";
+        end = "'"+year+"-12-31'";     
+        }
+        System.out.print(em.size()+start+end);
+        for(int i =0;i<em.size();i++){
+           System.out.println(""+i);
+            System.out.println(""+em.size());
+        String check  = "INSERT INTO SALARY_PAYMENT VALUES('"+id()+"','"+em.get(i).getid()+"','"+year+"-"+month+"-"+day+"',"+start+","+end+",'N')";
+        System.out.println(check);
+        try{        
+        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(check);
+        pat.executeUpdate();
+        pat.close();
+        con.close();
+        }catch(Exception e){
+            System.out.println(e);
+    }
+}
+}
+}
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments

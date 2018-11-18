@@ -49,7 +49,7 @@ public class Employee_Salary extends javax.swing.JFrame {
         System.out.print(year+month+day);
     }
    public ArrayList<Employee>ScheduleList(){
-        String change = "SELECT EMP_ID,EMP_FNAME,EMP_LNAME,EMP_SALARY,SUM(W_TOTALTIME) FROm ((WORKTIME NATURAL JOIN EMPLOYEE) NATURAL JOIN SCHEDULE_LIST) NATURAL JOIN SCHEDULE WHERE SL_STATUS = 'Y' AND SC_DATE BETWEEN "+start+" AND "+end+" GROUP BY EMP_ID HAVING SUM(W_TOTALTIME) ORDER BY EMP_ID";         
+        String change = "SELECT EMP_ID,EMP_FNAME,EMP_LNAME,EMP_SALARY,SUM(W_TOTALTIME) FROm WORKTIME NATURAL JOIN EMPLOYEE WHERE W_STATUS = 'Y' AND W_DATE BETWEEN "+start+" AND "+end+" GROUP BY EMP_ID HAVING SUM(W_TOTALTIME) ORDER BY EMP_ID";         
        System.out.println(change);
         ArrayList<Employee> Schedulelist = new ArrayList<>();
         try{
@@ -68,12 +68,16 @@ public class Employee_Salary extends javax.swing.JFrame {
             ep.setsumsalary(((double)ep.getsalary())*((double)ep.getworktime()));
             Schedulelist.add(ep);
         }
-        rs.close();
-        pat.close();
-        con.close();
         }catch(Exception e){
             e.printStackTrace();
-        }
+        } finally {
+    if(pat != null)
+        pat.close();
+    if(rs != null)
+        rs.close();
+    if(con != null)
+        con.close();
+}
         return Schedulelist;
     }
        private void showSchedule(){

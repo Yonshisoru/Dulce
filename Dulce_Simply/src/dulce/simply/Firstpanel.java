@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
@@ -30,9 +31,6 @@ public class Firstpanel extends javax.swing.JFrame {
     int max = 0;
     String output = null;
     String id = null;
-    String year = null;
-    String month = null;
-    String day = null;
     String time = null;
     /**
      * Creates new form Firstpanel
@@ -44,9 +42,6 @@ public class Firstpanel extends javax.swing.JFrame {
         void showTime(){
         Date d = new Date();
         SimpleDateFormat s = new SimpleDateFormat("YYYY-MM-dd");
-        year = String.valueOf(Integer.parseInt(s.format(d).substring(0,4))-543);
-        month = String.valueOf(Integer.parseInt(s.format(d).substring(5,7)));
-        day = String.valueOf(Integer.parseInt(s.format(d).substring(s.format(d).length()-2,s.format(d).length())));
                 new Timer(0,new ActionListener(){
             
             @Override
@@ -60,7 +55,7 @@ public class Firstpanel extends javax.swing.JFrame {
     }
    public int check(){
            int count=0;
-          String sql  ="select W_ID from WORKTIME WHERE EMP_ID ='"+id+"' AND W_DATE ='"+year+"-"+month+"-"+day+""+"' AND W_STATUS = 'N'";
+          String sql  ="select W_ID from WORKTIME WHERE EMP_ID ='"+id+"' AND W_DATE ='"+LocalDate.now()+"' AND W_STATUS = 'N'";
     try{
     Class.forName("com.mysql.jdbc.Driver");
     con = DriverManager.getConnection(d.url(),d.username(),d.password());
@@ -254,9 +249,7 @@ public class Firstpanel extends javax.swing.JFrame {
        String scheduleid = null;
         if((Integer.parseInt(time.substring(0,2))==8)||(Integer.parseInt(time.substring(0,2))==15)||(Integer.parseInt(time.substring(0,2))>=22)&&(Integer.parseInt(time.substring(0,2))<=24)){
         id = JOptionPane.showInputDialog("Input your Employee ID!!");
-        if(id.isEmpty()){
-            System.out.print("Empty");
-        }
+        if ((id != null) && (id.length() > 0)) {
     int count = 0;
     double hour = 0;
     int checkclock = 0;
@@ -266,7 +259,7 @@ public class Firstpanel extends javax.swing.JFrame {
     }else{
         System.out.print("Out of bond");
     }
-          String sql  ="select EMP_ID from EMPLOYEE where EMP_ID = '"+id+"'";
+          String sql  ="select EMP_ID from EMPLOYEE where EMP_ID = '"+id+"' AND EMP_DEL = 'N'";
         try{            
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
@@ -281,9 +274,9 @@ public class Firstpanel extends javax.swing.JFrame {
         }catch(Exception e){
         }
          if(count!=1){
-            JOptionPane.showMessageDialog(null, "Not Found This ID.");
+            JOptionPane.showMessageDialog(null, "Not Found This ID.","System",ERROR_MESSAGE);
         }else{
-       String checkschedule  ="select SL_NUMBER,SC_ID from (SCHEDULE_LIST NATURAL JOIN SCHEDULE)NATURAL JOIN EMPLOYEE where EMP_ID = '"+id+"' AND SC_DATE = '"+year+"-"+month+"-"+day+"' AND SL_STATUS = 'N'";
+       String checkschedule  ="select SL_NUMBER,SC_ID from (SCHEDULE_LIST NATURAL JOIN SCHEDULE)NATURAL JOIN EMPLOYEE where EMP_ID = '"+id+"' AND SC_DATE = '"+LocalDate.now()+"' AND SL_STATUS = 'N'";
        System.out.println(schedulestatus);
        System.out.print(checkschedule);
         try{            
@@ -305,7 +298,7 @@ public class Firstpanel extends javax.swing.JFrame {
         if(schedulestatus!=0){
             JOptionPane.showMessageDialog(null, "You didn't enroll schedule today!!\nDenied process");
         }else{
-             String checkclockinout  ="select W_ID,W_STATUS from WORKTIME where EMP_ID = '"+id+"' AND W_DATE = '"+year+"-"+month+"-"+day+"'";
+             String checkclockinout  ="select W_ID,W_STATUS from WORKTIME where EMP_ID = '"+id+"' AND W_DATE = '"+LocalDate.now()+"'";
         try{            
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
@@ -325,7 +318,7 @@ public class Firstpanel extends javax.swing.JFrame {
         if(checkclock==1){
             JOptionPane.showMessageDialog(null, "You already Clock-in/Clock-out today!!","System",ERROR_MESSAGE);
         }else{
-        String create = "INSERT INTO WORKTIME VALUE('"+id()+"','"+id+"','"+time+"',"+null+",'"+(year+"-"+month+"-"+day)+"','0','N','N')";
+        String create = "INSERT INTO WORKTIME VALUE('"+id()+"','"+id+"','"+time+"',"+null+",'"+LocalDate.now()+"','0','N','N')";
         if(check()==0){
                    try{            
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
@@ -350,7 +343,7 @@ public class Firstpanel extends javax.swing.JFrame {
         }catch(Exception e){
                 System.out.print(e);
                 }
-        String searchtime = "SELECT W_ID,TIMESTAMPDIFF(MINUTE, W_CLOCKIN, W_CLOCKOUT) FROM WORKTIME WHERE EMP_ID = '"+id+"' AND W_DATE = '"+(year+"-"+month+"-"+day)+"'"; 
+        String searchtime = "SELECT W_ID,TIMESTAMPDIFF(MINUTE, W_CLOCKIN, W_CLOCKOUT) FROM WORKTIME WHERE EMP_ID = '"+id+"' AND W_DATE = '"+LocalDate.now()+"'"; 
         System.out.println(searchtime);
         try{
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
@@ -371,19 +364,23 @@ public class Firstpanel extends javax.swing.JFrame {
         }catch(Exception e){
             System.out.print(e);
         }
-        String updatehour = "UPDATE WORKTIME SET W_TOTALTIME = '"+hour+"' WHERE EMP_ID = '"+id+"'AND W_DATE = '"+(year+"-"+month+"-"+day)+"'"; 
+        String updatehour = "UPDATE WORKTIME SET W_TOTALTIME = '"+hour+"' WHERE EMP_ID = '"+id+"'AND W_DATE = '"+LocalDate.now()+"'"; 
         String updatestatus = "UPDATE SCHEDULE_LIST SET SL_STATUS = 'Y' WHERE EMP_ID = '"+id+"'AND SC_ID = '"+scheduleid+"'"; 
-        System.out.println(updatestatus);
-        System.out.println(updatehour);
         try{
+        System.out.println(updatehour);
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(updatehour);
         pat.executeUpdate(updatehour);
         pat.close();
         con.close();
+        }catch(Exception e){
+            System.out.print(e);
+        }
+         try{
+        System.out.println(updatestatus);
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(updatestatus);
-        pat.executeUpdate(updatehour);
+        pat.executeUpdate(updatestatus);
         pat.close();
                 JOptionPane.showMessageDialog(null, "Update Success");
                 con.close();
@@ -391,12 +388,13 @@ public class Firstpanel extends javax.swing.JFrame {
                 System.out.print(e);
                 }
         }
-        }
          }
+        }
+        }
         }
          }else{
                  JOptionPane.showMessageDialog(null,"This isn't time for clock-in/out!","System",ERROR_MESSAGE);
-     }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

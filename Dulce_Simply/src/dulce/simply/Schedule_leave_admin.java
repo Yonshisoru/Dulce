@@ -120,7 +120,15 @@ public class Schedule_leave_admin extends javax.swing.JFrame {
             new String [] {
                 "ID", "Date", "Period", "Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         ShowSchedule.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 ShowScheduleMouseClicked(evt);

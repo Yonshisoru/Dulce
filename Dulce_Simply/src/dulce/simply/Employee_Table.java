@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Yonshisoru
  */
 public class Employee_Table extends javax.swing.JFrame {
+    Database d = new Database();
     Employee e = new Employee();
     Main_variable m = new Main_variable();
     public String id = null;
@@ -49,7 +50,7 @@ public class Employee_Table extends javax.swing.JFrame {
         Class.forName("com.mysql.jdbc.Driver");
         String sql  ="select EMP_ID,EMP_FNAME,EMP_LNAME,POS_NAME,EMP_AGE,EMP_GENDER,EMP_START,EMP_PHONE,EMP_EMAIL from EMPLOYEE NATURAL JOIN EMP_POSITION WHERE EMP_DEL = 'N'";         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
-        con = DriverManager.getConnection("jdbc:mysql://privatehosting.website:3306/u787124245_dulce","u787124245_gg","death123");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.createStatement();
         rs = pat.executeQuery(sql);
         while(rs.next()){

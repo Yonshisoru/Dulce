@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -41,27 +42,16 @@ String status = null;    /**
      */
     public Schedule_Edit() {
         initComponents();
-        showTime();
         showAvailableSchedule();
         showSchedule();
-    }
-        void showTime(){
-        Date d = new Date();
-        SimpleDateFormat s = new SimpleDateFormat("YYYY-MM-dd");
-        year = String.valueOf(Integer.parseInt(s.format(d).substring(0,4))-543);
-        month = (s.format(d).substring(5,7));
-        day = (s.format(d).substring(s.format(d).length()-2,s.format(d).length()));
-        System.out.print(year);
-        System.out.print(month);
-        System.out.print(day);
-        System.out.print("'"+year+"-"+month+"-"+day+"'");
     }
    public ArrayList<Schedule>ScheduleList(){
         Employee ep = new Employee();
         ArrayList<Schedule> Schedulelist = new ArrayList<>();
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="select SC_ID,SC_DATE,SCS_ID,SCS_NAME,SC_EMPLIMIT,SC_EMPCUR,SC_LEAVE,SC_DEL,SL_NUMBER,SL_STATUS FROM (SCHEDULE NATURAL JOIN SC_SHIFT)NATURAL JOIN SCHEDULE_LIST WHERE SC_DATE > '"+year+"-"+month+"-"+day+"'AND SC_DEL = 'N' AND SL_STATUS = 'N' AND EMP_ID ='"+ep.getshowid()+"' ORDER BY SL_NUMBER;";         
+        String sql  ="select SC_ID,SC_DATE,SCS_ID,SCS_NAME,SC_EMPLIMIT,SC_EMPCUR,SC_LEAVE,SC_DEL,SL_NUMBER,SL_STATUS FROM (SCHEDULE NATURAL JOIN SC_SHIFT)NATURAL JOIN SCHEDULE_LIST WHERE SC_DATE > '"+LocalDate.now()+"'AND SC_DEL = 'N' AND SL_STATUS = 'N' AND EMP_ID ='"+ep.getshowid()+"' ORDER BY SL_NUMBER;";         
+       System.out.print(sql);
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(sql);

@@ -162,7 +162,7 @@ public class LoginFrom extends javax.swing.JFrame {
     }else if(Jusername.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Username was empty!!","System",ERROR_MESSAGE);
     }else{
-        String sql  ="select EMP_ID,EMP_PASS,EMP_FNAME,EMP_LNAME,POS_ID from EMPLOYEE where EMP_ID=? and EMP_PASS=?";
+        String sql  ="select EMP_ID,EMP_PASS,EMP_FNAME,EMP_LNAME,POS_ID from EMPLOYEE where EMP_ID=? and EMP_PASS=? AND EMP_DEL = 'N'";
         try{  
                 
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
