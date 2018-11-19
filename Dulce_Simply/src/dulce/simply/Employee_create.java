@@ -10,8 +10,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -30,7 +33,6 @@ public class Employee_create extends javax.swing.JFrame {
     String output = null;
     String position = null;
     int max = 0;
-        ArrayList<Employee> EmployeeList = new ArrayList<>();
     /**
      * Creates new form Employee_create
      */
@@ -40,9 +42,22 @@ public class Employee_create extends javax.swing.JFrame {
         id();
         fillcombo();
     }
+    public void clear(){
+         age_txt.setText("");
+         password_txt.setText("");
+         fname_txt.setText("");
+         lname_txt.setText("");
+         gender.setSelectedIndex(0);
+         phone_txt.setText("");
+         email_txt.setText("");
+         address_txt.setText("");
+         salary_txt.setSelectedIndex(0);
+         position_txt.setSelectedIndex(0);
+    }
   public String find(){
             String find = "SELECT POS_ID,POS_NAME FROM EMP_POSITION";
         try{
+            Class.forName("com.mysql.jdbc.Driver");
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(find);
         rs = pat.executeQuery(find);
@@ -110,9 +125,10 @@ public class Employee_create extends javax.swing.JFrame {
       }
   }
    public ArrayList<Employee>EmployeeList(){
+               ArrayList<Employee> EmployeeList = new ArrayList<>();
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="select EMP_ID,EMP_FNAME,EMP_LNAME,POS_NAME,EMP_AGE,EMP_GENDER,EMP_START,EMP_PHONE,EMP_EMAIL,EMP_SALARY from EMPLOYEE NATURAL JOIN EMP_POSITION WHERE EMP_DEL = 'N'";         
+        String sql  ="select EMP_ID,EMP_FNAME,EMP_LNAME,POS_NAME,EMP_AGE,EMP_GENDER,EMP_START,EMP_PHONE,EMP_EMAIL,EMP_SALARY from EMPLOYEE NATURAL JOIN EMP_POSITION WHERE EMP_DEL = 'N' ORDER BY EMP_ID";         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
          con = DriverManager.getConnection(d.url(),d.username(),d.password());
        st = con.createStatement();
@@ -123,9 +139,9 @@ public class Employee_create extends javax.swing.JFrame {
             e.setdate(rs.getString("EMP_START"));
             EmployeeList.add(e);
         }
-        con.close();
-       st.close();
         rs.close();
+        st.close();
+        con.close();
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -133,7 +149,7 @@ public class Employee_create extends javax.swing.JFrame {
 }
     public void show_employee(){
         DefaultTableModel model = (DefaultTableModel)emp_table.getModel();
-        EmployeeList = EmployeeList();
+        ArrayList<Employee>EmployeeList = EmployeeList();
         Object[] row = new Object[10];
         for(int i=0;i<EmployeeList.size();i++){
             row[0]=EmployeeList.get(i).getid();
@@ -222,7 +238,7 @@ public class Employee_create extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(emp_table);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 20, 820, 680));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 0, 820, 680));
 
         showid_txt.setEditable(false);
         showid_txt.setEnabled(false);
@@ -291,6 +307,11 @@ public class Employee_create extends javax.swing.JFrame {
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 670, 120, 50));
 
         jButton3.setText("Clear");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 670, 120, 50));
 
         getContentPane().add(position_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 380, 130, 30));
@@ -333,13 +354,17 @@ public class Employee_create extends javax.swing.JFrame {
     }//GEN-LAST:event_emp_tableMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String id = showid_txt.getText();
+        //String pos = find();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd");
+        
         String fname = fname_txt.getText();
         String lname = lname_txt.getText();
         String password = password_txt.getText();
         String age = age_txt.getText();
         String address = address_txt.getText();
         String gendernaja = null;
-        String date = ""+LocalTime.now();
+        String date = ""+LocalDate.now().format(dtf);
         if(gender.getSelectedItem().equals("Male")){
             gendernaja = "Male";
         }else{
@@ -348,35 +373,27 @@ public class Employee_create extends javax.swing.JFrame {
         String phone = phone_txt.getText();
         String email = email_txt.getText();
         int salary = Integer.parseInt(salary_txt.getSelectedItem().toString());
-        String sql = "INSERT INTO EMPLOYEE VALUE(?,?,?,?,?,?,?,?,?,?,?,?,'N')";
-                try{
+        String eiei = "INSERT INTO EMPLOYEE VALUE('"+id+"','"+find()+"','"+password+"','"+fname+"','"+lname+"','"+phone+"','"+address+"','"+email+"','"+salary+"','"+date+"','"+age+"','"+gendernaja+"','N')";  
+        System.out.print(eiei);
+        try{
+        Class.forName("com.mysql.jdbc.Driver");
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(sql);
-        pat.setString(1,id());
-        pat.setString(2,find());
-        pat.setString(3,password);
-        pat.setString(4,fname);
-        pat.setString(5,lname);
-        pat.setString(6,phone);
-        pat.setString(7,address);
-        pat.setString(8,email);
-        pat.setString(9,salary_txt.getSelectedItem().toString());
-        pat.setString(10,date);
-        pat.setString(11,age);
-        pat.setString(12,gendernaja);
-        pat.executeUpdate(sql);
+        pat = con.prepareStatement(eiei);
+        pat.executeUpdate(eiei);
         pat.close();
         con.close();
         }catch(Exception e){
             System.out.print(e);
         }
-                System.out.print("Success!!");
-       DefaultTableModel dm = (DefaultTableModel)emp_table.getModel();
+        DefaultTableModel dm = (DefaultTableModel)emp_table.getModel();
+        System.out.print(dm.getRowCount());
         while(dm.getRowCount() > 0)
         {       
         dm.removeRow(0);
         }
-        show_employee();    
+        show_employee();
+        id();
+        clear();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void age_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_age_txtActionPerformed
@@ -384,12 +401,12 @@ public class Employee_create extends javax.swing.JFrame {
     }//GEN-LAST:event_age_txtActionPerformed
 
     private void age_txtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_age_txtFocusGained
-        try {
-        int d = Integer.parseInt(age_txt.getText()); 
-  } catch (NumberFormatException nfe) {
-      System.out.print("123");
-  }
+
     }//GEN-LAST:event_age_txtFocusGained
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        clear();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
