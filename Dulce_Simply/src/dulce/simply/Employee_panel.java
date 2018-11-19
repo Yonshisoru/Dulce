@@ -5,6 +5,8 @@
  */
 package dulce.simply;
 
+import java.awt.Color;
+import java.awt.Cursor;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -261,6 +263,7 @@ public class Employee_panel extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
+        jLabel16 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1430, 800));
@@ -453,6 +456,21 @@ public class Employee_panel extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 100, -1, -1));
+
+        jLabel16.setForeground(new java.awt.Color(0, 0, 255));
+        jLabel16.setText("Create position here!!");
+        jLabel16.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel16MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel16MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel16MouseExited(evt);
+            }
+        });
+        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 420, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -656,6 +674,21 @@ public class Employee_panel extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_password_txtActionPerformed
 
+    private void jLabel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseClicked
+        Employee_type_panel e = new Employee_type_panel();
+        e.setVisible(true);
+    }//GEN-LAST:event_jLabel16MouseClicked
+
+    private void jLabel16MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseEntered
+        jLabel16.setForeground(Color.white);
+        jLabel16.setCursor(new Cursor(HAND_CURSOR));
+    }//GEN-LAST:event_jLabel16MouseEntered
+
+    private void jLabel16MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseExited
+        jLabel16.setForeground(Color.blue);
+        jLabel16.setCursor(new Cursor(DEFAULT_CURSOR));
+    }//GEN-LAST:event_jLabel16MouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -713,6 +746,7 @@ public class Employee_panel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
