@@ -21,10 +21,11 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Yonshisoru
  */
-public class Employee_create extends javax.swing.JFrame {
+public class Employee_panel extends javax.swing.JFrame {
     boolean editnaja = false;
     boolean createnaja = true;
     boolean deletenaja = false;
+    boolean pass = false;
     Database d = new Database();
     Employee e = new Employee();
     Main_variable m = new Main_variable();
@@ -41,7 +42,7 @@ public class Employee_create extends javax.swing.JFrame {
     /**
      * Creates new form Employee_create
      */
-    public Employee_create() {
+    public Employee_panel() {
         initComponents();
         show_employee();
         id();
@@ -156,7 +157,8 @@ public class Employee_create extends javax.swing.JFrame {
   }
   void password(String id){
       try{
-          String sql = "SELECT EMP_PASS WHERE EMP_ID = '"+id+"'";
+          String sql = "SELECT EMP_PASS FROM EMPLOYEE WHERE EMP_ID = '"+id+"'";
+          System.out.print(sql);
          con = DriverManager.getConnection(d.url(),d.username(),d.password());
         st = con.createStatement();
         rs = st.executeQuery(sql);
@@ -168,7 +170,7 @@ public class Employee_create extends javax.swing.JFrame {
         st.close();
         con.close();
       }catch(Exception e){
-          
+          System.out.print(e);
       }
   }
    public ArrayList<Employee>EmployeeList(){
@@ -258,6 +260,7 @@ public class Employee_create extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1430, 800));
@@ -378,6 +381,14 @@ public class Employee_create extends javax.swing.JFrame {
 
         salary_txt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50" }));
         getContentPane().add(salary_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 380, 130, 30));
+
+        password_txt.setToolTipText("");
+        password_txt.setEchoChar('*');
+        password_txt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                password_txtActionPerformed(evt);
+            }
+        });
         getContentPane().add(password_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 130, 30));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -406,6 +417,7 @@ public class Employee_create extends javax.swing.JFrame {
         getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 570, -1, -1));
 
         create.setSelected(true);
+        create.setEnabled(false);
         create.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createActionPerformed(evt);
@@ -433,6 +445,14 @@ public class Employee_create extends javax.swing.JFrame {
 
         jLabel15.setText("Edit");
         getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 573, -1, -1));
+
+        jCheckBox1.setText("Show password?");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 100, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -468,7 +488,7 @@ public class Employee_create extends javax.swing.JFrame {
     }//GEN-LAST:event_emp_tableMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if(createnaja==true){
+
             System.out.print("create!!");
         String id = showid_txt.getText();
         //String pos = find();
@@ -489,6 +509,7 @@ public class Employee_create extends javax.swing.JFrame {
         String phone = phone_txt.getText();
         String email = email_txt.getText();
         int salary = Integer.parseInt(salary_txt.getSelectedItem().toString());
+        if(createnaja==true){
         String eiei = "INSERT INTO EMPLOYEE VALUE('"+id+"','"+find()+"','"+password+"','"+fname+"','"+lname+"','"+phone+"','"+address+"','"+email+"','"+salary+"','"+date+"','"+age+"','"+gendernaja+"','N')";  
         System.out.print(eiei);
         try{
@@ -510,6 +531,50 @@ public class Employee_create extends javax.swing.JFrame {
         show_employee();
         id();
         clear();
+        }else if(editnaja==true){
+            String edit = "UPDATE EMPLOYEE SET POS_ID = '"+find()+"',EMP_PASS = '"+password+"',EMP_FNAME = '"+fname+"',EMP_LNAME = '"+lname+"',EMP_PHONE = '"+phone+"',EMP_ADDRESS = '"+address+"',EMP_SALARY = '"+salary+"',EMP_AGE = '"+age+"',EMP_GENDER = '"+gendernaja+"' WHERE EMP_ID = '"+id+"'";  
+            System.out.print(edit);
+            try{
+               Class.forName("com.mysql.jdbc.Driver");
+                con = DriverManager.getConnection(d.url(),d.username(),d.password());
+                pat = con.prepareStatement(edit);
+                pat.executeUpdate(edit);
+                pat.close();
+                clear();
+                JOptionPane.showMessageDialog(null,"Update Success");
+                con.close(); 
+            }catch(Exception e){
+                System.out.print(e);
+            }
+                  DefaultTableModel dm = (DefaultTableModel)emp_table.getModel();
+        System.out.print(dm.getRowCount());
+        while(dm.getRowCount() > 0)
+        {       
+        dm.removeRow(0);
+        }
+        show_employee();  
+        }else if(deletenaja==true){
+            String delete = "UPDATE EMPLOYEE SET EMP_DEL = 'Y' WHERE EMP_ID ='"+id+"'";
+            System.out.print(edit);
+            try{
+               Class.forName("com.mysql.jdbc.Driver");
+                con = DriverManager.getConnection(d.url(),d.username(),d.password());
+                pat = con.prepareStatement(delete);
+                pat.executeUpdate(delete);
+                pat.close();
+                clear();
+                JOptionPane.showMessageDialog(null,"Delete Success");
+                con.close(); 
+            }catch(Exception e){
+                System.out.print(e);
+            }
+                  DefaultTableModel dm = (DefaultTableModel)emp_table.getModel();
+        System.out.print(dm.getRowCount());
+        while(dm.getRowCount() > 0)
+        {       
+        dm.removeRow(0);
+        }
+        show_employee();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -523,10 +588,14 @@ public class Employee_create extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         clear();
+        showid_txt.setText(createid);
+        emp_table.getSelectionModel().clearSelection();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
-        unlock();           
+        unlock(); 
+        clear();
+        emp_table.getSelectionModel().clearSelection();
         System.out.print("create!!");         
         create.setEnabled(false);       
         edit.setEnabled(true);        
@@ -541,6 +610,8 @@ public class Employee_create extends javax.swing.JFrame {
 
     private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
         unlock();
+        clear();
+        emp_table.getSelectionModel().clearSelection();
         System.out.print("edit!!");
         edit.setEnabled(false);
         create.setEnabled(true);                    
@@ -548,12 +619,14 @@ public class Employee_create extends javax.swing.JFrame {
         delete.setSelected(false);
         create.setSelected(false);
         editnaja=true;
-               createnaja = false;
+        createnaja = false;
         deletenaja = false;
     }//GEN-LAST:event_editActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         lock(); 
+        clear();
+        emp_table.getSelectionModel().clearSelection();
         System.out.print("delete!!");
                     delete.setEnabled(false);
                     create.setEnabled(true);
@@ -568,6 +641,20 @@ public class Employee_create extends javax.swing.JFrame {
     private void editFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_editFocusLost
         // TODO add your handling code here:
     }//GEN-LAST:event_editFocusLost
+
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        if(pass==false){
+        password_txt.setEchoChar((char)0);
+        pass=true;
+        }else{
+           password_txt.setEchoChar('*');
+        pass=false; 
+        }
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void password_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_password_txtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_password_txtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -586,20 +673,21 @@ public class Employee_create extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Employee_create.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Employee_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Employee_create.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Employee_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Employee_create.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Employee_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Employee_create.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Employee_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Employee_create().setVisible(true);
+                new Employee_panel().setVisible(true);
             }
         });
     }
@@ -617,6 +705,7 @@ public class Employee_create extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
