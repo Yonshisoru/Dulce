@@ -22,6 +22,9 @@ import javax.swing.table.DefaultTableModel;
  * @author Yonshisoru
  */
 public class Employee_create extends javax.swing.JFrame {
+    boolean editnaja = false;
+    boolean createnaja = true;
+    boolean deletenaja = false;
     Database d = new Database();
     Employee e = new Employee();
     Main_variable m = new Main_variable();
@@ -32,6 +35,8 @@ public class Employee_create extends javax.swing.JFrame {
     ResultSet rs = null;
     String output = null;
     String position = null;
+    String password= null;
+    String createid = null;
     int max = 0;
     /**
      * Creates new form Employee_create
@@ -53,6 +58,30 @@ public class Employee_create extends javax.swing.JFrame {
          address_txt.setText("");
          salary_txt.setSelectedIndex(0);
          position_txt.setSelectedIndex(0);
+    }
+    public void lock(){
+         age_txt.setEnabled(false);
+         password_txt.setEnabled(false);
+         fname_txt.setEnabled(false);
+         lname_txt.setEnabled(false);
+         gender.setEnabled(false);
+         phone_txt.setEnabled(false);
+         email_txt.setEnabled(false);
+         address_txt.setEnabled(false);
+         salary_txt.setEnabled(false);
+         position_txt.setEnabled(false);
+    }
+    public void unlock(){
+         age_txt.setEnabled(true);
+         password_txt.setEnabled(true);
+         fname_txt.setEnabled(true);
+         lname_txt.setEnabled(true);
+         gender.setEnabled(true);
+         phone_txt.setEnabled(true);
+         email_txt.setEnabled(true);
+         address_txt.setEnabled(true);
+         salary_txt.setEnabled(true);
+         position_txt.setEnabled(true);
     }
   public String find(){
             String find = "SELECT POS_ID,POS_NAME FROM EMP_POSITION";
@@ -100,6 +129,7 @@ public class Employee_create extends javax.swing.JFrame {
         output = "E"+max;
     }
     showid_txt.setText(output);
+    createid = output;
     con.close();
     pat.close();
     rs.close();
@@ -108,7 +138,7 @@ public class Employee_create extends javax.swing.JFrame {
             }
     return output;
    }
-  void fillcombo(){
+    void fillcombo(){
       try{
           String sql = "SELECT POS_ID,POS_NAME,POS_DEL FROM EMP_POSITION WHERE POS_DEL = 'N' AND POS_ID > 01";
          con = DriverManager.getConnection(d.url(),d.username(),d.password());
@@ -124,11 +154,28 @@ public class Employee_create extends javax.swing.JFrame {
           
       }
   }
+  void password(String id){
+      try{
+          String sql = "SELECT EMP_PASS WHERE EMP_ID = '"+id+"'";
+         con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        st = con.createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+            password = rs.getString("EMP_PASS");
+        }
+        System.out.print(password);
+        rs.close();
+        st.close();
+        con.close();
+      }catch(Exception e){
+          
+      }
+  }
    public ArrayList<Employee>EmployeeList(){
                ArrayList<Employee> EmployeeList = new ArrayList<>();
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="select EMP_ID,EMP_FNAME,EMP_LNAME,POS_NAME,EMP_AGE,EMP_GENDER,EMP_START,EMP_PHONE,EMP_EMAIL,EMP_SALARY from EMPLOYEE NATURAL JOIN EMP_POSITION WHERE EMP_DEL = 'N' ORDER BY EMP_ID";         
+        String sql  ="select EMP_ID,EMP_FNAME,EMP_LNAME,POS_NAME,EMP_AGE,EMP_GENDER,EMP_START,EMP_PHONE,EMP_EMAIL,EMP_SALARY,EMP_ADDRESS from EMPLOYEE NATURAL JOIN EMP_POSITION WHERE EMP_DEL = 'N' ORDER BY EMP_ID";         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
          con = DriverManager.getConnection(d.url(),d.username(),d.password());
        st = con.createStatement();
@@ -137,6 +184,7 @@ public class Employee_create extends javax.swing.JFrame {
             Employee e = new Employee(rs.getString("EMP_ID"),rs.getString("EMP_FNAME"),rs.getString("EMP_LNAME"),rs.getString("POS_NAME"),rs.getInt("EMP_AGE"),rs.getString("EMP_GENDER"),rs.getString("EMP_PHONE"),rs.getString("EMP_EMAIL"),rs.getString("EMP_START"));
             e.setsalary(rs.getInt("EMP_SALARY"));
             e.setdate(rs.getString("EMP_START"));
+            e.setaddress(rs.getString("EMP_ADDRESS"));
             EmployeeList.add(e);
         }
         rs.close();
@@ -150,7 +198,7 @@ public class Employee_create extends javax.swing.JFrame {
     public void show_employee(){
         DefaultTableModel model = (DefaultTableModel)emp_table.getModel();
         ArrayList<Employee>EmployeeList = EmployeeList();
-        Object[] row = new Object[10];
+        Object[] row = new Object[11];
         for(int i=0;i<EmployeeList.size();i++){
             row[0]=EmployeeList.get(i).getid();
             row[1]=EmployeeList.get(i).getposition();
@@ -161,7 +209,8 @@ public class Employee_create extends javax.swing.JFrame {
             row[6]=EmployeeList.get(i).getphone();
             row[7]=EmployeeList.get(i).getemail();
             row[8]=EmployeeList.get(i).getsalary();
-            row[9]=EmployeeList.get(i).getdate();
+            row[9]=EmployeeList.get(i).getaddress();
+            row[10]=EmployeeList.get(i).getdate();
             model.addRow(row);
         }
     }
@@ -202,6 +251,13 @@ public class Employee_create extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         address_txt = new javax.swing.JTextArea();
+        delete = new javax.swing.JRadioButton();
+        jLabel12 = new javax.swing.JLabel();
+        create = new javax.swing.JRadioButton();
+        edit = new javax.swing.JRadioButton();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1430, 800));
@@ -212,14 +268,14 @@ public class Employee_create extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Position", "Given name", "Family name", "Age", "Gender", "Phone number", "Email", "Salary", "Hired date"
+                "ID", "Position", "Given name", "Family name", "Age", "Gender", "Phone number", "Email", "Salary", "Address", "Hired date"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -298,7 +354,7 @@ public class Employee_create extends javax.swing.JFrame {
         jButton1.setText("Close");
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 670, 120, 50));
 
-        jButton2.setText("Create");
+        jButton2.setText("Submit");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -338,11 +394,68 @@ public class Employee_create extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 440, 270, 110));
 
+        delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteActionPerformed(evt);
+            }
+        });
+        getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 570, -1, -1));
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel12.setText("Function:");
+        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 570, -1, -1));
+
+        create.setSelected(true);
+        create.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createActionPerformed(evt);
+            }
+        });
+        getContentPane().add(create, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 570, -1, -1));
+
+        edit.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                editFocusLost(evt);
+            }
+        });
+        edit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editActionPerformed(evt);
+            }
+        });
+        getContentPane().add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 570, -1, -1));
+
+        jLabel13.setText("Delete");
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 573, -1, -1));
+
+        jLabel14.setText("Create");
+        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 573, -1, -1));
+
+        jLabel15.setText("Edit");
+        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 573, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void emp_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_emp_tableMouseClicked
-
+        if(editnaja==true||deletenaja==true){
+        showid_txt.setText(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),0).toString());
+        password(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),0).toString());
+        password_txt.setText(password);
+        fname_txt.setText(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),2).toString());
+        lname_txt.setText(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),3).toString());
+        age_txt.setText(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),4).toString());
+        if(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),5).toString().equals("Male")){ 
+        gender.setSelectedIndex(0);
+        }else{
+        gender.setSelectedIndex(1);  
+        }
+        phone_txt.setText(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),6).toString());
+        email_txt.setText(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),7).toString());
+        salary_txt.setSelectedItem(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),8).toString());
+        position_txt.setSelectedItem(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),1).toString());
+        address_txt.setText(emp_table.getModel().getValueAt(emp_table.getSelectedRow(),9).toString());
+         
         /*if(mk.editenable()==1){  */
             /*}/*
         if(count==2){
@@ -351,9 +464,12 @@ public class Employee_create extends javax.swing.JFrame {
             s.setVisible(true);
             count=0;
         }*/
+        }
     }//GEN-LAST:event_emp_tableMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(createnaja==true){
+            System.out.print("create!!");
         String id = showid_txt.getText();
         //String pos = find();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd");
@@ -394,6 +510,7 @@ public class Employee_create extends javax.swing.JFrame {
         show_employee();
         id();
         clear();
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void age_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_age_txtActionPerformed
@@ -407,6 +524,50 @@ public class Employee_create extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         clear();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
+        unlock();           
+        System.out.print("create!!");         
+        create.setEnabled(false);       
+        edit.setEnabled(true);        
+        delete.setEnabled(true);
+        showid_txt.setText(createid);
+        delete.setSelected(false);
+        edit.setSelected(false);
+        createnaja = true;
+        editnaja = false;
+        deletenaja = false;
+    }//GEN-LAST:event_createActionPerformed
+
+    private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
+        unlock();
+        System.out.print("edit!!");
+        edit.setEnabled(false);
+        create.setEnabled(true);                    
+        delete.setEnabled(true);
+        delete.setSelected(false);
+        create.setSelected(false);
+        editnaja=true;
+               createnaja = false;
+        deletenaja = false;
+    }//GEN-LAST:event_editActionPerformed
+
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        lock(); 
+        System.out.print("delete!!");
+                    delete.setEnabled(false);
+                    create.setEnabled(true);
+                    edit.setEnabled(true);
+        create.setSelected(false);
+        edit.setSelected(false);
+        deletenaja = true;
+               editnaja = false;
+        createnaja = false;
+    }//GEN-LAST:event_deleteActionPerformed
+
+    private void editFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_editFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editFocusLost
 
     /**
      * @param args the command line arguments
@@ -446,6 +607,9 @@ public class Employee_create extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea address_txt;
     private javax.swing.JTextField age_txt;
+    private javax.swing.JRadioButton create;
+    private javax.swing.JRadioButton delete;
+    private javax.swing.JRadioButton edit;
     private javax.swing.JTextField email_txt;
     private javax.swing.JTable emp_table;
     private javax.swing.JTextField fname_txt;
@@ -456,6 +620,10 @@ public class Employee_create extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

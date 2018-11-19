@@ -68,15 +68,11 @@ public class Employee_Salary extends javax.swing.JFrame {
             ep.setsumsalary(((double)ep.getsalary())*((double)ep.getworktime()));
             Schedulelist.add(ep);
         }
+                pat.close();
+        rs.close();
+        con.close();
         }catch(Exception e){
             e.printStackTrace();
-        } finally {
-    if(pat != null)
-        pat.close();
-    if(rs != null)
-        rs.close();
-    if(con != null)
-        con.close();
 }
         return Schedulelist;
     }

@@ -22,6 +22,7 @@ public class Employee {
      private int age;
      private String gender;
     private String phone;
+    private String address;
      private String email;
     private String date;
     private int salary;
@@ -39,6 +40,12 @@ public class Employee {
     this.date = date;
     }
     public Employee(){
+    }
+    public String getaddress (){
+        return address;
+    }
+    public void setaddress(String address){
+        this.address = address;
     }
     public String getid (){
         return employee_id;
