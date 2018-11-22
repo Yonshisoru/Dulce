@@ -924,7 +924,8 @@ if ((s != null) && (s.length() > 0)) {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
+       Salary_payment s = new Salary_payment();
+       s.setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     /**

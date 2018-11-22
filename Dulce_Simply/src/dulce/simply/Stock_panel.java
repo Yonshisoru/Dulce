@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Yonshisoru
  */
-public class Menu_panel extends javax.swing.JFrame {
+public class Stock_panel extends javax.swing.JFrame {
     boolean editnaja = false;
     boolean createnaja = true;
     boolean deletenaja = false;
@@ -44,7 +44,7 @@ public class Menu_panel extends javax.swing.JFrame {
     /**
      * Creates new form Employee_create
      */
-    public Menu_panel() {
+    public Stock_panel() {
         initComponents();
         show_product();
         id();
@@ -187,15 +187,12 @@ public String find(){
         jScrollPane1 = new javax.swing.JScrollPane();
         menu_table = new javax.swing.JTable();
         showid_txt = new javax.swing.JTextField();
-        m_name_txt = new javax.swing.JTextField();
         m_price_txt = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        m_cata_txt = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         delete = new javax.swing.JRadioButton();
         jLabel12 = new javax.swing.JLabel();
@@ -204,7 +201,13 @@ public String find(){
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        p_txt = new javax.swing.JComboBox<>();
+        m_price_txt1 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        exp_date = new datechooser.beans.DateChooserCombo();
+        mft_date = new datechooser.beans.DateChooserCombo();
+        jLabel17 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -214,14 +217,14 @@ public String find(){
 
             },
             new String [] {
-                "ID", "Name", "Price", "Catagory"
+                "ID", "Product", "Mfg", "Exp", "Units", "Max"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -245,7 +248,6 @@ public String find(){
         showid_txt.setEditable(false);
         showid_txt.setEnabled(false);
         getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, 110, 30));
-        getContentPane().add(m_name_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 150, 370, 30));
 
         m_price_txt.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -257,19 +259,15 @@ public String find(){
                 m_price_txtActionPerformed(evt);
             }
         });
-        getContentPane().add(m_price_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 220, 90, 30));
+        getContentPane().add(m_price_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 140, 90, 30));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("ID:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel4.setText("Menu Name:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
-
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel6.setText("Price:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, -1, -1));
+        jLabel6.setText("Units:");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, -1, -1));
 
         jButton1.setText("Close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -295,23 +293,20 @@ public String find(){
         });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 670, 120, 50));
 
-        m_cata_txt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        getContentPane().add(m_cata_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, 130, 30));
-
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel11.setText("Catagory:");
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
+        jLabel11.setText("Manufactured Date:");
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, -1, -1));
 
         delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteActionPerformed(evt);
             }
         });
-        getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 620, -1, -1));
+        getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 370, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel12.setText("Function:");
-        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 620, -1, -1));
+        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 370, -1, -1));
 
         create.setSelected(true);
         create.setEnabled(false);
@@ -320,7 +315,7 @@ public String find(){
                 createActionPerformed(evt);
             }
         });
-        getContentPane().add(create, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 620, -1, -1));
+        getContentPane().add(create, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 370, -1, -1));
 
         edit.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -332,31 +327,45 @@ public String find(){
                 editActionPerformed(evt);
             }
         });
-        getContentPane().add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 620, -1, -1));
+        getContentPane().add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 370, -1, -1));
 
         jLabel13.setText("Delete");
-        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 620, -1, -1));
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 370, -1, -1));
 
         jLabel14.setText("Create");
-        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 620, -1, -1));
+        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 370, -1, -1));
 
         jLabel15.setText("Edit");
-        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 620, -1, -1));
+        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 370, -1, -1));
 
-        jLabel1.setForeground(new java.awt.Color(0, 0, 255));
-        jLabel1.setText("Create catagory here!!");
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel1MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel1MouseExited(evt);
+        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel16.setText("Product:");
+        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 80, -1, -1));
+
+        p_txt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        getContentPane().add(p_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 80, 130, 30));
+
+        m_price_txt1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                m_price_txt1FocusGained(evt);
             }
         });
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 255, -1, -1));
+        m_price_txt1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_price_txt1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(m_price_txt1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 140, 90, 30));
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel7.setText("Max:");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 150, -1, -1));
+        getContentPane().add(exp_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 220, -1, 30));
+        getContentPane().add(mft_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 290, -1, 30));
+
+        jLabel17.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel17.setText("Expired Date:");
+        getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -512,20 +521,13 @@ public String find(){
      this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
-        jLabel1.setForeground(Color.white);
-        jLabel1.setCursor(new Cursor(HAND_CURSOR));
-    }//GEN-LAST:event_jLabel1MouseEntered
+    private void m_price_txt1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_m_price_txt1FocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_m_price_txt1FocusGained
 
-    private void jLabel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseExited
-        jLabel1.setForeground(Color.blue);
-        jLabel1.setCursor(new Cursor(DEFAULT_CURSOR));
-    }//GEN-LAST:event_jLabel1MouseExited
-
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        Menu_type_panel p = new Menu_type_panel();
-        p.setVisible(true);
-    }//GEN-LAST:event_jLabel1MouseClicked
+    private void m_price_txt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_price_txt1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_m_price_txt1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -544,14 +546,38 @@ public String find(){
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Menu_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Stock_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Menu_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Stock_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Menu_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Stock_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Menu_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Stock_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -564,7 +590,7 @@ public String find(){
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Menu_panel().setVisible(true);
+                new Stock_panel().setVisible(true);
             }
         });
     }
@@ -573,23 +599,26 @@ public String find(){
     private javax.swing.JRadioButton create;
     private javax.swing.JRadioButton delete;
     private javax.swing.JRadioButton edit;
+    private datechooser.beans.DateChooserCombo exp_date;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JComboBox<String> m_cata_txt;
-    private javax.swing.JTextField m_name_txt;
     private javax.swing.JTextField m_price_txt;
+    private javax.swing.JTextField m_price_txt1;
     private javax.swing.JTable menu_table;
+    private datechooser.beans.DateChooserCombo mft_date;
+    private javax.swing.JComboBox<String> p_txt;
     private javax.swing.JTextField showid_txt;
     // End of variables declaration//GEN-END:variables
 }

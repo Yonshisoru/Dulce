@@ -10,6 +10,7 @@ package dulce.simply;
  * @author Yonshisoru
  */
 public class Salary_variable {
+    Employee e= new Employee();
     private String id = null;
     private int type = 0;
     private String start = null;
