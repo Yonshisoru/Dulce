@@ -51,6 +51,12 @@ public class Product_Order_panel extends javax.swing.JFrame {
     String productid = null;
     int productprice = 0;
     int sum = 0;
+    int price1  =0;
+    int price2 = 0;
+    int price3 = 0;
+    int price4 = 0;
+    int price5 = 0;
+    int price6 = 0;
 String year = ""+(Integer.parseInt(LocalDate.now().toString().substring(0,4))+543);
 String month = LocalDate.now().toString().substring(5,7);
 String day = LocalDate.now().toString().substring(8,10);
@@ -904,11 +910,10 @@ cal.setTime(date);
                p.setproduct((p_txt6.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
               findproduct(p_txt6.getSelectedItem().toString());
-              currentprice = Integer.parseInt(amouth)*productprice;
-              sum += currentprice - oldprice;
+              price6 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-              oldprice = Integer.parseInt(amouth)*productprice;
                product.add(p);
            }else{ 
            for(int i =0;i<product.size();i++){
@@ -939,11 +944,10 @@ cal.setTime(date);
                product.add(p);
               productname = (p_txt6.getSelectedItem().toString());
               findproduct(p_txt6.getSelectedItem().toString());
-              currentprice = Integer.parseInt(amouth)*productprice;
-              sum += currentprice - oldprice;
+              price6 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-              oldprice = Integer.parseInt(amouth)*productprice;
                product.add(p);
            }
            }
@@ -976,11 +980,10 @@ cal.setTime(date);
                p.setproduct((p_txt2.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
               findproduct(p_txt2.getSelectedItem().toString());
-              currentprice = Integer.parseInt(amouth)*productprice;
-              sum += currentprice - oldprice;
+              price2 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-              oldprice = Integer.parseInt(amouth)*productprice;
                product.add(p);
            }else{ 
            for(int i =0;i<product.size();i++){
@@ -1011,11 +1014,10 @@ cal.setTime(date);
                product.add(p);
               productname = (p_txt2.getSelectedItem().toString());
               findproduct(p_txt2.getSelectedItem().toString());
-              currentprice = Integer.parseInt(amouth)*productprice;
-              sum += currentprice - oldprice;
+              price2 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-              oldprice = Integer.parseInt(amouth)*productprice;
                product.add(p);
            }
            }
@@ -1048,11 +1050,10 @@ cal.setTime(date);
                p.setproduct((p_txt1.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
               findproduct(p_txt1.getSelectedItem().toString());
-              currentprice = Integer.parseInt(amouth)*productprice;
-              sum += currentprice - oldprice;
+              price1 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-              oldprice = Integer.parseInt(amouth)*productprice;
                product.add(p);
            }else{ 
            for(int i =0;i<product.size();i++){
@@ -1083,11 +1084,10 @@ cal.setTime(date);
                product.add(p);
               productname = (p_txt1.getSelectedItem().toString());
               findproduct(p_txt1.getSelectedItem().toString());
-              currentprice = Integer.parseInt(amouth)*productprice;
-              sum += currentprice - oldprice;
+              price1 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-              oldprice = Integer.parseInt(amouth)*productprice;
                product.add(p);
            }
            }
@@ -1096,7 +1096,7 @@ cal.setTime(date);
     }//GEN-LAST:event_p_txt1ActionPerformed
 
     private void p_txt4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt4ActionPerformed
-        boolean check = false;
+          boolean check = false;
         if(p_txt4.getSelectedIndex()==0){ 
        }else{
            if(product.size()==0){
@@ -1120,11 +1120,10 @@ cal.setTime(date);
                p.setproduct((p_txt4.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
               findproduct(p_txt4.getSelectedItem().toString());
-              currentprice = Integer.parseInt(amouth)*productprice;
-              sum += currentprice - oldprice;
+              price1 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-              oldprice = Integer.parseInt(amouth)*productprice;
                product.add(p);
            }else{ 
            for(int i =0;i<product.size();i++){
@@ -1155,11 +1154,10 @@ cal.setTime(date);
                product.add(p);
               productname = (p_txt4.getSelectedItem().toString());
               findproduct(p_txt4.getSelectedItem().toString());
-              currentprice = Integer.parseInt(amouth)*productprice;
-              sum += currentprice - oldprice;
+              price4 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-              oldprice = Integer.parseInt(amouth)*productprice;
                product.add(p);
            }
            }
@@ -1192,11 +1190,10 @@ cal.setTime(date);
                p.setproduct((p_txt5.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
               findproduct(p_txt5.getSelectedItem().toString());
-              currentprice = Integer.parseInt(amouth)*productprice;
-              sum += currentprice - oldprice;
+              price5 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-              oldprice = Integer.parseInt(amouth)*productprice;
                product.add(p);
            }else{ 
            for(int i =0;i<product.size();i++){
@@ -1227,8 +1224,8 @@ cal.setTime(date);
                product.add(p);
               productname = (p_txt5.getSelectedItem().toString());
               findproduct(p_txt5.getSelectedItem().toString());
-              currentprice = Integer.parseInt(amouth)*productprice;
-              sum += currentprice - oldprice;
+              price5 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
               oldprice = Integer.parseInt(amouth)*productprice;
