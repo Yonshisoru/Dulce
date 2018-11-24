@@ -46,10 +46,18 @@ Main_variable m = new Main_variable();
         Inventory_panel.setVisible(false);
         Employee_panel.setVisible(false);
         Employee.setVisible(false);
+        Inventory_btn.setVisible(false);
+        Ordering_Product_btn.setVisible(false);
         Employee e = new Employee();
         showname.setText(e.getdisfname()+" "+e.getdislname());
         showTime();
         showtime();
+        System.out.print(e.gettype_id());
+        if(e.gettype_id()==0||e.gettype_id()==1){
+            Inventory_btn.setVisible(true);
+            Ordering_Product_btn.setVisible(true);
+        }else{
+        }
     }
     void showTime(){
         new Timer(0,new ActionListener(){
@@ -129,7 +137,6 @@ Main_variable m = new Main_variable();
         Inventory_btn = new javax.swing.JButton();
         Ordering_Product_btn = new javax.swing.JButton();
         Employee_btn = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         Selection = new javax.swing.JPanel();
         Firstpage = new javax.swing.JPanel();
         Menu_Ordering = new javax.swing.JPanel();
@@ -140,7 +147,7 @@ Main_variable m = new Main_variable();
         jButton3 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
-        jButton15 = new javax.swing.JButton();
+        ordering_management = new javax.swing.JButton();
         Schedule = new javax.swing.JPanel();
         Heading_Sc = new javax.swing.JLabel();
         leave = new javax.swing.JButton();
@@ -154,13 +161,12 @@ Main_variable m = new Main_variable();
         Orderingproduct_panel = new javax.swing.JPanel();
         Heading_OP = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
+        product_panel = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
         jButton17 = new javax.swing.JButton();
-        jButton18 = new javax.swing.JButton();
-        jButton19 = new javax.swing.JButton();
+        Ordering_product = new javax.swing.JButton();
         jButton20 = new javax.swing.JButton();
+        jButton21 = new javax.swing.JButton();
         Inventory_panel = new javax.swing.JPanel();
         Heading_INV = new javax.swing.JLabel();
         jButton22 = new javax.swing.JButton();
@@ -183,6 +189,7 @@ Main_variable m = new Main_variable();
         jButton5 = new javax.swing.JButton();
         Employee_salary = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1070, 730));
@@ -193,6 +200,7 @@ Main_variable m = new Main_variable();
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        TopPanel.setOpaque(false);
         TopPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         name.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -200,6 +208,7 @@ Main_variable m = new Main_variable();
         TopPanel.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         Showtime.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        Showtime.setText("24/11/2561 16.30");
         TopPanel.add(Showtime, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 10, 210, 20));
         TopPanel.add(Showdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 10, 130, 20));
 
@@ -216,10 +225,13 @@ Main_variable m = new Main_variable();
         TopPanel.add(Time1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 10, -1, -1));
 
         showname.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        showname.setText("   ");
+        showname.setText("Dulce Simply");
         TopPanel.add(showname, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 260, -1));
 
         getContentPane().add(TopPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 1040, 40));
+
+        ButtonPanel.setOpaque(false);
+        ButtonPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Menu_Ordering_btn.setText("Menu Ordering");
         Menu_Ordering_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -227,6 +239,7 @@ Main_variable m = new Main_variable();
                 Menu_Ordering_btnActionPerformed(evt);
             }
         });
+        ButtonPanel.add(Menu_Ordering_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, 143, 50));
 
         Schedule_btn.setText("Schedule");
         Schedule_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -234,6 +247,7 @@ Main_variable m = new Main_variable();
                 Schedule_btnActionPerformed(evt);
             }
         });
+        ButtonPanel.add(Schedule_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 79, 143, 50));
 
         Inventory_btn.setText("Inventory");
         Inventory_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -241,6 +255,7 @@ Main_variable m = new Main_variable();
                 Inventory_btnActionPerformed(evt);
             }
         });
+        ButtonPanel.add(Inventory_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 245, 143, 51));
 
         Ordering_Product_btn.setText("Ordering Product");
         Ordering_Product_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -248,6 +263,7 @@ Main_variable m = new Main_variable();
                 Ordering_Product_btnActionPerformed(evt);
             }
         });
+        ButtonPanel.add(Ordering_Product_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 331, 143, 51));
 
         Employee_btn.setText("Employee");
         Employee_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -255,50 +271,18 @@ Main_variable m = new Main_variable();
                 Employee_btnActionPerformed(evt);
             }
         });
-
-        jButton1.setText("Payment");
-
-        javax.swing.GroupLayout ButtonPanelLayout = new javax.swing.GroupLayout(ButtonPanel);
-        ButtonPanel.setLayout(ButtonPanelLayout);
-        ButtonPanelLayout.setHorizontalGroup(
-            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ButtonPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Employee_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Inventory_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Schedule_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Menu_Ordering_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Ordering_Product_btn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        ButtonPanelLayout.setVerticalGroup(
-            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ButtonPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Menu_Ordering_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(Schedule_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(Inventory_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(Employee_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Ordering_Product_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(277, Short.MAX_VALUE))
-        );
+        ButtonPanel.add(Employee_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 143, 55));
 
         getContentPane().add(ButtonPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 62, -1, 678));
 
+        Selection.setBackground(new java.awt.Color(254, 255, 239));
         Selection.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         Selection.setPreferredSize(new java.awt.Dimension(800, 500));
 
+        Firstpage.setBackground(new java.awt.Color(254, 255, 239));
         Firstpage.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Menu_Ordering.setOpaque(false);
+        Menu_Ordering.setBackground(new java.awt.Color(254, 255, 239));
         Menu_Ordering.setPreferredSize(new java.awt.Dimension(1000, 700));
         Menu_Ordering.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -329,9 +313,10 @@ Main_variable m = new Main_variable();
         jButton14.setText("History");
         Menu_Ordering.add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 290, 160, 90));
 
-        jButton15.setText("Ordering management");
-        Menu_Ordering.add(jButton15, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 410, 180, 90));
+        ordering_management.setText("Ordering management");
+        Menu_Ordering.add(ordering_management, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 410, 180, 90));
 
+        Schedule.setBackground(new java.awt.Color(254, 255, 239));
         Schedule.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Heading_Sc.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
@@ -402,6 +387,7 @@ Main_variable m = new Main_variable();
         });
         Schedule.add(view_leave, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 250, 140, 60));
 
+        Orderingproduct_panel.setBackground(new java.awt.Color(254, 255, 239));
         Orderingproduct_panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Heading_OP.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
@@ -409,34 +395,47 @@ Main_variable m = new Main_variable();
         Orderingproduct_panel.add(Heading_OP, new org.netbeans.lib.awtextra.AbsoluteConstraints(227, 23, -1, -1));
 
         jButton7.setText("Claim Product");
-        Orderingproduct_panel.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 140, 150, 60));
+        Orderingproduct_panel.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 220, 140, 60));
 
-        jButton8.setText("Product issue");
-        Orderingproduct_panel.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 220, 150, 60));
-
-        jButton9.setText("Product");
-        Orderingproduct_panel.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 160, 60));
-
-        jButton10.setText("Recieve Product");
-        Orderingproduct_panel.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 140, 140, 60));
-
-        jButton17.setText("Recieve claimed Product");
-        Orderingproduct_panel.add(jButton17, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 160, 60));
-
-        jButton18.setText("Adding vendor");
-        Orderingproduct_panel.add(jButton18, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 220, 140, 60));
-
-        jButton19.setText("Ordering Payment");
-        jButton19.addActionListener(new java.awt.event.ActionListener() {
+        product_panel.setText("Editor Product");
+        product_panel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton19ActionPerformed(evt);
+                product_panelActionPerformed(evt);
             }
         });
-        Orderingproduct_panel.add(jButton19, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 220, 140, 60));
+        Orderingproduct_panel.add(product_panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 160, 60));
 
-        jButton20.setText("Ordering");
+        jButton10.setText("Recieve Product");
+        Orderingproduct_panel.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 160, 60));
+
+        jButton17.setText("Recieve claimed Product");
+        Orderingproduct_panel.add(jButton17, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 220, 160, 60));
+
+        Ordering_product.setText("Ordering Product");
+        Ordering_product.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Ordering_productActionPerformed(evt);
+            }
+        });
+        Orderingproduct_panel.add(Ordering_product, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 140, 140, 60));
+
+        jButton20.setText("Editor Vendor");
+        jButton20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton20ActionPerformed(evt);
+            }
+        });
         Orderingproduct_panel.add(jButton20, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 140, 140, 60));
 
+        jButton21.setText("Ordering Payment");
+        jButton21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton21ActionPerformed(evt);
+            }
+        });
+        Orderingproduct_panel.add(jButton21, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 140, 140, 60));
+
+        Inventory_panel.setBackground(new java.awt.Color(254, 255, 239));
         Inventory_panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Heading_INV.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
@@ -466,6 +465,8 @@ Main_variable m = new Main_variable();
 
         jButton29.setText("Promotion");
         Inventory_panel.add(jButton29, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 210, 150, 70));
+
+        Employee_panel.setBackground(new java.awt.Color(254, 255, 239));
 
         Heading_INV1.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
         Heading_INV1.setText("Employee");
@@ -538,9 +539,10 @@ Main_variable m = new Main_variable();
                 .addComponent(Heading_INV1)
                 .addGap(29, 29, 29)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
+        Employee.setBackground(new java.awt.Color(254, 255, 239));
         Employee.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
@@ -585,9 +587,9 @@ Main_variable m = new Main_variable();
         SelectionLayout.setHorizontalGroup(
             SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SelectionLayout.createSequentialGroup()
-                .addGap(0, 10, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(Menu_Ordering, javax.swing.GroupLayout.PREFERRED_SIZE, 806, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 10, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(Schedule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -608,15 +610,15 @@ Main_variable m = new Main_variable();
             SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SelectionLayout.createSequentialGroup()
                 .addComponent(Menu_Ordering, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 32, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(SelectionLayout.createSequentialGroup()
                     .addComponent(Schedule, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 279, Short.MAX_VALUE)))
+                    .addGap(0, 206, Short.MAX_VALUE)))
             .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(SelectionLayout.createSequentialGroup()
                     .addComponent(Firstpage, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 9, Short.MAX_VALUE)))
+                    .addGap(0, 0, Short.MAX_VALUE)))
             .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(SelectionLayout.createSequentialGroup()
                     .addComponent(Orderingproduct_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -636,17 +638,26 @@ Main_variable m = new Main_variable();
 
         getContentPane().add(Selection, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 65, 830, 620));
 
+        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Yonshisoru\\Documents\\GitHubProject\\Dulce\\Dulce_Simply\\picture\\Ny5mCcE.jpg")); // NOI18N
+        jLabel2.setText("jLabel2");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-262, -30, 2220, 1240));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void Menu_Ordering_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_Ordering_btnActionPerformed
+        Employee e = new Employee();
         Menu_Ordering.setVisible(true);
         Schedule.setVisible(false);
         Firstpage.setVisible(false);
         Orderingproduct_panel.setVisible(false);
         Inventory_panel.setVisible(false);
         Employee_panel.setVisible(false);
-         Employee.setVisible(false);       
+         Employee.setVisible(false);  
+         ordering_management.setVisible(false);
+         if(e.gettype_id()==0||e.gettype_id()==1){
+             ordering_management.setVisible(true);
+         }
     }//GEN-LAST:event_Menu_Ordering_btnActionPerformed
 
     private void Schedule_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Schedule_btnActionPerformed
@@ -721,9 +732,10 @@ Main_variable m = new Main_variable();
     }    
     }//GEN-LAST:event_Employee_btnActionPerformed
 
-    private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
-
-    }//GEN-LAST:event_jButton19ActionPerformed
+    private void Ordering_productActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ordering_productActionPerformed
+        Product_Order_panel p = new Product_Order_panel();
+        p.setVisible(true);
+    }//GEN-LAST:event_Ordering_productActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
  if (JOptionPane.showConfirmDialog(this, 
@@ -928,6 +940,20 @@ if ((s != null) && (s.length() > 0)) {
        s.setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton21ActionPerformed
+
+    private void product_panelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_product_panelActionPerformed
+       Product_panel s = new Product_panel();
+       s.setVisible(true);
+    }//GEN-LAST:event_product_panelActionPerformed
+
+    private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
+       Vendor_panel s = new Vendor_panel();
+       s.setVisible(true);
+    }//GEN-LAST:event_jButton20ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -984,6 +1010,7 @@ if ((s != null) && (s.length() > 0)) {
     private javax.swing.JPanel Menu_Ordering;
     private javax.swing.JButton Menu_Ordering_btn;
     private javax.swing.JButton Ordering_Product_btn;
+    private javax.swing.JButton Ordering_product;
     private javax.swing.JPanel Orderingproduct_panel;
     private javax.swing.JPanel Schedule;
     private javax.swing.JButton Schedule_btn;
@@ -994,19 +1021,16 @@ if ((s != null) && (s.length() > 0)) {
     private javax.swing.JLabel Time1;
     private javax.swing.JPanel TopPanel;
     private javax.swing.JButton editenrolled;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
-    private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton19;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton20;
+    private javax.swing.JButton jButton21;
     private javax.swing.JButton jButton22;
     private javax.swing.JButton jButton23;
     private javax.swing.JButton jButton24;
@@ -1022,14 +1046,15 @@ if ((s != null) && (s.length() > 0)) {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton leave;
     private javax.swing.JLabel name;
+    private javax.swing.JButton ordering_management;
     private javax.swing.JButton preenrolled;
+    private javax.swing.JButton product_panel;
     private javax.swing.JLabel showname;
     private javax.swing.JButton view_leave;
     // End of variables declaration//GEN-END:variables

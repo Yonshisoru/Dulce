@@ -61,6 +61,7 @@ public class LoginFrom extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel3 = new javax.swing.JLabel();
         Jusername = new javax.swing.JTextField();
         Jpassword = new javax.swing.JPasswordField();
         Login = new javax.swing.JButton();
@@ -70,7 +71,7 @@ public class LoginFrom extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         processlogin = new javax.swing.JProgressBar();
         processlogin_label = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Dulce Simply");
@@ -84,6 +85,11 @@ public class LoginFrom extends javax.swing.JFrame {
             }
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel3.setFont(new java.awt.Font("Rockwell", 0, 36)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 0, 51));
+        jLabel3.setText("Dulce Simply System");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, -1, -1));
 
         Jusername.setFont(new java.awt.Font("Georgia", 0, 10)); // NOI18N
         Jusername.setFocusTraversalPolicyProvider(true);
@@ -121,21 +127,24 @@ public class LoginFrom extends javax.swing.JFrame {
         });
         getContentPane().add(Exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 230, 70, 30));
 
+        jLabel1.setForeground(new java.awt.Color(255, 0, 51));
         jLabel1.setText("Username:");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 150, -1, -1));
 
+        jLabel2.setForeground(new java.awt.Color(255, 0, 51));
         jLabel2.setText("Password:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, -1, 20));
         getContentPane().add(processlogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 450, 10));
 
+        processlogin_label.setForeground(new java.awt.Color(255, 0, 51));
         processlogin_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         processlogin_label.setText("0%");
         processlogin_label.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
         getContentPane().add(processlogin_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 290, 40, -1));
 
-        jLabel3.setFont(new java.awt.Font("Rockwell", 0, 36)); // NOI18N
-        jLabel3.setText("Dulce Simply System");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, -1, -1));
+        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Yonshisoru\\Documents\\GitHubProject\\Dulce\\Dulce_Simply\\picture\\1.jpg")); // NOI18N
+        jLabel4.setText("jLabel4");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, -10, 530, 370));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -272,6 +281,7 @@ public class LoginFrom extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JProgressBar processlogin;
     private javax.swing.JLabel processlogin_label;
     // End of variables declaration//GEN-END:variables

@@ -12,6 +12,7 @@ package dulce.simply;
 public class Product_Order_Variable {
 Employee e = new Employee();
 Vendor_variable v = new Vendor_variable();
+static private String view;
 private String id;
 private int unit;
 private String date;
@@ -23,6 +24,9 @@ private String product;
 private int productprice; 
 public String getid(){
     return id;
+}
+public String getview(){
+    return view;
 }
 public int getunit(){
     return unit;
@@ -74,5 +78,8 @@ public void setproductprice(int productprice){
 }
 public void setproductunit(int productunit){
     this.productunit = productunit;
+}
+public void setview(String view){
+    this.view = view;
 }
 }

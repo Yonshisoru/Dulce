@@ -208,6 +208,7 @@ public String find(){
         exp_date = new datechooser.beans.DateChooserCombo();
         mft_date = new datechooser.beans.DateChooserCombo();
         jLabel17 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -262,10 +263,12 @@ public String find(){
         getContentPane().add(m_price_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 140, 90, 30));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("ID:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Units:");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, -1, -1));
 
@@ -294,9 +297,11 @@ public String find(){
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 670, 120, 50));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Manufactured Date:");
         getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, -1, -1));
 
+        delete.setOpaque(false);
         delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteActionPerformed(evt);
@@ -305,11 +310,13 @@ public String find(){
         getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 370, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Function:");
         getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 370, -1, -1));
 
         create.setSelected(true);
         create.setEnabled(false);
+        create.setOpaque(false);
         create.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createActionPerformed(evt);
@@ -317,6 +324,7 @@ public String find(){
         });
         getContentPane().add(create, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 370, -1, -1));
 
+        edit.setOpaque(false);
         edit.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 editFocusLost(evt);
@@ -329,16 +337,20 @@ public String find(){
         });
         getContentPane().add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 370, -1, -1));
 
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Delete");
         getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 370, -1, -1));
 
+        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Create");
         getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 370, -1, -1));
 
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("Edit");
         getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 370, -1, -1));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Product:");
         getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 80, -1, -1));
 
@@ -358,14 +370,20 @@ public String find(){
         getContentPane().add(m_price_txt1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 140, 90, 30));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Max:");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 150, -1, -1));
         getContentPane().add(exp_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 220, -1, 30));
         getContentPane().add(mft_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 290, -1, 30));
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("Expired Date:");
         getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, -1));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Yonshisoru\\Documents\\GitHubProject\\Dulce\\Dulce_Simply\\picture\\SPCQGv.jpg")); // NOI18N
+        jLabel1.setText("jLabel1");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-17, -50, 1460, 870));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -603,6 +621,7 @@ public String find(){
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;

@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -26,9 +27,11 @@ import javax.swing.table.DefaultTableModel;
  * @author Yonshisoru
  */
 public class Product_Order_panel extends javax.swing.JFrame {
-    boolean editnaja = false;
+    boolean viewnaja = false;
+    boolean deletenakub = false;
     boolean createnaja = true;
     boolean deletenaja = false;
+    boolean adding = false;
     boolean pass = false;
     Database d = new Database();
     Employee e = new Employee();
@@ -43,12 +46,16 @@ public class Product_Order_panel extends javax.swing.JFrame {
     String password= null;
     String createid = null;
     String productname = null;
+    String orderpaymentid = null;
+    String receiveid = null;
     int max = 0;
     String oldpaydate = null;
     String oldrecdate = null;
+    String checkview = null;
     int oldprice = 0;
     int currentprice = 0;
     String productid = null;
+    int totalorder = 0;
     int productprice = 0;
     int sum = 0;
     int price1  =0;
@@ -57,6 +64,7 @@ public class Product_Order_panel extends javax.swing.JFrame {
     int price4 = 0;
     int price5 = 0;
     int price6 = 0;
+    String empid = e.getshowid();
 String year = ""+(Integer.parseInt(LocalDate.now().toString().substring(0,4))+543);
 String month = LocalDate.now().toString().substring(5,7);
 String day = LocalDate.now().toString().substring(8,10);
@@ -72,31 +80,30 @@ ArrayList<Vendor_variable> vendor = new ArrayList<Vendor_variable>();
         initComponents();
         show_order();
         id();
-        fillcomboemp();
         fillcombovendor();
-        fillcomboproduct();
         locked.setVisible(false);
         oldpaydate = pay_date.getText();
         oldrecdate = receive_date.getText();
         paydate.setText(oldpaydate);
         receivedate.setText(oldpaydate);
+        emp_txt.setText(empid);
     }
     public void clear(){
         paydate.setText(oldpaydate);
         receivedate.setText(oldpaydate);
+        v_txt.setSelectedIndex(0);
         oldpaydate = pay_date.getText();
         oldrecdate = receive_date.getText();
+        emp_txt.setText(empid);
         setdate();
          showid_txt.setText(createid);
          price_txt.setText("");
-         emp_txt.setSelectedIndex(0);
-         v_txt.setSelectedIndex(0);
-         p_txt1.setSelectedIndex(0);
-         p_txt2.setSelectedIndex(0);
-         p_txt3.setSelectedIndex(0);
-         p_txt4.setSelectedIndex(0);
-         p_txt5.setSelectedIndex(0);
-         p_txt6.setSelectedIndex(0);
+         p_txt1.setEnabled(true);
+         p_txt2.setEnabled(true);
+         p_txt3.setEnabled(true);
+         p_txt4.setEnabled(true);
+         p_txt5.setEnabled(true);
+         p_txt6.setEnabled(true);
     }
 public void setdate(){
  year = ""+(Integer.parseInt(LocalDate.now().toString().substring(0,4))+543);
@@ -122,9 +129,14 @@ cal.setTime(date);
         locked.setVisible(true);
         pay_date.setVisible(false);
         receive_date.setVisible(false);
-         emp_txt.setEnabled(false);
          v_txt.setEnabled(false);
          price_txt.setEnabled(false);
+         p_txt1.setEnabled(false);
+         p_txt2.setEnabled(false);
+         p_txt3.setEnabled(false);
+         p_txt4.setEnabled(false);
+         p_txt5.setEnabled(false);
+         p_txt6.setEnabled(false);
          /*receive_date.setEnabled(false);
          pay_date.setEnabled(false);*/
     }
@@ -133,24 +145,27 @@ cal.setTime(date);
         locked.setVisible(false);
         pay_date.setVisible(true);
         receive_date.setVisible(true);
-         emp_txt.setEnabled(true);
          v_txt.setEnabled(true);
          price_txt.setEnabled(true);
          receive_date.setEnabled(true);
          pay_date.setEnabled(true);
+         p_txt1.setEnabled(true);
+         p_txt2.setEnabled(true);
+         p_txt3.setEnabled(true);
+         p_txt4.setEnabled(true);
+         p_txt5.setEnabled(true);
+         p_txt6.setEnabled(true);
     }
-/*public String findemp(){
-            String find = "SELECT M_T_ID,M_T_NAME FROM MENU_TYPE";
+public String findorderpayment(String id){
+            String find = "SELECT OP_NUMBER FROM ORDER_PAYMENT WHERE PO_ID = '"+id+"'";
         try{
             Class.forName("com.mysql.jdbc.Driver");
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(find);
         rs = pat.executeQuery(find);
         while(rs.next()){
-            if(.getSelectedItem().toString().equals(rs.getString("EMP"))){
-                menu = rs.getString("M_T_ID");
-                System.out.print(menu);
-            }
+                orderpaymentid = rs.getString("OP_NUMBER");
+                System.out.print(orderpaymentid);
         }
         rs.close();
         pat.close();
@@ -158,20 +173,19 @@ cal.setTime(date);
         }catch(Exception e){ 
             System.out.print(e);
         } 
-        return menu;
+        return orderpaymentid;
   }
-public String findvendor(){
-            String find = "SELECT M_T_ID,M_T_NAME FROM MENU_TYPE";
+
+public String findreceive(String id){
+            String find = "SELECT PR_ID FROM PRO_RECEIVE WHERE PO_ID = '"+id+"'";
         try{
             Class.forName("com.mysql.jdbc.Driver");
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(find);
         rs = pat.executeQuery(find);
         while(rs.next()){
-            if(m_cata_txt.getSelectedItem().toString().equals(rs.getString("M_T_NAME"))){
-                menu = rs.getString("M_T_ID");
-                System.out.print(menu);
-            }
+                receiveid = rs.getString("PR_ID");
+                System.out.print(receiveid);
         }
         rs.close();
         pat.close();
@@ -179,10 +193,46 @@ public String findvendor(){
         }catch(Exception e){ 
             System.out.print(e);
         } 
-        return menu;
-  }*/
+        return receiveid;
+  }
+public String findempid(String id){
+            String find = "SELECT EMP_ID FROM PRO_ORDER WHERE PO_ID = '"+id+"'";
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(find);
+        rs = pat.executeQuery(find);
+        while(rs.next()){
+                empid = rs.getString("EMP_ID");
+                System.out.print(empid);
+        }
+        rs.close();
+        pat.close();
+        con.close();
+        }catch(Exception e){ 
+            System.out.print(e);
+        } 
+        return empid;
+  }
+public void delete(){
+    deletenakub = true;
+    p_txt1.removeAllItems();
+         p_txt2.removeAllItems();
+         p_txt3.removeAllItems();    
+         p_txt4.removeAllItems();
+         p_txt5.removeAllItems();
+         p_txt6.removeAllItems();
+         p_txt1.addItem(">>Choose<<");
+         p_txt2.addItem(">>Choose<<");
+         p_txt3.addItem(">>Choose<<");
+         p_txt4.addItem(">>Choose<<");
+         p_txt5.addItem(">>Choose<<");
+         p_txt6.addItem(">>Choose<<");
+         deletenakub=false;
+}
   public String id(){
        int count=0;
+       max = 0;
           String sql  ="select PO_ID from PRO_ORDER";
     try{
     Class.forName("com.mysql.jdbc.Driver");
@@ -216,8 +266,45 @@ public String findvendor(){
             }
     return output;
    }
- public String idlist(){
+  public String orderpayment(){
        int count=0;
+       max = 0;
+          String sql  ="select OP_NUMBER from ORDER_PAYMENT";
+    try{
+    Class.forName("com.mysql.jdbc.Driver");
+    con = DriverManager.getConnection(d.url(),d.username(),d.password());
+    pat = con.prepareStatement(sql);
+     rs = pat.executeQuery(sql);
+    while(rs.next()){
+        count++;
+        if(Integer.parseInt(rs.getString("OP_NUMBER"))>max){
+            max = Integer.parseInt(rs.getString("OP_NUMBER"));
+        }
+    }
+    if(count==0){
+            max = 0;
+    }
+    max += 1;
+    if(max<10){
+        output = "000"+max;
+    }else if(max<100){
+        output = "00"+max;
+    }else if(max<1000){
+        output = "0"+max;
+    }else{
+        output = ""+max;
+    }
+    con.close();
+    pat.close();
+    rs.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+    return output;
+   }
+public String idlist(){
+       int count=0;
+       max = 0;
           String sql  ="select POL_NUMBER from PRO_ORDER_LIST";
     try{
     Class.forName("com.mysql.jdbc.Driver");
@@ -238,11 +325,11 @@ public String findvendor(){
         output = "000"+max;
     }else if(max<100){
         output = "00"+max;
-    }else{
+    }else if(max<1000){
         output = "0"+max;
+    }else{
+        output = ""+max;
     }
-    showid_txt.setText(output);
-    createid = output;
     con.close();
     pat.close();
     rs.close();
@@ -251,27 +338,76 @@ public String findvendor(){
             }
     return output;
    }
-    void fillcomboemp(){
-      try{
-          String sql = "SELECT EMP_ID,EMP_FNAME,EMP_LNAME FROM EMPLOYEE WHERE EMP_DEL = 'N'";
-         con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        st = con.createStatement();
-        rs = st.executeQuery(sql);
-        while(rs.next()){
-            emp_txt.addItem(rs.getString("EMP_FNAME")+" "+rs.getString("EMP_LNAME"));
-            Employee e = new Employee();
-            e.setid(rs.getString("EMP_ID"));
-            e.setfname(rs.getString("EMP_FNAME"));
-            e.setlname(rs.getString("EMP_LNAME"));
-            employee.add(e);
+public String receivelist(){
+    max = 0;
+       int count=0;
+          String sql  ="select PRL_NUMBER from PRO_REC_LIST";
+    try{
+    Class.forName("com.mysql.jdbc.Driver");
+    con = DriverManager.getConnection(d.url(),d.username(),d.password());
+    pat = con.prepareStatement(sql);
+     rs = pat.executeQuery(sql);
+    while(rs.next()){
+        count++;
+        if(Integer.parseInt(rs.getString("PRL_NUMBER"))>max){
+            max = Integer.parseInt(rs.getString("PRL_NUMBER"));
         }
-        rs.close();
-        st.close();
-        con.close();
-      }catch(Exception e){
-          System.out.print(e);
-      }
-  }
+    }
+    if(count==0){
+            max = 0;
+    }
+    max += 1;
+    if(max<10){
+        output = "000"+max;
+    }else if(max<100){
+        output = "00"+max;
+    }else if(max<1000){
+        output = "0"+max;
+    }else{
+        output = ""+max;
+    }
+    con.close();
+    pat.close();
+    rs.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+    return output;
+   }
+ public String receive(){
+    max = 0;
+       int count=0;
+          String sql  ="select PR_ID from PRO_RECEIVE";
+    try{
+    Class.forName("com.mysql.jdbc.Driver");
+    con = DriverManager.getConnection(d.url(),d.username(),d.password());
+    pat = con.prepareStatement(sql);
+     rs = pat.executeQuery(sql);
+    while(rs.next()){
+        count++;
+        if(Integer.parseInt(rs.getString("PR_ID").substring(1,4))>max){
+            max = Integer.parseInt(rs.getString("PR_ID").substring(1,4));
+        }
+    }
+    if(count==0){
+            max = 0;
+    }
+    max += 1;
+    if(max<10){
+        output = "R00"+max;
+    }else if(max<100){
+        output = "R0"+max;
+    }else if(max<1000){
+        output = "R"+max;
+    }
+    con.close();
+    pat.close();
+    rs.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+    return output;
+   }
     void fillcombovendor(){
       try{
           String sql = "SELECT V_ID,V_NAME FROM VENDOR WHERE V_DEL = 'N'";
@@ -292,9 +428,9 @@ public String findvendor(){
           
       }
   }
-    void fillcomboproduct(){
+    void fillcomboproduct(String id){
       try{
-          String sql = "SELECT PRO_ID,PRO_NAME,PRO_PRICE FROM PRODUCT WHERE PRO_DEL = 'N'";
+          String sql = "SELECT PRO_ID,V_ID,PRO_NAME,PRO_PRICE FROM PRODUCT WHERE V_ID ='"+id+"' AND PRO_DEL = 'N'";
          con = DriverManager.getConnection(d.url(),d.username(),d.password());
         st = con.createStatement();
         rs = st.executeQuery(sql);
@@ -322,7 +458,7 @@ public String findvendor(){
                ArrayList<Product_Order_Variable> Product_order_list = new ArrayList<>();
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="select PO_ID,EMP_ID,EMP_FNAME,EMP_LNAME,V_ID,V_NAME,PO_DATE,PO_PRICE,PO_REC_DATE,PO_PAY_DATE,PO_UNITS FROM (PRO_ORDER NATURAL JOIN EMPLOYEE)NATURAL JOIN VENDOR WHERE PO_DEL = 'N' ORDER BY PO_DATE";         
+        String sql  ="select PO_ID,EMP_ID,EMP_FNAME,EMP_LNAME,V_ID,V_NAME,PO_DATE,PO_PRICE,PO_REC_DATE,PO_PAY_DATE,PO_UNITS FROM (PRO_ORDER NATURAL JOIN EMPLOYEE)NATURAL JOIN VENDOR WHERE PO_DEL = 'N' ORDER BY PO_ID";         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
          con = DriverManager.getConnection(d.url(),d.username(),d.password());
        st = con.createStatement();
@@ -400,12 +536,9 @@ public void findproduct(String product){
         delete = new javax.swing.JRadioButton();
         jLabel12 = new javax.swing.JLabel();
         create = new javax.swing.JRadioButton();
-        edit = new javax.swing.JRadioButton();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        emp_txt = new javax.swing.JComboBox<>();
         receive_date = new datechooser.beans.DateChooserCombo();
         pay_date = new datechooser.beans.DateChooserCombo();
         jLabel17 = new javax.swing.JLabel();
@@ -425,7 +558,9 @@ public void findproduct(String product){
         jLabel18 = new javax.swing.JLabel();
         p_txt3 = new javax.swing.JComboBox<>();
         jLabel19 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        emp_txt = new javax.swing.JTextField();
+        view = new javax.swing.JRadioButton();
+        jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -461,7 +596,7 @@ public void findproduct(String product){
                 java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, true, true
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -527,7 +662,7 @@ public void findproduct(String product){
                 deleteActionPerformed(evt);
             }
         });
-        getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 540, -1, -1));
+        getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 540, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel12.setText("Function:");
@@ -542,38 +677,15 @@ public void findproduct(String product){
         });
         getContentPane().add(create, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 540, -1, -1));
 
-        edit.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                editFocusLost(evt);
-            }
-        });
-        edit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editActionPerformed(evt);
-            }
-        });
-        getContentPane().add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 540, -1, -1));
-
         jLabel13.setText("Delete");
-        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 540, -1, -1));
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 540, -1, -1));
 
         jLabel14.setText("Create");
         getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 540, -1, -1));
 
-        jLabel15.setText("Edit");
-        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 540, -1, -1));
-
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel16.setText("Employee:");
         getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, -1, -1));
-
-        emp_txt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        emp_txt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                emp_txtActionPerformed(evt);
-            }
-        });
-        getContentPane().add(emp_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 130, 30));
         getContentPane().add(receive_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 490, -1, 30));
         getContentPane().add(pay_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 420, -1, 30));
 
@@ -672,23 +784,31 @@ public void findproduct(String product){
         jLabel19.setText("Product:");
         getContentPane().add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, -1, -1));
 
-        jButton4.setText("jButton4");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        emp_txt.setEditable(false);
+        emp_txt.setEnabled(false);
+        getContentPane().add(emp_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 130, 30));
+
+        view.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                viewActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 180, -1, -1));
+        getContentPane().add(view, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 540, -1, -1));
+
+        jLabel15.setText("View");
+        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 540, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void order_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_order_tableMouseClicked
-if(editnaja==true||deletenaja==true){
+if(deletenaja==true){
+        delete();
         setdate();
         showid_txt.setText(order_table.getModel().getValueAt(order_table.getSelectedRow(),1).toString());
         price_txt.setText(order_table.getModel().getValueAt(order_table.getSelectedRow(),3).toString());
-        emp_txt.setSelectedItem(order_table.getModel().getValueAt(order_table.getSelectedRow(),6).toString());
+        emp_txt.setText(findempid(order_table.getModel().getValueAt(order_table.getSelectedRow(),6).toString()));
+        totalorder = Integer.parseInt(order_table.getModel().getValueAt(order_table.getSelectedRow(),2).toString());
         v_txt.setSelectedItem(order_table.getModel().getValueAt(order_table.getSelectedRow(),7).toString());
         receivedate.setText(order_table.getModel().getValueAt(order_table.getSelectedRow(),4).toString());
         paydate.setText(order_table.getModel().getValueAt(order_table.getSelectedRow(),5).toString());
@@ -696,7 +816,8 @@ if(editnaja==true||deletenaja==true){
         String year = ""+(Integer.parseInt(receive.substring(0,4))+543);
         String month = receive.substring(5,7);
         String day = receive.substring(8,10);
-String now = month+"/"+day+"/"+year;
+        String now = month+"/"+day+"/"+year;
+        //showid_txt.getText();
          try{
         Calendar cal = Calendar.getInstance();
 java.util.Date date = new SimpleDateFormat("MM/dd/yy").parse(now);
@@ -717,87 +838,218 @@ java.util.Date date = new SimpleDateFormat("MM/dd/yy").parse(now);
 cal.setTime(date);
         pay_date.setSelectedDate(cal);
         System.out.print("pay update");
-            if(deletenaja==true){
-                oldrecdate = order_table.getModel().getValueAt(order_table.getSelectedRow(),4).toString().substring(5,7)+"/"+order_table.getModel().getValueAt(order_table.getSelectedRow(),4).toString().substring(8,10)+"/"+order_table.getModel().getValueAt(order_table.getSelectedRow(),4).toString().substring(2,4);
-                oldpaydate = order_table.getModel().getValueAt(order_table.getSelectedRow(),5).toString().substring(5,7)+"/"+order_table.getModel().getValueAt(order_table.getSelectedRow(),5).toString().substring(8,10)+"/"+order_table.getModel().getValueAt(order_table.getSelectedRow(),5).toString().substring(2,4);
-                receivedate.setText(oldrecdate);
-                paydate.setText(oldpaydate);
-                System.out.println(oldrecdate);
-                System.out.println(oldpaydate);
-    }
+}catch(Exception e){
+    System.out.print(e);
+}
+         int productnaja = 0;
+         String sql = "SELECT PRO_NAME FROM PRODUCT WHERE PRO_ID IN (SELECT PRO_ID FROM PRO_ORDER_LIST WHERE PO_ID='"+showid_txt.getText()+"')";
+try{
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        st = con.createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+            adding = true;
+            if(productnaja==0){
+                p_txt1.setSelectedItem(rs.getString("PRO_NAME"));
+            }else if(productnaja==1){
+                p_txt2.setSelectedItem(rs.getString("PRO_NAME"));
+            }else if(productnaja==2){
+                p_txt3.setSelectedItem(rs.getString("PRO_NAME"));
+            }else if(productnaja==3){
+                p_txt4.setSelectedItem(rs.getString("PRO_NAME"));
+            }else if(productnaja==4){
+                p_txt5.setSelectedItem(rs.getString("PRO_NAME"));
+            }else if(productnaja==5){
+                p_txt6.setSelectedItem(rs.getString("PRO_NAME"));
+            }
+            productnaja++;
+        }
+        rs.close();
+        st.close();
+        con.close();
+        adding=false;
+System.out.print(sql);
 }catch(Exception e){
     System.out.print(e);
 }
          System.out.print(pay+" "+receive);
-        }
+        }else if(viewnaja==true){
+            if(order_table.getModel().getValueAt(order_table.getSelectedRow(),1).toString().equals(checkview)){
+                Product_Order_Variable p = new Product_Order_Variable();
+                p.setview(order_table.getModel().getValueAt(order_table.getSelectedRow(),1).toString());
+                Product_Order_view pv = new Product_Order_view();
+                pv.setVisible(true);
+                JOptionPane.showMessageDialog(null,checkview);
+                checkview = null;
+            }else{
+                checkview = order_table.getModel().getValueAt(order_table.getSelectedRow(),1).toString();
+            }
+}
     }//GEN-LAST:event_order_tableMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String orderid = id();
-        if(product.size()==0){
+        String orderid = showid_txt.getText();
+        String receive = receive();
+        String orderpayment = orderpayment();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if(createnaja==true){
+        if(product.isEmpty()){
             JOptionPane.showMessageDialog(null,"Product was empty.\nPlease choose product for ordering.");
         }else{
         String id = showid_txt.getText();
-        String emp = employee.get(emp_txt.getSelectedIndex()).getid();
-        String vendornaja = vendor.get(v_txt.getSelectedIndex()).getid();
-        if(createnaja==true){
+        String emp = emp_txt.getText();
+        String vendornaja = vendor.get(v_txt.getSelectedIndex()-1).getid();
+        System.out.print(vendornaja);
+        String price = price_txt.getText();
+        String recdate = sdf.format(receive_date.getSelectedDate().getTime());
+        String paydate = sdf.format(pay_date.getSelectedDate().getTime());
+            String create = "INSERT INTO PRO_ORDER VALUE('"+orderid+"','"+LocalDate.now()+"','"+price+"','"+recdate+"','"+paydate+"','"+product.size()+"','"+emp+"','"+vendornaja+"','N')";  
+            String createorder = "INSERT ORDER_PAYMENT VALUE('"+orderpayment+"','"+orderid+"','"+vendornaja+"','"+paydate+"','N','N')";
+            String createreceive = "INSERT PRO_RECEIVE VALUE('"+receive+"','"+recdate+"','N','"+emp+"','"+orderid+"','N')";
+            System.out.println(create);
+            System.out.println(createorder);
+            System.out.println(createreceive);
+      try{
+        Class.forName("com.mysql.jdbc.Driver");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(create);
+        pat.executeUpdate(create);
+        //JOptionPane.showMessageDialog(null,"Crerate order success!");
+        pat.close();
+        con.close();
+        }catch(Exception e){
+            System.out.print(e);
+        }
+      try{
+        Class.forName("com.mysql.jdbc.Driver");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(createorder);
+        pat.executeUpdate(createorder);
+        //JOptionPane.showMessageDialog(null,"Crerate orderpayment success!");
+        pat.close();
+        con.close();
+        }catch(Exception e){
+            System.out.print(e);
+        }
+      try{
+        Class.forName("com.mysql.jdbc.Driver");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(createreceive);
+        pat.executeUpdate(createreceive);
+        //JOptionPane.showMessageDialog(null,"Crerate orderreceive success!");
+        pat.close();
+        con.close();
+        }catch(Exception e){
+            System.out.print(e);
+        }
             for(int i =0;i<product.size();i++){
-                findproduct(product.get(i).getproduct());
-                
-        String eiei = "INSERT INTO PRO_ORDER_LIST VALUE('"+idlist()+"','"+orderid+"','"+productid+"','"+product.get(i).getproductunit()+"','"+productprice+"','N')";  
-        System.out.print(eiei);
+        findproduct(product.get(i).getproduct());
+        String orderlist = "INSERT INTO PRO_ORDER_LIST VALUE('"+idlist()+"','"+orderid+"','"+productid+"','"+product.get(i).getproductunit()+"','"+productprice+"','N')";  
+        System.out.println(orderlist);
         try{
         Class.forName("com.mysql.jdbc.Driver");
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(eiei);
-        pat.executeUpdate(eiei);
+        pat = con.prepareStatement(orderlist);
+        pat.executeUpdate(orderlist);
+        pat.close();
+        con.close();
+        }catch(Exception e){
+            System.out.print(e);
+        }
+        String receivelist = "INSERT INTO PRO_REC_LIST VALUE('"+receivelist()+"','"+receive+"','"+productid+"','"+product.get(i).getproductunit()+"','"+productprice+"','N','N')";  
+        System.out.println(receivelist);
+        try{
+        Class.forName("com.mysql.jdbc.Driver");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(receivelist);
+        pat.executeUpdate(receivelist);
         pat.close();
         con.close();
         }catch(Exception e){
             System.out.print(e);
         }
             }
-            product.clear();
-            clear();
-        }
-/*        DefaultTableModel dm = (DefaultTableModel)menu_table.getModel();
+        product.clear();
+        id();
+        clear();
+        delete();
+       DefaultTableModel dm = (DefaultTableModel)order_table.getModel();
         while(dm.getRowCount() > 0)
         {       
         dm.removeRow(0);
         }
-        show_product();
-        id();
-        clear();
-        }else if(editnaja==true){
-            String edit = "UPDATE MENU SET MENU_NAME = '"+menu_name+"',MENU_PRICE = '"+menu_price+"',M_T_ID = '"+menu+"' WHERE MENU_ID = '"+id+"'";  
-            System.out.print(edit);
+        show_order();
+        }
+        }else if(deletenaja==true){
+            String orderdelete = "UPDATE PRO_ORDER SET PO_DEL = 'Y' WHERE PO_ID ='"+orderid+"'";
+            String paymentdelete = "UPDATE ORDER_PAYMENT SET OP_DEL = 'Y' WHERE PO_ID ='"+orderid+"'";
+            String receivedelete = "UPDATE PRO_RECEIVE SET PR_DEL = 'Y' WHERE PO_ID ='"+orderid+"'";
+            String deletereceivelist = "UPDATE PRO_REC_LIST SET PRL_DEL = 'Y' WHERE PR_ID ='"+findreceive(orderid)+"'";
+            String deleteorderlist = "UPDATE PRO_ORDER_LIST SET POL_DEL = 'Y' WHERE PO_ID ='"+orderid+"'";
+            System.out.println(orderdelete);
+            System.out.println(paymentdelete);
+            System.out.println(receivedelete);
+            System.out.println(deletereceivelist);
+            System.out.println(deleteorderlist);
+            System.out.println(totalorder);
+            System.out.println("eiei"+findreceive(orderid));
+            System.out.println("eiei2"+orderid);
             try{
                Class.forName("com.mysql.jdbc.Driver");
                 con = DriverManager.getConnection(d.url(),d.username(),d.password());
-                pat = con.prepareStatement(edit);
-                pat.executeUpdate(edit);
+                pat = con.prepareStatement(orderdelete);
+                pat.executeUpdate(orderdelete);
                 pat.close();
-                clear();
-                JOptionPane.showMessageDialog(null,"Update Success");
                 con.close(); 
             }catch(Exception e){
                 System.out.print(e);
             }
-                  DefaultTableModel dm = (DefaultTableModel)menu_table.getModel();
-        System.out.print(dm.getRowCount());
-        while(dm.getRowCount() > 0)
-        {       
-        dm.removeRow(0);
-        }
-        show_product();  
-        }else if(deletenaja==true){
-            String delete = "UPDATE MENU SET MENU_DEL = 'Y' WHERE MENU_ID ='"+id+"'";
-            System.out.print(delete);
             try{
                Class.forName("com.mysql.jdbc.Driver");
                 con = DriverManager.getConnection(d.url(),d.username(),d.password());
-                pat = con.prepareStatement(delete);
-                pat.executeUpdate(delete);
+                pat = con.prepareStatement(paymentdelete);
+                pat.executeUpdate(paymentdelete);
+                pat.close();
+                con.close(); 
+            }catch(Exception e){
+                System.out.print(e);
+            }
+            try{
+               Class.forName("com.mysql.jdbc.Driver");
+                con = DriverManager.getConnection(d.url(),d.username(),d.password());
+                pat = con.prepareStatement(receivedelete);
+                pat.executeUpdate(receivedelete);
+                pat.close();
+                con.close(); 
+            }catch(Exception e){
+                System.out.print(e);
+            }
+            try{
+               Class.forName("com.mysql.jdbc.Driver");
+                con = DriverManager.getConnection(d.url(),d.username(),d.password());
+                pat = con.prepareStatement(deletereceivelist);
+                pat.executeUpdate(deletereceivelist);
+                pat.close();
+                con.close(); 
+            }catch(Exception e){
+                System.out.print(e);
+            }
+            try{
+               Class.forName("com.mysql.jdbc.Driver");
+                con = DriverManager.getConnection(d.url(),d.username(),d.password());
+                pat = con.prepareStatement(orderdelete);
+                pat.executeUpdate(orderdelete);
+                pat.close();
+                clear();
+                con.close(); 
+            }catch(Exception e){
+                System.out.print(e);
+            }
+            try{
+               Class.forName("com.mysql.jdbc.Driver");
+                con = DriverManager.getConnection(d.url(),d.username(),d.password());
+                pat = con.prepareStatement(deleteorderlist);
+                pat.executeUpdate(deleteorderlist);
                 pat.close();
                 clear();
                 JOptionPane.showMessageDialog(null,"Delete Success");
@@ -805,73 +1057,57 @@ cal.setTime(date);
             }catch(Exception e){
                 System.out.print(e);
             }
-        DefaultTableModel dm = (DefaultTableModel)menu_table.getModel();
+                       
+        DefaultTableModel dm = (DefaultTableModel)order_table.getModel();
         System.out.print(dm.getRowCount());
         while(dm.getRowCount() > 0)
         {       
         dm.removeRow(0);
         }
-        show_product();
-        }*/
+        show_order();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        clear();
         product.clear();
+        delete();
+        clear();
         showid_txt.setText(createid);
         order_table.getSelectionModel().clearSelection();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
+        product.clear();
         unlock(); 
+        delete();
         clear();
         order_table.getSelectionModel().clearSelection();
         System.out.print("create!!");         
-        create.setEnabled(false);       
-        edit.setEnabled(true);        
+        create.setEnabled(false);              
         delete.setEnabled(true);
+        view.setEnabled(true);
         showid_txt.setText(createid);
         delete.setSelected(false);
-        edit.setSelected(false);
+        view.setSelected(false);
         createnaja = true;
-        editnaja = false;
         deletenaja = false;
+        viewnaja = false;
     }//GEN-LAST:event_createActionPerformed
 
-    private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
-        unlock();
-        clear();
-        order_table.getSelectionModel().clearSelection();
-        System.out.print("edit!!");
-        edit.setEnabled(false);
-        create.setEnabled(true);                    
-        delete.setEnabled(true);
-        delete.setSelected(false);
-        create.setSelected(false);
-        editnaja=true;
-        createnaja = false;
-        deletenaja = false;
-    }//GEN-LAST:event_editActionPerformed
-
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        lock(); 
         clear();
+        lock(); 
         order_table.getSelectionModel().clearSelection();
         System.out.print("delete!!");
         delete.setEnabled(false);
         create.setEnabled(true);
-        edit.setEnabled(true);
+        view.setEnabled(true);
         create.setSelected(false);
-        edit.setSelected(false);
+        view.setSelected(false);
         deletenaja = true;
-        editnaja = false;
         createnaja = false;
+        viewnaja = false;
     }//GEN-LAST:event_deleteActionPerformed
-
-    private void editFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_editFocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editFocusLost
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
      this.setVisible(false);
@@ -879,6 +1115,13 @@ cal.setTime(date);
 
     private void v_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_v_txtActionPerformed
         System.out.println(v_txt.getSelectedItem().toString());
+        for(int i =0;i<vendor.size();i++){
+            System.out.print(vendor.get(i).getid());
+            if(vendor.get(i).getname().equals(v_txt.getSelectedItem().toString())){
+                       fillcomboproduct(vendor.get(i).getid()); 
+                       break;
+            }
+        }
     }//GEN-LAST:event_v_txtActionPerformed
 
     private void paydateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paydateActionPerformed
@@ -886,17 +1129,25 @@ cal.setTime(date);
     }//GEN-LAST:event_paydateActionPerformed
 
     private void p_txt6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt6ActionPerformed
+          if(deletenakub==true||adding == true){
+                }else{
+        findproduct(p_txt6.getSelectedItem().toString());
         boolean check = false;
+         boolean confirm = false;
+         JOptionPane inpOption = new JOptionPane();
         if(p_txt6.getSelectedIndex()==0){ 
        }else{
            if(product.size()==0){
                boolean checkint = true;
-               String amouth;
+               String amouth = null;
+               boolean nullcheck = false;
                do{
-               amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
-                if(amouth  == null || (amouth  != null && ("".equals(amouth ))))   
-                {JOptionPane.showMessageDialog(null,"Null input");
+                amouth = inpOption.showInputDialog(null,"Please input amount of product","",JOptionPane.QUESTION_MESSAGE); 
+                if(amouth==null){
+                    inpOption.showMessageDialog(null, "Canceled");
+                     nullcheck=false;
                 }else{
+                    System.out.print(amouth);
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -904,17 +1155,30 @@ cal.setTime(date);
                        break;
                    }
                }
-}               
+               }
                }while(checkint != true);
+               if(nullcheck==false){
+                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt6.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
                p.setproduct((p_txt6.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
-              findproduct(p_txt6.getSelectedItem().toString());
+               product.add(p);
               price6 = Integer.parseInt(amouth)*productprice;
               sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-               product.add(p);
+              p_txt6.setEnabled(false);
+               }else{
+                   p_txt6.setSelectedIndex(0);
+               }
+            }else{
+                   p_txt6.setSelectedIndex(0);
+               }
            }else{ 
            for(int i =0;i<product.size();i++){
                if(p_txt6.getSelectedItem().toString().equals(product.get(i).getproduct())){
@@ -926,9 +1190,10 @@ cal.setTime(date);
        }
            if(check==false){
                boolean checkint = true;
-               String amouth;
+               String amouth = null;
                do{
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+               System.out.print(amouth);
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -937,36 +1202,53 @@ cal.setTime(date);
                    }
                }
                }while(checkint != true);
+                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt6.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
                p.setproduct(p_txt6.getSelectedItem().toString());
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               productname = (p_txt6.getSelectedItem().toString());
-              findproduct(p_txt6.getSelectedItem().toString());
               price6 = Integer.parseInt(amouth)*productprice;
               sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-               product.add(p);
+              p_txt6.setEnabled(false);
+           }else{
+             p_txt6.setSelectedIndex(0); 
            }
            }
         }
+        }
            System.out.print(productname);
+                }
     }//GEN-LAST:event_p_txt6ActionPerformed
 
     private void p_txt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt2ActionPerformed
-         boolean check = false;
-        if(p_txt2.getSelectedIndex()==0){ 
+          if(deletenakub==true||adding == true){
+                }else{
+        findproduct(p_txt2.getSelectedItem().toString());
+        boolean check = false;
+         boolean confirm = false;
+         JOptionPane inpOption = new JOptionPane();
+        if(p_txt1.getSelectedIndex()==0){ 
        }else{
            if(product.size()==0){
                boolean checkint = true;
-               String amouth;
+               String amouth = null;
+               boolean nullcheck = false;
                do{
-               amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
-                if(amouth  == null || (amouth  != null && ("".equals(amouth ))))   
-                {JOptionPane.showMessageDialog(null,"Null input");
+                amouth = inpOption.showInputDialog(null,"Please input amount of product","",JOptionPane.QUESTION_MESSAGE); 
+                if(amouth==null){
+                    inpOption.showMessageDialog(null, "Canceled");
+                     nullcheck=false;
                 }else{
+                    System.out.print(amouth);
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -974,17 +1256,30 @@ cal.setTime(date);
                        break;
                    }
                }
-}               
+               }
                }while(checkint != true);
+               if(nullcheck==false){
+                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt2.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
-               p.setproduct((p_txt2.getSelectedItem().toString()));
+               p.setproduct((p_txt1.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
-              findproduct(p_txt2.getSelectedItem().toString());
+               product.add(p);
               price2 = Integer.parseInt(amouth)*productprice;
               sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-               product.add(p);
+              p_txt2.setEnabled(false);
+               }else{
+                   p_txt2.setSelectedIndex(0);
+               }
+            }else{
+                   p_txt2.setSelectedIndex(0);
+               }
            }else{ 
            for(int i =0;i<product.size();i++){
                if(p_txt2.getSelectedItem().toString().equals(product.get(i).getproduct())){
@@ -996,9 +1291,10 @@ cal.setTime(date);
        }
            if(check==false){
                boolean checkint = true;
-               String amouth;
+               String amouth = null;
                do{
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+               System.out.print(amouth);
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1007,36 +1303,53 @@ cal.setTime(date);
                    }
                }
                }while(checkint != true);
+                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt2.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
                p.setproduct(p_txt2.getSelectedItem().toString());
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               productname = (p_txt2.getSelectedItem().toString());
-              findproduct(p_txt2.getSelectedItem().toString());
               price2 = Integer.parseInt(amouth)*productprice;
               sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-               product.add(p);
+              p_txt2.setEnabled(false);
+           }else{
+             p_txt2.setSelectedIndex(0); 
            }
            }
         }
+        }
            System.out.print(productname);
+                }
     }//GEN-LAST:event_p_txt2ActionPerformed
 
     private void p_txt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt1ActionPerformed
-         boolean check = false;
+         if(deletenakub==true||adding == true){
+                }else{
+        findproduct(p_txt1.getSelectedItem().toString());
+        boolean check = false;
+         boolean confirm = false;
+         JOptionPane inpOption = new JOptionPane();
         if(p_txt1.getSelectedIndex()==0){ 
        }else{
            if(product.size()==0){
                boolean checkint = true;
-               String amouth;
+               String amouth = null;
+               boolean nullcheck = false;
                do{
-               amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
-                if(amouth  == null || (amouth  != null && ("".equals(amouth ))))   
-                {JOptionPane.showMessageDialog(null,"Null input");
+                amouth = inpOption.showInputDialog(null,"Please input amount of product","",JOptionPane.QUESTION_MESSAGE); 
+                if(amouth==null){
+                    inpOption.showMessageDialog(null, "Canceled");
+                     nullcheck=false;
                 }else{
+                    System.out.print(amouth);
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1044,17 +1357,30 @@ cal.setTime(date);
                        break;
                    }
                }
-}               
+               }
                }while(checkint != true);
+               if(nullcheck==false){
+                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt1.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
                p.setproduct((p_txt1.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
-              findproduct(p_txt1.getSelectedItem().toString());
+               product.add(p);
               price1 = Integer.parseInt(amouth)*productprice;
               sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-               product.add(p);
+              p_txt1.setEnabled(false);
+               }else{
+                   p_txt1.setSelectedIndex(0);
+               }
+            }else{
+                   p_txt1.setSelectedIndex(0);
+               }
            }else{ 
            for(int i =0;i<product.size();i++){
                if(p_txt1.getSelectedItem().toString().equals(product.get(i).getproduct())){
@@ -1066,9 +1392,10 @@ cal.setTime(date);
        }
            if(check==false){
                boolean checkint = true;
-               String amouth;
+               String amouth = null;
                do{
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+               System.out.print(amouth);
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1077,26 +1404,39 @@ cal.setTime(date);
                    }
                }
                }while(checkint != true);
+                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt1.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
                p.setproduct(p_txt1.getSelectedItem().toString());
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               productname = (p_txt1.getSelectedItem().toString());
-              findproduct(p_txt1.getSelectedItem().toString());
               price1 = Integer.parseInt(amouth)*productprice;
               sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-               product.add(p);
+              p_txt1.setEnabled(false);
+           }else{
+             p_txt1.setSelectedIndex(0); 
            }
            }
         }
+        }
            System.out.print(productname);
+                }
     }//GEN-LAST:event_p_txt1ActionPerformed
 
     private void p_txt4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt4ActionPerformed
-          boolean check = false;
+               if(deletenakub==true||adding == true){
+               }else{
+        findproduct(p_txt4.getSelectedItem().toString());    
+        boolean check = false;
+         boolean confirm = false;
         if(p_txt4.getSelectedIndex()==0){ 
        }else{
            if(product.size()==0){
@@ -1104,9 +1444,11 @@ cal.setTime(date);
                String amouth;
                do{
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
-                if(amouth  == null || (amouth  != null && ("".equals(amouth ))))   
+                if(amouth  == null || (amouth  != null && ("".equals(amouth )))){  
                 {JOptionPane.showMessageDialog(null,"Null input");
-                }else{
+                amouth = null;
+                }
+                }
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1114,17 +1456,25 @@ cal.setTime(date);
                        break;
                    }
                }
-}               
                }while(checkint != true);
+                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt4.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
                p.setproduct((p_txt4.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
-              findproduct(p_txt4.getSelectedItem().toString());
-              price1 = Integer.parseInt(amouth)*productprice;
+               product.add(p);
+              price4 = Integer.parseInt(amouth)*productprice;
               sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-               product.add(p);
+              p_txt2.setEnabled(false);
+               }else{
+                   p_txt4.setSelectedIndex(0);
+               }
            }else{ 
            for(int i =0;i<product.size();i++){
                if(p_txt4.getSelectedItem().toString().equals(product.get(i).getproduct())){
@@ -1147,26 +1497,39 @@ cal.setTime(date);
                    }
                }
                }while(checkint != true);
+                 if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt4.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
                p.setproduct(p_txt4.getSelectedItem().toString());
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               productname = (p_txt4.getSelectedItem().toString());
-              findproduct(p_txt4.getSelectedItem().toString());
               price4 = Integer.parseInt(amouth)*productprice;
               sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-               product.add(p);
+              p_txt4.setEnabled(false);
+           }else{
+             p_txt4.setSelectedIndex(0); 
            }
            }
         }
+        }
            System.out.print(productname);
+               }
     }//GEN-LAST:event_p_txt4ActionPerformed
 
     private void p_txt5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt5ActionPerformed
+           if(deletenakub==true||adding == true){
+           }else{
+         findproduct(p_txt5.getSelectedItem().toString());
          boolean check = false;
+         boolean confirm = false;
         if(p_txt5.getSelectedIndex()==0){ 
        }else{
            if(product.size()==0){
@@ -1174,9 +1537,11 @@ cal.setTime(date);
                String amouth;
                do{
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
-                if(amouth  == null || (amouth  != null && ("".equals(amouth ))))   
+                if(amouth  == null || (amouth  != null && ("".equals(amouth )))){  
                 {JOptionPane.showMessageDialog(null,"Null input");
-                }else{
+                amouth = null;
+                }
+                }
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1184,17 +1549,25 @@ cal.setTime(date);
                        break;
                    }
                }
-}               
                }while(checkint != true);
+                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt5.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
                p.setproduct((p_txt5.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
-              findproduct(p_txt5.getSelectedItem().toString());
+               product.add(p);
               price5 = Integer.parseInt(amouth)*productprice;
               sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-               product.add(p);
+              p_txt5.setEnabled(false);
+               }else{
+                   p_txt5.setSelectedIndex(0);
+               }
            }else{ 
            for(int i =0;i<product.size();i++){
                if(p_txt5.getSelectedItem().toString().equals(product.get(i).getproduct())){
@@ -1217,27 +1590,39 @@ cal.setTime(date);
                    }
                }
                }while(checkint != true);
+                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt5.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
                p.setproduct(p_txt5.getSelectedItem().toString());
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               productname = (p_txt5.getSelectedItem().toString());
-              findproduct(p_txt5.getSelectedItem().toString());
               price5 = Integer.parseInt(amouth)*productprice;
               sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-              oldprice = Integer.parseInt(amouth)*productprice;
-               product.add(p);
+              p_txt5.setEnabled(false);
+           }else{
+             p_txt5.setSelectedIndex(0); 
            }
            }
         }
+        }
            System.out.print(productname);
+           }
     }//GEN-LAST:event_p_txt5ActionPerformed
 
     private void p_txt3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt3ActionPerformed
+          if(deletenakub==true||adding == true){
+          }else{
+        findproduct(p_txt3.getSelectedItem().toString());
         boolean check = false;
+         boolean confirm = false;
         if(p_txt3.getSelectedIndex()==0){ 
        }else{
            if(product.size()==0){
@@ -1245,9 +1630,11 @@ cal.setTime(date);
                String amouth;
                do{
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
-                if(amouth  == null || (amouth  != null && ("".equals(amouth ))))   
+                if(amouth  == null || (amouth  != null && ("".equals(amouth )))){  
                 {JOptionPane.showMessageDialog(null,"Null input");
-                }else{
+                amouth = null;
+                }
+                }
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1255,18 +1642,25 @@ cal.setTime(date);
                        break;
                    }
                }
-}               
                }while(checkint != true);
+                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt3.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
                p.setproduct((p_txt3.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
-              findproduct(p_txt3.getSelectedItem().toString());
-              currentprice = Integer.parseInt(amouth)*productprice;
-              sum += currentprice - oldprice;
+               product.add(p);
+              price3 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-              oldprice = Integer.parseInt(amouth)*productprice;
-               product.add(p);
+              p_txt3.setEnabled(false);
+               }else{
+                   p_txt3.setSelectedIndex(0);
+               }
            }else{ 
            for(int i =0;i<product.size();i++){
                if(p_txt3.getSelectedItem().toString().equals(product.get(i).getproduct())){
@@ -1289,34 +1683,48 @@ cal.setTime(date);
                    }
                }
                }while(checkint != true);
+                 if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt3.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
                p.setproduct(p_txt3.getSelectedItem().toString());
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               productname = (p_txt3.getSelectedItem().toString());
-              findproduct(p_txt3.getSelectedItem().toString());
-              currentprice = Integer.parseInt(amouth)*productprice;
-              sum += currentprice - oldprice;
+              price3 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-              oldprice = Integer.parseInt(amouth)*productprice;
-               product.add(p);
+              p_txt3.setEnabled(false);
+           }else{
+             p_txt3.setSelectedIndex(0); 
            }
            }
+        }
         }
            System.out.print(productname);
+          }
     }//GEN-LAST:event_p_txt3ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        for(int i=0;i<product.size();i++){
-            System.out.println(i+": "+product.get(i).getproduct()+"-"+product.get(i).getproductunit());
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void viewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewActionPerformed
 
-    private void emp_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emp_txtActionPerformed
-        System.out.println(emp_txt.getSelectedItem().toString());
-    }//GEN-LAST:event_emp_txtActionPerformed
+        clear();
+        lock(); 
+        order_table.getSelectionModel().clearSelection();
+        JOptionPane.showMessageDialog(null,"Double Click Row of Table for view details of Order!");
+        delete.setEnabled(true);
+        create.setEnabled(true);
+        view.setEnabled(false);
+        create.setSelected(false);
+        delete.setSelected(false);
+        deletenaja = false;
+        createnaja = false;
+        viewnaja = true;
+    }//GEN-LAST:event_viewActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1419,12 +1827,10 @@ cal.setTime(date);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton create;
     private javax.swing.JRadioButton delete;
-    private javax.swing.JRadioButton edit;
-    private javax.swing.JComboBox<String> emp_txt;
+    private javax.swing.JTextField emp_txt;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1458,5 +1864,6 @@ cal.setTime(date);
     private javax.swing.JTextField receivedate;
     private javax.swing.JTextField showid_txt;
     private javax.swing.JComboBox<String> v_txt;
+    private javax.swing.JRadioButton view;
     // End of variables declaration//GEN-END:variables
 }

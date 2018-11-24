@@ -95,6 +95,7 @@ public class Employee_Table extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         emp_table = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(900, 550));
@@ -156,6 +157,9 @@ public class Employee_Table extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Employee");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 10, 830, -1));
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 153));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 550));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -256,6 +260,7 @@ public class Employee_Table extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable emp_table;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
