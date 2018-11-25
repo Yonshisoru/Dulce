@@ -22,6 +22,14 @@ static private int currentedit = 0;
 static private int currentleave = 0;
 static private boolean change = false;
 static private boolean leavenaja = false;
+static private int orderpay;
+static private int receive;
+public int getorderpay(){
+    return orderpay;
+}
+public int getreceive(){
+    return receive;
+}
     public int editenable(){
         return this.edit;
     }
@@ -76,4 +84,10 @@ static private boolean leavenaja = false;
     public void setname(String name){
         this.name = name;
     }
+    public void setorderpayment(int orderpay){
+    this.orderpay = orderpay;
+}
+        public void setreceive(int receive){
+    this.receive = receive;
+}
 }

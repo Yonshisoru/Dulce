@@ -156,6 +156,9 @@ String status = null;    /**
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
             }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
             public void windowDeactivated(java.awt.event.WindowEvent evt) {
                 formWindowDeactivated(evt);
             }
@@ -318,7 +321,10 @@ String status = null;    /**
     }//GEN-LAST:event_showdateActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    this.setVisible(false);
+        m.setchange(false);
+        m.seteditenable(1);
+        m.seton(0);
+        this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -399,16 +405,22 @@ String status = null;    /**
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        Main_variable mk = new Main_variable();
-        mk.setchange(false);
-        mk.seteditenable(0);
+        m.setchange(false);
+        m.seteditenable(1);
+        m.seton(0);
     }//GEN-LAST:event_formWindowClosed
 
     private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
-        Main_variable mk = new Main_variable();
-        mk.setchange(false);
-        mk.seteditenable(0);
+        m.setchange(false);
+        m.seteditenable(1);
+        m.seton(0);
     }//GEN-LAST:event_formWindowDeactivated
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        m.setchange(false);
+        m.seteditenable(1);
+        m.seton(0);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

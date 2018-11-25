@@ -27,6 +27,7 @@ public class Schedule_leave_admin extends javax.swing.JFrame {
     ResultSet rs = null;
     Statement st = null;
     int period = 0;
+    Main_variable m = new Main_variable();
     String status =null;
     
     /**
@@ -106,6 +107,9 @@ public class Schedule_leave_admin extends javax.swing.JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
             public void windowDeactivated(java.awt.event.WindowEvent evt) {
                 formWindowDeactivated(evt);
@@ -262,16 +266,22 @@ public class Schedule_leave_admin extends javax.swing.JFrame {
     }//GEN-LAST:event_ConfirmActionPerformed
 
     private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
-             Main_variable mk = new Main_variable();
-        mk.setleavenaja(false);
-        mk.setleave(0);
+        m.seton(0);
+        m.setleavenaja(false);
+        m.setleave(0);
     }//GEN-LAST:event_formWindowDeactivated
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-             Main_variable mk = new Main_variable();
-        mk.setleavenaja(false);
-        mk.setleave(0);
+        m.seton(0);
+        m.setleavenaja(false);
+        m.setleave(1);
     }//GEN-LAST:event_formWindowClosed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        m.seton(0);
+        m.setleavenaja(false);
+        m.setleave(1);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

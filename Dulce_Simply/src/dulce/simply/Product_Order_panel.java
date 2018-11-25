@@ -458,7 +458,7 @@ public String receivelist(){
                ArrayList<Product_Order_Variable> Product_order_list = new ArrayList<>();
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="select PO_ID,EMP_ID,EMP_FNAME,EMP_LNAME,V_ID,V_NAME,PO_DATE,PO_PRICE,PO_REC_DATE,PO_PAY_DATE,PO_UNITS FROM (PRO_ORDER NATURAL JOIN EMPLOYEE)NATURAL JOIN VENDOR WHERE PO_DEL = 'N' ORDER BY PO_ID";         
+        String sql  ="select PO_ID,EMP_ID,EMP_FNAME,EMP_LNAME,V_ID,V_NAME,PO_DATE,PO_PRICE,PO_REC_DATE,PO_PAY_DATE,PO_UNITS,PR_STATUS,OP_STATUS FROM (((PRO_ORDER NATURAL JOIN EMPLOYEE)NATURAL JOIN VENDOR)NATURAL JOIN PRO_RECEIVE)NATURAL JOIN ORDER_PAYMENT WHERE PO_DEL = 'N' ORDER BY PO_ID";         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
          con = DriverManager.getConnection(d.url(),d.username(),d.password());
        st = con.createStatement();
@@ -476,6 +476,8 @@ public String receivelist(){
             p.setpay_date(rs.getString("PO_PAY_DATE"));
             p.setunit(rs.getInt("PO_UNITS"));
             p.setprice(rs.getInt("PO_PRICE"));
+            p.setpaystatus(rs.getString("OP_STATUS"));
+            p.setreceivestatus(rs.getString("PR_STATUS"));
             System.out.print(p.e.getid());
             Product_order_list.add(p);
         }
@@ -490,7 +492,7 @@ public String receivelist(){
     public void show_order(){
         ArrayList<Product_Order_Variable>Product_order_list = Product_order_List();
         DefaultTableModel model = (DefaultTableModel)order_table.getModel();
-        Object[] row = new Object[8];
+        Object[] row = new Object[10];
         for(int i=0;i<Product_order_list.size();i++){
             row[0]=Product_order_list.get(i).getdate();
             row[1]=Product_order_list.get(i).getid();
@@ -500,6 +502,8 @@ public String receivelist(){
             row[5]=Product_order_list.get(i).getpay_date();
             row[6]=Product_order_list.get(i).e.getfname()+" "+Product_order_list.get(i).e.getlname();
             row[7]=Product_order_list.get(i).v.getname();
+            row[8]=Product_order_list.get(i).getpaystatus();
+            row[9]=Product_order_list.get(i).getreceivestatus();
             model.addRow(row);
         }
     }
@@ -562,7 +566,8 @@ public void findproduct(String product){
         view = new javax.swing.JRadioButton();
         jLabel15 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1530, 800));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         locked.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -589,14 +594,14 @@ public void findproduct(String product){
 
             },
             new String [] {
-                "Date", "ID", "Total", "Price", "Receive date", "Pay date", "Employee", "Vendor"
+                "Date", "ID", "Total", "Price", "Receive date", "Pay date", "Employee", "Vendor", "Pay Status", "Receive Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -615,7 +620,7 @@ public void findproduct(String product){
         });
         jScrollPane1.setViewportView(order_table);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 0, 820, 680));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 0, 900, 680));
 
         showid_txt.setEditable(false);
         showid_txt.setEnabled(false);
@@ -877,7 +882,7 @@ System.out.print(sql);
             if(order_table.getModel().getValueAt(order_table.getSelectedRow(),1).toString().equals(checkview)){
                 Product_Order_Variable p = new Product_Order_Variable();
                 p.setview(order_table.getModel().getValueAt(order_table.getSelectedRow(),1).toString());
-                Product_Order_view pv = new Product_Order_view();
+                Product_Order_List_view pv = new Product_Order_List_view();
                 pv.setVisible(true);
                 JOptionPane.showMessageDialog(null,checkview);
                 checkview = null;
@@ -1129,25 +1134,23 @@ System.out.print(sql);
     }//GEN-LAST:event_paydateActionPerformed
 
     private void p_txt6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt6ActionPerformed
-          if(deletenakub==true||adding == true){
-                }else{
-        findproduct(p_txt6.getSelectedItem().toString());
-        boolean check = false;
+         boolean foundnull = false;
+        if(deletenakub==true||adding == true){
+           }else{
+         findproduct(p_txt6.getSelectedItem().toString());
+         boolean check = false;
          boolean confirm = false;
-         JOptionPane inpOption = new JOptionPane();
         if(p_txt6.getSelectedIndex()==0){ 
        }else{
            if(product.size()==0){
                boolean checkint = true;
-               String amouth = null;
-               boolean nullcheck = false;
+               String amouth;
                do{
-                amouth = inpOption.showInputDialog(null,"Please input amount of product","",JOptionPane.QUESTION_MESSAGE); 
-                if(amouth==null){
-                    inpOption.showMessageDialog(null, "Canceled");
-                     nullcheck=false;
+               amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+                if(amouth  == null){  
+                p_txt6.setSelectedIndex(0);
+                foundnull = true;
                 }else{
-                    System.out.print(amouth);
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1155,14 +1158,21 @@ System.out.print(sql);
                        break;
                    }
                }
-               }
+                }
                }while(checkint != true);
-               if(nullcheck==false){
-                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt6.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+               if(foundnull==true){
+               JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt6.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
                     confirm = true;
                 }else{
                     confirm = false;
                 }
+               }
+               }
                if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
                p.setproduct((p_txt6.getSelectedItem().toString()));
@@ -1176,9 +1186,6 @@ System.out.print(sql);
                }else{
                    p_txt6.setSelectedIndex(0);
                }
-            }else{
-                   p_txt6.setSelectedIndex(0);
-               }
            }else{ 
            for(int i =0;i<product.size();i++){
                if(p_txt6.getSelectedItem().toString().equals(product.get(i).getproduct())){
@@ -1186,14 +1193,17 @@ System.out.print(sql);
                    check=true;
                    p_txt6.setSelectedIndex(0);
                    break;
-           }
        }
+     }      
            if(check==false){
                boolean checkint = true;
-               String amouth = null;
+               String amouth;
                do{
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
-               System.out.print(amouth);
+                if(amouth  == null){  
+                p_txt6.setSelectedIndex(0);
+                foundnull = true;
+                }else{
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1201,12 +1211,22 @@ System.out.print(sql);
                        break;
                    }
                }
+               }
                }while(checkint != true);
-                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt6.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+               if(foundnull==true){
+                   JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+                   
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt6.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
                     confirm = true;
                 }else{
                     confirm = false;
                 }
+               }
+               }
                if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
@@ -1226,29 +1246,27 @@ System.out.print(sql);
         }
         }
            System.out.print(productname);
-                }
+           }
     }//GEN-LAST:event_p_txt6ActionPerformed
 
     private void p_txt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt2ActionPerformed
-          if(deletenakub==true||adding == true){
-                }else{
-        findproduct(p_txt2.getSelectedItem().toString());
-        boolean check = false;
+         boolean foundnull = false;
+        if(deletenakub==true||adding == true){
+           }else{
+         findproduct(p_txt2.getSelectedItem().toString());
+         boolean check = false;
          boolean confirm = false;
-         JOptionPane inpOption = new JOptionPane();
-        if(p_txt1.getSelectedIndex()==0){ 
+        if(p_txt2.getSelectedIndex()==0){ 
        }else{
            if(product.size()==0){
                boolean checkint = true;
-               String amouth = null;
-               boolean nullcheck = false;
+               String amouth;
                do{
-                amouth = inpOption.showInputDialog(null,"Please input amount of product","",JOptionPane.QUESTION_MESSAGE); 
-                if(amouth==null){
-                    inpOption.showMessageDialog(null, "Canceled");
-                     nullcheck=false;
+               amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+                if(amouth  == null){  
+                p_txt2.setSelectedIndex(0);
+                foundnull = true;
                 }else{
-                    System.out.print(amouth);
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1256,17 +1274,24 @@ System.out.print(sql);
                        break;
                    }
                }
-               }
+                }
                }while(checkint != true);
-               if(nullcheck==false){
-                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt2.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+               if(foundnull==true){
+               JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt2.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
                     confirm = true;
                 }else{
                     confirm = false;
                 }
+               }
+               }
                if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
-               p.setproduct((p_txt1.getSelectedItem().toString()));
+               p.setproduct((p_txt2.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               price2 = Integer.parseInt(amouth)*productprice;
@@ -1277,9 +1302,6 @@ System.out.print(sql);
                }else{
                    p_txt2.setSelectedIndex(0);
                }
-            }else{
-                   p_txt2.setSelectedIndex(0);
-               }
            }else{ 
            for(int i =0;i<product.size();i++){
                if(p_txt2.getSelectedItem().toString().equals(product.get(i).getproduct())){
@@ -1287,14 +1309,19 @@ System.out.print(sql);
                    check=true;
                    p_txt2.setSelectedIndex(0);
                    break;
-           }
        }
+     }
+           
+               
            if(check==false){
                boolean checkint = true;
-               String amouth = null;
+               String amouth;
                do{
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
-               System.out.print(amouth);
+                if(amouth  == null){  
+                p_txt2.setSelectedIndex(0);
+                foundnull = true;
+                }else{
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1302,12 +1329,22 @@ System.out.print(sql);
                        break;
                    }
                }
+               }
                }while(checkint != true);
-                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt2.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+               if(foundnull==true){
+                   JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+                   
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt2.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
                     confirm = true;
                 }else{
                     confirm = false;
                 }
+               }
+               }
                if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
@@ -1327,29 +1364,27 @@ System.out.print(sql);
         }
         }
            System.out.print(productname);
-                }
+           }
     }//GEN-LAST:event_p_txt2ActionPerformed
 
     private void p_txt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt1ActionPerformed
-         if(deletenakub==true||adding == true){
-                }else{
-        findproduct(p_txt1.getSelectedItem().toString());
-        boolean check = false;
+         boolean foundnull = false;
+        if(deletenakub==true||adding == true){
+           }else{
+         findproduct(p_txt1.getSelectedItem().toString());
+         boolean check = false;
          boolean confirm = false;
-         JOptionPane inpOption = new JOptionPane();
         if(p_txt1.getSelectedIndex()==0){ 
        }else{
            if(product.size()==0){
                boolean checkint = true;
-               String amouth = null;
-               boolean nullcheck = false;
+               String amouth;
                do{
-                amouth = inpOption.showInputDialog(null,"Please input amount of product","",JOptionPane.QUESTION_MESSAGE); 
-                if(amouth==null){
-                    inpOption.showMessageDialog(null, "Canceled");
-                     nullcheck=false;
+               amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+                if(amouth  == null){  
+                p_txt1.setSelectedIndex(0);
+                foundnull = true;
                 }else{
-                    System.out.print(amouth);
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1357,14 +1392,21 @@ System.out.print(sql);
                        break;
                    }
                }
-               }
+                }
                }while(checkint != true);
-               if(nullcheck==false){
-                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt1.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+               if(foundnull==true){
+               JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt1.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
                     confirm = true;
                 }else{
                     confirm = false;
                 }
+               }
+               }
                if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
                p.setproduct((p_txt1.getSelectedItem().toString()));
@@ -1378,9 +1420,6 @@ System.out.print(sql);
                }else{
                    p_txt1.setSelectedIndex(0);
                }
-            }else{
-                   p_txt1.setSelectedIndex(0);
-               }
            }else{ 
            for(int i =0;i<product.size();i++){
                if(p_txt1.getSelectedItem().toString().equals(product.get(i).getproduct())){
@@ -1388,14 +1427,19 @@ System.out.print(sql);
                    check=true;
                    p_txt1.setSelectedIndex(0);
                    break;
-           }
        }
+     }
+           
+               
            if(check==false){
                boolean checkint = true;
-               String amouth = null;
+               String amouth;
                do{
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
-               System.out.print(amouth);
+                if(amouth  == null){  
+                p_txt1.setSelectedIndex(0);
+                foundnull = true;
+                }else{
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1403,12 +1447,22 @@ System.out.print(sql);
                        break;
                    }
                }
+               }
                }while(checkint != true);
-                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt1.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+               if(foundnull==true){
+                   JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+                   
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt1.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
                     confirm = true;
                 }else{
                     confirm = false;
                 }
+               }
+               }
                if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
@@ -1428,14 +1482,15 @@ System.out.print(sql);
         }
         }
            System.out.print(productname);
-                }
+           }
     }//GEN-LAST:event_p_txt1ActionPerformed
 
     private void p_txt4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt4ActionPerformed
-               if(deletenakub==true||adding == true){
-               }else{
-        findproduct(p_txt4.getSelectedItem().toString());    
-        boolean check = false;
+          boolean foundnull = false;
+        if(deletenakub==true||adding == true){
+           }else{
+         findproduct(p_txt4.getSelectedItem().toString());
+         boolean check = false;
          boolean confirm = false;
         if(p_txt4.getSelectedIndex()==0){ 
        }else{
@@ -1444,11 +1499,10 @@ System.out.print(sql);
                String amouth;
                do{
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
-                if(amouth  == null || (amouth  != null && ("".equals(amouth )))){  
-                {JOptionPane.showMessageDialog(null,"Null input");
-                amouth = null;
-                }
-                }
+                if(amouth  == null){  
+                p_txt4.setSelectedIndex(0);
+                foundnull = true;
+                }else{
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1456,12 +1510,21 @@ System.out.print(sql);
                        break;
                    }
                }
+                }
                }while(checkint != true);
+               if(foundnull==true){
+               JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
                   if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt4.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
                     confirm = true;
                 }else{
                     confirm = false;
                 }
+               }
+               }
                if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
                p.setproduct((p_txt4.getSelectedItem().toString()));
@@ -1471,7 +1534,7 @@ System.out.print(sql);
               sum = price1+price2+price3+price4+price5+price6;
               System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
               price_txt.setText(""+sum);
-              p_txt2.setEnabled(false);
+              p_txt4.setEnabled(false);
                }else{
                    p_txt4.setSelectedIndex(0);
                }
@@ -1482,13 +1545,19 @@ System.out.print(sql);
                    check=true;
                    p_txt4.setSelectedIndex(0);
                    break;
-           }
        }
+     }
+           
+               
            if(check==false){
                boolean checkint = true;
                String amouth;
                do{
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+                if(amouth  == null){  
+                p_txt4.setSelectedIndex(0);
+                foundnull = true;
+                }else{
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1496,12 +1565,22 @@ System.out.print(sql);
                        break;
                    }
                }
+               }
                }while(checkint != true);
-                 if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt4.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+               if(foundnull==true){
+                   JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+                   
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt4.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
                     confirm = true;
                 }else{
                     confirm = false;
                 }
+               }
+               }
                if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
@@ -1521,11 +1600,12 @@ System.out.print(sql);
         }
         }
            System.out.print(productname);
-               }
+           }
     }//GEN-LAST:event_p_txt4ActionPerformed
 
     private void p_txt5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt5ActionPerformed
-           if(deletenakub==true||adding == true){
+          boolean foundnull = false;
+        if(deletenakub==true||adding == true){
            }else{
          findproduct(p_txt5.getSelectedItem().toString());
          boolean check = false;
@@ -1537,11 +1617,10 @@ System.out.print(sql);
                String amouth;
                do{
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
-                if(amouth  == null || (amouth  != null && ("".equals(amouth )))){  
-                {JOptionPane.showMessageDialog(null,"Null input");
-                amouth = null;
-                }
-                }
+                if(amouth  == null){  
+                p_txt5.setSelectedIndex(0);
+                foundnull = true;
+                }else{
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1549,12 +1628,21 @@ System.out.print(sql);
                        break;
                    }
                }
+                }
                }while(checkint != true);
+               if(foundnull==true){
+               JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
                   if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt5.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
                     confirm = true;
                 }else{
                     confirm = false;
                 }
+               }
+               }
                if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
                p.setproduct((p_txt5.getSelectedItem().toString()));
@@ -1575,13 +1663,19 @@ System.out.print(sql);
                    check=true;
                    p_txt5.setSelectedIndex(0);
                    break;
-           }
        }
+     }
+           
+               
            if(check==false){
                boolean checkint = true;
                String amouth;
                do{
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+                if(amouth  == null){  
+                p_txt5.setSelectedIndex(0);
+                foundnull = true;
+                }else{
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1589,12 +1683,22 @@ System.out.print(sql);
                        break;
                    }
                }
+               }
                }while(checkint != true);
+               if(foundnull==true){
+                   JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+                   
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
                 if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt5.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
                     confirm = true;
                 }else{
                     confirm = false;
                 }
+               }
+               }
                if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
@@ -1618,10 +1722,11 @@ System.out.print(sql);
     }//GEN-LAST:event_p_txt5ActionPerformed
 
     private void p_txt3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt3ActionPerformed
-          if(deletenakub==true||adding == true){
-          }else{
-        findproduct(p_txt3.getSelectedItem().toString());
-        boolean check = false;
+         boolean foundnull = false;
+        if(deletenakub==true||adding == true){
+           }else{
+         findproduct(p_txt3.getSelectedItem().toString());
+         boolean check = false;
          boolean confirm = false;
         if(p_txt3.getSelectedIndex()==0){ 
        }else{
@@ -1630,11 +1735,10 @@ System.out.print(sql);
                String amouth;
                do{
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
-                if(amouth  == null || (amouth  != null && ("".equals(amouth )))){  
-                {JOptionPane.showMessageDialog(null,"Null input");
-                amouth = null;
-                }
-                }
+                if(amouth  == null){  
+                p_txt3.setSelectedIndex(0);
+                foundnull = true;
+                }else{
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1642,12 +1746,21 @@ System.out.print(sql);
                        break;
                    }
                }
+                }
                }while(checkint != true);
+               if(foundnull==true){
+               JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
                   if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt3.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
                     confirm = true;
                 }else{
                     confirm = false;
                 }
+               }
+               }
                if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
                p.setproduct((p_txt3.getSelectedItem().toString()));
@@ -1668,13 +1781,19 @@ System.out.print(sql);
                    check=true;
                    p_txt3.setSelectedIndex(0);
                    break;
-           }
        }
+     }
+           
+               
            if(check==false){
                boolean checkint = true;
                String amouth;
                do{
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+                if(amouth  == null){  
+                p_txt3.setSelectedIndex(0);
+                foundnull = true;
+                }else{
                for(int i =0;i<amouth.length();i++){
                    if(Character.isDigit(amouth.charAt(i))==false){
                        checkint = false;
@@ -1682,12 +1801,22 @@ System.out.print(sql);
                        break;
                    }
                }
+               }
                }while(checkint != true);
-                 if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt3.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+               if(foundnull==true){
+                   JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+                   
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt3.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
                     confirm = true;
                 }else{
                     confirm = false;
                 }
+               }
+               }
                if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
@@ -1707,7 +1836,7 @@ System.out.print(sql);
         }
         }
            System.out.print(productname);
-          }
+           }
     }//GEN-LAST:event_p_txt3ActionPerformed
 
     private void viewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewActionPerformed

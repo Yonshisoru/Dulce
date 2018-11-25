@@ -42,12 +42,12 @@ Main_variable m = new Main_variable();
         initComponents();
         Menu_Ordering.setVisible(false);
         Schedule.setVisible(false);
-        Orderingproduct_panel.setVisible(false);
+        Management_panel.setVisible(false);
         Inventory_panel.setVisible(false);
         Employee_panel.setVisible(false);
         Employee.setVisible(false);
         Inventory_btn.setVisible(false);
-        Ordering_Product_btn.setVisible(false);
+        Management_btn.setVisible(false);
         Employee e = new Employee();
         showname.setText(e.getdisfname()+" "+e.getdislname());
         showTime();
@@ -55,7 +55,7 @@ Main_variable m = new Main_variable();
         System.out.print(e.gettype_id());
         if(e.gettype_id()==0||e.gettype_id()==1){
             Inventory_btn.setVisible(true);
-            Ordering_Product_btn.setVisible(true);
+            Management_btn.setVisible(true);
         }else{
         }
     }
@@ -135,7 +135,7 @@ Main_variable m = new Main_variable();
         Menu_Ordering_btn = new javax.swing.JButton();
         Schedule_btn = new javax.swing.JButton();
         Inventory_btn = new javax.swing.JButton();
-        Ordering_Product_btn = new javax.swing.JButton();
+        Management_btn = new javax.swing.JButton();
         Employee_btn = new javax.swing.JButton();
         Selection = new javax.swing.JPanel();
         Firstpage = new javax.swing.JPanel();
@@ -158,25 +158,29 @@ Main_variable m = new Main_variable();
         Change_schedule = new javax.swing.JButton();
         Leave_list = new javax.swing.JButton();
         view_leave = new javax.swing.JButton();
-        Orderingproduct_panel = new javax.swing.JPanel();
+        Management_panel = new javax.swing.JPanel();
         Heading_OP = new javax.swing.JLabel();
-        jButton7 = new javax.swing.JButton();
         product_panel = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton17 = new javax.swing.JButton();
-        Ordering_product = new javax.swing.JButton();
         jButton20 = new javax.swing.JButton();
-        jButton21 = new javax.swing.JButton();
+        Employee_Management_btn = new javax.swing.JButton();
+        Employee_salary_btn = new javax.swing.JButton();
+        Employee_Payment_btn = new javax.swing.JButton();
+        Employee_Clockin_out_btn = new javax.swing.JButton();
+        Set_Period_Payment_btn = new javax.swing.JButton();
+        View_Employee_Payment_btn = new javax.swing.JButton();
         Inventory_panel = new javax.swing.JPanel();
         Heading_INV = new javax.swing.JLabel();
         jButton22 = new javax.swing.JButton();
         jButton23 = new javax.swing.JButton();
-        jButton24 = new javax.swing.JButton();
         jButton25 = new javax.swing.JButton();
         jButton26 = new javax.swing.JButton();
         jButton27 = new javax.swing.JButton();
         jButton28 = new javax.swing.JButton();
-        jButton29 = new javax.swing.JButton();
+        Ordering_product1 = new javax.swing.JButton();
+        jButton32 = new javax.swing.JButton();
+        jButton15 = new javax.swing.JButton();
+        jButton18 = new javax.swing.JButton();
+        jButton24 = new javax.swing.JButton();
         Employee_panel = new javax.swing.JPanel();
         Heading_INV1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -257,13 +261,13 @@ Main_variable m = new Main_variable();
         });
         ButtonPanel.add(Inventory_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 245, 143, 51));
 
-        Ordering_Product_btn.setText("Ordering Product");
-        Ordering_Product_btn.addActionListener(new java.awt.event.ActionListener() {
+        Management_btn.setText("Management");
+        Management_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Ordering_Product_btnActionPerformed(evt);
+                Management_btnActionPerformed(evt);
             }
         });
-        ButtonPanel.add(Ordering_Product_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 331, 143, 51));
+        ButtonPanel.add(Management_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 331, 143, 51));
 
         Employee_btn.setText("Employee");
         Employee_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -369,7 +373,7 @@ Main_variable m = new Main_variable();
                 Change_scheduleActionPerformed(evt);
             }
         });
-        Schedule.add(Change_schedule, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 340, 150, 60));
+        Schedule.add(Change_schedule, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 350, 150, 60));
 
         Leave_list.setText("Leave List");
         Leave_list.addActionListener(new java.awt.event.ActionListener() {
@@ -387,15 +391,12 @@ Main_variable m = new Main_variable();
         });
         Schedule.add(view_leave, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 250, 140, 60));
 
-        Orderingproduct_panel.setBackground(new java.awt.Color(254, 255, 239));
-        Orderingproduct_panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        Management_panel.setBackground(new java.awt.Color(254, 255, 239));
+        Management_panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Heading_OP.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        Heading_OP.setText("Ordering Product");
-        Orderingproduct_panel.add(Heading_OP, new org.netbeans.lib.awtextra.AbsoluteConstraints(227, 23, -1, -1));
-
-        jButton7.setText("Claim Product");
-        Orderingproduct_panel.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 220, 140, 60));
+        Heading_OP.setText("Management");
+        Management_panel.add(Heading_OP, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 20, -1, -1));
 
         product_panel.setText("Editor Product");
         product_panel.addActionListener(new java.awt.event.ActionListener() {
@@ -403,21 +404,7 @@ Main_variable m = new Main_variable();
                 product_panelActionPerformed(evt);
             }
         });
-        Orderingproduct_panel.add(product_panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 160, 60));
-
-        jButton10.setText("Recieve Product");
-        Orderingproduct_panel.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 160, 60));
-
-        jButton17.setText("Recieve claimed Product");
-        Orderingproduct_panel.add(jButton17, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 220, 160, 60));
-
-        Ordering_product.setText("Ordering Product");
-        Ordering_product.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Ordering_productActionPerformed(evt);
-            }
-        });
-        Orderingproduct_panel.add(Ordering_product, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 140, 140, 60));
+        Management_panel.add(product_panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 160, 60));
 
         jButton20.setText("Editor Vendor");
         jButton20.addActionListener(new java.awt.event.ActionListener() {
@@ -425,15 +412,50 @@ Main_variable m = new Main_variable();
                 jButton20ActionPerformed(evt);
             }
         });
-        Orderingproduct_panel.add(jButton20, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 140, 140, 60));
+        Management_panel.add(jButton20, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 140, 160, 60));
 
-        jButton21.setText("Ordering Payment");
-        jButton21.addActionListener(new java.awt.event.ActionListener() {
+        Employee_Management_btn.setText("Employee Management");
+        Management_panel.add(Employee_Management_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 140, 150, 60));
+
+        Employee_salary_btn.setText("Employee Salary");
+        Employee_salary_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton21ActionPerformed(evt);
+                Employee_salary_btnActionPerformed(evt);
             }
         });
-        Orderingproduct_panel.add(jButton21, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 140, 140, 60));
+        Management_panel.add(Employee_salary_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 220, 160, 60));
+
+        Employee_Payment_btn.setText("Employee Payment");
+        Employee_Payment_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Employee_Payment_btnActionPerformed(evt);
+            }
+        });
+        Management_panel.add(Employee_Payment_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 220, 150, 60));
+
+        Employee_Clockin_out_btn.setText("<html><center>Employee Clock-in & Clock-out</center></br></html>");
+        Employee_Clockin_out_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Employee_Clockin_out_btnActionPerformed(evt);
+            }
+        });
+        Management_panel.add(Employee_Clockin_out_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 140, 160, 60));
+
+        Set_Period_Payment_btn.setText("Setting period payment");
+        Set_Period_Payment_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Set_Period_Payment_btnActionPerformed(evt);
+            }
+        });
+        Management_panel.add(Set_Period_Payment_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 150, 60));
+
+        View_Employee_Payment_btn.setText("View Employee Payment");
+        View_Employee_Payment_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                View_Employee_Payment_btnActionPerformed(evt);
+            }
+        });
+        Management_panel.add(View_Employee_Payment_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 220, 160, 60));
 
         Inventory_panel.setBackground(new java.awt.Color(254, 255, 239));
         Inventory_panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -445,26 +467,55 @@ Main_variable m = new Main_variable();
         jButton22.setText("Product");
         Inventory_panel.add(jButton22, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 120, 150, 70));
 
-        jButton23.setText("Stock");
-        Inventory_panel.add(jButton23, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, 150, 70));
-
-        jButton24.setText("Order list");
-        Inventory_panel.add(jButton24, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, 150, 70));
+        jButton23.setText("View Ordering");
+        jButton23.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton23ActionPerformed(evt);
+            }
+        });
+        Inventory_panel.add(jButton23, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 220, 150, 60));
 
         jButton25.setText("Ordering Receive");
-        Inventory_panel.add(jButton25, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 120, 150, 70));
+        jButton25.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton25ActionPerformed(evt);
+            }
+        });
+        Inventory_panel.add(jButton25, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 220, 150, 60));
 
         jButton26.setText("Waste");
-        Inventory_panel.add(jButton26, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 210, 150, 70));
+        Inventory_panel.add(jButton26, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, 150, 70));
 
         jButton27.setText("Claim");
-        Inventory_panel.add(jButton27, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, 150, 70));
+        Inventory_panel.add(jButton27, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, 150, 70));
 
         jButton28.setText("Menu");
-        Inventory_panel.add(jButton28, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 210, 150, 70));
+        Inventory_panel.add(jButton28, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 120, 150, 70));
 
-        jButton29.setText("Promotion");
-        Inventory_panel.add(jButton29, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 210, 150, 70));
+        Ordering_product1.setText("Ordering Product");
+        Ordering_product1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Ordering_product1ActionPerformed(evt);
+            }
+        });
+        Inventory_panel.add(Ordering_product1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 150, 60));
+
+        jButton32.setText("Ordering Payment");
+        jButton32.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton32ActionPerformed(evt);
+            }
+        });
+        Inventory_panel.add(jButton32, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 220, 150, 60));
+
+        jButton15.setText("Recieve Product");
+        Inventory_panel.add(jButton15, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 300, 150, 60));
+
+        jButton18.setText("Recieve claimed Product");
+        Inventory_panel.add(jButton18, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 300, -1, 60));
+
+        jButton24.setText("Stock");
+        Inventory_panel.add(jButton24, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 300, 150, 60));
 
         Employee_panel.setBackground(new java.awt.Color(254, 255, 239));
 
@@ -550,9 +601,19 @@ Main_variable m = new Main_variable();
         Employee.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 30, -1, 60));
 
         jButton30.setText("Employee Management");
+        jButton30.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton30ActionPerformed(evt);
+            }
+        });
         Employee.add(jButton30, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 150, 150, 60));
 
         jButton31.setText("Setting period payment");
+        jButton31.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton31ActionPerformed(evt);
+            }
+        });
         Employee.add(jButton31, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 150, 150, 60));
 
         jButton4.setText("Payment");
@@ -564,6 +625,11 @@ Main_variable m = new Main_variable();
         Employee.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 250, 150, 60));
 
         jButton5.setText("<html><center>Employee Clock-in & Clock-out</center></br></html>");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         Employee.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, 160, 70));
 
         Employee_salary.setText("Employee Salary");
@@ -595,7 +661,7 @@ Main_variable m = new Main_variable();
             .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(Firstpage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(Orderingproduct_panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(Management_panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(Inventory_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -621,7 +687,7 @@ Main_variable m = new Main_variable();
                     .addGap(0, 0, Short.MAX_VALUE)))
             .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(SelectionLayout.createSequentialGroup()
-                    .addComponent(Orderingproduct_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Management_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
             .addGroup(SelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(SelectionLayout.createSequentialGroup()
@@ -650,7 +716,7 @@ Main_variable m = new Main_variable();
         Menu_Ordering.setVisible(true);
         Schedule.setVisible(false);
         Firstpage.setVisible(false);
-        Orderingproduct_panel.setVisible(false);
+        Management_panel.setVisible(false);
         Inventory_panel.setVisible(false);
         Employee_panel.setVisible(false);
          Employee.setVisible(false);  
@@ -665,7 +731,7 @@ Main_variable m = new Main_variable();
         Menu_Ordering.setVisible(false);
         Schedule.setVisible(true);
         Firstpage.setVisible(false);
-        Orderingproduct_panel.setVisible(false);
+        Management_panel.setVisible(false);
         Inventory_panel.setVisible(false);
         Employee_panel.setVisible(false);
         Employee.setVisible(false);
@@ -684,21 +750,21 @@ Main_variable m = new Main_variable();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void Ordering_Product_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ordering_Product_btnActionPerformed
+    private void Management_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Management_btnActionPerformed
         Menu_Ordering.setVisible(false);
         Schedule.setVisible(false);
         Firstpage.setVisible(false);
-        Orderingproduct_panel.setVisible(true);
+        Management_panel.setVisible(true);
         Inventory_panel.setVisible(false);
         Employee_panel.setVisible(false);
         Employee.setVisible(false);
-    }//GEN-LAST:event_Ordering_Product_btnActionPerformed
+    }//GEN-LAST:event_Management_btnActionPerformed
 
     private void Inventory_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Inventory_btnActionPerformed
         Menu_Ordering.setVisible(false);
         Schedule.setVisible(false);
         Firstpage.setVisible(false);
-        Orderingproduct_panel.setVisible(false);
+        Management_panel.setVisible(false);
         Inventory_panel.setVisible(true);
         Employee_panel.setVisible(false);
                 Employee.setVisible(false);
@@ -721,7 +787,7 @@ Main_variable m = new Main_variable();
         Menu_Ordering.setVisible(false);
         Schedule.setVisible(false);
         Firstpage.setVisible(false);
-        Orderingproduct_panel.setVisible(false);
+        Management_panel.setVisible(false);
         Inventory_panel.setVisible(false);
         Employee_panel.setVisible(false);
         if(e.gettype_id()==0||e.gettype_id()==1){
@@ -731,11 +797,6 @@ Main_variable m = new Main_variable();
             k.setVisible(true);
     }    
     }//GEN-LAST:event_Employee_btnActionPerformed
-
-    private void Ordering_productActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ordering_productActionPerformed
-        Product_Order_panel p = new Product_Order_panel();
-        p.setVisible(true);
-    }//GEN-LAST:event_Ordering_productActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
  if (JOptionPane.showConfirmDialog(this, 
@@ -940,10 +1001,6 @@ if ((s != null) && (s.length() > 0)) {
        s.setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
 
-    private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton21ActionPerformed
-
     private void product_panelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_product_panelActionPerformed
        Product_panel s = new Product_panel();
        s.setVisible(true);
@@ -953,6 +1010,184 @@ if ((s != null) && (s.length() > 0)) {
        Vendor_panel s = new Vendor_panel();
        s.setVisible(true);
     }//GEN-LAST:event_jButton20ActionPerformed
+
+    private void Ordering_product1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ordering_product1ActionPerformed
+    Product_Order_panel p = new Product_Order_panel();
+    p.setVisible(true);
+    }//GEN-LAST:event_Ordering_product1ActionPerformed
+
+    private void jButton32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton32ActionPerformed
+    Product_Order_view p = new Product_Order_view();
+    p.setVisible(true);
+    m.setorderpayment(1);
+    }//GEN-LAST:event_jButton32ActionPerformed
+
+    private void Employee_salary_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Employee_salary_btnActionPerformed
+    Employee_Salary e = new Employee_Salary();
+    e.setVisible(true);
+    }//GEN-LAST:event_Employee_salary_btnActionPerformed
+
+    private void Employee_Payment_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Employee_Payment_btnActionPerformed
+Object[] possibilities = {"First Period", "Second Period"};
+String s = (String)JOptionPane.showInputDialog(
+                    null,
+                    "What did period you want?"
+                    ,
+                    "System",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    possibilities,
+                    "ham");
+
+//If a string was returned, say so.
+if ((s != null) && (s.length() > 0)) {
+           String sql  ="select EMP_ID from EMPLOYEE WHERE EMP_DEL = 'N'";
+        try{        
+        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(sql);
+        rs = pat.executeQuery();
+        while(rs.next()){
+            Employee n = new Employee();
+            n.setid(rs.getString("EMP_ID"));
+            em.add(n);
+        }
+        rs.close();
+        pat.close();
+        con.close();
+        }catch(Exception e){
+            
+        }
+    if(s.equals("First Period")){
+        if(month.equals("01")){
+        start = "'"+year+"-01-01'";
+        end = "'"+year+"-01-15'"; 
+        }else if(month.equals("02")){
+        start = "'"+year+"-02-01'";
+        end = "'"+year+"-02-15'";     
+        }else if(month.equals("03")){
+        start = "'"+year+"-03-01'";
+        end = "'"+year+"-03-15'";    
+        }else if(month.equals("04")){
+        start = "'"+year+"-04-01'";
+        end = "'"+year+"-04-15'";     
+        }else if(month.equals("05")){
+        start = "'"+year+"-05-01'";
+        end = "'"+year+"-05-15'";     
+        }else if(month.equals("06")){
+         start = "'"+year+"-06-01'";
+        end = "'"+year+"-06-15'";    
+        }else if(month.equals("07")){
+        start = "'"+year+"-07-01'";
+        end = "'"+year+"-07-15'";     
+        }else if(month.equals("08")){
+         start = "'"+year+"-08-01'";
+        end = "'"+year+"-08-15'";     
+        }else if(month.equals("09")){
+         start = "'"+year+"-09-01'";
+        end = "'"+year+"-09-15'";    
+        }else if(month.equals("10")){
+         start = "'"+year+"-10-01'";
+        end = "'"+year+"-10-15'";    
+        }else if(month.equals("11")){
+        start = "'"+year+"-11-01'";
+        end = "'"+year+"-11-15'";     
+        }else if(month.equals("12")){
+        start = "'"+year+"-12-01'";
+        end = "'"+year+"-12-15'";     
+        }
+    }else if(s.equals("Second Period")){ 
+        if(month.equals("01")){
+        start = "'"+year+"-01-15'";
+        end = "'"+year+"-01-31'"; 
+        }else if(month.equals("02")){
+        start = "'"+year+"-02-15'";
+        end = "'"+year+"-02-28'";     
+        }else if(month.equals("03")){
+        start = "'"+year+"-03-15'";
+        end = "'"+year+"-03-31'";    
+        }else if(month.equals("04")){
+        start = "'"+year+"-04-15'";
+        end = "'"+year+"-04-30'";     
+        }else if(month.equals("05")){
+        start = "'"+year+"-05-15'";
+        end = "'"+year+"-05-31'";     
+        }else if(month.equals("06")){
+         start = "'"+year+"-06-15'";
+        end = "'"+year+"-06-30'";    
+        }else if(month.equals("07")){
+        start = "'"+year+"-07-15'";
+        end = "'"+year+"-07-31'";     
+        }else if(month.equals("08")){
+         start = "'"+year+"-08-15'";
+        end = "'"+year+"-08-31'";     
+        }else if(month.equals("09")){
+         start = "'"+year+"-09-15'";
+        end = "'"+year+"-09-31'";    
+        }else if(month.equals("10")){
+         start = "'"+year+"-10-15'";
+        end = "'"+year+"-10-31'";    
+        }else if(month.equals("11")){
+        start = "'"+year+"-11-15'";
+        end = "'"+year+"-11-30'";     
+        }else if(month.equals("12")){
+        start = "'"+year+"-12-15'";
+        end = "'"+year+"-12-31'";     
+        }
+        System.out.print(em.size()+start+end);
+        for(int i =0;i<em.size();i++){
+           System.out.println(""+i);
+            System.out.println(""+em.size());
+        String check  = "INSERT INTO SALARY_PAYMENT VALUES('"+id()+"','"+em.get(i).getid()+"','"+year+"-"+month+"-"+day+"',"+start+","+end+",'N')";
+        System.out.println(check);
+        try{        
+        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(check);
+        pat.executeUpdate();
+        pat.close();
+        con.close();
+        }catch(Exception e){
+            System.out.println(e);
+    }
+}
+}
+}
+    }//GEN-LAST:event_Employee_Payment_btnActionPerformed
+
+    private void View_Employee_Payment_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_View_Employee_Payment_btnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_View_Employee_Payment_btnActionPerformed
+
+    private void Set_Period_Payment_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Set_Period_Payment_btnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Set_Period_Payment_btnActionPerformed
+
+    private void jButton30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton30ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton30ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton31ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton31ActionPerformed
+
+    private void Employee_Clockin_out_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Employee_Clockin_out_btnActionPerformed
+
+    }//GEN-LAST:event_Employee_Clockin_out_btnActionPerformed
+
+    private void jButton23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton23ActionPerformed
+        Product_Order_view p = new Product_Order_view();
+    }//GEN-LAST:event_jButton23ActionPerformed
+
+    private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
+        Product_Order_view p = new Product_Order_view();
+    p.setVisible(true);
+    m.setreceive(1);
+    }//GEN-LAST:event_jButton25ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -995,9 +1230,13 @@ if ((s != null) && (s.length() > 0)) {
     private javax.swing.JButton Change_schedule;
     private javax.swing.JButton CreateSchedule;
     private javax.swing.JPanel Employee;
+    private javax.swing.JButton Employee_Clockin_out_btn;
+    private javax.swing.JButton Employee_Management_btn;
+    private javax.swing.JButton Employee_Payment_btn;
     private javax.swing.JButton Employee_btn;
     private javax.swing.JPanel Employee_panel;
     private javax.swing.JButton Employee_salary;
+    private javax.swing.JButton Employee_salary_btn;
     private javax.swing.JPanel Firstpage;
     private javax.swing.JLabel Heading_INV;
     private javax.swing.JLabel Heading_INV1;
@@ -1007,30 +1246,31 @@ if ((s != null) && (s.length() > 0)) {
     private javax.swing.JButton Inventory_btn;
     private javax.swing.JPanel Inventory_panel;
     private javax.swing.JButton Leave_list;
+    private javax.swing.JButton Management_btn;
+    private javax.swing.JPanel Management_panel;
     private javax.swing.JPanel Menu_Ordering;
     private javax.swing.JButton Menu_Ordering_btn;
-    private javax.swing.JButton Ordering_Product_btn;
-    private javax.swing.JButton Ordering_product;
-    private javax.swing.JPanel Orderingproduct_panel;
+    private javax.swing.JButton Ordering_product1;
     private javax.swing.JPanel Schedule;
     private javax.swing.JButton Schedule_btn;
     private javax.swing.JPanel Selection;
+    private javax.swing.JButton Set_Period_Payment_btn;
     private javax.swing.JButton ShowSchedule;
     private javax.swing.JLabel Showdate;
     private javax.swing.JLabel Showtime;
     private javax.swing.JLabel Time1;
     private javax.swing.JPanel TopPanel;
+    private javax.swing.JButton View_Employee_Payment_btn;
     private javax.swing.JButton editenrolled;
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
+    private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton17;
+    private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton20;
-    private javax.swing.JButton jButton21;
     private javax.swing.JButton jButton22;
     private javax.swing.JButton jButton23;
     private javax.swing.JButton jButton24;
@@ -1038,14 +1278,13 @@ if ((s != null) && (s.length() > 0)) {
     private javax.swing.JButton jButton26;
     private javax.swing.JButton jButton27;
     private javax.swing.JButton jButton28;
-    private javax.swing.JButton jButton29;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton30;
     private javax.swing.JButton jButton31;
+    private javax.swing.JButton jButton32;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

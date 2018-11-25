@@ -22,6 +22,9 @@ private int price;
 private int productunit;
 private String product;
 private int productprice; 
+private String paystatus;
+private String receivestatus;
+private int current;
 public String getid(){
     return id;
 }
@@ -30,6 +33,9 @@ public String getview(){
 }
 public int getunit(){
     return unit;
+}
+public int getcurrent(){
+    return current;
 }
 public int getprice(){
     return price;
@@ -46,6 +52,12 @@ public String getdate(){
 public String getproduct(){
     return product;
 }
+public String getpaystatus(){
+    return paystatus;
+}
+public String getreceivestatus(){
+    return receivestatus;
+}
 public int getproductprice(){
     return productprice;
 }
@@ -54,6 +66,15 @@ public int getproductunit(){
 }
 public void setid(String id){
     this.id = id;
+}
+public void setcurrent(int current){
+    this.current = current;
+}
+public void setpaystatus(String paystatus){
+    this.paystatus = paystatus;
+}
+public void setreceivestatus(String receivestatus){
+    this.receivestatus = receivestatus;
 }
 public void setunit(int unit){
     this.unit = unit;

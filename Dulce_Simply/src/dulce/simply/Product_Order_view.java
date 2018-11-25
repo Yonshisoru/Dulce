@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -18,12 +19,15 @@ import javax.swing.table.DefaultTableModel;
  * @author Yonshisoru
  */
 public class Product_Order_view extends javax.swing.JFrame {
+    Main_variable m = new Main_variable();
     Connection con = null;
     Statement st = null;
     PreparedStatement pat = null;
     ResultSet rs = null;
     Database d = new Database();
-    Product_Order_Variable p = new Product_Order_Variable();
+    String id = null;
+    int count = 0;
+
     /**
      * Creates new form Product_Order_view
      */
@@ -31,23 +35,30 @@ public class Product_Order_view extends javax.swing.JFrame {
         initComponents();
         show_order_view();
     }
-   public ArrayList<Product_Order_Variable>Product_order_view_List(){
+   public ArrayList<Product_Order_Variable>Product_order_List(){
                ArrayList<Product_Order_Variable> Product_order_list = new ArrayList<>();
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        //String sql  ="select POL_NUMBER,PO_ID,PRO_ID,PRO_UNITS,PRO_PRICE,PRO_NAME FROM PRO_ORDER_LIST NATURAL JOIN PRODUCT WHERE POL_DEL = 'N' AND PO_ID = 'O001' ORDER BY POL_NUMBER";         
-        String sql = "SELECT POL_NUMBER,PO_ID,PRO_ORDER_LIST.PRO_UNITS,PRO_ORDER_LIST.PRO_PRICE,PRO_NAME FROM PRO_ORDER_LIST INNER JOIN PRODUCT ON PRO_ORDER_LIST.PRO_ID = PRODUCT.PRO_ID WHERE PO_ID = '"+p.getview()+"' AND POL_DEL = 'N' ORDER BY POL_NUMBER";
+        String sql  ="select PO_ID,EMP_ID,EMP_FNAME,EMP_LNAME,V_ID,V_NAME,PO_DATE,PO_PRICE,PO_REC_DATE,PO_PAY_DATE,PO_UNITS,PR_STATUS,OP_STATUS FROM (((PRO_ORDER NATURAL JOIN EMPLOYEE)NATURAL JOIN VENDOR)NATURAL JOIN PRO_RECEIVE)NATURAL JOIN ORDER_PAYMENT WHERE PO_DEL = 'N' ORDER BY PO_ID";         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
          con = DriverManager.getConnection(d.url(),d.username(),d.password());
        st = con.createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
            Product_Order_Variable p = new Product_Order_Variable();
-            p.setid(rs.getString("POL_NUMBER"));
-            System.out.print(rs.getString("POL_NUMBER"));
-            p.setproduct(rs.getString("PRO_NAME"));
-            p.setunit(rs.getInt("PRO_UNITS"));
-            p.setprice(rs.getInt("PRO_PRICE"));
+            p.setid(rs.getString("PO_ID"));
+            p.e.setid(rs.getString("EMP_ID"));
+            p.e.setfname(rs.getString("EMP_FNAME"));
+            p.e.setlname(rs.getString("EMP_LNAME"));
+            p.v.setid(rs.getString("V_ID"));
+            p.v.setname(rs.getString("V_NAME"));
+            p.setdate(rs.getString("PO_DATE"));
+            p.setrec_date(rs.getString("PO_REC_DATE"));
+            p.setpay_date(rs.getString("PO_PAY_DATE"));
+            p.setunit(rs.getInt("PO_UNITS"));
+            p.setprice(rs.getInt("PO_PRICE"));
+            p.setpaystatus(rs.getString("OP_STATUS"));
+            p.setreceivestatus(rs.getString("PR_STATUS"));
             Product_order_list.add(p);
         }
         rs.close();
@@ -59,15 +70,20 @@ public class Product_Order_view extends javax.swing.JFrame {
         return Product_order_list;
 }
     public void show_order_view(){
-        ArrayList<Product_Order_Variable>Product_order_list = Product_order_view_List();
-        DefaultTableModel model = (DefaultTableModel)Product_Order_View_Table.getModel();
-        Object[] row = new Object[5];
+        ArrayList<Product_Order_Variable>Product_order_list = Product_order_List();
+        DefaultTableModel model = (DefaultTableModel)order_view_table.getModel();
+        Object[] row = new Object[10];
         for(int i=0;i<Product_order_list.size();i++){
-            row[0]=Product_order_list.get(i).getid();
-            row[1]=Product_order_list.get(i).getproduct();
+            row[0]=Product_order_list.get(i).getdate();
+            row[1]=Product_order_list.get(i).getid();
             row[2]=Product_order_list.get(i).getunit();
             row[3]=Product_order_list.get(i).getprice();
-            row[4]=(Product_order_list.get(i).getunit()*Product_order_list.get(i).getprice());
+            row[4]=Product_order_list.get(i).getrec_date();
+            row[5]=Product_order_list.get(i).getpay_date();
+            row[6]=Product_order_list.get(i).e.getfname()+" "+Product_order_list.get(i).e.getlname();
+            row[7]=Product_order_list.get(i).v.getname();
+            row[8]=Product_order_list.get(i).getpaystatus();
+            row[9]=Product_order_list.get(i).getreceivestatus();
             model.addRow(row);
         }
     }
@@ -80,42 +96,59 @@ public class Product_Order_view extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        Product_Order_View_Table = new javax.swing.JTable();
+        order_view_table = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(600, 551));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(875, 650));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tekton Pro", 0, 36)); // NOI18N
-        jLabel1.setText("Order ID:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 20, -1, -1));
-
-        jLabel2.setFont(new java.awt.Font("Tekton Pro", 0, 36)); // NOI18N
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 20, 160, 40));
-
-        Product_Order_View_Table.setModel(new javax.swing.table.DefaultTableModel(
+        order_view_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Name", "Price", "Amount", "Total"
+                "Date", "ID", "Total", "Price", "Receive date", "Pay date", "Employee", "Vendor", "Pay Status", "Receive Status"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, true, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(Product_Order_View_Table);
+        order_view_table.getTableHeader().setReorderingAllowed(false);
+        order_view_table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                order_view_tableMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(order_view_table);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 520, 330));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 820, 450));
+
+        jLabel1.setFont(new java.awt.Font("Tekton Pro", 0, 48)); // NOI18N
+        jLabel1.setText("Ordering List");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 20, -1, -1));
 
         jButton1.setText("Close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -123,14 +156,81 @@ public class Product_Order_view extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 420, 150, 50));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 550, 130, 50));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        if(m.getorderpay()==1){
+            
+        }else{
+        if(count == 0){
+        JOptionPane.showMessageDialog(null,"Double Click Row of Table for view Order Details.");
+        count = 1;
+        }
+        }
+    }//GEN-LAST:event_formWindowActivated
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        System.out.print("count");
+        count = 0;
+        this.setVisible(false);
+    }//GEN-LAST:event_formWindowClosing
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.dispose();
+        this.setVisible(false);
+        System.out.print("count");
+        count = 0;
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void order_view_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_order_view_tableMouseClicked
+        boolean confirm = false;
+        if(order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),1).toString().equals(id)){
+            if(m.getorderpay()==1){
+                  if(JOptionPane.showConfirmDialog(null,order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),1).toString()+" was paid already?","Confirm",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+            if(confirm==true){
+                String sql = "UPDATE ORDER_PAYMENT SET OP_STATUS = 'Y' WHERE PO_ID='"+order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),1).toString()+"'";
+                System.out.print(sql);
+      try{
+        Class.forName("com.mysql.jdbc.Driver");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(sql);
+        pat.executeUpdate(sql);
+        //JOptionPane.showMessageDialog(null,"Crerate orderpayment success!");
+        pat.close();
+        con.close();
+        }catch(Exception e){
+            System.out.print(e);
+        }
+             DefaultTableModel dm = (DefaultTableModel)order_view_table.getModel();
+        while(dm.getRowCount() > 0)
+        {       
+        dm.removeRow(0);
+        }
+        show_order_view();
+        }
+            }else if(m.getreceive()==1){
+            Product_Order_Variable p = new Product_Order_Variable();
+            p.setview(order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),1).toString());
+            Product_Order_Receive_view pr = new Product_Order_Receive_view();
+            pr.setVisible(true);
+            id = null;   
+            }else{
+            Product_Order_Variable p = new Product_Order_Variable();
+            p.setview(order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),1).toString());
+            Product_Order_List_view pv = new Product_Order_List_view();
+            pv.setVisible(true);
+            id = null;
+            }
+        }else{
+            id = order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),1).toString();
+        }
+    }//GEN-LAST:event_order_view_tableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -168,10 +268,9 @@ public class Product_Order_view extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable Product_Order_View_Table;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable order_view_table;
     // End of variables declaration//GEN-END:variables
 }

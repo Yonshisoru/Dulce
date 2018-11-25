@@ -185,6 +185,7 @@ public class Employee_Table extends javax.swing.JFrame {
             m.seton(1);
             Schedule_Edit_admin sc = new Schedule_Edit_admin();
             sc.setVisible(true);
+            count = 0;
             }
         }else{
             old = emp_table.getModel().getValueAt(emp_table.getSelectedRow(),0).toString();
