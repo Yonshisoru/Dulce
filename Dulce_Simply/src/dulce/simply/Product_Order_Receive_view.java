@@ -5,6 +5,8 @@
  */
 package dulce.simply;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -24,23 +27,26 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
     PreparedStatement pat = null;
     ResultSet rs = null;
     Database d = new Database();
+    int timenaja = 0;
     Product_Order_Variable p = new Product_Order_Variable();
     String id = null;
+    ArrayList<Product_Order_Variable> Product_order_list = new ArrayList<>();
     /**
      * Creates new form Product_Order_view
      */
     public Product_Order_Receive_view() {
+        this.setLocationRelativeTo(null);
         initComponents();
         show_order_view();
         ordering_id.setText(p.getview());
     }
    public ArrayList<Product_Order_Variable>Product_order_view_List(){
-               ArrayList<Product_Order_Variable> Product_order_list = new ArrayList<>();
-        try{
+       Product_order_list.clear(); 
+       try{
         Class.forName("com.mysql.jdbc.Driver");
         //String sql  ="select POL_NUMBER,PO_ID,PRO_ID,PRO_UNITS,PRO_PRICE,PRO_NAME FROM PRO_ORDER_LIST NATURAL JOIN PRODUCT WHERE POL_DEL = 'N' AND PO_ID = 'O001' ORDER BY POL_NUMBER";         
         //String sql = "SELECT POL_NUMBER,PO_ID,PRO_ORDER_LIST.PRO_UNITS,PRO_ORDER_LIST.PRO_PRICE,PRO_NAME FROM PRO_ORDER_LIST INNER JOIN PRODUCT ON PRO_ORDER_LIST.PRO_ID = PRODUCT.PRO_ID WHERE PO_ID = '"+p.getview()+"' AND POL_DEL = 'N' ORDER BY POL_NUMBER";
-     String sql ="SELECT PRL_NUMBER,PRL_STATUS,PRO_NAME,PRL_CURRENT,PRL_UNITS,PRL_PRICE,PRL_STATUS FROM ((PRO_ORDER NATURAL JOIN PRO_RECEIVE)NATURAL JOIN PRO_REC_LIST)NATURAL JOIN PRODUCT WHERE PO_ID = 'O001' AND PO_DEL = 'N' ORDER BY PRL_NUMBER";
+     String sql ="SELECT PRL_NUMBER,PRO_ID,PRL_STATUS,PRO_NAME,PRL_CURRENT,PRL_UNITS,PRL_PRICE,PRL_STATUS FROM ((PRO_ORDER NATURAL JOIN PRO_RECEIVE)NATURAL JOIN PRO_REC_LIST)NATURAL JOIN PRODUCT WHERE PO_ID = '"+p.getview()+"' AND PO_DEL = 'N' ORDER BY PRL_NUMBER";
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
          con = DriverManager.getConnection(d.url(),d.username(),d.password());
        st = con.createStatement();
@@ -49,6 +55,7 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
            Product_Order_Variable p = new Product_Order_Variable();
             p.setid(rs.getString("PRL_NUMBER"));
             p.setproduct(rs.getString("PRO_NAME"));
+            p.setproductid(rs.getString("PRO_ID"));
             p.setunit(rs.getInt("PRL_UNITS"));
             p.setprice(rs.getInt("PRL_PRICE"));
             p.setreceivestatus(rs.getString("PRL_STATUS"));
@@ -78,6 +85,16 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
             model.addRow(row);
         }
     }
+    public String findproduct(String name){
+        String output = null;
+        for(int i =0;i<Product_order_list.size();i++){
+            if(name.equals(Product_order_list.get(i).getproduct())){
+                output = Product_order_list.get(i).getproductid();
+                break;
+            }
+        }
+        return output;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -92,8 +109,10 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         Product_Order_View_Table = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setLocationByPlatform(true);
         setPreferredSize(new java.awt.Dimension(739, 531));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -135,7 +154,15 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 420, 150, 50));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 420, 150, 50));
+
+        jButton2.setText("Refresh");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 420, 150, 50));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -149,25 +176,36 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
        boolean isnum = false;
        boolean isnull =false;
        String receiveid = Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),0).toString();
-       int current = Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),4).toString());
+       int current = Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),5).toString());
        int max = Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),2).toString());
+       int price = Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),3).toString());
        String name =Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),1).toString();
        String input = "fantasticbeastverygood";
        int received = 0;
-       JOptionPane p = new JOptionPane();
         if(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),1).toString().equals(id)){
+            if(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),6).toString().equals("Y")||Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),2).toString())==Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),5).toString())){
+                JOptionPane.showMessageDialog(null, "This Product was received",null,JOptionPane.ERROR_MESSAGE);
+            }else{
                   if(JOptionPane.showConfirmDialog(null,"Did "+name+" has received?","Confirm",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
                     confirm = true;
                     id=null;
                 }else{
                     confirm = false;
                 }
-    
+            }
         }else{
             id=Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),1).toString();
         }
         if(confirm==true){
-            try{
+            p.setlist_showid(receiveid);
+            p.setlist_product(name);
+            p.setlist_unit(max);
+            p.setlist_current(current);
+            p.setlist_price(price);
+            Product_Order_Receive_List_Panel pr = new Product_Order_Receive_List_Panel();
+            pr.setVisible(true);
+            p.setlist_productid(findproduct(name));
+/*            try{
         input = p.showInputDialog(null,"ID:"+receiveid+"\nName:"+name+"\nHow many product was your received?",null,JOptionPane.YES_NO_CANCEL_OPTION);
         System.out.print(input);
         if(input.equals("")){
@@ -184,9 +222,9 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
             }catch (NullPointerException e){
                 System.out.print("cancel");
             }
-        /*if(Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),2).toString())==Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),4).toString())){
+        if(Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),2).toString())==Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),4).toString())){
             
-        }*/
+        }
         if(isnull==true){
         JOptionPane.showMessageDialog(null,"Denided process!\n\nYour can't input empty units.\nTry again.",null,JOptionPane.ERROR_MESSAGE);    
         }else{
@@ -197,6 +235,7 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
                 if(Integer.parseInt(input)>max){
                     JOptionPane.showMessageDialog(null,"Denided process!\n\nYour input was more than ordering units.\nTry again.",null,JOptionPane.ERROR_MESSAGE);
                 }else{
+                    System.out.print(current);
                 String sql = "UPDATE PRO_ORDER_LIST SET CURRENT = "+(current)+" WHERE PRL_NUMBER='"+receiveid+"'";
                 System.out.print(sql);
                 }
@@ -223,6 +262,15 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
         show_order_view();*/
         }
     }//GEN-LAST:event_Product_Order_View_TableMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+             DefaultTableModel dm = (DefaultTableModel)Product_Order_View_Table.getModel();
+        while(dm.getRowCount() > 0)
+        {       
+        dm.removeRow(0);
+        }
+        show_order_view();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -265,6 +313,7 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Product_Order_View_Table;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel ordering_id;
