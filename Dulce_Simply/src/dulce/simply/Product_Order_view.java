@@ -100,6 +100,7 @@ public class Product_Order_view extends javax.swing.JFrame {
         order_view_table = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(875, 650));
@@ -156,7 +157,15 @@ public class Product_Order_view extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 550, 130, 50));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 550, 130, 50));
+
+        jButton2.setText("Refresh");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 550, 150, 50));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -175,6 +184,8 @@ public class Product_Order_view extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         System.out.print("count");
         count = 0;
+        m.setorderpayment(0);
+        m.setreceive(0);
         this.setVisible(false);
     }//GEN-LAST:event_formWindowClosing
 
@@ -182,6 +193,8 @@ public class Product_Order_view extends javax.swing.JFrame {
         this.setVisible(false);
         System.out.print("count");
         count = 0;
+        m.setorderpayment(0);
+        m.setreceive(0);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void order_view_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_order_view_tableMouseClicked
@@ -232,6 +245,15 @@ public class Product_Order_view extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_order_view_tableMouseClicked
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        DefaultTableModel dm = (DefaultTableModel)order_view_table.getModel();
+        while(dm.getRowCount() > 0)
+        {
+            dm.removeRow(0);
+        }
+        show_order_view();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -269,6 +291,7 @@ public class Product_Order_view extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable order_view_table;

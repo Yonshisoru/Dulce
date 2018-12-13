@@ -303,8 +303,8 @@ public void delete(){
     return output;
    }
 public String idlist(){
-       int count=0;
-       max = 0;
+    int count=0;
+    max = 0;
           String sql  ="select POL_NUMBER from PRO_ORDER_LIST";
     try{
     Class.forName("com.mysql.jdbc.Driver");
@@ -330,6 +330,7 @@ public String idlist(){
     }else{
         output = ""+max;
     }
+    System.out.print("POL_NUMBER = "+max);
     con.close();
     pat.close();
     rs.close();
@@ -961,7 +962,7 @@ System.out.print(sql);
         }catch(Exception e){
             System.out.print(e);
         }
-        String receivelist = "INSERT INTO PRO_REC_LIST VALUE('"+receivelist()+"','"+receive+"','"+productid+"','"+product.get(i).getproductunit()+"','"+productprice+"','N','N')";  
+        String receivelist = "INSERT INTO PRO_REC_LIST VALUE('"+receivelist()+"','"+receive+"','"+productid+"','"+product.get(i).getproductunit()+"','"+productprice+"','0','N','N')";  
         System.out.println(receivelist);
         try{
         Class.forName("com.mysql.jdbc.Driver");

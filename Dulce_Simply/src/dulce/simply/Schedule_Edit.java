@@ -84,7 +84,7 @@ String status = null;    /**
         ArrayList<Schedule> Availablelist = new ArrayList<>();
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="select SC_ID,SC_DATE,SCS_ID,SCS_NAME,SC_EMPLIMIT,SC_EMPCUR,SC_LEAVE,SC_DEL FROM SCHEDULE NATURAL JOIN SC_SHIFT WHERE SC_DATE > '"+year+"-"+month+"-"+(day)+"' AND SC_DEL = 'N';";         
+        String sql  ="select SC_ID,SC_DATE,SCS_ID,SCS_NAME,SC_EMPLIMIT,SC_EMPCUR,SC_LEAVE,SC_DEL FROM SCHEDULE NATURAL JOIN SC_SHIFT WHERE SC_DATE > '"+year+"-"+month+"-"+(day)+"' AND SC_DEL = 'N' AND SC_DATE BETWEEN '"+LocalDate.now().plusDays(1)+"' AND '"+LocalDate.now().plusDays(7)+"';";         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(sql);

@@ -189,10 +189,10 @@ Main_variable m = new Main_variable();
         jLabel1 = new javax.swing.JLabel();
         jButton30 = new javax.swing.JButton();
         jButton31 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         Employee_salary = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        Employee_Payment_btn1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -447,7 +447,7 @@ Main_variable m = new Main_variable();
                 Set_Period_Payment_btnActionPerformed(evt);
             }
         });
-        Management_panel.add(Set_Period_Payment_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 150, 60));
+        Management_panel.add(Set_Period_Payment_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 160, 60));
 
         View_Employee_Payment_btn.setText("View Employee Payment");
         View_Employee_Payment_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -616,14 +616,6 @@ Main_variable m = new Main_variable();
         });
         Employee.add(jButton31, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 150, 150, 60));
 
-        jButton4.setText("Payment");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        Employee.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 250, 150, 60));
-
         jButton5.setText("<html><center>Employee Clock-in & Clock-out</center></br></html>");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -647,6 +639,14 @@ Main_variable m = new Main_variable();
             }
         });
         Employee.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 250, 150, 60));
+
+        Employee_Payment_btn1.setText("Employee Payment");
+        Employee_Payment_btn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Employee_Payment_btn1ActionPerformed(evt);
+            }
+        });
+        Employee.add(Employee_Payment_btn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 250, 160, 60));
 
         javax.swing.GroupLayout SelectionLayout = new javax.swing.GroupLayout(Selection);
         Selection.setLayout(SelectionLayout);
@@ -868,134 +868,6 @@ Main_variable m = new Main_variable();
     e.setVisible(true);
     }//GEN-LAST:event_Employee_salaryActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-Object[] possibilities = {"First Period", "Second Period"};
-String s = (String)JOptionPane.showInputDialog(
-                    null,
-                    "What did period you want?"
-                    ,
-                    "System",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    possibilities,
-                    "ham");
-
-//If a string was returned, say so.
-if ((s != null) && (s.length() > 0)) {
-           String sql  ="select EMP_ID from EMPLOYEE WHERE EMP_DEL = 'N'";
-        try{        
-        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(sql);
-        rs = pat.executeQuery();
-        while(rs.next()){
-            Employee n = new Employee();
-            n.setid(rs.getString("EMP_ID"));
-            em.add(n);
-        }
-        rs.close();
-        pat.close();
-        con.close();
-        }catch(Exception e){
-            
-        }
-    if(s.equals("First Period")){
-        if(month.equals("01")){
-        start = "'"+year+"-01-01'";
-        end = "'"+year+"-01-15'"; 
-        }else if(month.equals("02")){
-        start = "'"+year+"-02-01'";
-        end = "'"+year+"-02-15'";     
-        }else if(month.equals("03")){
-        start = "'"+year+"-03-01'";
-        end = "'"+year+"-03-15'";    
-        }else if(month.equals("04")){
-        start = "'"+year+"-04-01'";
-        end = "'"+year+"-04-15'";     
-        }else if(month.equals("05")){
-        start = "'"+year+"-05-01'";
-        end = "'"+year+"-05-15'";     
-        }else if(month.equals("06")){
-         start = "'"+year+"-06-01'";
-        end = "'"+year+"-06-15'";    
-        }else if(month.equals("07")){
-        start = "'"+year+"-07-01'";
-        end = "'"+year+"-07-15'";     
-        }else if(month.equals("08")){
-         start = "'"+year+"-08-01'";
-        end = "'"+year+"-08-15'";     
-        }else if(month.equals("09")){
-         start = "'"+year+"-09-01'";
-        end = "'"+year+"-09-15'";    
-        }else if(month.equals("10")){
-         start = "'"+year+"-10-01'";
-        end = "'"+year+"-10-15'";    
-        }else if(month.equals("11")){
-        start = "'"+year+"-11-01'";
-        end = "'"+year+"-11-15'";     
-        }else if(month.equals("12")){
-        start = "'"+year+"-12-01'";
-        end = "'"+year+"-12-15'";     
-        }
-    }else if(s.equals("Second Period")){ 
-        if(month.equals("01")){
-        start = "'"+year+"-01-15'";
-        end = "'"+year+"-01-31'"; 
-        }else if(month.equals("02")){
-        start = "'"+year+"-02-15'";
-        end = "'"+year+"-02-28'";     
-        }else if(month.equals("03")){
-        start = "'"+year+"-03-15'";
-        end = "'"+year+"-03-31'";    
-        }else if(month.equals("04")){
-        start = "'"+year+"-04-15'";
-        end = "'"+year+"-04-30'";     
-        }else if(month.equals("05")){
-        start = "'"+year+"-05-15'";
-        end = "'"+year+"-05-31'";     
-        }else if(month.equals("06")){
-         start = "'"+year+"-06-15'";
-        end = "'"+year+"-06-30'";    
-        }else if(month.equals("07")){
-        start = "'"+year+"-07-15'";
-        end = "'"+year+"-07-31'";     
-        }else if(month.equals("08")){
-         start = "'"+year+"-08-15'";
-        end = "'"+year+"-08-31'";     
-        }else if(month.equals("09")){
-         start = "'"+year+"-09-15'";
-        end = "'"+year+"-09-31'";    
-        }else if(month.equals("10")){
-         start = "'"+year+"-10-15'";
-        end = "'"+year+"-10-31'";    
-        }else if(month.equals("11")){
-        start = "'"+year+"-11-15'";
-        end = "'"+year+"-11-30'";     
-        }else if(month.equals("12")){
-        start = "'"+year+"-12-15'";
-        end = "'"+year+"-12-31'";     
-        }
-        System.out.print(em.size()+start+end);
-        for(int i =0;i<em.size();i++){
-           System.out.println(""+i);
-            System.out.println(""+em.size());
-        String check  = "INSERT INTO SALARY_PAYMENT VALUES('"+id()+"','"+em.get(i).getid()+"','"+year+"-"+month+"-"+day+"',"+start+","+end+",'N')";
-        System.out.println(check);
-        try{        
-        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(check);
-        pat.executeUpdate();
-        pat.close();
-        con.close();
-        }catch(Exception e){
-            System.out.println(e);
-    }
-}
-}
-}
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
        Salary_payment s = new Salary_payment();
        s.setVisible(true);
@@ -1189,6 +1061,10 @@ if ((s != null) && (s.length() > 0)) {
     m.setreceive(1);
     }//GEN-LAST:event_jButton25ActionPerformed
 
+    private void Employee_Payment_btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Employee_Payment_btn1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Employee_Payment_btn1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1233,6 +1109,7 @@ if ((s != null) && (s.length() > 0)) {
     private javax.swing.JButton Employee_Clockin_out_btn;
     private javax.swing.JButton Employee_Management_btn;
     private javax.swing.JButton Employee_Payment_btn;
+    private javax.swing.JButton Employee_Payment_btn1;
     private javax.swing.JButton Employee_btn;
     private javax.swing.JPanel Employee_panel;
     private javax.swing.JButton Employee_salary;
@@ -1282,7 +1159,6 @@ if ((s != null) && (s.length() > 0)) {
     private javax.swing.JButton jButton30;
     private javax.swing.JButton jButton31;
     private javax.swing.JButton jButton32;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;

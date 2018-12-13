@@ -48,7 +48,7 @@ public class Employee_Table extends javax.swing.JFrame {
     public ArrayList<Employee>EmployeeList(){
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="select EMP_ID,EMP_FNAME,EMP_LNAME,POS_NAME,EMP_AGE,EMP_GENDER,EMP_START,EMP_PHONE,EMP_EMAIL from EMPLOYEE NATURAL JOIN EMP_POSITION WHERE EMP_DEL = 'N'";         
+        String sql  ="select EMP_ID,EMP_FNAME,EMP_LNAME,POS_NAME,EMP_AGE,EMP_GENDER,EMP_START,EMP_PHONE,EMP_EMAIL from EMPLOYEE NATURAL JOIN EMP_POSITION WHERE EMP_DEL = 'N' ORDER BY EMP_ID";         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.createStatement();

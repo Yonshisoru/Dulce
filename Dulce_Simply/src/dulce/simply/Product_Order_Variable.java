@@ -13,6 +13,7 @@ public class Product_Order_Variable {
 Employee e = new Employee();
 Vendor_variable v = new Vendor_variable();
 static private String view = "O001";
+static private String receiveid = null;
 private String id;
 private int unit;
 private String date;
@@ -35,6 +36,12 @@ static int list_current;
 static boolean detect = false;
 public int getlist_unit(){
     return this.list_unit;
+}
+public String getreceiveid(){
+    return this.receiveid;
+}
+public void setreceiveid(String id){
+    this.receiveid = id;
 }
 public boolean getdetect(){
     return this.detect;

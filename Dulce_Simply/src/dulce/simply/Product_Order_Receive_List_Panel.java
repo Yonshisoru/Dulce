@@ -219,21 +219,56 @@ public void fill(){
         }
          
          if((p.getlist_current()+Integer.parseInt(receiving_txt.getSelectedItem().toString()))==p.getlist_unit()){
-              String updateorder ="UPDATE PRO_REC_LIST SET PRL_STATUS = 'Y' WHERE PRL_NUMBER = '"+p.getlist_showid()+"'";
-     System.out.print(updateorder);
+        String updateorder ="UPDATE PRO_REC_LIST SET PRL_STATUS = 'Y' WHERE PRL_NUMBER = '"+p.getlist_showid()+"'";
+        System.out.println(updateorder);
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
          try{
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
-       pat = con.prepareStatement(updateorder);
-       pat.executeUpdate(updateorder);
+        pat = con.prepareStatement(updateorder);
+        pat.executeUpdate(updateorder);
         rs.close();
         pat.close();
         con.close();
         }catch(Exception e){
             System.out.print(e);
         }
-         }
-         JOptionPane.showMessageDialog(null, "Success");
+        }
+        String updateorder ="SELECT PRL_STATUS FROM PRO_REC_LIST WHERE PR_ID = '"+p.getreceiveid()+"'";
+        System.out.println(updateorder);
+        boolean receiveall = true;
+        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
+        try{
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(updateorder);
+        rs = pat.executeQuery(updateorder);
+        while(rs.next()){
+            if(rs.getString("PRL_STATUS").equals("N")){
+                receiveall = false;
+            }
+        }
+        rs.close();
+        pat.close();
+        con.close();
+        }catch(Exception e){
+            System.out.print(e);
+        }
+        System.out.print(receiveall);
+        if(receiveall == true){
+        String updatereceive ="UPDATE PRO_RECEIVE SET PR_STATUS = 'Y' WHERE PR_ID = '"+p.getreceiveid()+"'";
+        System.out.println(updatereceive);
+        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
+         try{
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        pat = con.prepareStatement(updatereceive);
+        pat.executeUpdate(updatereceive);
+        rs.close();
+        pat.close();
+        con.close();
+        }catch(Exception e){
+            System.out.print(e);
+        }    
+        }
+        JOptionPane.showMessageDialog(null, "Success");
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 

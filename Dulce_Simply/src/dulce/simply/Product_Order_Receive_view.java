@@ -46,7 +46,7 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
         Class.forName("com.mysql.jdbc.Driver");
         //String sql  ="select POL_NUMBER,PO_ID,PRO_ID,PRO_UNITS,PRO_PRICE,PRO_NAME FROM PRO_ORDER_LIST NATURAL JOIN PRODUCT WHERE POL_DEL = 'N' AND PO_ID = 'O001' ORDER BY POL_NUMBER";         
         //String sql = "SELECT POL_NUMBER,PO_ID,PRO_ORDER_LIST.PRO_UNITS,PRO_ORDER_LIST.PRO_PRICE,PRO_NAME FROM PRO_ORDER_LIST INNER JOIN PRODUCT ON PRO_ORDER_LIST.PRO_ID = PRODUCT.PRO_ID WHERE PO_ID = '"+p.getview()+"' AND POL_DEL = 'N' ORDER BY POL_NUMBER";
-     String sql ="SELECT PRL_NUMBER,PRO_ID,PRL_STATUS,PRO_NAME,PRL_CURRENT,PRL_UNITS,PRL_PRICE,PRL_STATUS FROM ((PRO_ORDER NATURAL JOIN PRO_RECEIVE)NATURAL JOIN PRO_REC_LIST)NATURAL JOIN PRODUCT WHERE PO_ID = '"+p.getview()+"' AND PO_DEL = 'N' ORDER BY PRL_NUMBER";
+     String sql ="SELECT PRL_NUMBER,PR_ID,PRO_ID,PRL_STATUS,PRO_NAME,PRL_CURRENT,PRL_UNITS,PRL_PRICE,PRL_STATUS FROM ((PRO_ORDER NATURAL JOIN PRO_RECEIVE)NATURAL JOIN PRO_REC_LIST)NATURAL JOIN PRODUCT WHERE PO_ID = '"+p.getview()+"' AND PO_DEL = 'N' ORDER BY PRL_NUMBER";
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
          con = DriverManager.getConnection(d.url(),d.username(),d.password());
        st = con.createStatement();
@@ -54,6 +54,7 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
         while(rs.next()){
            Product_Order_Variable p = new Product_Order_Variable();
             p.setid(rs.getString("PRL_NUMBER"));
+            p.setreceiveid(rs.getString("PR_ID"));
             p.setproduct(rs.getString("PRO_NAME"));
             p.setproductid(rs.getString("PRO_ID"));
             p.setunit(rs.getInt("PRL_UNITS"));
@@ -114,6 +115,11 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocationByPlatform(true);
         setPreferredSize(new java.awt.Dimension(739, 531));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Tekton Pro", 0, 36)); // NOI18N
@@ -264,13 +270,18 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
     }//GEN-LAST:event_Product_Order_View_TableMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-             DefaultTableModel dm = (DefaultTableModel)Product_Order_View_Table.getModel();
+        DefaultTableModel dm = (DefaultTableModel)Product_Order_View_Table.getModel();
         while(dm.getRowCount() > 0)
         {       
         dm.removeRow(0);
         }
         show_order_view();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Main_variable m = new Main_variable();
+        m.setreceive(0);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

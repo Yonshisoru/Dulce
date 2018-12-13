@@ -48,24 +48,21 @@ public class Stock_panel extends javax.swing.JFrame {
         initComponents();
         show_product();
         id();
-        fillcombo();
+        //fillcombo();
     }
     public void clear(){
-         m_name_txt.setText("");
-         m_cata_txt.setSelectedIndex(0);
+
          m_price_txt.setText("");
     }
     public void lock(){
-         m_name_txt.setEnabled(false);
-         m_cata_txt.setEnabled(false);
+
          m_price_txt.setEnabled(false);
     }
     public void unlock(){
-         m_name_txt.setEnabled(true);
-         m_cata_txt.setEnabled(true);
+
          m_price_txt.setEnabled(true);
     }
-public String find(){
+/*public String find(){
             String find = "SELECT M_T_ID,M_T_NAME FROM MENU_TYPE";
         try{
             Class.forName("com.mysql.jdbc.Driver");
@@ -85,7 +82,7 @@ public String find(){
             System.out.print(e);
         } 
         return menu;
-  }
+  }*/
   public String id(){
        int count=0;
           String sql  ="select MENU_ID from MENU";
@@ -120,7 +117,7 @@ public String find(){
                 e.printStackTrace();
             }
     return output;
-   }
+   }/*
     void fillcombo(){
       try{
           String sql = "SELECT M_T_ID,M_T_NAME FROM MENU_TYPE WHERE M_T_DEL = 'N'";
@@ -136,7 +133,7 @@ public String find(){
       }catch(Exception e){
           
       }
-  }
+  }*/
    public ArrayList<Menu_variable>MenuList(){
                ArrayList<Menu_variable> Menu_list = new ArrayList<>();
         try{
@@ -389,17 +386,17 @@ public String find(){
     }// </editor-fold>//GEN-END:initComponents
 
     private void menu_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_tableMouseClicked
-       if(editnaja==true||deletenaja==true){
+       /*if(editnaja==true||deletenaja==true){
         showid_txt.setText(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString());
         m_name_txt.setText(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),1).toString());
         m_price_txt.setText(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),2).toString());
         m_cata_txt.setSelectedItem(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),3));
-        }
+        }*/
     }//GEN-LAST:event_menu_tableMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String id = showid_txt.getText();
-        String menu_name = m_name_txt.getText();
+        /*String id = showid_txt.getText();
+ String menu_name = m_name_txt.getText();
         String menu = find();
         String menu_price = m_price_txt.getText();
         if(createnaja==true){
@@ -468,7 +465,7 @@ public String find(){
         dm.removeRow(0);
         }
         show_product();
-        }
+        }*/
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void m_price_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_price_txtActionPerformed

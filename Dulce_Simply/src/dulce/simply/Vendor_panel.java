@@ -253,6 +253,11 @@ public class Vendor_panel extends javax.swing.JFrame {
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, -1));
 
         jButton1.setText("Close");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 670, 120, 50));
 
         jButton2.setText("Submit");
@@ -490,6 +495,10 @@ public class Vendor_panel extends javax.swing.JFrame {
     private void vphone_txtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_vphone_txtKeyTyped
 
     }//GEN-LAST:event_vphone_txtKeyTyped
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
