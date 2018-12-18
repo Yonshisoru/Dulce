@@ -38,7 +38,7 @@
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="20" y="80" width="820" height="450"/>
+          <AbsoluteConstraints x="20" y="80" width="830" height="450"/>
         </Constraint>
       </Constraints>
 
@@ -52,11 +52,11 @@
                 <Column editable="false" title="ID" type="java.lang.String"/>
                 <Column editable="false" title="Total" type="java.lang.String"/>
                 <Column editable="false" title="Price" type="java.lang.String"/>
-                <Column editable="false" title="Receive date" type="java.lang.String"/>
-                <Column editable="false" title="Pay date" type="java.lang.Object"/>
                 <Column editable="false" title="Employee" type="java.lang.Object"/>
                 <Column editable="false" title="Vendor" type="java.lang.Object"/>
-                <Column editable="true" title="Pay Status" type="java.lang.Object"/>
+                <Column editable="false" title="Pay date" type="java.lang.Object"/>
+                <Column editable="false" title="Pay Status" type="java.lang.Object"/>
+                <Column editable="false" title="Receive date" type="java.lang.String"/>
                 <Column editable="false" title="Receive Status" type="java.lang.Object"/>
               </Table>
             </Property>

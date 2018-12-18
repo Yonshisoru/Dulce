@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -78,11 +79,11 @@ public class Product_Order_view extends javax.swing.JFrame {
             row[1]=Product_order_list.get(i).getid();
             row[2]=Product_order_list.get(i).getunit();
             row[3]=Product_order_list.get(i).getprice();
-            row[4]=Product_order_list.get(i).getrec_date();
-            row[5]=Product_order_list.get(i).getpay_date();
-            row[6]=Product_order_list.get(i).e.getfname()+" "+Product_order_list.get(i).e.getlname();
-            row[7]=Product_order_list.get(i).v.getname();
-            row[8]=Product_order_list.get(i).getpaystatus();
+            row[8]=Product_order_list.get(i).getrec_date();
+            row[6]=Product_order_list.get(i).getpay_date();
+            row[4]=Product_order_list.get(i).e.getfname()+" "+Product_order_list.get(i).e.getlname();
+            row[5]=Product_order_list.get(i).v.getname();
+            row[7]=Product_order_list.get(i).getpaystatus();
             row[9]=Product_order_list.get(i).getreceivestatus();
             model.addRow(row);
         }
@@ -119,14 +120,14 @@ public class Product_Order_view extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Date", "ID", "Total", "Price", "Receive date", "Pay date", "Employee", "Vendor", "Pay Status", "Receive Status"
+                "Date", "ID", "Total", "Price", "Employee", "Vendor", "Pay date", "Pay Status", "Receive date", "Receive Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -145,7 +146,7 @@ public class Product_Order_view extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(order_view_table);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 820, 450));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 830, 450));
 
         jLabel1.setFont(new java.awt.Font("Tekton Pro", 0, 48)); // NOI18N
         jLabel1.setText("Ordering List");
@@ -228,11 +229,15 @@ public class Product_Order_view extends javax.swing.JFrame {
         show_order_view();
         }
             }else if(m.getreceive()==1){
+            if(order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),7).toString().equals("Y")){
             Product_Order_Variable p = new Product_Order_Variable();
             p.setview(order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),1).toString());
             Product_Order_Receive_view pr = new Product_Order_Receive_view();
             pr.setVisible(true);
-            id = null;   
+            id = null; 
+            }else{
+                JOptionPane.showMessageDialog(null,"You didn't paid this order!!","Dulce",ERROR_MESSAGE);
+            }
             }else{
             Product_Order_Variable p = new Product_Order_Variable();
             p.setview(order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),1).toString());

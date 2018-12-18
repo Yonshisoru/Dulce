@@ -1147,6 +1147,7 @@ System.out.print(sql);
                boolean checkint = true;
                String amouth;
                do{
+               JOptionPane.showMessageDialog(null,p_txt6.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
                 if(amouth  == null){  
                 p_txt6.setSelectedIndex(0);
@@ -1200,6 +1201,7 @@ System.out.print(sql);
                boolean checkint = true;
                String amouth;
                do{
+               JOptionPane.showMessageDialog(null,p_txt6.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
                 if(amouth  == null){  
                 p_txt6.setSelectedIndex(0);
@@ -1263,6 +1265,7 @@ System.out.print(sql);
                boolean checkint = true;
                String amouth;
                do{
+               JOptionPane.showMessageDialog(null,p_txt2.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
                 if(amouth  == null){  
                 p_txt2.setSelectedIndex(0);
@@ -1318,6 +1321,7 @@ System.out.print(sql);
                boolean checkint = true;
                String amouth;
                do{
+               JOptionPane.showMessageDialog(null,p_txt2.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
                 if(amouth  == null){  
                 p_txt2.setSelectedIndex(0);
@@ -1381,6 +1385,7 @@ System.out.print(sql);
                boolean checkint = true;
                String amouth;
                do{
+               JOptionPane.showMessageDialog(null,p_txt1.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
                 if(amouth  == null){  
                 p_txt1.setSelectedIndex(0);
@@ -1436,6 +1441,7 @@ System.out.print(sql);
                boolean checkint = true;
                String amouth;
                do{
+               JOptionPane.showMessageDialog(null,p_txt1.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
                 if(amouth  == null){  
                 p_txt1.setSelectedIndex(0);
@@ -1499,6 +1505,7 @@ System.out.print(sql);
                boolean checkint = true;
                String amouth;
                do{
+               JOptionPane.showMessageDialog(null,p_txt4.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
                 if(amouth  == null){  
                 p_txt4.setSelectedIndex(0);
@@ -1554,6 +1561,7 @@ System.out.print(sql);
                boolean checkint = true;
                String amouth;
                do{
+               JOptionPane.showMessageDialog(null,p_txt4.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
                 if(amouth  == null){  
                 p_txt4.setSelectedIndex(0);
@@ -1617,6 +1625,7 @@ System.out.print(sql);
                boolean checkint = true;
                String amouth;
                do{
+               JOptionPane.showMessageDialog(null,p_txt5.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
                 if(amouth  == null){  
                 p_txt5.setSelectedIndex(0);
@@ -1672,6 +1681,7 @@ System.out.print(sql);
                boolean checkint = true;
                String amouth;
                do{
+               JOptionPane.showMessageDialog(null,p_txt5.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
                 if(amouth  == null){  
                 p_txt5.setSelectedIndex(0);
@@ -1735,6 +1745,7 @@ System.out.print(sql);
                boolean checkint = true;
                String amouth;
                do{
+               JOptionPane.showMessageDialog(null,p_txt3.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
                 if(amouth  == null){  
                 p_txt3.setSelectedIndex(0);
@@ -1790,6 +1801,7 @@ System.out.print(sql);
                boolean checkint = true;
                String amouth;
                do{
+               JOptionPane.showMessageDialog(null,p_txt3.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
                amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
                 if(amouth  == null){  
                 p_txt3.setSelectedIndex(0);

@@ -46,12 +46,10 @@ public class Stock_panel extends javax.swing.JFrame {
      */
     public Stock_panel() {
         initComponents();
-        show_product();
-        id();
+        show_stock();
         //fillcombo();
     }
     public void clear(){
-
          m_price_txt.setText("");
     }
     public void lock(){
@@ -82,7 +80,7 @@ public class Stock_panel extends javax.swing.JFrame {
             System.out.print(e);
         } 
         return menu;
-  }*/
+  }
   public String id(){
        int count=0;
           String sql  ="select MENU_ID from MENU";
@@ -117,7 +115,7 @@ public class Stock_panel extends javax.swing.JFrame {
                 e.printStackTrace();
             }
     return output;
-   }/*
+   }
     void fillcombo(){
       try{
           String sql = "SELECT M_T_ID,M_T_NAME FROM MENU_TYPE WHERE M_T_DEL = 'N'";
@@ -134,23 +132,25 @@ public class Stock_panel extends javax.swing.JFrame {
           
       }
   }*/
-   public ArrayList<Menu_variable>MenuList(){
-               ArrayList<Menu_variable> Menu_list = new ArrayList<>();
+   public ArrayList<Stock_Variable>StockList(){
+               ArrayList<Stock_Variable> Stock_list = new ArrayList<>();
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="select MENU_ID,MENU_NAME,MENU_PRICE,M_T_ID,M_T_NAME FROM MENU NATURAL JOIN MENU_TYPE WHERE MENU_DEL = 'N' ORDER BY MENU_ID";         
+        String sql  ="select STOCK_NUMBER,PRO_ID,PRO_NAME,STOCK_EXP,STOCK_STARTDATE,STOCK_UNITS,PO_ID FROM STOCK NATURAL JOIN PRODUCT ORDER BY STOCK_NUMBER";         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
          con = DriverManager.getConnection(d.url(),d.username(),d.password());
        st = con.createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
-           Menu_variable m = new Menu_variable();
-            m.setid(rs.getString("MENU_ID"));
-            m.setname(rs.getString("MENU_NAME"));
-            m.setprice(rs.getInt("MENU_PRICE"));
-            m.setcataid(rs.getString("M_T_ID"));
-            m.setcataname(rs.getString("M_T_NAME"));
-            Menu_list.add(m);
+           Stock_Variable s = new Stock_Variable();
+            s.setstocknumber(rs.getInt("STOCK_NUMBER"));
+            s.setproductid(rs.getString("PRO_ID"));
+            s.setproductname(rs.getString("PRO_NAME"));
+            s.setstockexpdate(rs.getString("STOCK_EXP"));
+            s.setstockstartdate(rs.getString("STOCK_STARTDATE"));
+            s.setstockunits(rs.getDouble("STOCK_UNITS"));
+            s.setorderid(rs.getString("PO_ID"));
+            Stock_list.add(s);
         }
         rs.close();
         st.close();
@@ -158,17 +158,19 @@ public class Stock_panel extends javax.swing.JFrame {
         }catch(Exception e){
             System.out.print(e);
         }
-        return Menu_list;
+        return Stock_list;
 }
-    public void show_product(){
-        ArrayList<Menu_variable>MenuList = MenuList();
-        DefaultTableModel model = (DefaultTableModel)menu_table.getModel();
-        Object[] row = new Object[4];
+    public void show_stock(){
+        ArrayList<Stock_Variable>MenuList = StockList();
+        DefaultTableModel model = (DefaultTableModel)stock_table.getModel();
+        Object[] row = new Object[6];
         for(int i=0;i<MenuList.size();i++){
-            row[0]=MenuList.get(i).getid();
-            row[1]=MenuList.get(i).getname();
-            row[2]=MenuList.get(i).getprice();
-            row[3]=MenuList.get(i).getcataname();
+            row[0]=MenuList.get(i).getstocknumber();
+            row[1]=MenuList.get(i).getproductname();
+            row[2]=MenuList.get(i).getstockunits();
+            row[3]=MenuList.get(i).getstockexpdate();
+            row[4]=MenuList.get(i).getstockstartdate();
+            row[5]=MenuList.get(i).getorderid();
             model.addRow(row);
         }
     }
@@ -182,7 +184,7 @@ public class Stock_panel extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        menu_table = new javax.swing.JTable();
+        stock_table = new javax.swing.JTable();
         showid_txt = new javax.swing.JTextField();
         m_price_txt = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -210,19 +212,19 @@ public class Stock_panel extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        menu_table.setModel(new javax.swing.table.DefaultTableModel(
+        stock_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Product", "Mfg", "Exp", "Units", "Max"
+                "Stock ID", "Product", "Units", "Mfg Date", "Exp Date", "OrderID"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, true, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -233,13 +235,13 @@ public class Stock_panel extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        menu_table.getTableHeader().setReorderingAllowed(false);
-        menu_table.addMouseListener(new java.awt.event.MouseAdapter() {
+        stock_table.getTableHeader().setReorderingAllowed(false);
+        stock_table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menu_tableMouseClicked(evt);
+                stock_tableMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(menu_table);
+        jScrollPane1.setViewportView(stock_table);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 0, 820, 680));
 
@@ -378,21 +380,20 @@ public class Stock_panel extends javax.swing.JFrame {
         jLabel17.setText("Expired Date:");
         getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, -1));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Yonshisoru\\Documents\\GitHubProject\\Dulce\\Dulce_Simply\\picture\\SPCQGv.jpg")); // NOI18N
         jLabel1.setText("jLabel1");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-17, -50, 1460, 870));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void menu_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_tableMouseClicked
+    private void stock_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stock_tableMouseClicked
        /*if(editnaja==true||deletenaja==true){
         showid_txt.setText(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString());
         m_name_txt.setText(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),1).toString());
         m_price_txt.setText(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),2).toString());
         m_cata_txt.setSelectedItem(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),3));
         }*/
-    }//GEN-LAST:event_menu_tableMouseClicked
+    }//GEN-LAST:event_stock_tableMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         /*String id = showid_txt.getText();
@@ -479,13 +480,13 @@ public class Stock_panel extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         clear();
         showid_txt.setText(createid);
-        menu_table.getSelectionModel().clearSelection();
+        stock_table.getSelectionModel().clearSelection();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
         unlock(); 
         clear();
-        menu_table.getSelectionModel().clearSelection();
+        stock_table.getSelectionModel().clearSelection();
         System.out.print("create!!");         
         create.setEnabled(false);       
         edit.setEnabled(true);        
@@ -501,7 +502,7 @@ public class Stock_panel extends javax.swing.JFrame {
     private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
         unlock();
         clear();
-        menu_table.getSelectionModel().clearSelection();
+        stock_table.getSelectionModel().clearSelection();
         System.out.print("edit!!");
         edit.setEnabled(false);
         create.setEnabled(true);                    
@@ -516,7 +517,7 @@ public class Stock_panel extends javax.swing.JFrame {
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         lock(); 
         clear();
-        menu_table.getSelectionModel().clearSelection();
+        stock_table.getSelectionModel().clearSelection();
         System.out.print("delete!!");
                     delete.setEnabled(false);
                     create.setEnabled(true);
@@ -632,9 +633,9 @@ public class Stock_panel extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField m_price_txt;
     private javax.swing.JTextField m_price_txt1;
-    private javax.swing.JTable menu_table;
     private datechooser.beans.DateChooserCombo mft_date;
     private javax.swing.JComboBox<String> p_txt;
     private javax.swing.JTextField showid_txt;
+    private javax.swing.JTable stock_table;
     // End of variables declaration//GEN-END:variables
 }
