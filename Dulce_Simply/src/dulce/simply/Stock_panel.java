@@ -51,7 +51,6 @@ public class Stock_panel extends javax.swing.JFrame {
         //fillcombo();
     }
     public void clear(){
-
          m_price_txt.setText("");
     }
     public void lock(){
@@ -78,12 +77,12 @@ public class Stock_panel extends javax.swing.JFrame {
         rs.close();
         pat.close();
         con.close();
-        }catch(Exception e){ 
+        }catch(Exception e){
             System.out.print(e);
-        } 
+        }
         return menu;
-  }*/
-  /*public String id(){
+  }
+  public String id(){
        int count=0;
           String sql  ="select MENU_ID from MENU";
     try{
@@ -117,7 +116,7 @@ public class Stock_panel extends javax.swing.JFrame {
                 e.printStackTrace();
             }
     return output;
-   }/*
+   }
     void fillcombo(){
       try{
           String sql = "SELECT M_T_ID,M_T_NAME FROM MENU_TYPE WHERE M_T_DEL = 'N'";
@@ -131,27 +130,27 @@ public class Stock_panel extends javax.swing.JFrame {
         st.close();
         con.close();
       }catch(Exception e){
-          
+
       }
   }*/
    public ArrayList<Stock_Variable>StockList(){
                ArrayList<Stock_Variable> Stock_list = new ArrayList<>();
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="select STOCK_NUMBER,PRO_ID,PRO_NAME,STOCK_EXP,STOCK_STARTDATE,STOCK_UNITS FROM STOCK NATURAL JOIN PRODUCT WHERE STOCK_DEL = 'N' ORDER BY STOCK_NUMBER";         
+        String sql  ="select STOCK_NUMBER,PRO_ID,PRO_NAME,STOCK_EXP,STOCK_STARTDATE,STOCK_UNITS,PO_ID FROM STOCK NATURAL JOIN PRODUCT ORDER BY STOCK_NUMBER";
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
          con = DriverManager.getConnection(d.url(),d.username(),d.password());
        st = con.createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
            Stock_Variable s = new Stock_Variable();
-            s.setstockid(rs.getString("STOCK_NUMBER"));
+            s.setstocknumber(rs.getInt("STOCK_NUMBER"));
             s.setproductid(rs.getString("PRO_ID"));
             s.setproductname(rs.getString("PRO_NAME"));
-            s.setexpdate(rs.getString("STOCK_EXP"));
-            s.setstartdate(rs.getString("STOCK_STARTDATE"));
-            s.setunits(rs.getString("STOCK_UNITS"));
-            System.out.println(s.getstockid());
+            s.setstockexpdate(rs.getString("STOCK_EXP"));
+            s.setstockstartdate(rs.getString("STOCK_STARTDATE"));
+            s.setstockunits(rs.getDouble("STOCK_UNITS"));
+            s.setorderid(rs.getString("PO_ID"));
             Stock_list.add(s);
         }
         rs.close();
@@ -163,15 +162,16 @@ public class Stock_panel extends javax.swing.JFrame {
         return Stock_list;
 }
     public void show_stock(){
-        ArrayList<Stock_Variable>StockList = StockList();
+        ArrayList<Stock_Variable>MenuList = StockList();
         DefaultTableModel model = (DefaultTableModel)stock_table.getModel();
-        Object[] row = new Object[5];
-        for(int i=0;i<StockList.size();i++){
-            row[0]=StockList.get(i).getstockid();
-            row[1]=StockList.get(i).getproductname();
-            row[2]=StockList.get(i).getstartdate();
-            row[3]=StockList.get(i).getexpdate();
-            row[4]=StockList.get(i).getunits();
+        Object[] row = new Object[6];
+        for(int i=0;i<MenuList.size();i++){
+            row[0]=MenuList.get(i).getstocknumber();
+            row[1]=MenuList.get(i).getproductname();
+            row[2]=MenuList.get(i).getstockunits();
+            row[3]=MenuList.get(i).getstockexpdate();
+            row[4]=MenuList.get(i).getstockstartdate();
+            row[5]=MenuList.get(i).getorderid();
             model.addRow(row);
         }
     }
@@ -218,14 +218,14 @@ public class Stock_panel extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Product", "Mfg", "Exp", "Units"
+                "Stock ID", "Product", "Units", "Mfg Date", "Exp Date", "OrderID"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, true, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -381,7 +381,6 @@ public class Stock_panel extends javax.swing.JFrame {
         jLabel17.setText("Expired Date:");
         getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, -1));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Yonshisoru\\Documents\\GitHubProject\\Dulce\\Dulce_Simply\\picture\\SPCQGv.jpg")); // NOI18N
         jLabel1.setText("jLabel1");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-17, -50, 1460, 870));
 
@@ -403,7 +402,7 @@ public class Stock_panel extends javax.swing.JFrame {
         String menu = find();
         String menu_price = m_price_txt.getText();
         if(createnaja==true){
-        String eiei = "INSERT INTO MENU VALUE('"+id+"','"+menu_name+"','"+menu_price+"','"+menu+"','N')";  
+        String eiei = "INSERT INTO MENU VALUE('"+id+"','"+menu_name+"','"+menu_price+"','"+menu+"','N')";
         System.out.print(eiei);
         try{
         Class.forName("com.mysql.jdbc.Driver");
@@ -418,14 +417,14 @@ public class Stock_panel extends javax.swing.JFrame {
         }
         DefaultTableModel dm = (DefaultTableModel)menu_table.getModel();
         while(dm.getRowCount() > 0)
-        {       
+        {
         dm.removeRow(0);
         }
         show_product();
         id();
         clear();
         }else if(editnaja==true){
-            String edit = "UPDATE MENU SET MENU_NAME = '"+menu_name+"',MENU_PRICE = '"+menu_price+"',M_T_ID = '"+menu+"' WHERE MENU_ID = '"+id+"'";  
+            String edit = "UPDATE MENU SET MENU_NAME = '"+menu_name+"',MENU_PRICE = '"+menu_price+"',M_T_ID = '"+menu+"' WHERE MENU_ID = '"+id+"'";
             System.out.print(edit);
             try{
                Class.forName("com.mysql.jdbc.Driver");
@@ -435,17 +434,17 @@ public class Stock_panel extends javax.swing.JFrame {
                 pat.close();
                 clear();
                 JOptionPane.showMessageDialog(null,"Update Success");
-                con.close(); 
+                con.close();
             }catch(Exception e){
                 System.out.print(e);
             }
                   DefaultTableModel dm = (DefaultTableModel)menu_table.getModel();
         System.out.print(dm.getRowCount());
         while(dm.getRowCount() > 0)
-        {       
+        {
         dm.removeRow(0);
         }
-        show_product();  
+        show_product();
         }else if(deletenaja==true){
             String delete = "UPDATE MENU SET MENU_DEL = 'Y' WHERE MENU_ID ='"+id+"'";
             System.out.print(delete);
@@ -457,14 +456,14 @@ public class Stock_panel extends javax.swing.JFrame {
                 pat.close();
                 clear();
                 JOptionPane.showMessageDialog(null,"Delete Success");
-                con.close(); 
+                con.close();
             }catch(Exception e){
                 System.out.print(e);
             }
         DefaultTableModel dm = (DefaultTableModel)menu_table.getModel();
         System.out.print(dm.getRowCount());
         while(dm.getRowCount() > 0)
-        {       
+        {
         dm.removeRow(0);
         }
         show_product();
@@ -486,12 +485,12 @@ public class Stock_panel extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
-        unlock(); 
+        unlock();
         clear();
         stock_table.getSelectionModel().clearSelection();
-        System.out.print("create!!");         
-        create.setEnabled(false);       
-        edit.setEnabled(true);        
+        System.out.print("create!!");
+        create.setEnabled(false);
+        edit.setEnabled(true);
         delete.setEnabled(true);
         showid_txt.setText(createid);
         delete.setSelected(false);
@@ -507,7 +506,7 @@ public class Stock_panel extends javax.swing.JFrame {
         stock_table.getSelectionModel().clearSelection();
         System.out.print("edit!!");
         edit.setEnabled(false);
-        create.setEnabled(true);                    
+        create.setEnabled(true);
         delete.setEnabled(true);
         delete.setSelected(false);
         create.setSelected(false);
@@ -517,7 +516,7 @@ public class Stock_panel extends javax.swing.JFrame {
     }//GEN-LAST:event_editActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        lock(); 
+        lock();
         clear();
         stock_table.getSelectionModel().clearSelection();
         System.out.print("delete!!");
@@ -554,7 +553,7 @@ public class Stock_panel extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

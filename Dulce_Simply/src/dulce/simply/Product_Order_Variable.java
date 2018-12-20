@@ -14,6 +14,7 @@ Employee e = new Employee();
 Vendor_variable v = new Vendor_variable();
 static private String view = "O001";
 static private String receiveid = null;
+static private String orderid = null;
 private String id;
 private int unit;
 private String date;
@@ -39,6 +40,12 @@ public int getlist_unit(){
 }
 public String getreceiveid(){
     return this.receiveid;
+}
+public String getorderid(){
+    return this.orderid;
+}
+public void setorderid(String id){
+    this.orderid = id;
 }
 public void setreceiveid(String id){
     this.receiveid = id;

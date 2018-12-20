@@ -48,6 +48,26 @@ public void fill(){
         receiving_txt.addItem(""+i);
     }
 }
+public double findcurrent(String product){
+    double output=0.0;
+    String sql  ="select PRO_UNITS from PRODUCT WHERE PRO_NAME = '"+product+"'";
+    System.out.println(sql);
+    try{
+    Class.forName("com.mysql.jdbc.Driver");
+    con = DriverManager.getConnection(d.url(),d.username(),d.password());
+    pat = con.prepareStatement(sql);
+     rs = pat.executeQuery(sql);
+     while(rs.next()){
+         output = rs.getDouble("PRO_UNITS");
+     }
+    rs.close();
+    pat.close();
+    con.close();
+    }catch(Exception e){
+        
+    }
+    return output;
+}
   public String stockid(){
        int count=0;
        max = 0;
@@ -187,7 +207,7 @@ public void fill(){
         boolean check = false;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String gg = sdf.format(exp_date.getSelectedDate().getTime());
-        String stock ="INSERT INTO STOCK VALUES('"+stockid+"','"+p.getlist_productid()+"','"+gg+"','"+LocalDate.now()+"','"+Integer.parseInt(receiving_txt.getSelectedItem().toString())+"','N')";
+        String stock ="INSERT INTO STOCK VALUES('"+stockid+"','"+p.getlist_productid()+"','"+gg+"','"+LocalDate.now()+"','"+Integer.parseInt(receiving_txt.getSelectedItem().toString())+"',"+"'"+p.getview()+"','N')";
         System.out.print(stock);
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
          try{
@@ -217,7 +237,18 @@ public void fill(){
         }catch(Exception e){
             System.out.print(e);
         }
-         
+     String updateproduct ="UPDATE PRODUCT SET PRO_UNITS = '"+((findcurrent(product_txt.getText()))+Integer.parseInt(receiving_txt.getSelectedItem().toString()))+"' WHERE PRO_NAME = '"+product_txt.getText()+"';";
+     System.out.println(updateproduct);
+         try{
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+       pat = con.prepareStatement(updateproduct);
+       pat.executeUpdate(updateproduct);
+        rs.close();
+        pat.close();
+        con.close();
+        }catch(Exception e){
+            System.out.print(e);
+        }
          if((p.getlist_current()+Integer.parseInt(receiving_txt.getSelectedItem().toString()))==p.getlist_unit()){
         String updateorder ="UPDATE PRO_REC_LIST SET PRL_STATUS = 'Y' WHERE PRL_NUMBER = '"+p.getlist_showid()+"'";
         System.out.println(updateorder);

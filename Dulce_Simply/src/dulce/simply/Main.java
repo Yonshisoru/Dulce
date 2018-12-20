@@ -465,6 +465,11 @@ Main_variable m = new Main_variable();
         Inventory_panel.add(Heading_INV, new org.netbeans.lib.awtextra.AbsoluteConstraints(302, 20, -1, -1));
 
         jButton22.setText("Product");
+        jButton22.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton22ActionPerformed(evt);
+            }
+        });
         Inventory_panel.add(jButton22, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 120, 150, 70));
 
         jButton23.setText("View Ordering");
@@ -490,6 +495,11 @@ Main_variable m = new Main_variable();
         Inventory_panel.add(jButton27, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, 150, 70));
 
         jButton28.setText("Menu");
+        jButton28.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton28ActionPerformed(evt);
+            }
+        });
         Inventory_panel.add(jButton28, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 120, 150, 70));
 
         Ordering_product1.setText("Ordering Product");
@@ -515,6 +525,11 @@ Main_variable m = new Main_variable();
         Inventory_panel.add(jButton18, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 300, -1, 60));
 
         jButton24.setText("Stock");
+        jButton24.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton24ActionPerformed(evt);
+            }
+        });
         Inventory_panel.add(jButton24, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 300, 150, 60));
 
         Employee_panel.setBackground(new java.awt.Color(254, 255, 239));
@@ -704,7 +719,6 @@ Main_variable m = new Main_variable();
 
         getContentPane().add(Selection, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 65, 830, 620));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Yonshisoru\\Documents\\GitHubProject\\Dulce\\Dulce_Simply\\picture\\Ny5mCcE.jpg")); // NOI18N
         jLabel2.setText("jLabel2");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-262, -30, 2220, 1240));
 
@@ -1053,6 +1067,7 @@ if ((s != null) && (s.length() > 0)) {
 
     private void jButton23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton23ActionPerformed
         Product_Order_view p = new Product_Order_view();
+        p.setVisible(true);
     }//GEN-LAST:event_jButton23ActionPerformed
 
     private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
@@ -1064,6 +1079,21 @@ if ((s != null) && (s.length() > 0)) {
     private void Employee_Payment_btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Employee_Payment_btn1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Employee_Payment_btn1ActionPerformed
+
+    private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
+        Product_panel p = new Product_panel();
+        p.setVisible(true);
+    }//GEN-LAST:event_jButton22ActionPerformed
+
+    private void jButton28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton28ActionPerformed
+        Menu_panel m = new Menu_panel();
+        m.setVisible(true);
+    }//GEN-LAST:event_jButton28ActionPerformed
+
+    private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
+        Stock_panel s = new Stock_panel();
+        s.setVisible(true);
+    }//GEN-LAST:event_jButton24ActionPerformed
 
     /**
      * @param args the command line arguments
