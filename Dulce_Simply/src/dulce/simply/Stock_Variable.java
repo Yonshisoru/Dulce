@@ -7,6 +7,7 @@ package dulce.simply;
 
 /**
  *
+<<<<<<< HEAD
  * @author Yonshisoru
  */
 public class Stock_Variable {
@@ -16,8 +17,19 @@ public class Stock_Variable {
     private String startdate;
     private String units;
     private String productname;
+    private int stocknumber;
+    private String stockexpdate;
+    private String stockstartdate;
+    private double stockunits;
+    private String orderid;
     public String getstockid(){
         return this.stockid;
+    }
+    public int getstocknumber(){
+        return this.stocknumber;
+    }
+    public String getsproductid(){
+        return this.productid;
     }
     public String getproductname(){
         return this.productname;
@@ -40,6 +52,21 @@ public class Stock_Variable {
     public void setproductname(String productname){
         this.productname = productname;
     }
+    public String getstockexpdate(){
+        return this.stockexpdate;
+    }
+    public String getstockstartdate(){
+        return this.stockstartdate;
+    }
+    public double getstockunits(){
+        return this.stockunits;
+    }
+    public String getorderid(){
+        return this.orderid;
+    }
+    public void setstocknumber(int id){
+        this.stocknumber = id;
+    }
     public void setproductid(String id){
         this.productid = id;
     }
@@ -51,5 +78,17 @@ public class Stock_Variable {
     }
     public void setunits(String units){
         this.units = units;
+    }
+    public void setstockexpdate(String date){
+        this.stockexpdate = date;
+    }
+    public void setstockstartdate(String date){
+        this.stockstartdate = date;
+    }
+    public void setstockunits(double units){
+        this.stockunits= units;
+    }
+    public void setorderid(String id){
+        this.orderid = id;
     }
 }
