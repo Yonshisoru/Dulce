@@ -5,17 +5,77 @@
  */
 package dulce.simply;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Thanachot
  */
 public class Claim_panel extends javax.swing.JFrame {
-
+//-------------------------Call date from another class-----------------------------------------------//
+    Stock_Variable s = new Stock_Variable();
+    Database d = new Database();
+    Employee e = new Employee();
+    Claim_Variable c=  new Claim_Variable();
+//-----------------------------Initilize variable---------------------------------------//
+    Connection con = null;
+    Statement st = null;
+    PreparedStatement pat = null;
+    ResultSet rs = null;
     /**
      * Creates new form Claim_panel
      */
     public Claim_panel() {
         initComponents();
+        show_productfromstock();
+    }
+public ArrayList<Claim_Variable> Claimproduct(){
+    ArrayList<Claim_Variable> Claimproduct = new ArrayList<>();
+        try{
+        Class.forName("com.mysql.jdbc.Driver");
+        String sql  ="select CL_ID,EMP_ID,EMP_FNAME,EMP_LNAME,CL_DATE,CL_REC_DATE,CL_STATUS,COUNT(C_L_NUMBER) FROM (CLAIM NATURAL JOIN CLAIM_LIST)NATURAL JOIN EMPLOYEE WHERE CL_DEL = 'N'";
+        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
+         con = DriverManager.getConnection(d.url(),d.username(),d.password());
+       st = con.createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+           Claim_Variable c = new Claim_Variable();
+            c.setclaimid(rs.getString("CL_ID"));
+            c.setdate(rs.getString("CL_DATE"));
+            c.setreceivedate(rs.getString("CL_REC_DATE"));
+            c.setproductcount(rs.getInt("COUNT(C_L_NUMBER)"));
+            c.setempfname(rs.getString("EMP_FNAME"));
+            c.setemplname(rs.getString("EMP_LNAME"));
+            c.setstatus(rs.getString("CL_STATUS"));
+            Claimproduct.add(c);
+        }
+        rs.close();
+        st.close();
+        con.close();
+        }catch(Exception e){
+            System.out.print(e);
+        }
+        return Claimproduct;
+}
+    public void show_productfromstock(){
+        ArrayList<Claim_Variable>product = Claimproduct();
+        DefaultTableModel model = (DefaultTableModel)Claim_Table.getModel();
+        Object[] row = new Object[6];
+        for(int i=0;i<product.size();i++){
+            row[0]=product.get(i).getclaimid();
+            row[1]=product.get(i).getdate();
+            row[2]=product.get(i).getreceivedate();
+            row[3]=product.get(i).getproductcount();
+            row[4]=product.get(i).getempfname()+" "+product.get(i).getemplname();
+            row[5]=product.get(i).getstatus();
+            model.addRow(row);
+        }
     }
 
     /**
@@ -27,21 +87,174 @@ public class Claim_panel extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        Type = new javax.swing.ButtonGroup();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        Claim_Table = new javax.swing.JTable();
+        Claim_label = new javax.swing.JLabel();
+        emp_label = new javax.swing.JLabel();
+        Orderid_label = new javax.swing.JLabel();
+        orderid_combo = new javax.swing.JComboBox<>();
+        product_combo = new javax.swing.JComboBox<>();
+        product_add = new javax.swing.JButton();
+        Employeeid_txt = new javax.swing.JTextField();
+        Claimid_txt = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        Header = new javax.swing.JLabel();
+        receive_combo = new datechooser.beans.DateChooserCombo();
+        date_combo = new datechooser.beans.DateChooserCombo();
+        date_label = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        close_btn = new javax.swing.JButton();
+        create_radio = new javax.swing.JRadioButton();
+        delete_radio = new javax.swing.JRadioButton();
+        receive_label = new javax.swing.JLabel();
+        function_label = new javax.swing.JLabel();
+        create_btn = new javax.swing.JButton();
+        clear_btn = new javax.swing.JButton();
+        Product_label = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(1400, 800));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Stock Number", "Product", "Units", "Price", "OrderID", "Cause"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 490, 730, 280));
+
+        Claim_Table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ClaimID", "Date", "Receive Date", "ProductCount", "Employee", "Status"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(Claim_Table);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 60, 610, 710));
+
+        Claim_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        Claim_label.setText("Claim ID:");
+        getContentPane().add(Claim_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
+
+        emp_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        emp_label.setText("Employee ID:");
+        getContentPane().add(emp_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 100, -1, -1));
+
+        Orderid_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        Orderid_label.setText("OrderID:");
+        getContentPane().add(Orderid_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
+
+        orderid_combo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                orderid_comboActionPerformed(evt);
+            }
+        });
+        getContentPane().add(orderid_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 90, 30));
+
+        getContentPane().add(product_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 215, 90, 30));
+
+        product_add.setText("Add");
+        product_add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                product_addActionPerformed(evt);
+            }
+        });
+        getContentPane().add(product_add, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 215, 60, 30));
+
+        Employeeid_txt.setEditable(false);
+        getContentPane().add(Employeeid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 90, 100, 30));
+
+        Claimid_txt.setEditable(false);
+        getContentPane().add(Claimid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 100, 30));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel5.setText("Product to Claim");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 450, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel6.setText("Claim Table");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 20, -1, -1));
+
+        Header.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        Header.setText("Claim Panel");
+        getContentPane().add(Header, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, -1, -1));
+        getContentPane().add(receive_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 280, -1, 30));
+        getContentPane().add(date_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 275, -1, 30));
+
+        date_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        date_label.setText("Date:");
+        getContentPane().add(date_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, -1, -1));
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, -1, -1));
+
+        close_btn.setText("Close");
+        getContentPane().add(close_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 340, 100, 40));
+
+        Type.add(create_radio);
+        create_radio.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        create_radio.setText("Create");
+        getContentPane().add(create_radio, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, -1, -1));
+
+        Type.add(delete_radio);
+        delete_radio.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        delete_radio.setText("Delete");
+        getContentPane().add(delete_radio, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, -1, -1));
+
+        receive_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        receive_label.setText("Received Claimed Product:");
+        getContentPane().add(receive_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 280, -1, -1));
+
+        function_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        function_label.setText("Function:");
+        getContentPane().add(function_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 345, -1, -1));
+
+        create_btn.setText("Create");
+        getContentPane().add(create_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 340, 100, 40));
+
+        clear_btn.setText("Clear");
+        getContentPane().add(clear_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 340, 90, 40));
+
+        Product_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        Product_label.setText("Product:");
+        getContentPane().add(Product_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void orderid_comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderid_comboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_orderid_comboActionPerformed
+
+    private void product_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_product_addActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_product_addActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +292,33 @@ public class Claim_panel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable Claim_Table;
+    private javax.swing.JLabel Claim_label;
+    private javax.swing.JTextField Claimid_txt;
+    private javax.swing.JTextField Employeeid_txt;
+    private javax.swing.JLabel Header;
+    private javax.swing.JLabel Orderid_label;
+    private javax.swing.JLabel Product_label;
+    private javax.swing.ButtonGroup Type;
+    private javax.swing.JButton clear_btn;
+    private javax.swing.JButton close_btn;
+    private javax.swing.JButton create_btn;
+    private javax.swing.JRadioButton create_radio;
+    private datechooser.beans.DateChooserCombo date_combo;
+    private javax.swing.JLabel date_label;
+    private javax.swing.JRadioButton delete_radio;
+    private javax.swing.JLabel emp_label;
+    private javax.swing.JLabel function_label;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JComboBox<String> orderid_combo;
+    private javax.swing.JButton product_add;
+    private javax.swing.JComboBox<String> product_combo;
+    private datechooser.beans.DateChooserCombo receive_combo;
+    private javax.swing.JLabel receive_label;
     // End of variables declaration//GEN-END:variables
 }
