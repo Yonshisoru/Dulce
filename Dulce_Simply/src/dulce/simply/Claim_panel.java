@@ -18,6 +18,9 @@ import javax.swing.table.DefaultTableModel;
  * @author Thanachot
  */
 public class Claim_panel extends javax.swing.JFrame {
+    ArrayList<Claim_Variable> Claimproduct = new ArrayList<>();
+    ArrayList<Stock_Variable> stock = new ArrayList<>();
+    ArrayList<Stock_Variable> orderid = new ArrayList<>();
 //-------------------------Call date from another class-----------------------------------------------//
     Stock_Variable s = new Stock_Variable();
     Database d = new Database();
@@ -28,15 +31,117 @@ public class Claim_panel extends javax.swing.JFrame {
     Statement st = null;
     PreparedStatement pat = null;
     ResultSet rs = null;
+    int max = 0;
+    String output = "";
     /**
      * Creates new form Claim_panel
      */
     public Claim_panel() {
         initComponents();
         show_productfromstock();
+        id();
+        Employeeid_txt.setText(e.getshowid());
+        fillcombo();
     }
+    void fillstock(String id){
+        try{
+          String sql = "select STOCK_NUMBER,PRO_ID,PRO_NAME,STOCK_EXP,STOCK_STARTDATE,STOCK_UNITS,PO_ID FROM STOCK NATURAL JOIN PRODUCT WHERE PO_ID = '"+id+"' ORDER BY STOCK_NUMBER";
+         System.out.print(sql);
+          con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        st = con.createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+            Stock_combo.addItem(rs.getString("STOCK_NUMBER"));
+            Stock_Variable v = new Stock_Variable();
+            v.setstocknumber(Integer.parseInt(rs.getString("STOCK_NUMBER")));
+            System.out.print(rs.getString("STOCK_NUMBER"));
+            v.setorderid(rs.getString("PO_ID"));
+            v.setproductid(rs.getString("PRO_ID"));
+            v.setproductname(rs.getString("PRO_NAME"));
+            orderid.add(v);
+        }
+        rs.close();
+        st.close();
+        con.close();
+      }catch(Exception e){
+
+  }
+    }
+void fillproduct(String id){
+        try{
+          String sql = "select STOCK_NUMBER,PRO_ID,PRO_NAME FROM STOCK NATURAL JOIN PRODUCT WHERE STOCK_NUMBER = '"+id+"' ORDER BY STOCK_NUMBER";
+         System.out.print(sql);
+          con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        st = con.createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+            product_txt.setText(rs.getString("PRO_NAME"));
+        }
+        rs.close();
+        st.close();
+        con.close();
+      }catch(Exception e){
+
+  }
+    }
+    void fillcombo(){
+      try{
+          String sql = "select STOCK_NUMBER,PRO_ID,PRO_NAME,STOCK_EXP,STOCK_STARTDATE,STOCK_UNITS,PO_ID FROM STOCK NATURAL JOIN PRODUCT ORDER BY STOCK_NUMBER";
+         con = DriverManager.getConnection(d.url(),d.username(),d.password());
+        st = con.createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+            orderid_combo.addItem(rs.getString("PO_ID"));
+            if(!rs.getString("PO_ID").isEmpty()){
+            Stock_Variable s = new Stock_Variable();
+            s.setorderid(rs.getString("PO_ID"));
+            stock.add(s);
+            }
+        }
+        rs.close();
+        st.close();
+        con.close();
+      }catch(Exception e){
+
+      }
+      System.out.println("Size of stock ="+stock.size()); 
+  }
+ public String id(){
+       int count=0;
+          String sql  ="select CL_ID from CLAIM";
+    try{
+    Class.forName("com.mysql.jdbc.Driver");
+    con = DriverManager.getConnection(d.url(),d.username(),d.password());
+    pat = con.prepareStatement(sql);
+     rs = pat.executeQuery(sql);
+    while(rs.next()){
+        count++;
+        if(Integer.parseInt(rs.getString("CL_ID").substring(1,4))>max){
+            max = Integer.parseInt(rs.getString("CL_ID").substring(1,4));
+        }
+    }
+    if(count==0){
+            max = 0;
+    }
+    max += 1;
+    if(max<10){
+        output = "C00"+max;
+    }else if(max<100){
+        output = "C0"+max;
+    }else{
+        output = "C"+max;
+    }
+    Claimid_txt.setText(output);
+    con.close();
+    pat.close();
+    rs.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+    System.out.print(output);
+    return output;
+   }
 public ArrayList<Claim_Variable> Claimproduct(){
-    ArrayList<Claim_Variable> Claimproduct = new ArrayList<>();
         try{
         Class.forName("com.mysql.jdbc.Driver");
         String sql  ="select CL_ID,EMP_ID,EMP_FNAME,EMP_LNAME,CL_DATE,CL_REC_DATE,CL_STATUS,COUNT(C_L_NUMBER) FROM (CLAIM NATURAL JOIN CLAIM_LIST)NATURAL JOIN EMPLOYEE WHERE CL_DEL = 'N'";
@@ -96,8 +201,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
         emp_label = new javax.swing.JLabel();
         Orderid_label = new javax.swing.JLabel();
         orderid_combo = new javax.swing.JComboBox<>();
-        product_combo = new javax.swing.JComboBox<>();
-        product_add = new javax.swing.JButton();
+        Stock_combo = new javax.swing.JComboBox<>();
         Employeeid_txt = new javax.swing.JTextField();
         Claimid_txt = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -114,7 +218,10 @@ public ArrayList<Claim_Variable> Claimproduct(){
         function_label = new javax.swing.JLabel();
         create_btn = new javax.swing.JButton();
         clear_btn = new javax.swing.JButton();
+        Stock_label = new javax.swing.JLabel();
         Product_label = new javax.swing.JLabel();
+        product_add = new javax.swing.JButton();
+        product_txt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1400, 800));
@@ -166,28 +273,27 @@ public ArrayList<Claim_Variable> Claimproduct(){
 
         emp_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         emp_label.setText("Employee ID:");
-        getContentPane().add(emp_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 100, -1, -1));
+        getContentPane().add(emp_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 90, -1, -1));
 
         Orderid_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         Orderid_label.setText("OrderID:");
         getContentPane().add(Orderid_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
 
+        orderid_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Choose OrderID>" }));
         orderid_combo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 orderid_comboActionPerformed(evt);
             }
         });
-        getContentPane().add(orderid_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 90, 30));
+        getContentPane().add(orderid_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 140, 30));
 
-        getContentPane().add(product_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 215, 90, 30));
-
-        product_add.setText("Add");
-        product_add.addActionListener(new java.awt.event.ActionListener() {
+        Stock_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Choose Stocknumber>" }));
+        Stock_combo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                product_addActionPerformed(evt);
+                Stock_comboActionPerformed(evt);
             }
         });
-        getContentPane().add(product_add, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 215, 60, 30));
+        getContentPane().add(Stock_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 215, 150, 30));
 
         Employeeid_txt.setEditable(false);
         getContentPane().add(Employeeid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 90, 100, 30));
@@ -219,6 +325,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
 
         Type.add(create_radio);
         create_radio.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        create_radio.setSelected(true);
         create_radio.setText("Create");
         getContentPane().add(create_radio, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, -1, -1));
 
@@ -241,20 +348,64 @@ public ArrayList<Claim_Variable> Claimproduct(){
         clear_btn.setText("Clear");
         getContentPane().add(clear_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 340, 90, 40));
 
+        Stock_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        Stock_label.setText("Stock:");
+        getContentPane().add(Stock_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
+
         Product_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         Product_label.setText("Product:");
-        getContentPane().add(Product_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
+        getContentPane().add(Product_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 220, -1, -1));
+
+        product_add.setText("Add");
+        product_add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                product_addActionPerformed(evt);
+            }
+        });
+        getContentPane().add(product_add, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 210, 60, 30));
+
+        product_txt.setEditable(false);
+        getContentPane().add(product_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 210, 150, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void orderid_comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderid_comboActionPerformed
-        // TODO add your handling code here:
+       Stock_combo.removeAllItems();
+       Stock_combo.addItem("<Choose Stocknumber>");
+       if(orderid_combo.getSelectedIndex()==0){
+           
+       }else{
+       if(orderid_combo.getSelectedItem().toString().isEmpty()){
+           System.out.println("EIEI");
+       }else{
+       for(int i =0;i<stock.size();i++){
+           System.out.println(stock.get(i).getorderid());
+           if(orderid_combo.getSelectedItem().toString().equals(stock.get(i).getorderid())){
+               fillstock(orderid_combo.getSelectedItem().toString());
+               break;
+        }
+       }
+       }
+       }
     }//GEN-LAST:event_orderid_comboActionPerformed
 
     private void product_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_product_addActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_product_addActionPerformed
+
+    private void Stock_comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Stock_comboActionPerformed
+       product_txt.setText("");
+       if(Stock_combo.getSelectedIndex()==0){ 
+       }else{
+       for(int i =0;i<orderid.size();i++){
+           System.out.println(orderid.get(i).getstocknumber());
+           if(Integer.parseInt(Stock_combo.getSelectedItem().toString())==((orderid.get(i).getstocknumber()))){
+           fillproduct(Stock_combo.getSelectedItem().toString());
+       }
+       }
+       }
+    }//GEN-LAST:event_Stock_comboActionPerformed
 
     /**
      * @param args the command line arguments
@@ -299,6 +450,8 @@ public ArrayList<Claim_Variable> Claimproduct(){
     private javax.swing.JLabel Header;
     private javax.swing.JLabel Orderid_label;
     private javax.swing.JLabel Product_label;
+    private javax.swing.JComboBox<String> Stock_combo;
+    private javax.swing.JLabel Stock_label;
     private javax.swing.ButtonGroup Type;
     private javax.swing.JButton clear_btn;
     private javax.swing.JButton close_btn;
@@ -317,7 +470,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
     private javax.swing.JTable jTable1;
     private javax.swing.JComboBox<String> orderid_combo;
     private javax.swing.JButton product_add;
-    private javax.swing.JComboBox<String> product_combo;
+    private javax.swing.JTextField product_txt;
     private datechooser.beans.DateChooserCombo receive_combo;
     private javax.swing.JLabel receive_label;
     // End of variables declaration//GEN-END:variables
