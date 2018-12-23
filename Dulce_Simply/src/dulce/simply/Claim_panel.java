@@ -10,7 +10,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,6 +23,7 @@ public class Claim_panel extends javax.swing.JFrame {
     ArrayList<Claim_Variable> Claimproduct = new ArrayList<>();
     ArrayList<Stock_Variable> stock = new ArrayList<>();
     ArrayList<Stock_Variable> orderid = new ArrayList<>();
+    ArrayList<Stock_Variable> product = new ArrayList<>();
 //-------------------------Call date from another class-----------------------------------------------//
     Stock_Variable s = new Stock_Variable();
     Database d = new Database();
@@ -31,30 +34,108 @@ public class Claim_panel extends javax.swing.JFrame {
     Statement st = null;
     PreparedStatement pat = null;
     ResultSet rs = null;
+//----------------------------Integer variable---------------------------------------//
     int max = 0;
+//-----------------------------String variable-----------------------------------------------//
     String output = "";
+    String claimid = "";
+//-----------------------------Boolean variable---------------------------------------------------//
+    boolean Stock_clicked = false;
+    boolean create = true;
+    boolean delete = false;
+//-------------------------------------------------------------------------------------------------//
     /**
      * Creates new form Claim_panel
      */
     public Claim_panel() {
         initComponents();
         show_productfromstock();
-        id();
+        claimid();
         Employeeid_txt.setText(e.getshowid());
         fillcombo();
+        JOptionPane.showMessageDialog(null, "คุณสามารถดับเบิ้ลคลิ๊กที่ตารางการเคลมเพื่อดูรายละเอียดได้");
+    }
+    void producttable(){
+        DefaultTableModel model = (DefaultTableModel)product_table.getModel();
+        while(model.getRowCount() > 0)
+        {       
+        model.removeRow(0);
+        }
+        Object[] row = new Object[5];
+        for(int i=0;i<product.size();i++){
+            row[0]=product.get(i).getstocknumber();
+            row[1]=product.get(i).getproductname();
+            row[2]=product.get(i).getstockunits();
+            row[3]=product.get(i).getorderid();
+            row[4]=product.get(i).c.getcause();
+            model.addRow(row);
+        }
+        delete();
+    }
+    public Connection getcon(){
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            return DriverManager.getConnection(d.url(),d.username(),d.password());
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            System.out.println("Didn';t connect");
+            throw new RuntimeException(e);
+        }
+    }
+    void lock(){
+        product.clear();
+        DefaultTableModel model = (DefaultTableModel)product_table.getModel();
+        while(model.getRowCount() > 0)
+        {       
+        model.removeRow(0);
+        }
+        Claimid_txt.setText("");
+        Claimid_txt.setEnabled(false);
+        Employeeid_txt.setText("");
+        Employeeid_txt.setEnabled(false);
+        orderid_combo.setSelectedIndex(0);
+        Stock_combo.setSelectedIndex(0);
+        product_txt.setText("");
+        product_txt.setEnabled(false);
+        unit_txt.setText("");
+        unit_txt.setEnabled(false);
+        date_combo.setEnabled(false);
+        receive_combo.setEnabled(false);
+        /*Claimid_txt.setText("");
+        orderid_combo.removeAllItems();*/
+    }
+    void unlock(){
+        Claimid_txt.setText(claimid);
+        Employeeid_txt.setText(e.getshowid());
+        orderid_combo.setSelectedIndex(0);
+        Stock_combo.setSelectedIndex(0);
+        product_txt.setText("");
+        unit_txt.setText("");
+        date_combo.setEnabled(true);
+        receive_combo.setEnabled(true);
+        Claimid_txt.setEnabled(true);
+        Employeeid_txt.setEnabled(true);
+        product_txt.setEnabled(true);
+        unit_txt.setEnabled(true);
+        /*Claimid_txt.setText("");
+        orderid_combo.removeAllItems();*/
+    }
+    void delete(){
+        Stock_combo.removeItemAt(Stock_combo.getSelectedIndex());
+        product_txt.setText("");
+        System.out.print(Stock_combo.getItemCount());
     }
     void fillstock(String id){
         try{
           String sql = "select STOCK_NUMBER,PRO_ID,PRO_NAME,STOCK_EXP,STOCK_STARTDATE,STOCK_UNITS,PO_ID FROM STOCK NATURAL JOIN PRODUCT WHERE PO_ID = '"+id+"' ORDER BY STOCK_NUMBER";
-         System.out.print(sql);
-          con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        st = con.createStatement();
+        st = getcon().createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
             Stock_combo.addItem(rs.getString("STOCK_NUMBER"));
             Stock_Variable v = new Stock_Variable();
             v.setstocknumber(Integer.parseInt(rs.getString("STOCK_NUMBER")));
             System.out.print(rs.getString("STOCK_NUMBER"));
+            v.setstockunits(rs.getDouble("STOCK_UNITS"));
             v.setorderid(rs.getString("PO_ID"));
             v.setproductid(rs.getString("PRO_ID"));
             v.setproductname(rs.getString("PRO_NAME"));
@@ -62,24 +143,22 @@ public class Claim_panel extends javax.swing.JFrame {
         }
         rs.close();
         st.close();
-        con.close();
+        getcon().close();
       }catch(Exception e){
 
   }
     }
 void fillproduct(String id){
         try{
-          String sql = "select STOCK_NUMBER,PRO_ID,PRO_NAME FROM STOCK NATURAL JOIN PRODUCT WHERE STOCK_NUMBER = '"+id+"' ORDER BY STOCK_NUMBER";
-         System.out.print(sql);
-          con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        st = con.createStatement();
+        String sql = "select STOCK_NUMBER,PRO_ID,PRO_NAME FROM STOCK NATURAL JOIN PRODUCT WHERE STOCK_NUMBER = '"+id+"' ORDER BY STOCK_NUMBER";
+        st = getcon().createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
             product_txt.setText(rs.getString("PRO_NAME"));
         }
         rs.close();
         st.close();
-        con.close();
+        getcon().close();
       }catch(Exception e){
 
   }
@@ -87,32 +166,39 @@ void fillproduct(String id){
     void fillcombo(){
       try{
           String sql = "select STOCK_NUMBER,PRO_ID,PRO_NAME,STOCK_EXP,STOCK_STARTDATE,STOCK_UNITS,PO_ID FROM STOCK NATURAL JOIN PRODUCT ORDER BY STOCK_NUMBER";
-         con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        st = con.createStatement();
+        st = getcon().createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
+            if(rs.getString("PO_ID").equals("")){
+                
+            }else{
+            if(orderid_combo.getItemAt(orderid_combo.getItemCount()-1).equals(rs.getString("PO_ID"))){
+                //System.out.print("Duplicated is "+orderid_combo.getItemAt(orderid_combo.getItemCount()-1));
+            }else{
             orderid_combo.addItem(rs.getString("PO_ID"));
             if(!rs.getString("PO_ID").isEmpty()){
             Stock_Variable s = new Stock_Variable();
             s.setorderid(rs.getString("PO_ID"));
             stock.add(s);
             }
+            }
+            }
         }
         rs.close();
         st.close();
-        con.close();
+        getcon().close();
       }catch(Exception e){
 
       }
-      System.out.println("Size of stock ="+stock.size()); 
+      //System.out.println("Size of stock ="+stock.size()); 
   }
- public String id(){
-       int count=0;
-          String sql  ="select CL_ID from CLAIM";
+ public String claimid(){
+    int count=0;
+    max = 0;
+    String sql  ="select CL_ID from CLAIM";
     try{
     Class.forName("com.mysql.jdbc.Driver");
-    con = DriverManager.getConnection(d.url(),d.username(),d.password());
-    pat = con.prepareStatement(sql);
+    pat = getcon().prepareStatement(sql);
      rs = pat.executeQuery(sql);
     while(rs.next()){
         count++;
@@ -132,22 +218,111 @@ void fillproduct(String id){
         output = "C"+max;
     }
     Claimid_txt.setText(output);
-    con.close();
+    getcon().close();
     pat.close();
     rs.close();
             }catch(Exception e){
                 e.printStackTrace();
             }
+    claimid = output;
     System.out.print(output);
+    return output;
+   }
+ public String claimlistid(){
+    int count=0;
+    max = 0;
+    String sql  ="select C_L_NUMBER from CLAIM_LIST";
+    try{
+    Class.forName("com.mysql.jdbc.Driver");
+    pat = getcon().prepareStatement(sql);
+    rs = pat.executeQuery(sql);
+    while(rs.next()){
+        count++;
+        if(Integer.parseInt(rs.getString("C_L_NUMBER"))>max){
+            max = Integer.parseInt(rs.getString("C_L_NUMBER"));
+        }
+    }
+    if(count==0){
+            max = 0;
+    }
+    max += 1;
+    getcon().close();
+    pat.close();
+    rs.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+    return ""+max;
+   }
+ public String receiveclaimid(){
+    int count=0;
+    max = 0;
+    String output = null;
+    String sql  ="select CR_ID from CLAIM_RECEIVE";
+    try{
+    Class.forName("com.mysql.jdbc.Driver");
+    pat = getcon().prepareStatement(sql);
+    rs = pat.executeQuery(sql);
+    while(rs.next()){
+        count++;
+        if(Integer.parseInt(rs.getString("CR_ID").substring(1,4))>max){
+            max = Integer.parseInt(rs.getString("CR_ID").substring(1,4));
+        }
+    }
+            //System.out.println("maxrec = "+max);
+    if(count==0){
+            max = 0;
+    }
+    max += 1;
+    if(max<10){
+        output = "c00"+max;
+    }else if(max<100){
+        output = "c0"+max;
+    }else{
+        output = "c"+max;
+    }
+    getcon().close();
+    pat.close();
+    rs.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+    return output;
+   }
+ public String receivelistid(){
+    int count=0;
+    String output = null;
+    max = 0;
+    String sql  ="select CRL_NUMBER from CLAIM_REC_LIST";
+    try{
+    Class.forName("com.mysql.jdbc.Driver");
+    pat =getcon().prepareStatement(sql);
+    rs = pat.executeQuery(sql);
+    while(rs.next()){
+        count++;
+        if(Integer.parseInt(rs.getString("CRL_NUMBER"))>max){
+            max = Integer.parseInt(rs.getString("CRL_NUMBER"));
+        }
+    }
+    if(count==0){
+            max = 0;
+    }
+    max += 1;
+    output = ""+max;
+    getcon().close();
+    pat.close();
+    rs.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
     return output;
    }
 public ArrayList<Claim_Variable> Claimproduct(){
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="select CL_ID,EMP_ID,EMP_FNAME,EMP_LNAME,CL_DATE,CL_REC_DATE,CL_STATUS,COUNT(C_L_NUMBER) FROM (CLAIM NATURAL JOIN CLAIM_LIST)NATURAL JOIN EMPLOYEE WHERE CL_DEL = 'N'";
+        String sql  ="select CL_ID,EMP_ID,EMP_FNAME,EMP_LNAME,CL_DATE,CL_REC_DATE,PO_ID,CL_STATUS,COUNT(C_L_NUMBER) FROM (CLAIM NATURAL JOIN CLAIM_LIST)NATURAL JOIN EMPLOYEE WHERE CL_DEL = 'N' GROUP BY CL_ID";
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
-         con = DriverManager.getConnection(d.url(),d.username(),d.password());
-       st = con.createStatement();
+        st = getcon().createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
            Claim_Variable c = new Claim_Variable();
@@ -157,12 +332,13 @@ public ArrayList<Claim_Variable> Claimproduct(){
             c.setproductcount(rs.getInt("COUNT(C_L_NUMBER)"));
             c.setempfname(rs.getString("EMP_FNAME"));
             c.setemplname(rs.getString("EMP_LNAME"));
+            c.setorderid(rs.getString("PO_ID"));
             c.setstatus(rs.getString("CL_STATUS"));
             Claimproduct.add(c);
         }
         rs.close();
         st.close();
-        con.close();
+        getcon().close();
         }catch(Exception e){
             System.out.print(e);
         }
@@ -171,14 +347,15 @@ public ArrayList<Claim_Variable> Claimproduct(){
     public void show_productfromstock(){
         ArrayList<Claim_Variable>product = Claimproduct();
         DefaultTableModel model = (DefaultTableModel)Claim_Table.getModel();
-        Object[] row = new Object[6];
+        Object[] row = new Object[7];
         for(int i=0;i<product.size();i++){
             row[0]=product.get(i).getclaimid();
             row[1]=product.get(i).getdate();
             row[2]=product.get(i).getreceivedate();
             row[3]=product.get(i).getproductcount();
             row[4]=product.get(i).getempfname()+" "+product.get(i).getemplname();
-            row[5]=product.get(i).getstatus();
+            row[5]=product.get(i).getorderid();
+            row[6]=product.get(i).getstatus();
             model.addRow(row);
         }
     }
@@ -194,7 +371,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
 
         Type = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        product_table = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         Claim_Table = new javax.swing.JTable();
         Claim_label = new javax.swing.JLabel();
@@ -222,28 +399,31 @@ public ArrayList<Claim_Variable> Claimproduct(){
         Product_label = new javax.swing.JLabel();
         product_add = new javax.swing.JButton();
         product_txt = new javax.swing.JTextField();
+        unit_label = new javax.swing.JLabel();
+        unit_txt = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1400, 800));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        product_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Stock Number", "Product", "Units", "Price", "OrderID", "Cause"
+                "Stock Number", "Product", "Units", "OrderID", "Cause"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true
+                false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(product_table);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 490, 730, 280));
 
@@ -252,15 +432,21 @@ public ArrayList<Claim_Variable> Claimproduct(){
 
             },
             new String [] {
-                "ClaimID", "Date", "Receive Date", "ProductCount", "Employee", "Status"
+                "ClaimID", "Date", "Receive Date", "ProductCount", "Employee", "OrderID", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        Claim_Table.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        Claim_Table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Claim_TableMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(Claim_Table);
@@ -285,7 +471,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
                 orderid_comboActionPerformed(evt);
             }
         });
-        getContentPane().add(orderid_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 140, 30));
+        getContentPane().add(orderid_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150, 140, 30));
 
         Stock_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Choose Stocknumber>" }));
         Stock_combo.addActionListener(new java.awt.event.ActionListener() {
@@ -303,7 +489,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setText("Product to Claim");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 450, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 460, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setText("Claim Table");
@@ -312,41 +498,66 @@ public ArrayList<Claim_Variable> Claimproduct(){
         Header.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         Header.setText("Claim Panel");
         getContentPane().add(Header, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, -1, -1));
-        getContentPane().add(receive_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 280, -1, 30));
-        getContentPane().add(date_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 275, -1, 30));
+        getContentPane().add(receive_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 340, -1, 30));
+        getContentPane().add(date_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, -1, 30));
 
         date_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         date_label.setText("Date:");
-        getContentPane().add(date_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, -1, -1));
+        getContentPane().add(date_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 340, -1, -1));
         getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, -1, -1));
 
         close_btn.setText("Close");
-        getContentPane().add(close_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 340, 100, 40));
+        close_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                close_btnActionPerformed(evt);
+            }
+        });
+        getContentPane().add(close_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 390, 100, 40));
 
         Type.add(create_radio);
         create_radio.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         create_radio.setSelected(true);
         create_radio.setText("Create");
-        getContentPane().add(create_radio, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, -1, -1));
+        create_radio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                create_radioActionPerformed(evt);
+            }
+        });
+        getContentPane().add(create_radio, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 390, -1, -1));
 
         Type.add(delete_radio);
         delete_radio.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         delete_radio.setText("Delete");
-        getContentPane().add(delete_radio, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, -1, -1));
+        delete_radio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delete_radioActionPerformed(evt);
+            }
+        });
+        getContentPane().add(delete_radio, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 390, -1, -1));
 
         receive_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         receive_label.setText("Received Claimed Product:");
-        getContentPane().add(receive_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 280, -1, -1));
+        getContentPane().add(receive_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 340, -1, -1));
 
         function_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         function_label.setText("Function:");
-        getContentPane().add(function_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 345, -1, -1));
+        getContentPane().add(function_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, -1, -1));
 
         create_btn.setText("Create");
-        getContentPane().add(create_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 340, 100, 40));
+        create_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                create_btnActionPerformed(evt);
+            }
+        });
+        getContentPane().add(create_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 390, 100, 40));
 
         clear_btn.setText("Clear");
-        getContentPane().add(clear_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 340, 90, 40));
+        clear_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clear_btnActionPerformed(evt);
+            }
+        });
+        getContentPane().add(clear_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 390, 90, 40));
 
         Stock_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         Stock_label.setText("Stock:");
@@ -354,7 +565,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
 
         Product_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         Product_label.setText("Product:");
-        getContentPane().add(Product_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 220, -1, -1));
+        getContentPane().add(Product_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 280, -1, -1));
 
         product_add.setText("Add");
         product_add.addActionListener(new java.awt.event.ActionListener() {
@@ -362,15 +573,36 @@ public ArrayList<Claim_Variable> Claimproduct(){
                 product_addActionPerformed(evt);
             }
         });
-        getContentPane().add(product_add, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 210, 60, 30));
+        getContentPane().add(product_add, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 270, 60, 30));
 
         product_txt.setEditable(false);
-        getContentPane().add(product_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 210, 150, 30));
+        getContentPane().add(product_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, 150, 30));
+
+        unit_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        unit_label.setText("Units:");
+        getContentPane().add(unit_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 275, -1, -1));
+
+        unit_txt.setEditable(false);
+        getContentPane().add(unit_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 270, 70, 30));
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 270, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void orderid_comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderid_comboActionPerformed
+       product.clear();
+        DefaultTableModel model = (DefaultTableModel)product_table.getModel();
+        while(model.getRowCount() > 0)
+        {       
+        model.removeRow(0);
+        }
        Stock_combo.removeAllItems();
        Stock_combo.addItem("<Choose Stocknumber>");
        if(orderid_combo.getSelectedIndex()==0){
@@ -391,21 +623,158 @@ public ArrayList<Claim_Variable> Claimproduct(){
     }//GEN-LAST:event_orderid_comboActionPerformed
 
     private void product_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_product_addActionPerformed
-        // TODO add your handling code here:
+        String cause = null;
+        Stock_Variable s = new Stock_Variable();
+        s.setstocknumber(Integer.parseInt(Stock_combo.getSelectedItem().toString()));
+        s.setproductname(product_txt.getText());
+        for(int i =0;i<orderid.size();i++){
+            if(orderid.get(i).getproductname().equals(product_txt.getText())){
+                s.setproductid(orderid.get(i).getproductid());
+                s.setstockunits(Double.parseDouble(unit_txt.getText()));
+                s.setorderid(orderid.get(i).getorderid());
+                break;
+            }
+        }
+        try{
+        cause = JOptionPane.showInputDialog(null, "กรุณากรอกสาเหตุการเคลม");
+        if(cause.isEmpty()){
+            JOptionPane.showMessageDialog(null,"กรุณากรอกสาเหตุการเคลมให้ถูกต้องด้วยครับ"); 
+        }else{
+        s.c.setcause(cause);
+        product.add(s);
+        producttable();
+        }
+        }catch(NullPointerException e){
+            JOptionPane.showMessageDialog(null,"กรุณากรอกสาเหตุการเคลมให้ถูกต้องด้วยครับ");
+        }
     }//GEN-LAST:event_product_addActionPerformed
 
     private void Stock_comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Stock_comboActionPerformed
-       product_txt.setText("");
-       if(Stock_combo.getSelectedIndex()==0){ 
-       }else{
-       for(int i =0;i<orderid.size();i++){
+        product_txt.setText("");
+        unit_txt.setText("");
+        if(Stock_combo.getSelectedIndex()==-1){ 
+        }else{
+            for(int i =0;i<orderid.size();i++){
+                try{
+                 if((Integer.parseInt(Stock_combo.getSelectedItem().toString()))==orderid.get(i).getstocknumber()){
+                    product_txt.setText(orderid.get(i).getproductname());
+                    unit_txt.setText(""+orderid.get(i).getstockunits());
+                } 
+                }catch(NumberFormatException e){
+                }catch(NullPointerException e){
+                }
+           //System.out.print(Stock_combo.getSelectedItem()+" ");
+           //System.out.print(orderid.get(i).getstocknumber()+"\n");
+            }
+       }
+       /*for(int i =0;i<orderid.size();i++){
            System.out.println(orderid.get(i).getstocknumber());
-           if(Integer.parseInt(Stock_combo.getSelectedItem().toString())==((orderid.get(i).getstocknumber()))){
-           fillproduct(Stock_combo.getSelectedItem().toString());
-       }
-       }
-       }
+           System.out.println(Stock_combo.getSelectedItem().toString());
+           if(Stock_combo.getSelectedItem().toString().equals(""+orderid.get(i).getstocknumber())){
+               fillproduct(Stock_combo.getSelectedItem().toString());
+           }
+       }*/
     }//GEN-LAST:event_Stock_comboActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        for(Stock_Variable k:product){
+            System.out.print(k.getstocknumber()+" ");
+            System.out.print(k.getproductid()+" ");
+            System.out.print(k.getproductname()+" ");
+            System.out.print(k.getstockunits()+" ");
+            System.out.print(k.c.getcause()+"\n");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void create_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_create_btnActionPerformed
+        if(create==true){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String orderid = orderid_combo.getSelectedItem().toString();
+        String empid = Employeeid_txt.getText();
+        String receiveclaimid = receiveclaimid();
+        String date = sdf.format(date_combo.getSelectedDate().getTime());
+        String receiveclaim = sdf.format(receive_combo.getSelectedDate().getTime());
+        try{
+            String insertclaimsql = "INSERT INTO CLAIM VALUES('"+claimid+"','"+date+"','"+receiveclaim+"','N','"+empid+"','"+orderid+"','N')";
+            System.out.println(insertclaimsql);
+            pat = getcon().prepareStatement(insertclaimsql);
+            pat.executeUpdate(insertclaimsql);
+            pat.close();
+                String insertclaimreceivesql = "INSERT INTO CLAIM_RECEIVE VALUES('"+receiveclaimid+"','"+empid+"','"+claimid+"','"+receiveclaim+"','N','N')"; 
+                System.out.println(insertclaimreceivesql);
+                pat = getcon().prepareStatement(insertclaimreceivesql);
+                pat.executeUpdate(insertclaimreceivesql);
+                pat.close();
+                    for(int i=0;i<product.size();i++){
+                    String insertclaimlistsql = "INSERT INTO CLAIM_LIST VALUES('"+claimlistid()+"','"+claimid+"','"+product.get(i).getorderid()+"','"+product.get(i).getproductid()+"','"+product.get(i).getstockunits()+"','"+product.get(i).c.getcause()+"','N','N')";
+                    System.out.println(insertclaimlistsql);
+                    pat = getcon().prepareStatement(insertclaimlistsql);
+                    pat.executeUpdate(insertclaimlistsql);
+                        String insertclaimreceivelistsql = "INSERT INTO CLAIM_REC_LIST VALUES('"+receivelistid()+"','"+claimid+"','"+product.get(i).getproductid()+"','"+product.get(i).getstockunits()+"','0','N','N')";
+                        System.out.println(insertclaimreceivelistsql);
+                        pat = getcon().prepareStatement(insertclaimreceivelistsql);
+                        pat.executeUpdate(insertclaimreceivelistsql);
+                        pat.close();
+                    }
+            getcon().close();
+            DefaultTableModel claimmodel = (DefaultTableModel) Claim_Table.getModel();
+            while(claimmodel.getRowCount() > 0){       
+            claimmodel.removeRow(0);
+            }
+            DefaultTableModel productmodel = (DefaultTableModel) product_table.getModel();
+            while(productmodel.getRowCount() > 0){       
+            productmodel.removeRow(0);
+            }
+            orderid_combo.setSelectedIndex(0);
+        }catch(Exception e){
+            System.out.print(e);
+        }
+        /*try{
+            con = DriverManager.getConnection(d.url(),d.username(),d.password());
+            for(int i=0;i<product.size();i++){
+                String insertclaimlistsql = "INSERT INTO CLAIM_LIST VALUES('"+claimlistid()+"','"+claimid+"','"+product.get(i).getorderid()+"','"+product.get(i).getproductid()+"','"+product.get(i).getstockunits()+"','"+product.get(i).c.getcause()+"','N','N')";
+                System.out.println(insertclaimlistsql);
+                pat = con.prepareStatement(insertclaimlistsql);
+                pat.executeQuery(insertclaimlistsql);
+                  String insertclaimreceivelistsql = "INSERT INTO CLAIM_REC_LIST VALUES('"+receivelistid()+"','"+claimid+"','"+product.get(i).getproductid()+"','"+product.get(i).getstockunits()+"','0','N','N')";
+                  System.out.println(insertclaimreceivelistsql);
+                  pat = con.prepareStatement(insertclaimreceivelistsql);
+                  pat.close();
+            }
+        }catch(Exception e){
+            System.out.print(e);
+        }*/
+        claimid();
+        
+        show_productfromstock();
+        }
+    }//GEN-LAST:event_create_btnActionPerformed
+
+    private void create_radioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_create_radioActionPerformed
+        unlock();
+        create = true;
+        delete = false;
+    }//GEN-LAST:event_create_radioActionPerformed
+
+    private void delete_radioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_radioActionPerformed
+        lock();
+        delete = true;
+        create = false;
+        JOptionPane.showMessageDialog(null, "ดับเบิ้ลคลิ๊กที่รายการในตารางการเคลมเพื่อลบ");
+    }//GEN-LAST:event_delete_radioActionPerformed
+
+    private void close_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_close_btnActionPerformed
+       this.setVisible(false);
+    }//GEN-LAST:event_close_btnActionPerformed
+
+    private void clear_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear_btnActionPerformed
+        lock();
+        unlock();
+    }//GEN-LAST:event_clear_btnActionPerformed
+
+    private void Claim_TableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Claim_TableMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Claim_TableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -462,16 +831,19 @@ public ArrayList<Claim_Variable> Claimproduct(){
     private javax.swing.JRadioButton delete_radio;
     private javax.swing.JLabel emp_label;
     private javax.swing.JLabel function_label;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JComboBox<String> orderid_combo;
     private javax.swing.JButton product_add;
+    private javax.swing.JTable product_table;
     private javax.swing.JTextField product_txt;
     private datechooser.beans.DateChooserCombo receive_combo;
     private javax.swing.JLabel receive_label;
+    private javax.swing.JLabel unit_label;
+    private javax.swing.JTextField unit_txt;
     // End of variables declaration//GEN-END:variables
 }

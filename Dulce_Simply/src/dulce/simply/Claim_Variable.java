@@ -13,16 +13,21 @@ public class Claim_Variable {
 private String claimid;
 private String date;
 private String receivedate;
+private String cause;
 private int productcount;
 private String employeeid;
 private String employeefname;
 private String employeelname;
 private String status;
+private String orderid;
 public String getclaimid(){
     return this.claimid;
 }
 public String getdate(){
     return this.date;
+}
+public String getcause(){
+    return this.cause;
 }
 public String getreceivedate(){
     return this.receivedate;
@@ -39,6 +44,9 @@ public String getempfname(){
 public String getemplname(){
     return this.employeelname;
 }
+public String getorderid(){
+    return this.orderid;
+}
 public String getstatus(){
     return this.status;
 }
@@ -47,6 +55,9 @@ public void setclaimid(String id){
 }
 public void setdate(String date){
     this.date = date;
+}
+public void setcause(String cause){
+    this.cause = cause;
 }
 public void setreceivedate(String date){
     this.receivedate = date;
@@ -65,5 +76,8 @@ public void setemplname(String name){
 }
 public void setstatus(String status){
     this.status= status;
+}
+public void setorderid(String orderid){
+    this.orderid= orderid;
 }
 }

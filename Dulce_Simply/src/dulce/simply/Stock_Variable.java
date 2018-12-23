@@ -10,6 +10,7 @@ package dulce.simply;
  * @author Thanachot
  */
 public class Stock_Variable {
+    Claim_Variable c = new Claim_Variable();
     private int stocknumber;
     private String productid;
     private String productname;
@@ -20,7 +21,7 @@ public class Stock_Variable {
     public int getstocknumber(){
         return this.stocknumber;
     }
-    public String getsproductid(){
+    public String getproductid(){
         return this.productid;
     }
     public String getproductname(){
