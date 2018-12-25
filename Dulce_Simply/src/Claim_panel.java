@@ -19,11 +19,12 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Thanachot
  */
-public class Claim_panel extends javax.swing.JFrame {
+public class Claim_panel extends javax.swing.JFrame{
     ArrayList<Claim_Variable> Claimproduct = new ArrayList<>();
     ArrayList<Stock_Variable> stock = new ArrayList<>();
     ArrayList<Stock_Variable> orderid = new ArrayList<>();
     ArrayList<Stock_Variable> product = new ArrayList<>();
+    ArrayList<Stock_Variable> orderidfromstock = new ArrayList<>();
 //-------------------------Call date from another class-----------------------------------------------//
     Stock_Variable s = new Stock_Variable();
     Database d = new Database();
@@ -39,6 +40,7 @@ public class Claim_panel extends javax.swing.JFrame {
 //-----------------------------String variable-----------------------------------------------//
     String output = "";
     String claimid = "";
+    String claimidtablecheck = "";
 //-----------------------------Boolean variable---------------------------------------------------//
     boolean Stock_clicked = false;
     boolean create = true;
@@ -53,7 +55,7 @@ public class Claim_panel extends javax.swing.JFrame {
         claimid();
         Employeeid_txt.setText(e.getshowid());
         fillcombo();
-        JOptionPane.showMessageDialog(null, "คุณสามารถดับเบิ้ลคลิ๊กที่ตารางการเคลมเพื่อดูรายละเอียดได้");
+        //JOptionPane.showMessageDialog(null, "คุณสามารถดับเบิ้ลคลิ๊กที่ตารางการเคลมเพื่อดูรายละเอียดได้");
     }
     void producttable(){
         DefaultTableModel model = (DefaultTableModel)product_table.getModel();
@@ -91,6 +93,10 @@ public class Claim_panel extends javax.swing.JFrame {
         }
         Claimid_txt.setText("");
         Claimid_txt.setEnabled(false);
+        orderid_combo.setEnabled(false);
+        Stock_combo.setEnabled(false);
+        create_btn.setEnabled(false);
+        clear_btn.setEnabled(false);
         Employeeid_txt.setText("");
         Employeeid_txt.setEnabled(false);
         orderid_combo.setSelectedIndex(0);
@@ -106,6 +112,10 @@ public class Claim_panel extends javax.swing.JFrame {
     }
     void unlock(){
         Claimid_txt.setText(claimid);
+        orderid_combo.setEnabled(true);
+        Stock_combo.setEnabled(true);
+        create_btn.setEnabled(true);
+        clear_btn.setEnabled(true);
         Employeeid_txt.setText(e.getshowid());
         orderid_combo.setSelectedIndex(0);
         Stock_combo.setSelectedIndex(0);
@@ -127,7 +137,7 @@ public class Claim_panel extends javax.swing.JFrame {
     }
     void fillstock(String id){
         try{
-          String sql = "select STOCK_NUMBER,PRO_ID,PRO_NAME,STOCK_EXP,STOCK_STARTDATE,STOCK_UNITS,PO_ID FROM STOCK NATURAL JOIN PRODUCT WHERE PO_ID = '"+id+"' ORDER BY STOCK_NUMBER";
+        String sql = "select STOCK_NUMBER,PRO_ID,PRO_NAME,STOCK_EXP,STOCK_STARTDATE,STOCK_UNITS,PO_ID FROM STOCK NATURAL JOIN PRODUCT WHERE PO_ID = '"+id+"' AND STOCK_DEL = 'N' ORDER BY STOCK_NUMBER";
         st = getcon().createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
@@ -165,7 +175,7 @@ void fillproduct(String id){
     }
     void fillcombo(){
       try{
-          String sql = "select STOCK_NUMBER,PRO_ID,PRO_NAME,STOCK_EXP,STOCK_STARTDATE,STOCK_UNITS,PO_ID FROM STOCK NATURAL JOIN PRODUCT ORDER BY STOCK_NUMBER";
+          String sql = "select STOCK_NUMBER,COUNT(STOCK_NUMBER),PRO_ID,PRO_NAME,STOCK_EXP,STOCK_STARTDATE,STOCK_UNITS,PO_ID FROM STOCK NATURAL JOIN PRODUCT WHERE STOCK_DEL = 'N' GROUP BY PO_ID ORDER BY STOCK_NUMBER";
         st = getcon().createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
@@ -176,7 +186,7 @@ void fillproduct(String id){
                 //System.out.print("Duplicated is "+orderid_combo.getItemAt(orderid_combo.getItemCount()-1));
             }else{
             orderid_combo.addItem(rs.getString("PO_ID"));
-            if(!rs.getString("PO_ID").isEmpty()){
+            if(!rs.getString("PO_ID").isEmpty()&&rs.getInt("COUNT(STOCK_NUMBER)")>0){
             Stock_Variable s = new Stock_Variable();
             s.setorderid(rs.getString("PO_ID"));
             stock.add(s);
@@ -318,6 +328,7 @@ void fillproduct(String id){
     return output;
    }
 public ArrayList<Claim_Variable> Claimproduct(){
+        Claimproduct.clear();
         try{
         Class.forName("com.mysql.jdbc.Driver");
         String sql  ="select CL_ID,EMP_ID,EMP_FNAME,EMP_LNAME,CL_DATE,CL_REC_DATE,PO_ID,CL_STATUS,COUNT(C_L_NUMBER) FROM (CLAIM NATURAL JOIN CLAIM_LIST)NATURAL JOIN EMPLOYEE WHERE CL_DEL = 'N' GROUP BY CL_ID";
@@ -629,6 +640,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
         s.setproductname(product_txt.getText());
         for(int i =0;i<orderid.size();i++){
             if(orderid.get(i).getproductname().equals(product_txt.getText())){
+                s.setstocknumber(orderid.get(i).getstocknumber());
                 s.setproductid(orderid.get(i).getproductid());
                 s.setstockunits(Double.parseDouble(unit_txt.getText()));
                 s.setorderid(orderid.get(i).getorderid());
@@ -706,7 +718,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
                 pat.executeUpdate(insertclaimreceivesql);
                 pat.close();
                     for(int i=0;i<product.size();i++){
-                    String insertclaimlistsql = "INSERT INTO CLAIM_LIST VALUES('"+claimlistid()+"','"+claimid+"','"+product.get(i).getorderid()+"','"+product.get(i).getproductid()+"','"+product.get(i).getstockunits()+"','"+product.get(i).c.getcause()+"','N','N')";
+                    String insertclaimlistsql = "INSERT INTO CLAIM_LIST VALUES('"+claimlistid()+"','"+claimid+"','"+product.get(i).getorderid()+"','"+product.get(i).getproductid()+"','"+product.get(i).getstocknumber()+"','"+product.get(i).getstockunits()+"','"+product.get(i).c.getcause()+"','N','N')";
                     System.out.println(insertclaimlistsql);
                     pat = getcon().prepareStatement(insertclaimlistsql);
                     pat.executeUpdate(insertclaimlistsql);
@@ -714,8 +726,47 @@ public ArrayList<Claim_Variable> Claimproduct(){
                         System.out.println(insertclaimreceivelistsql);
                         pat = getcon().prepareStatement(insertclaimreceivelistsql);
                         pat.executeUpdate(insertclaimreceivelistsql);
-                        pat.close();
+                        pat.close();      
                     }
+                            String viewstock = "SELECT STOCK_NUMBER,PRO_ID,PO_ID,STOCK_UNITS FROM STOCK WHERE STOCK_DEL = 'N' AND PO_ID = '"+orderid+"'";
+                            pat=  getcon().prepareStatement(viewstock);
+                            rs = pat.executeQuery(viewstock);
+                                while(rs.next()){
+                                    Stock_Variable s = new Stock_Variable();
+                                    s.setstocknumber(rs.getInt("STOCK_NUMBER"));
+                                    s.setorderid(rs.getString("PO_ID"));
+                                    s.setstockunits(rs.getDouble("STOCK_UNITS"));
+                                    s.setproductid(rs.getString("PRO_ID"));
+                                    orderidfromstock.add(s);  
+                                }
+                            rs.close();
+                            pat.close();
+                                for(int i =0;i<product.size();i++){
+                                    int stocknumber = product.get(i).getstocknumber();
+                                    String productid = "";
+                                    double productunits = 0.0;
+                                    String viewproduct = "SELECT PRO_ID,PRO_UNITS FROM PRODUCT WHERE PRO_DEL = 'N' AND PRO_ID = '"+product.get(i).getproductid()+"'";
+                                    System.err.println(viewproduct);
+                                    pat = getcon().prepareStatement(viewproduct);
+                                    rs = pat.executeQuery(viewproduct);
+                                    while(rs.next()){
+                                        productid = rs.getString("PRO_ID");
+                                        productunits = rs.getDouble("PRO_UNITS");
+                                    }
+                                    rs.close();
+                                    pat.close();
+                                        String removefromstock = "UPDATE STOCK SET STOCK_DEL = 'Y' WHERE STOCK_NUMBER = '"+stocknumber+"'";
+                                        System.err.println(removefromstock);
+                                        pat = getcon().prepareStatement(removefromstock);
+                                        pat.executeUpdate(removefromstock);
+                                        pat.close();
+                                            String removefromproduct = "UPDATE PRODUCT SET PRO_UNITS = '"+((productunits)-product.get(i).getstockunits())+"' WHERE PRO_ID = '"+productid+"'";
+                                            System.err.println(removefromproduct);
+                                            pat = getcon().prepareStatement(removefromproduct);
+                                            pat.executeUpdate(removefromproduct);
+                                            pat.close();
+                                }
+                                        
             getcon().close();
             DefaultTableModel claimmodel = (DefaultTableModel) Claim_Table.getModel();
             while(claimmodel.getRowCount() > 0){       
@@ -773,7 +824,68 @@ public ArrayList<Claim_Variable> Claimproduct(){
     }//GEN-LAST:event_clear_btnActionPerformed
 
     private void Claim_TableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Claim_TableMouseClicked
-        // TODO add your handling code here:
+    if(Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString().equals(claimidtablecheck)){ 
+            if(create==true){
+            c.setclaimidview(Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString());
+            Claim_List_Panel cl = new Claim_List_Panel();
+            cl.setVisible(true);
+            }else if(delete == true){
+                int claimlistcount = 0;
+                int receiveclaimlist = 0;
+                ArrayList<Stock_Variable> claimlist = new ArrayList<>();
+                if(JOptionPane.showConfirmDialog(null, "คุณแน่ใจที่จะลบการเคลมนี้ใช่หรือไม่","",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    String claimid = Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString();
+                    try{
+                    String claimdelete =  "UPDATE CLAIM SET CL_DEL = 'Y' WHERE CL_ID = '"+claimid+"'";
+                    pat = getcon().prepareStatement(claimdelete);
+                    pat.executeUpdate(claimdelete);
+                    pat.close();
+                            String claimreceivedelete = "UPDATE CLAIM_RECEIVE SET CR_DEL = 'Y' WHERE CL_ID = '"+claimid+"'";
+                            pat = getcon().prepareStatement(claimreceivedelete);
+                            pat.executeUpdate(claimreceivedelete);
+                            pat.close();
+                                String viewclaimlistcount = "SELECT CL_ID,C_L_NUMBER,STOCK_NUMBER,C_L_UNITS FROM CLAIM NATURAL JOIN CLAIM_LIST WHERE CL_DEL = 'N' AND CL_ID = '"+claimid+"' AND C_L_DEL = 'N' GROUP BY CL_ID ORDER BY CL_ID";
+                                pat=  getcon().prepareStatement(viewclaimlistcount);
+                                rs = pat.executeQuery();
+                                while(rs.next()){
+                                    Stock_Variable s = new Stock_Variable();
+                                    s.setstocknumber(rs.getInt("STOCK_NUMBER"));
+                                    s.setorderid(claimid);
+                                    s.c.setclaimid(rs.getString("CL_ID"));
+                                    s.c.setclaimlistnumber(rs.getInt("C_L_NUMBER"));
+                                    s.setstockunits(rs.getDouble("C_L_UNITS"));
+                                    claimlist.add(s);
+                                }
+                                for(int i = 0;i<claimlist.size();i++){
+                                    
+                                }
+                                String claimlistdelete = "UPDATE CLAIM_LIST SET C_L_DEL = 'Y' WHERE CL_ID = '"+claimid+"'";
+                                pat = getcon().prepareStatement(claimlistdelete);
+                                pat.executeUpdate(claimlistdelete);
+                                pat.close();
+                                    String claimreceivelistdelete = "UPDATE CLAIM_REC_LIST NATURAL JOIN CLAIM_RECEIVE SET CRL_DEL = 'Y' WHERE CL_ID = '"+claimid+"'";
+                                    pat = getcon().prepareStatement(claimreceivelistdelete);
+                                    pat.executeUpdate(claimreceivelistdelete);
+                                    pat.close();    
+                    DefaultTableModel model = (DefaultTableModel)Claim_Table.getModel();
+                    while(model.getRowCount()>0){
+                    model.removeRow(0);
+                    }
+                    show_productfromstock();
+                    unlock();
+                    create_radio.setSelected(true);
+                    con.close();
+                    }catch(Exception e){
+                    System.err.println(e);
+                    }
+                }else{
+                    
+                }
+            }
+            claimidtablecheck="";
+        }else{
+            claimidtablecheck = Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString();
+        }
     }//GEN-LAST:event_Claim_TableMouseClicked
 
     /**

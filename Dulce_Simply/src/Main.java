@@ -174,13 +174,13 @@ Main_variable m = new Main_variable();
         jButton23 = new javax.swing.JButton();
         jButton25 = new javax.swing.JButton();
         jButton26 = new javax.swing.JButton();
-        jButton27 = new javax.swing.JButton();
         jButton28 = new javax.swing.JButton();
         Ordering_product1 = new javax.swing.JButton();
         jButton32 = new javax.swing.JButton();
         jButton15 = new javax.swing.JButton();
         jButton18 = new javax.swing.JButton();
         jButton24 = new javax.swing.JButton();
+        jButton19 = new javax.swing.JButton();
         Employee_panel = new javax.swing.JPanel();
         Heading_INV1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -327,7 +327,7 @@ Main_variable m = new Main_variable();
         Heading_Sc.setText("Schedule");
         Schedule.add(Heading_Sc, new org.netbeans.lib.awtextra.AbsoluteConstraints(306, 30, -1, -1));
 
-        leave.setText("Leave");
+        leave.setText("บันทึกการลางาน");
         leave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 leaveActionPerformed(evt);
@@ -335,7 +335,7 @@ Main_variable m = new Main_variable();
         });
         Schedule.add(leave, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 250, 150, 64));
 
-        preenrolled.setText("Pre-enroll\n time shift");
+        preenrolled.setText("ลงเวลาล่วงหน้า");
         preenrolled.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 preenrolledActionPerformed(evt);
@@ -343,7 +343,7 @@ Main_variable m = new Main_variable();
         });
         Schedule.add(preenrolled, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 140, 140, 64));
 
-        editenrolled.setText("Edit Enrolled Schedule");
+        editenrolled.setText("แก้ไขการลงเวลา");
         editenrolled.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editenrolledActionPerformed(evt);
@@ -351,7 +351,7 @@ Main_variable m = new Main_variable();
         });
         Schedule.add(editenrolled, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 140, 150, 64));
 
-        CreateSchedule.setText("Create Schedule");
+        CreateSchedule.setText("สร้างเวลาการเข้างาน");
         CreateSchedule.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CreateScheduleActionPerformed(evt);
@@ -359,7 +359,7 @@ Main_variable m = new Main_variable();
         });
         Schedule.add(CreateSchedule, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 350, 140, 60));
 
-        ShowSchedule.setText("Schedule");
+        ShowSchedule.setText("ตารางเวลา");
         ShowSchedule.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ShowScheduleActionPerformed(evt);
@@ -367,7 +367,7 @@ Main_variable m = new Main_variable();
         });
         Schedule.add(ShowSchedule, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 140, 150, 70));
 
-        Change_schedule.setText("<html><center>Change Employee Schedule</center></br></html>");
+        Change_schedule.setText("<html><center>จัดการการลงเวลา<br>ของพนักงาน</center></br></html>");
         Change_schedule.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Change_scheduleActionPerformed(evt);
@@ -375,7 +375,7 @@ Main_variable m = new Main_variable();
         });
         Schedule.add(Change_schedule, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 350, 150, 60));
 
-        Leave_list.setText("Leave List");
+        Leave_list.setText("รายการลาทั้งหมด");
         Leave_list.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Leave_listActionPerformed(evt);
@@ -383,7 +383,7 @@ Main_variable m = new Main_variable();
         });
         Schedule.add(Leave_list, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 350, 150, 60));
 
-        view_leave.setText("View Leave");
+        view_leave.setText("ดูการลา");
         view_leave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 view_leaveActionPerformed(evt);
@@ -398,7 +398,7 @@ Main_variable m = new Main_variable();
         Heading_OP.setText("Management");
         Management_panel.add(Heading_OP, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 20, -1, -1));
 
-        product_panel.setText("Editor Product");
+        product_panel.setText("จัดการอุปกรณ์/วัตถุดิบ");
         product_panel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 product_panelActionPerformed(evt);
@@ -406,7 +406,7 @@ Main_variable m = new Main_variable();
         });
         Management_panel.add(product_panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 160, 60));
 
-        jButton20.setText("Editor Vendor");
+        jButton20.setText("บริษัทผู้จัดจำหน่าย");
         jButton20.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton20ActionPerformed(evt);
@@ -414,10 +414,10 @@ Main_variable m = new Main_variable();
         });
         Management_panel.add(jButton20, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 140, 160, 60));
 
-        Employee_Management_btn.setText("Employee Management");
+        Employee_Management_btn.setText("เมนูจัดการพนักงาน");
         Management_panel.add(Employee_Management_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 140, 150, 60));
 
-        Employee_salary_btn.setText("Employee Salary");
+        Employee_salary_btn.setText("<html><center>เงินเดือนของพนักงาน<br>\nทั้งหมด</center></br></html>");
         Employee_salary_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Employee_salary_btnActionPerformed(evt);
@@ -425,7 +425,7 @@ Main_variable m = new Main_variable();
         });
         Management_panel.add(Employee_salary_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 220, 160, 60));
 
-        Employee_Payment_btn.setText("Employee Payment");
+        Employee_Payment_btn.setText("จ่ายเงินพนักงาน");
         Employee_Payment_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Employee_Payment_btnActionPerformed(evt);
@@ -433,7 +433,7 @@ Main_variable m = new Main_variable();
         });
         Management_panel.add(Employee_Payment_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 220, 150, 60));
 
-        Employee_Clockin_out_btn.setText("<html><center>Employee Clock-in & Clock-out</center></br></html>");
+        Employee_Clockin_out_btn.setText("<html><center>ดูเวลาเข้า/ออกงาน<br>ของพนักงาน</center></br></html>\n");
         Employee_Clockin_out_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Employee_Clockin_out_btnActionPerformed(evt);
@@ -441,7 +441,7 @@ Main_variable m = new Main_variable();
         });
         Management_panel.add(Employee_Clockin_out_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 140, 160, 60));
 
-        Set_Period_Payment_btn.setText("Setting period payment");
+        Set_Period_Payment_btn.setText("จัดการช่วงเวลาจ่ายเงินเดือน");
         Set_Period_Payment_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Set_Period_Payment_btnActionPerformed(evt);
@@ -449,7 +449,7 @@ Main_variable m = new Main_variable();
         });
         Management_panel.add(Set_Period_Payment_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 160, 60));
 
-        View_Employee_Payment_btn.setText("View Employee Payment");
+        View_Employee_Payment_btn.setText("ดูการจ่ายเงินพนักงาน");
         View_Employee_Payment_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 View_Employee_Payment_btnActionPerformed(evt);
@@ -464,7 +464,7 @@ Main_variable m = new Main_variable();
         Heading_INV.setText("Inventory");
         Inventory_panel.add(Heading_INV, new org.netbeans.lib.awtextra.AbsoluteConstraints(302, 20, -1, -1));
 
-        jButton22.setText("Product");
+        jButton22.setText("อุปกรณ์และวัตถุดิบ");
         jButton22.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton22ActionPerformed(evt);
@@ -472,65 +472,76 @@ Main_variable m = new Main_variable();
         });
         Inventory_panel.add(jButton22, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 120, 150, 70));
 
-        jButton23.setText("View Ordering");
+        jButton23.setText("ดูการสั่งอุปกรณ์และวัตถุดิบ");
         jButton23.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton23ActionPerformed(evt);
             }
         });
-        Inventory_panel.add(jButton23, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 220, 150, 60));
+        Inventory_panel.add(jButton23, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 150, 60));
 
-        jButton25.setText("Ordering Receive");
+        jButton25.setText("การรับสินค้าจากการสั่ง");
         jButton25.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton25ActionPerformed(evt);
             }
         });
-        Inventory_panel.add(jButton25, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 220, 150, 60));
+        Inventory_panel.add(jButton25, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 220, 150, 60));
 
-        jButton26.setText("Waste");
+        jButton26.setText("จัดการของเสีย");
         Inventory_panel.add(jButton26, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, 150, 70));
 
-        jButton27.setText("Claim");
-        Inventory_panel.add(jButton27, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, 150, 70));
-
-        jButton28.setText("Menu");
+        jButton28.setText("เมนู");
         jButton28.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton28ActionPerformed(evt);
             }
         });
-        Inventory_panel.add(jButton28, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 120, 150, 70));
+        Inventory_panel.add(jButton28, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, 150, 70));
 
-        Ordering_product1.setText("Ordering Product");
+        Ordering_product1.setText("การสั่งอุปกรณ์และวัตถุดิบ");
         Ordering_product1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Ordering_product1ActionPerformed(evt);
             }
         });
-        Inventory_panel.add(Ordering_product1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 150, 60));
+        Inventory_panel.add(Ordering_product1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 120, 150, 70));
 
-        jButton32.setText("Ordering Payment");
+        jButton32.setText("<html><center>การจ่ายเงินสั่งอุปกรณ์<br>และวัตถุดิบ</center></br></html>");
+        jButton32.setActionCommand("");
         jButton32.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton32ActionPerformed(evt);
             }
         });
-        Inventory_panel.add(jButton32, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 220, 150, 60));
+        Inventory_panel.add(jButton32, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 220, 150, 60));
 
-        jButton15.setText("Recieve Product");
-        Inventory_panel.add(jButton15, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 300, 150, 60));
+        jButton15.setText("การนำเข้าสินค้า");
+        jButton15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton15ActionPerformed(evt);
+            }
+        });
+        Inventory_panel.add(jButton15, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 220, 150, 60));
 
-        jButton18.setText("Recieve claimed Product");
-        Inventory_panel.add(jButton18, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 300, -1, 60));
+        jButton18.setText("<html><center>การเคลมอุปกรณ์<br>และวัตถุดิบ</center></br></html>");
+        Inventory_panel.add(jButton18, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 300, 150, 60));
 
-        jButton24.setText("Stock");
+        jButton24.setText("จัดการสต๊อกสินค้า");
         jButton24.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton24ActionPerformed(evt);
             }
         });
         Inventory_panel.add(jButton24, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 300, 150, 60));
+
+        jButton19.setText("การรับสินค้าจากการเคลม");
+        jButton19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton19ActionPerformed(evt);
+            }
+        });
+        Inventory_panel.add(jButton19, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 300, 150, 60));
 
         Employee_panel.setBackground(new java.awt.Color(254, 255, 239));
 
@@ -1095,6 +1106,14 @@ if ((s != null) && (s.length() > 0)) {
         s.setVisible(true);
     }//GEN-LAST:event_jButton24ActionPerformed
 
+    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton15ActionPerformed
+
+    private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton19ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1176,6 +1195,7 @@ if ((s != null) && (s.length() > 0)) {
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton18;
+    private javax.swing.JButton jButton19;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton20;
     private javax.swing.JButton jButton22;
@@ -1183,7 +1203,6 @@ if ((s != null) && (s.length() > 0)) {
     private javax.swing.JButton jButton24;
     private javax.swing.JButton jButton25;
     private javax.swing.JButton jButton26;
-    private javax.swing.JButton jButton27;
     private javax.swing.JButton jButton28;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton30;

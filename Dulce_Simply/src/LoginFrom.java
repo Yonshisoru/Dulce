@@ -103,7 +103,7 @@ public class LoginFrom extends javax.swing.JFrame {
         Jpassword.setFont(new java.awt.Font("Georgia", 0, 10)); // NOI18N
         getContentPane().add(Jpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 180, 140, -1));
 
-        Login.setText("Login");
+        Login.setText("เข้าสู่ระบบ");
         Login.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LoginActionPerformed(evt);
@@ -111,7 +111,7 @@ public class LoginFrom extends javax.swing.JFrame {
         });
         getContentPane().add(Login, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 230, 80, 30));
 
-        Reset.setText("Reset");
+        Reset.setText("เคลียร์");
         Reset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ResetActionPerformed(evt);
@@ -119,7 +119,7 @@ public class LoginFrom extends javax.swing.JFrame {
         });
         getContentPane().add(Reset, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 230, 80, 30));
 
-        Exit.setText("Exit");
+        Exit.setText("ออก");
         Exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ExitActionPerformed(evt);

@@ -146,7 +146,7 @@ public class Firstpanel extends javax.swing.JFrame {
         Clockin_out.setBackground(new java.awt.Color(153, 255, 204));
 
         jButton1.setBackground(new java.awt.Color(255, 0, 0));
-        jButton1.setText("Clock-In/Clock-Out");
+        jButton1.setText("ลงเวลาเข้า/ออกงาน");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -173,7 +173,7 @@ public class Firstpanel extends javax.swing.JFrame {
         Sign_in.setBackground(new java.awt.Color(153, 255, 204));
 
         jButton2.setBackground(new java.awt.Color(255, 0, 0));
-        jButton2.setText("Sign-in");
+        jButton2.setText("เข้าสู่ระบบ");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);

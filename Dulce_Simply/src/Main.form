@@ -435,7 +435,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="leave">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Leave"/>
+                <Property name="text" type="java.lang.String" value="&#xe1a;&#xe31;&#xe19;&#xe17;&#xe36;&#xe01;&#xe01;&#xe32;&#xe23;&#xe25;&#xe32;&#xe07;&#xe32;&#xe19;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="leaveActionPerformed"/>
@@ -448,7 +448,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="preenrolled">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Pre-enroll&#xa; time shift"/>
+                <Property name="text" type="java.lang.String" value="&#xe25;&#xe07;&#xe40;&#xe27;&#xe25;&#xe32;&#xe25;&#xe48;&#xe27;&#xe07;&#xe2b;&#xe19;&#xe49;&#xe32;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="preenrolledActionPerformed"/>
@@ -461,7 +461,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="editenrolled">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Edit Enrolled Schedule"/>
+                <Property name="text" type="java.lang.String" value="&#xe41;&#xe01;&#xe49;&#xe44;&#xe02;&#xe01;&#xe32;&#xe23;&#xe25;&#xe07;&#xe40;&#xe27;&#xe25;&#xe32;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editenrolledActionPerformed"/>
@@ -474,7 +474,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="CreateSchedule">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Create Schedule"/>
+                <Property name="text" type="java.lang.String" value="&#xe2a;&#xe23;&#xe49;&#xe32;&#xe07;&#xe40;&#xe27;&#xe25;&#xe32;&#xe01;&#xe32;&#xe23;&#xe40;&#xe02;&#xe49;&#xe32;&#xe07;&#xe32;&#xe19;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CreateScheduleActionPerformed"/>
@@ -487,7 +487,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="ShowSchedule">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Schedule"/>
+                <Property name="text" type="java.lang.String" value="&#xe15;&#xe32;&#xe23;&#xe32;&#xe07;&#xe40;&#xe27;&#xe25;&#xe32;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ShowScheduleActionPerformed"/>
@@ -500,7 +500,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="Change_schedule">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;Change Employee Schedule&lt;/center&gt;&lt;/br&gt;&lt;/html&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;&#xe08;&#xe31;&#xe14;&#xe01;&#xe32;&#xe23;&#xe01;&#xe32;&#xe23;&#xe25;&#xe07;&#xe40;&#xe27;&#xe25;&#xe32;&lt;br&gt;&#xe02;&#xe2d;&#xe07;&#xe1e;&#xe19;&#xe31;&#xe01;&#xe07;&#xe32;&#xe19;&lt;/center&gt;&lt;/br&gt;&lt;/html&gt;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Change_scheduleActionPerformed"/>
@@ -513,7 +513,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="Leave_list">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Leave List"/>
+                <Property name="text" type="java.lang.String" value="&#xe23;&#xe32;&#xe22;&#xe01;&#xe32;&#xe23;&#xe25;&#xe32;&#xe17;&#xe31;&#xe49;&#xe07;&#xe2b;&#xe21;&#xe14;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Leave_listActionPerformed"/>
@@ -526,7 +526,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="view_leave">
               <Properties>
-                <Property name="text" type="java.lang.String" value="View Leave"/>
+                <Property name="text" type="java.lang.String" value="&#xe14;&#xe39;&#xe01;&#xe32;&#xe23;&#xe25;&#xe32;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="view_leaveActionPerformed"/>
@@ -565,7 +565,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="product_panel">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Editor Product"/>
+                <Property name="text" type="java.lang.String" value="&#xe08;&#xe31;&#xe14;&#xe01;&#xe32;&#xe23;&#xe2d;&#xe38;&#xe1b;&#xe01;&#xe23;&#xe13;&#xe4c;/&#xe27;&#xe31;&#xe15;&#xe16;&#xe38;&#xe14;&#xe34;&#xe1a;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="product_panelActionPerformed"/>
@@ -578,7 +578,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="jButton20">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Editor Vendor"/>
+                <Property name="text" type="java.lang.String" value="&#xe1a;&#xe23;&#xe34;&#xe29;&#xe31;&#xe17;&#xe1c;&#xe39;&#xe49;&#xe08;&#xe31;&#xe14;&#xe08;&#xe33;&#xe2b;&#xe19;&#xe48;&#xe32;&#xe22;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton20ActionPerformed"/>
@@ -591,7 +591,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="Employee_Management_btn">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Employee Management"/>
+                <Property name="text" type="java.lang.String" value="&#xe40;&#xe21;&#xe19;&#xe39;&#xe08;&#xe31;&#xe14;&#xe01;&#xe32;&#xe23;&#xe1e;&#xe19;&#xe31;&#xe01;&#xe07;&#xe32;&#xe19;"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -601,7 +601,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="Employee_salary_btn">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Employee Salary"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;&#xe40;&#xe07;&#xe34;&#xe19;&#xe40;&#xe14;&#xe37;&#xe2d;&#xe19;&#xe02;&#xe2d;&#xe07;&#xe1e;&#xe19;&#xe31;&#xe01;&#xe07;&#xe32;&#xe19;&lt;br&gt;&#xa;&#xe17;&#xe31;&#xe49;&#xe07;&#xe2b;&#xe21;&#xe14;&lt;/center&gt;&lt;/br&gt;&lt;/html&gt;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Employee_salary_btnActionPerformed"/>
@@ -614,7 +614,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="Employee_Payment_btn">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Employee Payment"/>
+                <Property name="text" type="java.lang.String" value="&#xe08;&#xe48;&#xe32;&#xe22;&#xe40;&#xe07;&#xe34;&#xe19;&#xe1e;&#xe19;&#xe31;&#xe01;&#xe07;&#xe32;&#xe19;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Employee_Payment_btnActionPerformed"/>
@@ -627,7 +627,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="Employee_Clockin_out_btn">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;Employee Clock-in &amp; Clock-out&lt;/center&gt;&lt;/br&gt;&lt;/html&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;&#xe14;&#xe39;&#xe40;&#xe27;&#xe25;&#xe32;&#xe40;&#xe02;&#xe49;&#xe32;/&#xe2d;&#xe2d;&#xe01;&#xe07;&#xe32;&#xe19;&lt;br&gt;&#xe02;&#xe2d;&#xe07;&#xe1e;&#xe19;&#xe31;&#xe01;&#xe07;&#xe32;&#xe19;&lt;/center&gt;&lt;/br&gt;&lt;/html&gt;&#xa;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Employee_Clockin_out_btnActionPerformed"/>
@@ -640,7 +640,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="Set_Period_Payment_btn">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Setting period payment"/>
+                <Property name="text" type="java.lang.String" value="&#xe08;&#xe31;&#xe14;&#xe01;&#xe32;&#xe23;&#xe0a;&#xe48;&#xe27;&#xe07;&#xe40;&#xe27;&#xe25;&#xe32;&#xe08;&#xe48;&#xe32;&#xe22;&#xe40;&#xe07;&#xe34;&#xe19;&#xe40;&#xe14;&#xe37;&#xe2d;&#xe19;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Set_Period_Payment_btnActionPerformed"/>
@@ -653,7 +653,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="View_Employee_Payment_btn">
               <Properties>
-                <Property name="text" type="java.lang.String" value="View Employee Payment"/>
+                <Property name="text" type="java.lang.String" value="&#xe14;&#xe39;&#xe01;&#xe32;&#xe23;&#xe08;&#xe48;&#xe32;&#xe22;&#xe40;&#xe07;&#xe34;&#xe19;&#xe1e;&#xe19;&#xe31;&#xe01;&#xe07;&#xe32;&#xe19;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="View_Employee_Payment_btnActionPerformed"/>
@@ -692,7 +692,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="jButton22">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Product"/>
+                <Property name="text" type="java.lang.String" value="&#xe2d;&#xe38;&#xe1b;&#xe01;&#xe23;&#xe13;&#xe4c;&#xe41;&#xe25;&#xe30;&#xe27;&#xe31;&#xe15;&#xe16;&#xe38;&#xe14;&#xe34;&#xe1a;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton22ActionPerformed"/>
@@ -705,69 +705,10 @@
             </Component>
             <Component class="javax.swing.JButton" name="jButton23">
               <Properties>
-                <Property name="text" type="java.lang.String" value="View Ordering"/>
+                <Property name="text" type="java.lang.String" value="&#xe14;&#xe39;&#xe01;&#xe32;&#xe23;&#xe2a;&#xe31;&#xe48;&#xe07;&#xe2d;&#xe38;&#xe1b;&#xe01;&#xe23;&#xe13;&#xe4c;&#xe41;&#xe25;&#xe30;&#xe27;&#xe31;&#xe15;&#xe16;&#xe38;&#xe14;&#xe34;&#xe1a;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton23ActionPerformed"/>
-              </Events>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="230" y="220" width="150" height="60"/>
-                </Constraint>
-              </Constraints>
-            </Component>
-            <Component class="javax.swing.JButton" name="jButton25">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Ordering Receive"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton25ActionPerformed"/>
-              </Events>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="580" y="220" width="150" height="60"/>
-                </Constraint>
-              </Constraints>
-            </Component>
-            <Component class="javax.swing.JButton" name="jButton26">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Waste"/>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="410" y="120" width="150" height="70"/>
-                </Constraint>
-              </Constraints>
-            </Component>
-            <Component class="javax.swing.JButton" name="jButton27">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Claim"/>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="230" y="120" width="150" height="70"/>
-                </Constraint>
-              </Constraints>
-            </Component>
-            <Component class="javax.swing.JButton" name="jButton28">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Menu"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton28ActionPerformed"/>
-              </Events>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="580" y="120" width="150" height="70"/>
-                </Constraint>
-              </Constraints>
-            </Component>
-            <Component class="javax.swing.JButton" name="Ordering_product1">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Ordering Product"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Ordering_product1ActionPerformed"/>
               </Events>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -775,12 +716,12 @@
                 </Constraint>
               </Constraints>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton32">
+            <Component class="javax.swing.JButton" name="jButton25">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Ordering Payment"/>
+                <Property name="text" type="java.lang.String" value="&#xe01;&#xe32;&#xe23;&#xe23;&#xe31;&#xe1a;&#xe2a;&#xe34;&#xe19;&#xe04;&#xe49;&#xe32;&#xe08;&#xe32;&#xe01;&#xe01;&#xe32;&#xe23;&#xe2a;&#xe31;&#xe48;&#xe07;"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton32ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton25ActionPerformed"/>
               </Events>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -788,9 +729,72 @@
                 </Constraint>
               </Constraints>
             </Component>
+            <Component class="javax.swing.JButton" name="jButton26">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#xe08;&#xe31;&#xe14;&#xe01;&#xe32;&#xe23;&#xe02;&#xe2d;&#xe07;&#xe40;&#xe2a;&#xe35;&#xe22;"/>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                  <AbsoluteConstraints x="410" y="120" width="150" height="70"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton28">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#xe40;&#xe21;&#xe19;&#xe39;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton28ActionPerformed"/>
+              </Events>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                  <AbsoluteConstraints x="230" y="120" width="150" height="70"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JButton" name="Ordering_product1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#xe01;&#xe32;&#xe23;&#xe2a;&#xe31;&#xe48;&#xe07;&#xe2d;&#xe38;&#xe1b;&#xe01;&#xe23;&#xe13;&#xe4c;&#xe41;&#xe25;&#xe30;&#xe27;&#xe31;&#xe15;&#xe16;&#xe38;&#xe14;&#xe34;&#xe1a;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Ordering_product1ActionPerformed"/>
+              </Events>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                  <AbsoluteConstraints x="580" y="120" width="150" height="70"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton32">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;&#xe01;&#xe32;&#xe23;&#xe08;&#xe48;&#xe32;&#xe22;&#xe40;&#xe07;&#xe34;&#xe19;&#xe2a;&#xe31;&#xe48;&#xe07;&#xe2d;&#xe38;&#xe1b;&#xe01;&#xe23;&#xe13;&#xe4c;&lt;br&gt;&#xe41;&#xe25;&#xe30;&#xe27;&#xe31;&#xe15;&#xe16;&#xe38;&#xe14;&#xe34;&#xe1a;&lt;/center&gt;&lt;/br&gt;&lt;/html&gt;"/>
+                <Property name="actionCommand" type="java.lang.String" value=""/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton32ActionPerformed"/>
+              </Events>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                  <AbsoluteConstraints x="230" y="220" width="150" height="60"/>
+                </Constraint>
+              </Constraints>
+            </Component>
             <Component class="javax.swing.JButton" name="jButton15">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Recieve Product"/>
+                <Property name="text" type="java.lang.String" value="&#xe01;&#xe32;&#xe23;&#xe19;&#xe33;&#xe40;&#xe02;&#xe49;&#xe32;&#xe2a;&#xe34;&#xe19;&#xe04;&#xe49;&#xe32;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton15ActionPerformed"/>
+              </Events>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                  <AbsoluteConstraints x="580" y="220" width="150" height="60"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton18">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;&#xe01;&#xe32;&#xe23;&#xe40;&#xe04;&#xe25;&#xe21;&#xe2d;&#xe38;&#xe1b;&#xe01;&#xe23;&#xe13;&#xe4c;&lt;br&gt;&#xe41;&#xe25;&#xe30;&#xe27;&#xe31;&#xe15;&#xe16;&#xe38;&#xe14;&#xe34;&#xe1a;&lt;/center&gt;&lt;/br&gt;&lt;/html&gt;"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -798,19 +802,9 @@
                 </Constraint>
               </Constraints>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton18">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Recieve claimed Product"/>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="230" y="300" width="-1" height="60"/>
-                </Constraint>
-              </Constraints>
-            </Component>
             <Component class="javax.swing.JButton" name="jButton24">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Stock"/>
+                <Property name="text" type="java.lang.String" value="&#xe08;&#xe31;&#xe14;&#xe01;&#xe32;&#xe23;&#xe2a;&#xe15;&#xe4a;&#xe2d;&#xe01;&#xe2a;&#xe34;&#xe19;&#xe04;&#xe49;&#xe32;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton24ActionPerformed"/>
@@ -818,6 +812,19 @@
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                   <AbsoluteConstraints x="410" y="300" width="150" height="60"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton19">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#xe01;&#xe32;&#xe23;&#xe23;&#xe31;&#xe1a;&#xe2a;&#xe34;&#xe19;&#xe04;&#xe49;&#xe32;&#xe08;&#xe32;&#xe01;&#xe01;&#xe32;&#xe23;&#xe40;&#xe04;&#xe25;&#xe21;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton19ActionPerformed"/>
+              </Events>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                  <AbsoluteConstraints x="230" y="300" width="150" height="60"/>
                 </Constraint>
               </Constraints>
             </Component>
