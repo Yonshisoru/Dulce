@@ -156,7 +156,7 @@ public class Employee_type_panel extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Catagory"
+                "รหัสพนักงาน", "ชื่อตำแหน่ง"
             }
         ) {
             Class[] types = new Class [] {
@@ -186,18 +186,18 @@ public class Employee_type_panel extends javax.swing.JFrame {
 
         showid_txt.setEditable(false);
         showid_txt.setEnabled(false);
-        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 110, 30));
+        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 40, 110, 30));
         getContentPane().add(position_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 190, 30));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel2.setText("ID:");
+        jLabel2.setText("รหัสตำแหน่ง:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel4.setText("Position:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, -1, -1));
+        jLabel4.setText("ชื่อตำแหน่ง:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1, -1));
 
-        jButton1.setText("Close");
+        jButton1.setText("ปิด");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -205,7 +205,7 @@ public class Employee_type_panel extends javax.swing.JFrame {
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 190, 80, 30));
 
-        jButton2.setText("Submit");
+        jButton2.setText("ยืนยัน");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -213,7 +213,7 @@ public class Employee_type_panel extends javax.swing.JFrame {
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 80, 30));
 
-        jButton3.setText("Clear");
+        jButton3.setText("เคลียร์");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -229,7 +229,7 @@ public class Employee_type_panel extends javax.swing.JFrame {
         getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel12.setText("Function:");
+        jLabel12.setText("ฟังก์ชั่น:");
         getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
 
         create.setSelected(true);
@@ -253,13 +253,13 @@ public class Employee_type_panel extends javax.swing.JFrame {
         });
         getContentPane().add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, -1, -1));
 
-        jLabel13.setText("Delete");
+        jLabel13.setText("ลบ");
         getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 140, -1, -1));
 
-        jLabel14.setText("Create");
+        jLabel14.setText("สร้าง");
         getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 140, -1, -1));
 
-        jLabel15.setText("Edit");
+        jLabel15.setText("แก้ไข");
         getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 140, -1, -1));
 
         pack();

@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -45,6 +46,7 @@ public class Claim_panel extends javax.swing.JFrame{
     boolean Stock_clicked = false;
     boolean create = true;
     boolean delete = false;
+    boolean firstdialog = false;
 //-------------------------------------------------------------------------------------------------//
     /**
      * Creates new form Claim_panel
@@ -55,7 +57,6 @@ public class Claim_panel extends javax.swing.JFrame{
         claimid();
         Employeeid_txt.setText(e.getshowid());
         fillcombo();
-        //JOptionPane.showMessageDialog(null, "คุณสามารถดับเบิ้ลคลิ๊กที่ตารางการเคลมเพื่อดูรายละเอียดได้");
     }
     void producttable(){
         DefaultTableModel model = (DefaultTableModel)product_table.getModel();
@@ -416,6 +417,11 @@ public ArrayList<Claim_Variable> Claimproduct(){
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1400, 800));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         product_table.setModel(new javax.swing.table.DefaultTableModel(
@@ -423,11 +429,11 @@ public ArrayList<Claim_Variable> Claimproduct(){
 
             },
             new String [] {
-                "Stock Number", "Product", "Units", "OrderID", "Cause"
+                "รหัสสต๊อกสินค้า", "ชื่ออุปกรณ์/วัตถุดิบ", "จำนวน", "รหัสการสั่ง", "สาเหตุ"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -443,7 +449,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
 
             },
             new String [] {
-                "ClaimID", "Date", "Receive Date", "ProductCount", "Employee", "OrderID", "Status"
+                "รหัสการเคลม", "วันที่ส่งเคลม", "วันที่รับสินค้า", "จำนวนที่ส่งเคลมทั้งหมด", "ชื่อพนักงาน", "รหัสการสั่ง", "สถานะการเคลม"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -465,15 +471,15 @@ public ArrayList<Claim_Variable> Claimproduct(){
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 60, 610, 710));
 
         Claim_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        Claim_label.setText("Claim ID:");
+        Claim_label.setText("รหัสการเคลม:");
         getContentPane().add(Claim_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
 
         emp_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        emp_label.setText("Employee ID:");
+        emp_label.setText("รหัสพนักงาน:");
         getContentPane().add(emp_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 90, -1, -1));
 
         Orderid_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        Orderid_label.setText("OrderID:");
+        Orderid_label.setText("รหัสการสั่งอุปกรณ์:");
         getContentPane().add(Orderid_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
 
         orderid_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Choose OrderID>" }));
@@ -482,7 +488,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
                 orderid_comboActionPerformed(evt);
             }
         });
-        getContentPane().add(orderid_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150, 140, 30));
+        getContentPane().add(orderid_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, 140, 30));
 
         Stock_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Choose Stocknumber>" }));
         Stock_combo.addActionListener(new java.awt.event.ActionListener() {
@@ -490,34 +496,34 @@ public ArrayList<Claim_Variable> Claimproduct(){
                 Stock_comboActionPerformed(evt);
             }
         });
-        getContentPane().add(Stock_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 215, 150, 30));
+        getContentPane().add(Stock_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 220, 150, 30));
 
         Employeeid_txt.setEditable(false);
         getContentPane().add(Employeeid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 90, 100, 30));
 
         Claimid_txt.setEditable(false);
-        getContentPane().add(Claimid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 100, 30));
+        getContentPane().add(Claimid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 90, 100, 30));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel5.setText("Product to Claim");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 460, -1, -1));
+        jLabel5.setText("ุอุปกรณ์/วัตถุดิบที่จะส่งเคลม");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 460, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel6.setText("Claim Table");
+        jLabel6.setText("ตารางการเคลม");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 20, -1, -1));
 
         Header.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        Header.setText("Claim Panel");
+        Header.setText("หน้าต่างการเคลม");
         getContentPane().add(Header, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, -1, -1));
         getContentPane().add(receive_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 340, -1, 30));
-        getContentPane().add(date_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, -1, 30));
+        getContentPane().add(date_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 340, -1, 30));
 
         date_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        date_label.setText("Date:");
-        getContentPane().add(date_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 340, -1, -1));
+        date_label.setText("วันที่ส่งเคลม:");
+        getContentPane().add(date_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 350, 130, -1));
         getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, -1, -1));
 
-        close_btn.setText("Close");
+        close_btn.setText("ปิด");
         close_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 close_btnActionPerformed(evt);
@@ -528,7 +534,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
         Type.add(create_radio);
         create_radio.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         create_radio.setSelected(true);
-        create_radio.setText("Create");
+        create_radio.setText("สร้าง");
         create_radio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 create_radioActionPerformed(evt);
@@ -538,7 +544,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
 
         Type.add(delete_radio);
         delete_radio.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        delete_radio.setText("Delete");
+        delete_radio.setText("ลบ");
         delete_radio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delete_radioActionPerformed(evt);
@@ -547,14 +553,14 @@ public ArrayList<Claim_Variable> Claimproduct(){
         getContentPane().add(delete_radio, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 390, -1, -1));
 
         receive_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        receive_label.setText("Received Claimed Product:");
+        receive_label.setText("วันที่รับสินค้าจากการเคลม:");
         getContentPane().add(receive_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 340, -1, -1));
 
         function_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        function_label.setText("Function:");
+        function_label.setText("ฟังก์ชั่น");
         getContentPane().add(function_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, -1, -1));
 
-        create_btn.setText("Create");
+        create_btn.setText("ยืนยัน");
         create_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 create_btnActionPerformed(evt);
@@ -562,7 +568,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
         });
         getContentPane().add(create_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 390, 100, 40));
 
-        clear_btn.setText("Clear");
+        clear_btn.setText("ลบ");
         clear_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clear_btnActionPerformed(evt);
@@ -571,11 +577,11 @@ public ArrayList<Claim_Variable> Claimproduct(){
         getContentPane().add(clear_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 390, 90, 40));
 
         Stock_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        Stock_label.setText("Stock:");
+        Stock_label.setText("สต๊อกสินค้า:");
         getContentPane().add(Stock_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
 
         Product_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        Product_label.setText("Product:");
+        Product_label.setText("อุปกรณ์/วัตถุดิบ:");
         getContentPane().add(Product_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 280, -1, -1));
 
         product_add.setText("Add");
@@ -587,14 +593,14 @@ public ArrayList<Claim_Variable> Claimproduct(){
         getContentPane().add(product_add, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 270, 60, 30));
 
         product_txt.setEditable(false);
-        getContentPane().add(product_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, 150, 30));
+        getContentPane().add(product_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 270, 150, 30));
 
         unit_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        unit_label.setText("Units:");
+        unit_label.setText("จำนวน:");
         getContentPane().add(unit_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 275, -1, -1));
 
         unit_txt.setEditable(false);
-        getContentPane().add(unit_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 270, 70, 30));
+        getContentPane().add(unit_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 270, 70, 30));
 
         jButton1.setText("jButton1");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -722,7 +728,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
                     System.out.println(insertclaimlistsql);
                     pat = getcon().prepareStatement(insertclaimlistsql);
                     pat.executeUpdate(insertclaimlistsql);
-                        String insertclaimreceivelistsql = "INSERT INTO CLAIM_REC_LIST VALUES('"+receivelistid()+"','"+claimid+"','"+product.get(i).getproductid()+"','"+product.get(i).getstockunits()+"','0','N','N')";
+                        String insertclaimreceivelistsql = "INSERT INTO CLAIM_REC_LIST VALUES('"+receivelistid()+"','"+receiveclaimid+"','"+product.get(i).getproductid()+"','"+product.get(i).getstockunits()+"','0','N','N')";
                         System.out.println(insertclaimreceivelistsql);
                         pat = getcon().prepareStatement(insertclaimreceivelistsql);
                         pat.executeUpdate(insertclaimreceivelistsql);
@@ -832,9 +838,39 @@ public ArrayList<Claim_Variable> Claimproduct(){
             }else if(delete == true){
                 int claimlistcount = 0;
                 int receiveclaimlist = 0;
+                String receivedclaimid = null;
+                boolean claimreceived = false;
+                String claimid = Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString();
                 ArrayList<Stock_Variable> claimlist = new ArrayList<>();
                 if(JOptionPane.showConfirmDialog(null, "คุณแน่ใจที่จะลบการเคลมนี้ใช่หรือไม่","",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
-                    String claimid = Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString();
+                String selectreceiveid = "SELECT CR_ID FROM CLAIM_RECEIVE WHERE CL_ID = '"+claimid+"' AND CR_DEL = 'N'";
+                System.err.println(selectreceiveid);
+                try{
+                    pat = getcon().prepareStatement(selectreceiveid);
+                    rs = pat.executeQuery();
+                    while(rs.next()){
+                        receivedclaimid = rs.getString("CR_ID");
+                    }
+                    rs.close();
+                    pat.close();
+                        String checkreceived = "SELECT CRL_NUMBER,CR_ID,CRL_CURRENT FROM CLAIM_REC_LIST WHERE CRL_DEL = 'N' AND CR_ID = '"+receivedclaimid+"'";
+                        System.err.println(checkreceived);
+                        pat = getcon().prepareStatement(checkreceived);
+                        rs = pat.executeQuery(checkreceived);
+                        while(rs.next()){
+                            System.out.println(rs.getDouble("CRL_CURRENT"));
+                            if(rs.getDouble("CRL_CURRENT")>0){
+                                claimreceived = true;
+                                break;
+                            }
+                        }
+                        rs.close();
+                        pat.close();
+                        getcon().close();
+                        }catch(Exception e){
+                            System.out.println(e);
+                }
+                if(claimreceived==false){
                     try{
                     String claimdelete =  "UPDATE CLAIM SET CL_DEL = 'Y' WHERE CL_ID = '"+claimid+"'";
                     pat = getcon().prepareStatement(claimdelete);
@@ -874,10 +910,14 @@ public ArrayList<Claim_Variable> Claimproduct(){
                     show_productfromstock();
                     unlock();
                     create_radio.setSelected(true);
+                    JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
                     con.close();
                     }catch(Exception e){
                     System.err.println(e);
                     }
+                }else{
+                    JOptionPane.showMessageDialog(null,"รายการเคลมนี้มีการรับสินค้าแล้ว ไม่สามารถลบได้ครับ","",ERROR_MESSAGE);
+                }
                 }else{
                     
                 }
@@ -887,6 +927,13 @@ public ArrayList<Claim_Variable> Claimproduct(){
             claimidtablecheck = Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString();
         }
     }//GEN-LAST:event_Claim_TableMouseClicked
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+    if(firstdialog==false){       
+    JOptionPane.showMessageDialog(null,"คุณสามารถดับเบิ้ลคลิ๊กที่ตารางการเคลมเพื่อดูรายละเอียดได้ครับ");
+    firstdialog=true;
+            }
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments

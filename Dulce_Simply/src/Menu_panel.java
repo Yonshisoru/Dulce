@@ -244,8 +244,8 @@ public String find(){
 
         showid_txt.setEditable(false);
         showid_txt.setEnabled(false);
-        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, 110, 30));
-        getContentPane().add(m_name_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 150, 370, 30));
+        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 110, 30));
+        getContentPane().add(m_name_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, 370, 30));
 
         m_price_txt.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -260,12 +260,12 @@ public String find(){
         getContentPane().add(m_price_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 220, 90, 30));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel2.setText("ID:");
+        jLabel2.setText("รหัสเมนู:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel4.setText("Menu Name:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
+        jLabel4.setText("ชื่อเมนู:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setText("Price:");

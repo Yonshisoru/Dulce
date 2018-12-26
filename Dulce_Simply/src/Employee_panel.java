@@ -273,7 +273,7 @@ public class Employee_panel extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Position", "Given name", "Family name", "Age", "Gender", "Phone number", "Email", "Salary", "Address", "Hired date"
+                "รหัสพนักงาน", "ตำแหน่ง", "ชื่อ", "นามสกุล", "อายุ", "เพศ", "เบอร์โทรศัพท์", "อีเมลล์", "เงินต่อชั่วโมง", "ที่อยู่", "วันเริ่มทำงาน"
             }
         ) {
             Class[] types = new Class [] {
@@ -303,8 +303,8 @@ public class Employee_panel extends javax.swing.JFrame {
 
         showid_txt.setEditable(false);
         showid_txt.setEnabled(false);
-        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, 110, 30));
-        getContentPane().add(email_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 310, 170, 30));
+        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, 110, 30));
+        getContentPane().add(email_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 310, 170, 30));
         getContentPane().add(fname_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 130, 30));
 
         age_txt.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -318,48 +318,48 @@ public class Employee_panel extends javax.swing.JFrame {
             }
         });
         getContentPane().add(age_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 220, 80, 30));
-        getContentPane().add(lname_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 150, 170, 30));
-        getContentPane().add(phone_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 310, 170, 30));
+        getContentPane().add(lname_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, 170, 30));
+        getContentPane().add(phone_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 310, 170, 30));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Password:");
+        jLabel1.setText("รหัสผ่าน:");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 70, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel2.setText("ID:");
+        jLabel2.setText("รหัสพนักงาน:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel3.setText("Gender:");
+        jLabel3.setText("เพศ:");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel4.setText("Given name:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
+        jLabel4.setText("ชื่อ:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel5.setText("Email:");
+        jLabel5.setText("อีเมลล์:");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 310, -1, -1));
 
         gender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
         getContentPane().add(gender, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 220, 100, 30));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel6.setText("Age:");
+        jLabel6.setText("อายุ:");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 220, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel7.setText("Phone:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, -1, -1));
+        jLabel7.setText("เบอร์โทรศัพท์:");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel8.setText("Position:");
+        jLabel8.setText("ตำแหน่ง:");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 380, -1, -1));
 
-        jButton1.setText("Close");
+        jButton1.setText("ลบ");
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 670, 120, 50));
 
-        jButton2.setText("Submit");
+        jButton2.setText("ยืนยัน");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -367,7 +367,7 @@ public class Employee_panel extends javax.swing.JFrame {
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 670, 120, 50));
 
-        jButton3.setText("Clear");
+        jButton3.setText("เคลียร์");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -378,11 +378,11 @@ public class Employee_panel extends javax.swing.JFrame {
         getContentPane().add(position_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 380, 130, 30));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel9.setText("Address:");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 450, -1, -1));
+        jLabel9.setText("ที่อยู่:");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 450, -1, -1));
 
         salary_txt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50" }));
-        getContentPane().add(salary_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 380, 130, 30));
+        getContentPane().add(salary_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 380, 130, 30));
 
         password_txt.setToolTipText("");
         password_txt.setEchoChar('*');
@@ -391,14 +391,14 @@ public class Employee_panel extends javax.swing.JFrame {
                 password_txtActionPerformed(evt);
             }
         });
-        getContentPane().add(password_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 130, 30));
+        getContentPane().add(password_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 70, 130, 30));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel10.setText("Family name:");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 150, -1, -1));
+        jLabel10.setText("นามสกุล:");
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 150, -1, -1));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel11.setText("Salary:");
+        jLabel11.setText("เงินต่อชั่วโมง:");
         getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, -1, -1));
 
         address_txt.setColumns(20);
@@ -415,7 +415,7 @@ public class Employee_panel extends javax.swing.JFrame {
         getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 570, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel12.setText("Function:");
+        jLabel12.setText("ฟังก์ชั่น:");
         getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 570, -1, -1));
 
         create.setSelected(true);
@@ -439,16 +439,16 @@ public class Employee_panel extends javax.swing.JFrame {
         });
         getContentPane().add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 570, -1, -1));
 
-        jLabel13.setText("Delete");
+        jLabel13.setText("ลบ");
         getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 573, -1, -1));
 
-        jLabel14.setText("Create");
+        jLabel14.setText("สร้าง");
         getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 573, -1, -1));
 
-        jLabel15.setText("Edit");
+        jLabel15.setText("แก้ไข");
         getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 573, -1, -1));
 
-        jCheckBox1.setText("Show password?");
+        jCheckBox1.setText("แสดงรหัสผ่าน?");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox1ActionPerformed(evt);
@@ -457,7 +457,7 @@ public class Employee_panel extends javax.swing.JFrame {
         getContentPane().add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 100, -1, -1));
 
         jLabel16.setForeground(new java.awt.Color(0, 0, 255));
-        jLabel16.setText("Create position here!!");
+        jLabel16.setText("สร้างตำแหน่งใหม่ คลิ๊กที่นี้");
         jLabel16.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel16MouseClicked(evt);
@@ -469,7 +469,7 @@ public class Employee_panel extends javax.swing.JFrame {
                 jLabel16MouseExited(evt);
             }
         });
-        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 420, -1, -1));
+        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 415, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

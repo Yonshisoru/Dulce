@@ -40,7 +40,7 @@ public class Employee_in_Schedule extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "ID:", "Name", "Status", "Cause"
+                "รหัสพนักงาน", "ชื่อ", "สถานะ", "สาเหตุ"
             }
         ) {
             boolean[] canEdit = new boolean [] {

@@ -113,14 +113,22 @@ public class Employee_Salary extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Name", "Salary per hour", "Worktime", "Total"
+                "รหัสพนักงาน", "ชื่อ", "เงินต่อชม", "เวลาทำงานทั้งหมด", "จำนวนเงินสุทธิ"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(Show_payment);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 665, 330));
 
-        jButton1.setText("Close");
+        jButton1.setText("ปิด");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -129,8 +137,8 @@ public class Employee_Salary extends javax.swing.JFrame {
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 430, 140, 60));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel1.setText("Employee Total Salary");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, -1, -1));
+        jLabel1.setText("ตารางเงินเดือนของพนักงาน");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, -1, -1));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Total", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {

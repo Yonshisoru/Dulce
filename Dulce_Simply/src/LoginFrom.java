@@ -128,11 +128,11 @@ public class LoginFrom extends javax.swing.JFrame {
         getContentPane().add(Exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 230, 70, 30));
 
         jLabel1.setForeground(new java.awt.Color(255, 0, 51));
-        jLabel1.setText("Username:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 150, -1, -1));
+        jLabel1.setText("รหัสพนักงาน:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, -1, -1));
 
         jLabel2.setForeground(new java.awt.Color(255, 0, 51));
-        jLabel2.setText("Password:");
+        jLabel2.setText("รหัสผ่าน:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, -1, 20));
         getContentPane().add(processlogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 450, 10));
 
