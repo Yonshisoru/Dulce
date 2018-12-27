@@ -15,7 +15,7 @@ private String v_id = null;
 private String v_name = null;
 private int price = 0;
 private String name = null;
-private int unit =0;
+private double unit =0;
 private int min=0;
 
 public String getid(){
@@ -33,7 +33,7 @@ public int getprice(){
 public String getname(){
     return this.name;
 }
-public int getunit(){
+public double getunit(){
     return this.unit;
 }
 public int getmin(){
@@ -54,7 +54,7 @@ public void setvid(String vid){
 public void setprice(int price){
     this.price= price;
 }
-public void setunit(int unit){
+public void setunit(double unit){
     this.unit = unit;
 }
 public void setmin(int min){
