@@ -113,7 +113,7 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Date", "Period", "Max", "Current", "Leave"
+                "วันที่", "กะเวลา", "จำนวนพนักงานทั้งหมด", "จำนวนพนักงานขณะนี้", "จำนวนพนักงานลา"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -132,7 +132,7 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(ScheduleTable);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 10, 460, 496));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 10, 600, 496));
 
         Date_txt.setText(" ");
         Date_txt.setEnabled(false);
@@ -141,23 +141,23 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
                 Date_txtActionPerformed(evt);
             }
         });
-        getContentPane().add(Date_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 119, 32));
+        getContentPane().add(Date_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(189, 80, 100, 32));
 
         Period_txt.setText(" ");
         Period_txt.setEnabled(false);
-        getContentPane().add(Period_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 140, 119, 34));
+        getContentPane().add(Period_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(189, 140, 100, 34));
 
         Date.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        Date.setText("Date:");
-        getContentPane().add(Date, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, -1, -1));
+        Date.setText("วันที่:");
+        getContentPane().add(Date, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, -1, -1));
 
         Period.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        Period.setText("Period:");
-        getContentPane().add(Period, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, -1, -1));
+        Period.setText("กะเวลา:");
+        getContentPane().add(Period, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150, -1, -1));
 
         M_Employee.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        M_Employee.setText("Max Employee:");
-        getContentPane().add(M_Employee, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, -1, -1));
+        M_Employee.setText("จำนวนพนักงานทั้งหมด:");
+        getContentPane().add(M_Employee, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, -1, -1));
 
         M_E_txt.setText(" ");
         M_E_txt.setEnabled(false);
@@ -166,10 +166,10 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
                 M_E_txtActionPerformed(evt);
             }
         });
-        getContentPane().add(M_E_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 200, 119, 34));
+        getContentPane().add(M_E_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(189, 200, 100, 34));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel2.setText("Current Employee:");
+        jLabel2.setText("จำนวนพนักงานขณะนี้:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, -1, -1));
 
         C_E_txt.setText(" ");
@@ -179,10 +179,10 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
                 C_E_txtActionPerformed(evt);
             }
         });
-        getContentPane().add(C_E_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 260, 119, 34));
+        getContentPane().add(C_E_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(189, 260, 100, 34));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel3.setText("Leave Employee:");
+        jLabel3.setText("จำนวนพนักงานลา:");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, -1, -1));
 
         L_E_txt.setText(" ");
@@ -192,9 +192,9 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
                 L_E_txtActionPerformed(evt);
             }
         });
-        getContentPane().add(L_E_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 320, 119, 34));
+        getContentPane().add(L_E_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(189, 320, 100, 34));
 
-        Close_btn.setText("Close");
+        Close_btn.setText("ปิด");
         Close_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Close_btnActionPerformed(evt);
@@ -202,7 +202,7 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
         });
         getContentPane().add(Close_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 390, 110, 50));
 
-        Enroll_btn.setText("Enroll");
+        Enroll_btn.setText("ยืนยัน");
         Enroll_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Enroll_btnActionPerformed(evt);

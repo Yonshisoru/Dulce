@@ -161,7 +161,7 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Date", "Period", "Max", "Current", "Leave"
+                "รหัสตารางเข้างาน", "วันที่", "กะเวลา", "จำนวนพนักงานทั้งหมด", "จำนวนพนักงานขณะนี้", "ลาทั้งหมด"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -175,9 +175,9 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
         ScheduleTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(ScheduleTable);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, 460, 496));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, 680, 496));
 
-        CreateSchedule.setText("Create");
+        CreateSchedule.setText("สร้าง");
         CreateSchedule.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CreateScheduleActionPerformed(evt);
@@ -185,7 +185,7 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
         });
         getContentPane().add(CreateSchedule, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 70, 40));
 
-        jButton2.setText("Close");
+        jButton2.setText("ปิด");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -199,31 +199,31 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
                 Schedule_showidActionPerformed(evt);
             }
         });
-        getContentPane().add(Schedule_showid, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 170, 30));
+        getContentPane().add(Schedule_showid, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 60, 150, 30));
 
         MaxEmployee.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
-        getContentPane().add(MaxEmployee, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210, 170, 30));
+        getContentPane().add(MaxEmployee, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210, 150, 30));
 
         ChoosePeriod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08.00-15.30", "15.00-22.30" }));
         getContentPane().add(ChoosePeriod, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 160, 170, 30));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Max Employee:");
+        jLabel1.setText("จำนวนพนักงาน:");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setText("ID:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, -1, -1));
+        jLabel2.setText("รหัสตารางเข้างาน:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setText("Date:");
+        jLabel3.setText("วันที่:");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, 40, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setText("Period:");
+        jLabel4.setText("กะเวลา:");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 170, -1, -1));
 
-        jButton4.setText("Delete");
+        jButton4.setText("เคลียร์");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
