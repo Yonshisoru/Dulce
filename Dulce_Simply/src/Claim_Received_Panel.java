@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Yonshisoru
  */
-public class Claim_Receive_Panel extends javax.swing.JFrame {
+public class Claim_Received_Panel extends javax.swing.JFrame {
     ArrayList<Claim_Variable> Claim_Product_Array = new ArrayList<>();
     ArrayList<Claim_Receive_Variable> Claim_Receive_Array = new ArrayList<>();
     ArrayList<Product_variable> Product_Array = new ArrayList<>();
@@ -39,7 +39,7 @@ public class Claim_Receive_Panel extends javax.swing.JFrame {
     /**
      * Creates new form Claim_receive_panel
      */
-    public Claim_Receive_Panel() {
+    public Claim_Received_Panel() {
         initComponents();
         show_productfromstock();
         Claimreceiveproduct();
@@ -180,7 +180,6 @@ public void showClaim_Receive_List_Table(String Claim_receive_id){
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(900, 900));
-        setPreferredSize(new java.awt.Dimension(900, 850));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Claim_Receive_List_Table.setModel(new javax.swing.table.DefaultTableModel(
@@ -325,23 +324,21 @@ public void showClaim_Receive_List_Table(String Claim_receive_id){
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Claim_Receive_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Claim_Receive_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Claim_Receive_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Claim_Receive_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Claim_Receive_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Claim_Receive_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Claim_Receive_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Claim_Receive_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Claim_Receive_Panel().setVisible(true);
+                new Claim_Receive_panel().setVisible(true);
             }
         });
     }
