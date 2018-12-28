@@ -94,7 +94,7 @@ public class Schedule_show extends javax.swing.JFrame {
 
             },
             new String [] {
-                "วันที่", "กะเวลา", "สถานะ"
+                "Date", "Period", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -110,10 +110,10 @@ public class Schedule_show extends javax.swing.JFrame {
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 650, 270));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel1.setText("ตารางงาน");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 20, 166, 59));
+        jLabel1.setText("Schedule");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 10, 166, 59));
 
-        jButton1.setText("ปิด");
+        jButton1.setText("Close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);

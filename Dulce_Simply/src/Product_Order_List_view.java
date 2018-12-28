@@ -90,9 +90,9 @@ public class Product_Order_List_view extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel1.setText("รหัสการสั่ง:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, -1, -1));
+        jLabel1.setFont(new java.awt.Font("Tekton Pro", 0, 36)); // NOI18N
+        jLabel1.setText("Order ID:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, -1, -1));
 
         ordering_id.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         getContentPane().add(ordering_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 20, 160, 40));

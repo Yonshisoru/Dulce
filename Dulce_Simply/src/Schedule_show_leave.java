@@ -111,7 +111,7 @@ public class Schedule_show_leave extends javax.swing.JFrame {
 
             },
             new String [] {
-                "รหัสการลา", "วันที่", "กะเวลา", "สาเหตุการลา"
+                "ID", "Date", "Period", "Cause"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -126,7 +126,7 @@ public class Schedule_show_leave extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 650, 270));
 
-        jButton1.setText("ปิด");
+        jButton1.setText("Close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -135,21 +135,21 @@ public class Schedule_show_leave extends javax.swing.JFrame {
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 420, 170, 50));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel1.setText("ตารางการลา");
+        jLabel1.setText("Leave List");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 20, -1, -1));
 
         showid.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        getContentPane().add(showid, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 90, 90, 20));
+        getContentPane().add(showid, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, 90, 20));
 
         id1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        id1.setText("รหัสพนักงาน:");
+        id1.setText("ID:");
         getContentPane().add(id1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, -1, -1));
 
         showname.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        getContentPane().add(showname, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 90, 220, 20));
+        getContentPane().add(showname, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 90, 270, 20));
 
         id2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        id2.setText("ชื่อพนักงาน:");
+        id2.setText("Name:");
         getContentPane().add(id2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 90, -1, -1));
 
         pack();

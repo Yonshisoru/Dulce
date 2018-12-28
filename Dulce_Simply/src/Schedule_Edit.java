@@ -172,19 +172,19 @@ String status = null;    /**
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 60, 440, 200));
 
-        jLabel1.setText("วันที่:");
+        jLabel1.setText("Date:");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, -1, -1));
 
-        jLabel2.setText("กะเวลา:");
+        jLabel2.setText("Period:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 220, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel3.setText("ตารางการลงเวลางาน");
+        jLabel3.setText("Enrolled Schedule");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel4.setText("ตารางลงเวลาที่สามารถลงได้");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 290, -1, -1));
+        jLabel4.setText("Available Schedule");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 290, -1, -1));
 
         Available.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -220,8 +220,8 @@ String status = null;    /**
         });
         getContentPane().add(periodtochange, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210, 150, 30));
 
-        jLabel5.setText("รหัสตารางเข้างาน:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1, -1));
+        jLabel5.setText("ID:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, -1, -1));
 
         showid.setEnabled(false);
         showid.addActionListener(new java.awt.event.ActionListener() {
@@ -239,7 +239,7 @@ String status = null;    /**
         });
         getContentPane().add(showdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 140, 150, 30));
 
-        jButton1.setText("แก้ไข");
+        jButton1.setText("Edit");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -247,7 +247,7 @@ String status = null;    /**
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, 100, 50));
 
-        jButton2.setText("ปิด");
+        jButton2.setText("Close");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);

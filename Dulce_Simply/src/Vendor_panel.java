@@ -192,7 +192,7 @@ public class Vendor_panel extends javax.swing.JFrame {
 
             },
             new String [] {
-                "รหัสบริษัทผู้จัดจำหน่าย", "ชื่อบริษัท", "ที่อยู่", "เบอร์โทรศัพท์", "อีเมลล์", "รหัสบัญชี", "ชื่อผู้ติดต่อ"
+                "ID", "Name", "Address", "Phone", "Email", "Account_Num", "Contact"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -215,7 +215,7 @@ public class Vendor_panel extends javax.swing.JFrame {
 
         showid_txt.setEditable(false);
         showid_txt.setEnabled(false);
-        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 70, 110, 30));
+        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, 110, 30));
         getContentPane().add(vemail_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 220, 170, 30));
         getContentPane().add(vname_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 150, 350, 30));
 
@@ -234,25 +234,25 @@ public class Vendor_panel extends javax.swing.JFrame {
                 vphone_txtKeyTyped(evt);
             }
         });
-        getContentPane().add(vphone_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 220, 130, 30));
+        getContentPane().add(vphone_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 220, 170, 30));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel2.setText("รหัสบริษัทจัดจำหน่าย:");
+        jLabel2.setText("ID:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel4.setText("ชื่อบริษัท:");
+        jLabel4.setText("Vendor Name:");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel5.setText("อีเมลล์:");
+        jLabel5.setText("Email:");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 220, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel7.setText("เบอร์โทรศัพท์:");
+        jLabel7.setText("Phone:");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, -1));
 
-        jButton1.setText("ปิด");
+        jButton1.setText("Close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -260,7 +260,7 @@ public class Vendor_panel extends javax.swing.JFrame {
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 670, 120, 50));
 
-        jButton2.setText("ยืนยัน");
+        jButton2.setText("Submit");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -268,7 +268,7 @@ public class Vendor_panel extends javax.swing.JFrame {
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 670, 120, 50));
 
-        jButton3.setText("เคลียร์");
+        jButton3.setText("Clear");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -277,7 +277,7 @@ public class Vendor_panel extends javax.swing.JFrame {
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 670, 120, 50));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel9.setText("ที่อยู่:");
+        jLabel9.setText("Address:");
         getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, -1, -1));
 
         address_txt.setColumns(20);
@@ -294,7 +294,7 @@ public class Vendor_panel extends javax.swing.JFrame {
         getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 570, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel12.setText("ฟังก์ชั่น");
+        jLabel12.setText("Function:");
         getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 570, -1, -1));
 
         create.setSelected(true);
@@ -318,23 +318,23 @@ public class Vendor_panel extends javax.swing.JFrame {
         });
         getContentPane().add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 570, -1, -1));
 
-        jLabel13.setText("ลบ");
+        jLabel13.setText("Delete");
         getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 573, -1, -1));
 
-        jLabel14.setText("สร้าง");
+        jLabel14.setText("Create");
         getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 573, -1, -1));
 
-        jLabel15.setText("แก้ไข");
+        jLabel15.setText("Edit");
         getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 573, -1, -1));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel16.setText("รหัสบัญชี:");
+        jLabel16.setText("Account Number:");
         getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, -1, -1));
-        getContentPane().add(account_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 280, 200, 30));
+        getContentPane().add(account_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 280, 200, 30));
         getContentPane().add(contact_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 340, 170, 30));
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel17.setText("ชื่อผู้ติดต่อ:");
+        jLabel17.setText("Contact Name:");
         getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, -1, -1));
 
         pack();

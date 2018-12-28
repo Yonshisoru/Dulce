@@ -537,7 +537,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setText("ตารางการเคลม");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 20, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 20, -1, -1));
 
         Header.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         Header.setText("หน้าต่างการเคลม");

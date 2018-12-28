@@ -225,7 +225,7 @@ public String find(){
 
             },
             new String [] {
-                "รหัสอุปกรณ์", "ชื่ออุปกรณ์", "ราคา", "จำนวน", "จำนวนต่ำสุดที่ต้องมีคงคลัง", "ชื่อบริษัทจัดจำหน่าย"
+                "ID", "Name", "Price", "Units", "Min", "Vendor"
             }
         ) {
             Class[] types = new Class [] {
@@ -255,8 +255,8 @@ public String find(){
 
         showid_txt.setEditable(false);
         showid_txt.setEnabled(false);
-        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 70, 110, 30));
-        getContentPane().add(pro_name_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, 340, 30));
+        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, 110, 30));
+        getContentPane().add(pro_name_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 150, 370, 30));
 
         pro_price_txt.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -269,22 +269,22 @@ public String find(){
             }
         });
         getContentPane().add(pro_price_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 220, 90, 30));
-        getContentPane().add(pro_min_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 310, 90, 30));
+        getContentPane().add(pro_min_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 310, 90, 30));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel2.setText("รหัสอุปกรณ์/วัตถุดิบ:");
+        jLabel2.setText("ID:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel4.setText("ชื่ออุปกรณ์/วัตถุดิบ:");
+        jLabel4.setText("Product Name:");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel6.setText("ราคา:");
+        jLabel6.setText("Price:");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel7.setText("จำนวนต่ำที่สุดต้องมีคงคลัง:");
+        jLabel7.setText("Minumum:");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 310, -1, -1));
 
         jButton1.setText("Close");
@@ -312,10 +312,10 @@ public String find(){
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 670, 120, 50));
 
         v_txt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        getContentPane().add(v_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 220, 130, 30));
+        getContentPane().add(v_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 130, 30));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel11.setText("ผู้จัดจำหน่าย:");
+        jLabel11.setText("Vendor:");
         getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
 
         delete.addActionListener(new java.awt.event.ActionListener() {
@@ -326,7 +326,7 @@ public String find(){
         getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 400, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel12.setText("ฟังก์ชั่น");
+        jLabel12.setText("Function:");
         getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, -1, -1));
 
         create.setSelected(true);
@@ -350,13 +350,13 @@ public String find(){
         });
         getContentPane().add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 400, -1, -1));
 
-        jLabel13.setText("ลบ");
+        jLabel13.setText("Delete");
         getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 400, -1, -1));
 
-        jLabel14.setText("สร้าง");
+        jLabel14.setText("Create");
         getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 400, -1, -1));
 
-        jLabel15.setText("แก้ไข");
+        jLabel15.setText("Edit");
         getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 400, -1, -1));
 
         pro_unit_txt.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -369,10 +369,10 @@ public String find(){
                 pro_unit_txtActionPerformed(evt);
             }
         });
-        getContentPane().add(pro_unit_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 310, 80, 30));
+        getContentPane().add(pro_unit_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 310, 80, 30));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel16.setText("จำนวน:");
+        jLabel16.setText("Unit:");
         getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, -1, -1));
 
         pack();
