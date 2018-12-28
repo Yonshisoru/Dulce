@@ -8,7 +8,7 @@
  *
  * @author Yonshisoru
  */
-public class Claim_Receive_Variable {
+public class Claim_Received_Variable {
 Product_variable p =new Product_variable();
     public String Claim_receive_list_id;
     public String Claim_receive_id;

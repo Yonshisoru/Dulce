@@ -21,14 +21,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Claim_Received_Panel extends javax.swing.JFrame {
     ArrayList<Claim_Variable> Claim_Product_Array = new ArrayList<>();
-    ArrayList<Claim_Receive_Variable> Claim_Receive_Array = new ArrayList<>();
+    ArrayList<Claim_Received_Variable> Claim_Receive_Array = new ArrayList<>();
     ArrayList<Product_variable> Product_Array = new ArrayList<>();
 //------------------------------------------------------------------
     Stock_Variable s = new Stock_Variable();
     Database d = new Database();
     Employee e = new Employee();
     Claim_Variable c=  new Claim_Variable();
-    Claim_Receive_Variable cr = new Claim_Receive_Variable();
+    Claim_Received_Variable cr = new Claim_Received_Variable();
 //-----------------------------Initilize variable---------------------------------------//
     Connection con = null;
     Statement st = null;
@@ -90,7 +90,7 @@ public /*ArrayList<Claim_Receive_Variable>*/ void Claimreceiveproduct(){
         rs = st.executeQuery(sql);
         while(rs.next()){
         System.out.println(rs.getString("CRL_NUMBER"));
-        Claim_Receive_Variable cr = new Claim_Receive_Variable();
+        Claim_Received_Variable cr = new Claim_Received_Variable();
         cr.setClaim_receive_list_id(rs.getString("CRL_NUMBER"));
         cr.setClaim_receive_id(rs.getString("CR_ID"));
         cr.setProduct_name(rs.getString("PRO_NAME"));
@@ -114,7 +114,7 @@ public void productArray(){
         rs = st.executeQuery(sql);
         while(rs.next()){
         System.out.println(rs.getString("CRL_NUMBER"));
-        Claim_Receive_Variable cr = new Claim_Receive_Variable();
+        Claim_Received_Variable cr = new Claim_Received_Variable();
         cr.setClaim_receive_list_id(rs.getString("CRL_NUMBER"));
         cr.setClaim_receive_id(rs.getString("CR_ID"));
         cr.setClaim_receive_total_unit(rs.getDouble("CRL_UNITS"));
@@ -130,7 +130,7 @@ public void productArray(){
     }
 }
 public void showClaim_Receive_List_Table(String Claim_receive_id){
-    for(Claim_Receive_Variable cr:Claim_Receive_Array){
+    for(Claim_Received_Variable cr:Claim_Receive_Array){
         if(cr.getClaim_receive_id().equals(Claim_receive_id)){
         DefaultTableModel model = (DefaultTableModel)Claim_Receive_List_Table.getModel();
         Object[] row = new Object[6];
@@ -284,7 +284,7 @@ public void showClaim_Receive_List_Table(String Claim_receive_id){
     }//GEN-LAST:event_Claim_TableMouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        for(Claim_Receive_Variable cr:Claim_Receive_Array){
+        for(Claim_Received_Variable cr:Claim_Receive_Array){
             System.out.print(cr.getClaim_receive_list_id()+" ");
             System.out.print(cr.getClaim_receive_id()+" ");
             System.out.print(cr.getClaim_receive_total_unit()+" ");
