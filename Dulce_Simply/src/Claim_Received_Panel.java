@@ -3,9 +3,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.OK_OPTION;
 import javax.swing.table.DefaultTableModel;
 
@@ -36,6 +41,8 @@ public class Claim_Received_Panel extends javax.swing.JFrame {
     ResultSet rs = null;
 //----------------------------------------------------------------------------
     String Claim_Receive_List_id = null;
+//--------------------------------------------------------------------------
+    int max = 0;
     /**
      * Creates new form Claim_receive_panel
      */
@@ -53,6 +60,46 @@ public class Claim_Received_Panel extends javax.swing.JFrame {
             System.out.println("Didn';t connect");
             throw new RuntimeException(e);
         }
+    }
+ public String getStock_id(){
+    int count=0;
+    String output = null;
+    max = 0;
+    String sql  ="select STOCK_NUMBER from STOCK WHERE STOCK_DEL = 'N'";
+    try{
+    Class.forName("com.mysql.jdbc.Driver");
+    pat =getcon().prepareStatement(sql);
+    rs = pat.executeQuery(sql);
+    while(rs.next()){
+        count++;
+        if(Integer.parseInt(rs.getString("STOCK_NUMBER"))>max){
+            max = Integer.parseInt(rs.getString("STOCK_NUMBER"));
+        }
+    }
+    if(count==0){
+            max = 0;
+    }
+    max += 1;
+    output = ""+max;
+    rs.close();
+    pat.close();
+    getcon().close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+    return output;
+   }
+    public static boolean isValidFormat(String value) {
+        Date date = null;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            date = sdf.parse(value);
+            if (!value.equals(sdf.format(date))) {
+                date = null;
+            }
+        } catch (ParseException ex) {
+        }
+        return date != null;
     }
 public ArrayList<Claim_Variable> Claimproduct(){
         Claim_Product_Array.clear();
@@ -296,7 +343,42 @@ public void showClaim_Receive_List_Table(String Claim_receive_id){
     private void Claim_Receive_List_TableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Claim_Receive_List_TableMouseClicked
         if(Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString().equals(Claim_Receive_List_id)){
             if(JOptionPane.showConfirmDialog(null,Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString()+"มีการรับสินค้าจากเคลม",null,JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
-            //Double Claim_Receive_Units = JOptionPane.showInputDialog(null, "");
+            String Claim_Receive_id = null;
+            String Product_id = null;
+            String Stock_id = null;
+            String getDate = null;
+            Date date = null;
+            try{
+                for(Claim_Received_Variable c:Claim_Receive_Array){
+                    if(Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString().equals(c.getClaim_receive_id())){
+                        Claim_Receive_id = c.getClaim_receive_id();
+                        Product_id = c.getProduct_id();
+                        break;
+                    }
+                }
+                Double Claim_Receive_Units = Double.parseDouble(JOptionPane.showInputDialog(null, ""));
+                getDate = JOptionPane.showInputDialog(null,"กรุณากรอกวันที่หมดอายุของสินค้าด้วยครับ\n(ปีค.ศ-เดือน-วันที่)\nตัวอย่าง 2018-12-31",null,INFORMATION_MESSAGE);
+                if(isValidFormat(getDate)==true){
+                System.out.println(Claim_Receive_Units);
+                try{
+                    Stock_id = getStock_id(); 
+                    System.out.print(Stock_id);
+                    //String sql  = "INSERT STOCK VAULES('"+Stock_id+"','"+Product_id+"','"''"')";
+                }catch(Exception e){
+                    throw new SQLException(e);
+                }
+                }else{
+                    JOptionPane.showMessageDialog(null,"คุณกรอกวันที่ไม่ถูกต้อง\nกรุณาทำรายการใหม่ด้วยครับ",null,INFORMATION_MESSAGE); 
+                }
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null,"คุณกรอกจำนวนไม่ถูกต้อง"
+                        + "\nกรุณากรอกใหม่ครับ");
+            }catch(SQLException e){
+                System.err.println("SQL Query ไม่ถูกต้อง กรุณาลองใหม่อีกครั้งครับ");
+            }catch(NullPointerException e){
+                JOptionPane.showMessageDialog(null,"คุณยังไม่ได้กรอกจำนวนของสินค้า"
+                        + "\nกรุณากรอกใหม่ครับ");  
+            }
             Claim_Receive_List_id = null;
         }else{
                 JOptionPane.showMessageDialog(null,"ยกเลิกรายการ");
@@ -324,13 +406,13 @@ public void showClaim_Receive_List_Table(String Claim_receive_id){
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Claim_Receive_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Claim_Received_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Claim_Receive_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Claim_Received_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Claim_Receive_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Claim_Received_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Claim_Receive_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Claim_Received_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -338,7 +420,7 @@ public void showClaim_Receive_List_Table(String Claim_receive_id){
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Claim_Receive_panel().setVisible(true);
+                new Claim_Received_Panel().setVisible(true);
             }
         });
     }
