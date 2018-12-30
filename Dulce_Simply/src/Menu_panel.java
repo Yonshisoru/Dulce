@@ -123,11 +123,11 @@ public String find(){
     }
     max += 1;
     if(max<10){
-        output = "000"+max;
+        output = "M00"+max;
     }else if(max<100){
-        output = "00"+max;
+        output = "M0"+max;
     }else{
-        output = "0"+max;
+        output = "M"+max;
     }
     showid_txt.setText(output);
     createid = output;

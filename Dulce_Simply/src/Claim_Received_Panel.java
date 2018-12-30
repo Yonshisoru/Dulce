@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -27,6 +28,7 @@ import javax.swing.table.DefaultTableModel;
 public class Claim_Received_Panel extends javax.swing.JFrame {
     ArrayList<Claim_Variable> Claim_Product_Array = new ArrayList<>();
     ArrayList<Claim_Received_Variable> Claim_Receive_Array = new ArrayList<>();
+    ArrayList<Claim_Received_Variable> Claim_Receive_List_Array = new ArrayList<>();
     ArrayList<Product_variable> Product_Array = new ArrayList<>();
 //------------------------------------------------------------------
     Stock_Variable s = new Stock_Variable();
@@ -43,6 +45,8 @@ public class Claim_Received_Panel extends javax.swing.JFrame {
     String Claim_Receive_List_id = null;
 //--------------------------------------------------------------------------
     int max = 0;
+//--------------------------------------------------------------------------
+    boolean adding = false;
     /**
      * Creates new form Claim_receive_panel
      */
@@ -50,6 +54,7 @@ public class Claim_Received_Panel extends javax.swing.JFrame {
         initComponents();
         show_productfromstock();
         Claimreceiveproduct();
+        Adding_Claim_Receive_Array();
     }
     public Connection getcon(){
         try{
@@ -132,7 +137,7 @@ public ArrayList<Claim_Variable> Claimproduct(){
 public /*ArrayList<Claim_Receive_Variable>*/ void Claimreceiveproduct(){
     try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql = "SELECT CRL_NUMBER,CR_ID,CRL_UNITS,PRO_ID,PRO_NAME,CRL_CURRENT,CRL_STATUS FROM CLAIM_REC_LIST NATURAL JOIN PRODUCT WHERE CRL_DEL  = 'N'";
+        String sql = "SELECT CRL_NUMBER,CR_ID,CRL_UNITS,PRO_ID,PRO_NAME,CRL_CURRENT,CRL_STATUS FROM CLAIM_REC_LIST NATURAL JOIN PRODUCT WHERE CRL_DEL  = 'N' AND CRL_STATUS = 'N'";
         st = getcon().createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
@@ -140,17 +145,37 @@ public /*ArrayList<Claim_Receive_Variable>*/ void Claimreceiveproduct(){
         Claim_Received_Variable cr = new Claim_Received_Variable();
         cr.setClaim_receive_list_id(rs.getString("CRL_NUMBER"));
         cr.setClaim_receive_id(rs.getString("CR_ID"));
+        cr.setProduct_id(rs.getString("PRO_ID"));
         cr.setProduct_name(rs.getString("PRO_NAME"));
         cr.setClaim_receive_total_unit(rs.getDouble("CRL_UNITS"));
         cr.setClaim_receive_current_unit(rs.getDouble("CRL_CURRENT"));
         cr.setClaim_receive_status(rs.getString("CRL_STATUS"));
-        Claim_Receive_Array.add(cr);
+        Claim_Receive_List_Array.add(cr);
         }
         rs.close();
         st.close();
         getcon().close();
     }catch(Exception e){
         System.out.print(e);
+    }
+}
+public void Adding_Claim_Receive_Array(){
+    try{
+        Class.forName("com.mysql.jdbc.Driver");
+        String sql  = "SELECT CR_ID,CL_ID FROM CLAIM_RECEIVE WHERE CR_DEL = 'N'";
+        st = getcon().createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+            Claim_Received_Variable c = new Claim_Received_Variable();
+            c.setClaim_id(rs.getString("CL_ID"));
+            c.setClaim_receive_id(rs.getString("CR_ID"));
+            Claim_Receive_Array.add(c);
+        }
+        rs.close();
+        st.close();
+        getcon().close();
+    }catch(Exception e){
+        
     }
 }
 public void productArray(){
@@ -167,7 +192,7 @@ public void productArray(){
         cr.setClaim_receive_total_unit(rs.getDouble("CRL_UNITS"));
         cr.setClaim_receive_current_unit(rs.getDouble("CRL_CURRENT"));
         cr.setClaim_receive_status(rs.getString("CRL_STATUS"));
-        Claim_Receive_Array.add(cr);
+        Claim_Receive_List_Array.add(cr);
         }
         rs.close();
         st.close();
@@ -177,7 +202,12 @@ public void productArray(){
     }
 }
 public void showClaim_Receive_List_Table(String Claim_receive_id){
-    for(Claim_Received_Variable cr:Claim_Receive_Array){
+    if(adding == true){
+    Claim_Receive_List_Array.clear();
+    Claimreceiveproduct();
+    adding = false;
+    }
+    for(Claim_Received_Variable cr:Claim_Receive_List_Array){
         if(cr.getClaim_receive_id().equals(Claim_receive_id)){
         DefaultTableModel model = (DefaultTableModel)Claim_Receive_List_Table.getModel();
         Object[] row = new Object[6];
@@ -192,10 +222,16 @@ public void showClaim_Receive_List_Table(String Claim_receive_id){
     }
 }
     public void show_productfromstock(){
-        ArrayList<Claim_Variable>product = Claimproduct();
-        DefaultTableModel model = (DefaultTableModel)Claim_Table.getModel();
-        Object[] row = new Object[7];
-        for(int i=0;i<product.size();i++){
+    if(adding == true){
+    Claim_Receive_List_Array.clear();
+    Claimreceiveproduct();
+    Claimproduct();
+    adding = false;
+    }
+    ArrayList<Claim_Variable>product = Claimproduct();
+    DefaultTableModel model = (DefaultTableModel)Claim_Table.getModel();
+    Object[] row = new Object[7];
+    for(int i=0;i<product.size();i++){
             row[0]=product.get(i).getclaimid();
             row[1]=product.get(i).getdate();
             row[2]=product.get(i).getreceivedate();
@@ -203,6 +239,20 @@ public void showClaim_Receive_List_Table(String Claim_receive_id){
             row[4]=product.get(i).getempfname()+" "+product.get(i).getemplname();
             row[5]=product.get(i).getorderid();
             row[6]=product.get(i).getstatus();
+            model.addRow(row);
+        }
+    }
+    public void show_claim_product(){
+    DefaultTableModel model = (DefaultTableModel)Claim_Table.getModel();
+    Object[] row = new Object[7];
+    for(int i=0;i<Claim_Product_Array.size();i++){
+            row[0]=Claim_Product_Array.get(i).getclaimid();
+            row[1]=Claim_Product_Array.get(i).getdate();
+            row[2]=Claim_Product_Array.get(i).getreceivedate();
+            row[3]=Claim_Product_Array.get(i).getproductcount();
+            row[4]=Claim_Product_Array.get(i).getempfname()+" "+Claim_Product_Array.get(i).getemplname();
+            row[5]=Claim_Product_Array.get(i).getorderid();
+            row[6]=Claim_Product_Array.get(i).getstatus();
             model.addRow(row);
         }
     }
@@ -221,7 +271,6 @@ public void showClaim_Receive_List_Table(String Claim_receive_id){
         jButton2 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         Claim_Table = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -255,9 +304,19 @@ public void showClaim_Receive_List_Table(String Claim_receive_id){
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 460, 840, 290));
 
         jButton1.setText("ปิด");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 780, 110, 40));
 
         jButton2.setText("รีเฟรช");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 780, 110, 40));
 
         Claim_Table.setModel(new javax.swing.table.DefaultTableModel(
@@ -286,14 +345,6 @@ public void showClaim_Receive_List_Table(String Claim_receive_id){
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 840, 320));
 
-        jButton3.setText("jButton3");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 20, -1, -1));
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("รายการรับสินค้าจากการเคลม");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 410, -1, -1));
@@ -314,7 +365,19 @@ public void showClaim_Receive_List_Table(String Claim_receive_id){
         DefaultTableModel model = (DefaultTableModel)Claim_Table.getModel();
         System.out.println(model.getValueAt(Claim_Table.getSelectedRow(),0).toString());
         try{
-            String sql = "SELECT CR_ID FROM CLAIM_RECEIVE WHERE CR_DEL = 'N' AND CL_ID = '"+model.getValueAt(Claim_Table.getSelectedRow(),0).toString()+"'";
+            for(Claim_Received_Variable cr:Claim_Receive_Array){
+                System.out.println(Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString());
+                System.err.println(cr.getClaim_id());
+                if(Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString().equals(cr.getClaim_id())){
+                    Claim_Receive_id = cr.getClaim_receive_id();
+                    System.out.println(cr.getClaim_receive_id());
+                    break;
+                }
+            }
+            }catch(Exception e){
+                    
+            }
+            /*String sql = "SELECT CR_ID FROM CLAIM_RECEIVE WHERE CR_DEL = 'N' AND CL_ID = '"+model.getValueAt(Claim_Table.getSelectedRow(),0).toString()+"'";
             pat = getcon().prepareStatement(sql);
             rs = pat.executeQuery();
             while(rs.next()){
@@ -326,44 +389,173 @@ public void showClaim_Receive_List_Table(String Claim_receive_id){
             getcon().close();
         }catch(Exception e){
             System.err.println(e);
-        }
+        }*/
         showClaim_Receive_List_Table(Claim_Receive_id);
     }//GEN-LAST:event_Claim_TableMouseClicked
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        for(Claim_Received_Variable cr:Claim_Receive_Array){
-            System.out.print(cr.getClaim_receive_list_id()+" ");
-            System.out.print(cr.getClaim_receive_id()+" ");
-            System.out.print(cr.getClaim_receive_total_unit()+" ");
-            System.out.print(cr.getClaim_receive_current_unit()+" ");
-            System.out.print(cr.getClaim_receive_status()+"\n");
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void Claim_Receive_List_TableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Claim_Receive_List_TableMouseClicked
-        if(Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString().equals(Claim_Receive_List_id)){
-            if(JOptionPane.showConfirmDialog(null,Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString()+"มีการรับสินค้าจากเคลม",null,JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
-            String Claim_Receive_id = null;
+    if(Claim_Receive_List_Table.getModel().getValueAt(Claim_Receive_List_Table.getSelectedRow(),0).toString().equals(Claim_Receive_List_id)){
+            if(JOptionPane.showConfirmDialog(null,Claim_Receive_List_Table.getModel().getValueAt(Claim_Receive_List_Table.getSelectedRow(),0).toString()+"มีการรับสินค้าจากเคลม",null,JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+            String Claim_Receive_id = Claim_Receive_List_Table.getModel().getValueAt(Claim_Receive_List_Table.getSelectedRow(),0).toString();
+            String Claim_Receive_list_id = Claim_Receive_List_Table.getModel().getValueAt(Claim_Receive_List_Table.getSelectedRow(),1).toString();
             String Product_id = null;
             String Stock_id = null;
+            String Order_id = null;
             String getDate = null;
-            Date date = null;
+            String Claim_ID = null;
+            String Claim_List_ID = null;
+            Double max = Double.parseDouble(Claim_Receive_List_Table.getModel().getValueAt(Claim_Receive_List_Table.getSelectedRow(),3).toString());
+            boolean CorrectlyUnit = false;
+            boolean received = false;
+            boolean allreceive = true;
+            Double Claim_Receive_Units = 0.0;
+            Double Claim_Receive_Current_Units = Double.parseDouble(Claim_Receive_List_Table.getModel().getValueAt(Claim_Receive_List_Table.getSelectedRow(),4).toString());
+            //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String today = LocalDate.now().toString();
+                try{
+                Claim_Receive_Units = Double.parseDouble(JOptionPane.showInputDialog(null, ""));
+                if(Claim_Receive_Units > (max-Claim_Receive_Current_Units) || Claim_Receive_Units<=0){
+                    CorrectlyUnit = false;
+                }else{
+                    CorrectlyUnit = true;
+                }
+                System.out.print(Claim_Receive_Units);
+                }catch(NumberFormatException e){
+                    System.out.println(e);
+                    JOptionPane.showMessageDialog(null,"คุณกรอกจำนวนไม่ถูกต้อง\nกรุณาทำรายการใหม่ครับ");
+                    throw new NumberFormatException();
+                /*}catch(NullPointerException e){
+                    throw new NullPointerException();*/
+                }
+            if(CorrectlyUnit == true){  
             try{
-                for(Claim_Received_Variable c:Claim_Receive_Array){
-                    if(Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString().equals(c.getClaim_receive_id())){
-                        Claim_Receive_id = c.getClaim_receive_id();
-                        Product_id = c.getProduct_id();
+                for(Claim_Received_Variable cy:Claim_Receive_List_Array){
+                    if(Claim_Receive_id.equals(cy.getClaim_receive_id())){
+                        System.out.print(cy.getClaim_receive_id());
+                        Product_id = cy.getProduct_id();
                         break;
                     }
                 }
-                Double Claim_Receive_Units = Double.parseDouble(JOptionPane.showInputDialog(null, ""));
+                /*for(Claim_Received_Variable c:Claim_Receive_List_Array){
+                    if(Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString().equals(c.getClaim_receive_id())){
+                        Claim_Receive_id = c.getClaim_receive_id();
+                        Product_id = c.getProduct_id();
+                        System.err.println(Claim_Receive_id);
+                        System.err.println(Product_id);
+                        break;
+                    }
+                }*/
+                System.err.print(Claim_Receive_id);
+                for(Claim_Received_Variable c:Claim_Receive_Array){
+                    System.out.println(c.getClaim_receive_id());
+                    System.err.println(Claim_Receive_id);
+                    if(Claim_Receive_id.equals(c.getClaim_receive_id())){
+                        Claim_ID = c.getClaim_id();
+                        System.out.println("C--"+Claim_ID);
+                        break;
+                    }
+                    //if(Claim_Receive_id.equals(c.))
+                }
+                for(Claim_Variable c:Claim_Product_Array){
+                    if(Claim_ID.equals(c.getclaimid())){
+                        Order_id = c.getorderid();
+                        break;
+                    }
+                }
+                System.out.println("O--"+Order_id);
                 getDate = JOptionPane.showInputDialog(null,"กรุณากรอกวันที่หมดอายุของสินค้าด้วยครับ\n(ปีค.ศ-เดือน-วันที่)\nตัวอย่าง 2018-12-31",null,INFORMATION_MESSAGE);
                 if(isValidFormat(getDate)==true){
-                System.out.println(Claim_Receive_Units);
                 try{
                     Stock_id = getStock_id(); 
                     System.out.print(Stock_id);
-                    //String sql  = "INSERT STOCK VAULES('"+Stock_id+"','"+Product_id+"','"''"')";
+                        String sql  = "INSERT STOCK VALUES('"+Integer.parseInt(Stock_id)+"','"+Product_id+"','"+getDate+"','"+today+"','"+Claim_Receive_Units+"','"+Order_id+"','N')";
+                    System.err.println(sql);
+                        pat = getcon().prepareStatement(sql);
+                        pat.executeUpdate(sql);
+                        pat.close();
+                            String product = "UPDATE PRODUCT SET PRO_UNITS = PRO_UNITS+'"+Claim_Receive_Units+"' WHERE PRO_ID = '"+Product_id+"'";
+                            System.err.println(product);
+                            pat = getcon().prepareStatement(product);
+                            pat.executeUpdate(product);
+                            pat.close();
+                                String receive = "UPDATE CLAIM_REC_LIST SET CRL_CURRENT = CRL_CURRENT+'"+Claim_Receive_Units+"' WHERE CRL_NUMBER = '"+Claim_Receive_list_id+"'";
+                                System.err.println(receive);
+                                pat = getcon().prepareStatement(receive);
+                                pat.executeUpdate(receive);
+                                    String checkunit = "SELECT CRL_CURRENT FROM CLAIM_REC_LIST WHERE CRL_NUMBER = '"+Claim_Receive_list_id+"'";
+                                    System.err.println(checkunit);
+                                    pat = getcon().prepareStatement(checkunit);
+                                    rs = pat.executeQuery(checkunit);
+                                    while(rs.next()){
+                                        if(max == rs.getDouble("CRL_CURRENT")){
+                                            received = true;
+                                        }
+                                    }
+                                    rs.close();
+                                    pat.close();
+                                    getcon().close();
+                                    if(received == true){
+                                        String statusreceived = "UPDATE CLAIM_REC_LIST SET CRL_STATUS = 'Y' WHERE CRL_NUMBER = '"+Claim_Receive_list_id+"'";
+                                        System.err.println(statusreceived);
+                                        pat = getcon().prepareStatement(statusreceived);
+                                        pat.executeUpdate(statusreceived);
+                                        pat.close();
+                                            String findclaimlist = "SELECT C_L_NUMBER FROM CLAIM_LIST WHERE CL_ID = '"+Claim_ID+"'";
+                                            System.err.println(findclaimlist);
+                                            pat = getcon().prepareStatement(findclaimlist);
+                                            rs = pat.executeQuery(findclaimlist);
+                                            while(rs.next()){
+                                                Claim_List_ID = rs.getString("C_L_NUMBER");
+                                            }
+                                            rs.close();
+                                            pat.close();
+                                                String updateclaimliststatus = "UPDATE CLAIM_LIST SET C_L_STATUS = 'Y' WHERE C_L_NUMBER = '"+Claim_List_ID+"'";
+                                                System.err.println(updateclaimliststatus);
+                                                pat = getcon().prepareStatement(updateclaimliststatus);
+                                                pat.executeUpdate(updateclaimliststatus);
+                                                pat.close();
+                                                getcon().close();
+                                        }
+                                            String checkclaimreceive = "SELECT CRL_STATUS FROM CLAIM_REC_LIST WHERE CR_ID = '"+Claim_Receive_id+"'";
+                                            System.err.println(checkclaimreceive);
+                                            pat = getcon().prepareStatement(checkclaimreceive);
+                                            rs = pat.executeQuery();
+                                            while(rs.next()){
+                                                if(rs.getString("CRL_STATUS").equals("N")){
+                                                    allreceive = false;
+                                                }
+                                            }
+                                            rs.close();
+                                            pat.close();
+                                            getcon().close();
+                                                if(allreceive==true){
+                                                    String statusreceived = "UPDATE CLAIM_RECEIVE SET CR_STATUS = 'Y' WHERE CR_ID = '"+Claim_Receive_id+"'";
+                                                    System.err.println(statusreceived);
+                                                    pat = getcon().prepareStatement(statusreceived);
+                                                    pat.executeUpdate(statusreceived);  
+                                                    pat.close();
+                                                        String statusclaim = "UPDATE CLAIM SET CL_STATUS = 'Y' WHERE CL_ID = '"+Claim_ID+"'";
+                                                        System.err.println(statusclaim);
+                                                        pat = getcon().prepareStatement(statusclaim);
+                                                        pat.executeUpdate(statusclaim);  
+                                                        pat.close();
+                                                        getcon().close();
+                                            }
+                DefaultTableModel model = (DefaultTableModel)Claim_Receive_List_Table.getModel();
+                while(model.getRowCount()>0){
+                    model.removeRow(0);
+                }
+                adding = true;
+                showClaim_Receive_List_Table(Claim_Receive_id);
+                DefaultTableModel Claim_Table_Model = (DefaultTableModel)Claim_Table.getModel();
+                while(Claim_Table_Model.getRowCount()>0){
+                    Claim_Table_Model.removeRow(0);
+                }
+                adding = true;
+                show_productfromstock();
+                pat.close();
+                getcon().close();
+                
                 }catch(Exception e){
                     throw new SQLException(e);
                 }
@@ -371,23 +563,45 @@ public void showClaim_Receive_List_Table(String Claim_receive_id){
                     JOptionPane.showMessageDialog(null,"คุณกรอกวันที่ไม่ถูกต้อง\nกรุณาทำรายการใหม่ด้วยครับ",null,INFORMATION_MESSAGE); 
                 }
             }catch(NumberFormatException e){
+                System.out.println(e);
                 JOptionPane.showMessageDialog(null,"คุณกรอกจำนวนไม่ถูกต้อง"
                         + "\nกรุณากรอกใหม่ครับ");
             }catch(SQLException e){
+                System.out.println(e);
                 System.err.println("SQL Query ไม่ถูกต้อง กรุณาลองใหม่อีกครั้งครับ");
             }catch(NullPointerException e){
-                JOptionPane.showMessageDialog(null,"คุณยังไม่ได้กรอกจำนวนของสินค้า"
-                        + "\nกรุณากรอกใหม่ครับ");  
+                System.out.println(e);
+                JOptionPane.showMessageDialog(null,"คุณยังไม่ได้กรอกข้อมูล"
+                        + "\nกรุณาทำรายการใหม่ครับ");  
             }
             Claim_Receive_List_id = null;
+            }else{
+                JOptionPane.showMessageDialog(null,"คุณกรอกจำนวนไม่ถูกต้อง\nกรุณาทำรายการใหม่ครับ\nRange: 0-"+(max-Claim_Receive_Current_Units));  
+            }
         }else{
                 JOptionPane.showMessageDialog(null,"ยกเลิกรายการ");
                 Claim_Receive_List_id = null;
         }
         }else{
-        Claim_Receive_List_id = Claim_Table.getModel().getValueAt(Claim_Table.getSelectedRow(),0).toString();
+        Claim_Receive_List_id = Claim_Receive_List_Table.getModel().getValueAt(Claim_Receive_List_Table.getSelectedRow(),0).toString();
         }
     }//GEN-LAST:event_Claim_Receive_List_TableMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        DefaultTableModel model = (DefaultTableModel)Claim_Receive_List_Table.getModel();
+        while(model.getRowCount()>0){
+        model.removeRow(0);
+        }
+        DefaultTableModel Claim_Table_Model = (DefaultTableModel)Claim_Table.getModel();
+        while(Claim_Table_Model.getRowCount()>0){
+        Claim_Table_Model.removeRow(0);
+        }
+        show_productfromstock();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -430,7 +644,6 @@ public void showClaim_Receive_List_Table(String Claim_receive_id){
     private javax.swing.JTable Claim_Table;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

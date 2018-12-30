@@ -18,12 +18,16 @@ Product_variable p =new Product_variable();
     public String Claim_receive_status;
     public String Product_name;
     public String Expired_date;
+    public String Claim_id;
 //-------------------------------------------------    
     public String getClaim_receive_list_id(){
         return this.Claim_receive_list_id;
     }
     public String getClaim_receive_id(){
         return this.Claim_receive_id;
+    }
+    public String getClaim_id(){
+        return this.Claim_id;
     }
     public String getProduct_id(){
         return this.Product_id;
@@ -52,6 +56,9 @@ Product_variable p =new Product_variable();
     }
     public void setProduct_id(String id){
         this.Product_id = id;
+    }
+    public void setClaim_id(String id){
+        this.Claim_id = id;
     }
     public void setClaim_receive_total_unit(Double unit){
         this.Claim_receive_total_unit = unit;

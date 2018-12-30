@@ -52,21 +52,18 @@ public class Product_panel extends javax.swing.JFrame {
          pro_name_txt.setText("");
          v_txt.setSelectedIndex(0);
          pro_price_txt.setText("");
-         pro_unit_txt.setText("");
          pro_min_txt.setText("");
     }
     public void lock(){
          pro_name_txt.setEnabled(false);
          v_txt.setEnabled(false);
          pro_price_txt.setEnabled(false);
-         pro_unit_txt.setEnabled(false);
          pro_min_txt.setEnabled(false);
     }
     public void unlock(){
          pro_name_txt.setEnabled(true);
          v_txt.setEnabled(true);
          pro_price_txt.setEnabled(true);
-         pro_unit_txt.setEnabled(true);
          pro_min_txt.setEnabled(true);
     }
 public String find(){
@@ -214,8 +211,6 @@ public String find(){
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        pro_unit_txt = new javax.swing.JTextField();
-        jLabel16 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -268,7 +263,7 @@ public String find(){
                 pro_price_txtActionPerformed(evt);
             }
         });
-        getContentPane().add(pro_price_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 220, 90, 30));
+        getContentPane().add(pro_price_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 310, 90, 30));
         getContentPane().add(pro_min_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 310, 90, 30));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -281,7 +276,7 @@ public String find(){
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setText("Price:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setText("Minumum:");
@@ -359,22 +354,6 @@ public String find(){
         jLabel15.setText("Edit");
         getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 400, -1, -1));
 
-        pro_unit_txt.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                pro_unit_txtFocusGained(evt);
-            }
-        });
-        pro_unit_txt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pro_unit_txtActionPerformed(evt);
-            }
-        });
-        getContentPane().add(pro_unit_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 310, 80, 30));
-
-        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel16.setText("Unit:");
-        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, -1, -1));
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -383,7 +362,6 @@ public String find(){
         showid_txt.setText(product_table.getModel().getValueAt(product_table.getSelectedRow(),0).toString());
         pro_name_txt.setText(product_table.getModel().getValueAt(product_table.getSelectedRow(),1).toString());
         pro_price_txt.setText(product_table.getModel().getValueAt(product_table.getSelectedRow(),2).toString());
-        pro_unit_txt.setText(product_table.getModel().getValueAt(product_table.getSelectedRow(),3).toString());
         pro_min_txt.setText(product_table.getModel().getValueAt(product_table.getSelectedRow(),4).toString());
         v_txt.setSelectedItem(product_table.getModel().getValueAt(product_table.getSelectedRow(),5).toString());
         }
@@ -396,10 +374,9 @@ public String find(){
         String proname = pro_name_txt.getText();
         String vendor = find();
         String price = pro_price_txt.getText();
-        String unit = pro_unit_txt.getText();
         String min = pro_min_txt.getText();
         if(createnaja==true){
-        String eiei = "INSERT INTO PRODUCT VALUE('"+id+"','"+vendor+"','"+proname+"','"+price+"','"+unit+"','"+min+"','N')";  
+        String eiei = "INSERT INTO PRODUCT VALUE('"+id+"','"+vendor+"','"+proname+"','"+price+"','0','"+min+"','N')";  
         System.out.print(eiei);
         try{
         Class.forName("com.mysql.jdbc.Driver");
@@ -530,14 +507,6 @@ public String find(){
         // TODO add your handling code here:
     }//GEN-LAST:event_editFocusLost
 
-    private void pro_unit_txtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pro_unit_txtFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pro_unit_txtFocusGained
-
-    private void pro_unit_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pro_unit_txtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pro_unit_txtActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
      this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -592,7 +561,6 @@ public String find(){
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
@@ -601,7 +569,6 @@ public String find(){
     private javax.swing.JTextField pro_min_txt;
     private javax.swing.JTextField pro_name_txt;
     private javax.swing.JTextField pro_price_txt;
-    private javax.swing.JTextField pro_unit_txt;
     private javax.swing.JTable product_table;
     private javax.swing.JTextField showid_txt;
     private javax.swing.JComboBox<String> v_txt;
