@@ -17,6 +17,8 @@ private int price = 0;
 private String name = null;
 private double unit =0;
 private int min=0;
+private double total_price = 0;
+private String unit_type = null;
 
 public String getid(){
     return this.id;
@@ -36,8 +38,14 @@ public String getname(){
 public double getunit(){
     return this.unit;
 }
+public String getunit_type(){
+    return this.unit_type;
+}
 public int getmin(){
     return this.min;
+}
+public double gettotal_price(){
+    return this.total_price;
 }
 public void setid(String id){
     this.id = id;
@@ -59,5 +67,11 @@ public void setunit(double unit){
 }
 public void setmin(int min){
     this.min = min;
+}
+public void setunits_type(String type){
+    this.unit_type = type;
+}
+public void settotal_price(double price){
+    this.total_price = price;
 }
 }

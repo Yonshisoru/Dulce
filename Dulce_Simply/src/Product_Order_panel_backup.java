@@ -20,50 +20,27 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
-import static javax.swing.JOptionPane.OK_OPTION;
-import static javax.swing.JOptionPane.YES_OPTION;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Yonshisoru
  */
-public class Product_Order_panel extends javax.swing.JFrame {
-//----------------------------------------------------------
-    Database d = new Database();
-    Employee e = new Employee();
-    Main_variable m = new Main_variable();
-    Connection con = null;
-    Statement st = null;
-    PreparedStatement pat = null;
-    ResultSet rs = null;
-//-----------------------------------------------------------------------
-    ArrayList<Product_variable> productlist = new ArrayList<>();
-    ArrayList<Product_variable> productlisttoorder = new ArrayList<>();
-    ArrayList<Product_Order_Variable> product = new ArrayList<Product_Order_Variable>();
-    ArrayList<Product_variable> product_id = new ArrayList<Product_variable>();
-    ArrayList<Employee> employee = new ArrayList<Employee>();
-    ArrayList<Vendor_variable> vendor = new ArrayList<Vendor_variable>();
-//-----------------------------------------------------------------------
+public class Product_Order_panel_backup extends javax.swing.JFrame {
     boolean viewnaja = false;
     boolean deletenakub = false;
     boolean createnaja = true;
     boolean deletenaja = false;
     boolean adding = false;
     boolean pass = false;
-    boolean Window_Activated = false;
-//--------------------------------------------------------------------------
-    int max = 0;
-    int oldprice = 0;
-    int currentprice = 0;
-    int totalorder = 0;
-    int productprice = 0;
-    int price1  =0;
-//--------------------------------------------------------------------------------
+    Database d = new Database();
+    Employee e = new Employee();
+    Main_variable m = new Main_variable();
     public String id = null;
-    String oldpaydate = null;
-    String oldrecdate = null;
-    String checkview = null;
+    Connection con = null;
+    Statement st = null;
+    PreparedStatement pat = null;
+    ResultSet rs = null;
     String output = null;
     String menu = null;
     String password= null;
@@ -71,24 +48,39 @@ public class Product_Order_panel extends javax.swing.JFrame {
     String productname = null;
     String orderpaymentid = null;
     String receiveid = null;
+    int max = 0;
+    String oldpaydate = null;
+    String oldrecdate = null;
+    String checkview = null;
+    int oldprice = 0;
+    int currentprice = 0;
     String productid = null;
-    String doubleclick = null;
+    int totalorder = 0;
+    int productprice = 0;
+    int sum = 0;
+    int price1  =0;
+    int price2 = 0;
+    int price3 = 0;
+    int price4 = 0;
+    int price5 = 0;
+    int price6 = 0;
     String empid = e.getshowid();
-    String year = ""+(Integer.parseInt(LocalDate.now().toString().substring(0,4))+543);
-    String month = LocalDate.now().toString().substring(5,7);
-    String day = LocalDate.now().toString().substring(8,10);
-    String now = month+"/"+day+"/"+year;
-//--------------------------------------------------------------------------------
-    double sum = 0;
+String year = ""+(Integer.parseInt(LocalDate.now().toString().substring(0,4))+543);
+String month = LocalDate.now().toString().substring(5,7);
+String day = LocalDate.now().toString().substring(8,10);
+String now = month+"/"+day+"/"+year;
+ArrayList<Product_Order_Variable> product = new ArrayList<Product_Order_Variable>();
+ArrayList<Product_variable> product_id = new ArrayList<Product_variable>();
+ArrayList<Employee> employee = new ArrayList<Employee>();
+ArrayList<Vendor_variable> vendor = new ArrayList<Vendor_variable>();
     /**
      * Creates new form Employee_create
      */
-    public Product_Order_panel() {
+    public Product_Order_panel_backup() {
         initComponents();
         show_order();
         id();
         fillcombovendor();
-        getProduct();
         locked.setVisible(false);
         oldpaydate = pay_date.getText();
         oldrecdate = receive_date.getText();
@@ -107,6 +99,11 @@ public class Product_Order_panel extends javax.swing.JFrame {
          showid_txt.setText(createid);
          price_txt.setText("");
          p_txt1.setEnabled(true);
+         p_txt2.setEnabled(true);
+         p_txt3.setEnabled(true);
+         p_txt4.setEnabled(true);
+         p_txt5.setEnabled(true);
+         p_txt6.setEnabled(true);
     }
 public void setdate(){
  year = ""+(Integer.parseInt(LocalDate.now().toString().substring(0,4))+543);
@@ -135,6 +132,11 @@ cal.setTime(date);
          v_txt.setEnabled(false);
          price_txt.setEnabled(false);
          p_txt1.setEnabled(false);
+         p_txt2.setEnabled(false);
+         p_txt3.setEnabled(false);
+         p_txt4.setEnabled(false);
+         p_txt5.setEnabled(false);
+         p_txt6.setEnabled(false);
          /*receive_date.setEnabled(false);
          pay_date.setEnabled(false);*/
     }
@@ -148,6 +150,11 @@ cal.setTime(date);
          receive_date.setEnabled(true);
          pay_date.setEnabled(true);
          p_txt1.setEnabled(true);
+         p_txt2.setEnabled(true);
+         p_txt3.setEnabled(true);
+         p_txt4.setEnabled(true);
+         p_txt5.setEnabled(true);
+         p_txt6.setEnabled(true);
     }
 public String findorderpayment(String id){
             String find = "SELECT OP_NUMBER FROM ORDER_PAYMENT WHERE PO_ID = '"+id+"'";
@@ -188,42 +195,6 @@ public String findreceive(String id){
         } 
         return receiveid;
   }
-public void getProduct(){
-    String sql = "SELECT PRO_ID,PRO_NAME,PRO_PRICE,PRO_UNITS,PRO_UNITS_TYPE,PRO_MIN,V_ID,V_NAME FROM PRODUCT NATURAL JOIN VENDOR WHERE PRO_DEL = 'N'";
-    try{
-        Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(sql);
-        rs = pat.executeQuery(sql);
-        while(rs.next()){
-            Product_variable p = new Product_variable();
-            p.setid(rs.getString("PRO_ID"));
-            p.setname(rs.getString("PRO_NAME"));
-            p.setprice(rs.getInt("PRO_PRICE"));
-            p.setunit(rs.getDouble("PRO_UNITS"));
-            p.setunits_type(rs.getString("PRO_UNITS_TYPE"));
-            p.setmin(rs.getInt("PRO_MIN"));
-            p.setvid(rs.getString("V_ID"));
-            p.setvname(rs.getString("V_NAME"));
-            productlist.add(p);
-        }
-    }catch(Exception e){
-        System.err.println(e);
-    }
-}
-public void showProduct_list(){
-        DefaultTableModel model = (DefaultTableModel)product_table.getModel();
-        Object[] row = new Object[6];
-        for(int i=0;i<productlisttoorder.size();i++){
-            row[0]=productlisttoorder.get(i).getid();
-            row[1]=productlisttoorder.get(i).getname();
-            row[2]=productlisttoorder.get(i).getprice();
-            row[3]=productlisttoorder.get(i).getunit();
-            row[4]=productlisttoorder.get(i).getunit_type();
-            row[5]=productlisttoorder.get(i).gettotal_price();
-            model.addRow(row);
-        }
-}
 public String findempid(String id){
             String find = "SELECT EMP_ID FROM PRO_ORDER WHERE PO_ID = '"+id+"'";
         try{
@@ -246,7 +217,17 @@ public String findempid(String id){
 public void delete(){
     deletenakub = true;
     p_txt1.removeAllItems();
+         p_txt2.removeAllItems();
+         p_txt3.removeAllItems();    
+         p_txt4.removeAllItems();
+         p_txt5.removeAllItems();
+         p_txt6.removeAllItems();
          p_txt1.addItem(">>Choose<<");
+         p_txt2.addItem(">>Choose<<");
+         p_txt3.addItem(">>Choose<<");
+         p_txt4.addItem(">>Choose<<");
+         p_txt5.addItem(">>Choose<<");
+         p_txt6.addItem(">>Choose<<");
          deletenakub=false;
 }
   public String id(){
@@ -449,21 +430,18 @@ public String receivelist(){
       }
   }
     void fillcomboproduct(String id){
-      p_txt1.removeAllItems();;
-      p_txt1.addItem(">>Choose<<");
       try{
-          for(Product_variable p:productlist){
-              if(id.equals(p.getvid())){
-                  p_txt1.addItem(p.getname());
-              }
-          }
-        /*try{
           String sql = "SELECT PRO_ID,V_ID,PRO_NAME,PRO_PRICE FROM PRODUCT WHERE V_ID ='"+id+"' AND PRO_DEL = 'N'";
          con = DriverManager.getConnection(d.url(),d.username(),d.password());
         st = con.createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
             p_txt1.addItem(rs.getString("PRO_NAME"));
+            p_txt2.addItem(rs.getString("PRO_NAME"));
+            p_txt3.addItem(rs.getString("PRO_NAME"));
+            p_txt4.addItem(rs.getString("PRO_NAME"));
+            p_txt5.addItem(rs.getString("PRO_NAME"));
+            p_txt6.addItem(rs.getString("PRO_NAME"));
             Product_variable p = new Product_variable();
             p.setid(rs.getString("PRO_ID"));
             p.setname(rs.getString("PRO_NAME"));
@@ -472,7 +450,7 @@ public String receivelist(){
         }
         rs.close();
         st.close();
-        con.close();*/
+        con.close();
       }catch(Exception e){
           
       }
@@ -573,22 +551,23 @@ public void findproduct(String product){
         price_txt = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
+        p_txt6 = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        p_txt2 = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         p_txt1 = new javax.swing.JComboBox<>();
+        p_txt4 = new javax.swing.JComboBox<>();
+        jLabel10 = new javax.swing.JLabel();
+        p_txt5 = new javax.swing.JComboBox<>();
+        jLabel18 = new javax.swing.JLabel();
+        p_txt3 = new javax.swing.JComboBox<>();
+        jLabel19 = new javax.swing.JLabel();
         emp_txt = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
-        help_product_btn = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        product_table = new javax.swing.JTable();
-        jButton5 = new javax.swing.JButton();
+        view = new javax.swing.JRadioButton();
+        jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1530, 800));
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowActivated(java.awt.event.WindowEvent evt) {
-                formWindowActivated(evt);
-            }
-        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         locked.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -608,7 +587,7 @@ public void findproduct(String product){
         });
         locked.add(paydate, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 140, 30));
 
-        getContentPane().add(locked, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 520, 160, 110));
+        getContentPane().add(locked, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 410, 160, 110));
 
         order_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -645,15 +624,15 @@ public void findproduct(String product){
 
         showid_txt.setEditable(false);
         showid_txt.setEnabled(false);
-        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 110, 30));
+        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, 110, 30));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("ID:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setText("Vendor:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, -1, -1));
 
         jButton1.setText("Close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -661,7 +640,7 @@ public void findproduct(String product){
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 710, 120, 50));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 670, 120, 50));
 
         jButton2.setText("Submit");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -669,7 +648,7 @@ public void findproduct(String product){
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 710, 120, 50));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 670, 120, 50));
 
         jButton3.setText("Clear");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -677,22 +656,22 @@ public void findproduct(String product){
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 710, 120, 50));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 670, 120, 50));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel11.setText("Pay Date:");
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 530, -1, -1));
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 420, -1, -1));
 
         delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteActionPerformed(evt);
             }
         });
-        getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 650, -1, -1));
+        getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 540, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel12.setText("Function:");
-        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 650, -1, -1));
+        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 540, -1, -1));
 
         create.setSelected(true);
         create.setEnabled(false);
@@ -701,23 +680,23 @@ public void findproduct(String product){
                 createActionPerformed(evt);
             }
         });
-        getContentPane().add(create, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 650, -1, -1));
+        getContentPane().add(create, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 540, -1, -1));
 
         jLabel13.setText("Delete");
-        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 650, -1, -1));
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 540, -1, -1));
 
         jLabel14.setText("Create");
-        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 650, -1, -1));
+        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 540, -1, -1));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel16.setText("Employee:");
-        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 30, -1, -1));
-        getContentPane().add(receive_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 600, -1, 30));
-        getContentPane().add(pay_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 530, -1, 30));
+        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, -1, -1));
+        getContentPane().add(receive_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 490, -1, 30));
+        getContentPane().add(pay_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 420, -1, 30));
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel17.setText("Receive Date:");
-        getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 600, -1, -1));
+        getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 490, -1, -1));
 
         v_txt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
         v_txt.addActionListener(new java.awt.event.ActionListener() {
@@ -725,28 +704,46 @@ public void findproduct(String product){
                 v_txtActionPerformed(evt);
             }
         });
-        getContentPane().add(v_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, 130, 30));
+        getContentPane().add(v_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 140, 130, 30));
 
         price_txt.setEditable(false);
-        price_txt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        price_txt.setText("0.0");
-        price_txt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                price_txtActionPerformed(evt);
-            }
-        });
-        getContentPane().add(price_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 530, 110, 30));
+        price_txt.setEnabled(false);
+        getContentPane().add(price_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 420, 110, 30));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Price:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 530, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 420, -1, -1));
 
         jTextField1.setText("jTextField1");
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 530, -1, -1));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 420, -1, -1));
+
+        p_txt6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { ">>Choose<<" }));
+        p_txt6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                p_txt6ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(p_txt6, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 340, 180, 30));
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel7.setText("Product:");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 340, -1, -1));
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel8.setText("Product:");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 220, -1, -1));
+
+        p_txt2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { ">>Choose<<" }));
+        p_txt2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                p_txt2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(p_txt2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 220, 180, 30));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel9.setText("Product:");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, -1));
 
         p_txt1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { ">>Choose<<" }));
         p_txt1.addActionListener(new java.awt.event.ActionListener() {
@@ -754,69 +751,57 @@ public void findproduct(String product){
                 p_txt1ActionPerformed(evt);
             }
         });
-        getContentPane().add(p_txt1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, 160, 30));
+        getContentPane().add(p_txt1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 220, 160, 30));
+
+        p_txt4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { ">>Choose<<" }));
+        p_txt4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                p_txt4ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(p_txt4, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 280, 180, 30));
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel10.setText("Product:");
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 280, -1, -1));
+
+        p_txt5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { ">>Choose<<" }));
+        p_txt5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                p_txt5ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(p_txt5, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 340, 160, 30));
+
+        jLabel18.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel18.setText("Product:");
+        getContentPane().add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, -1, -1));
+
+        p_txt3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { ">>Choose<<" }));
+        p_txt3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                p_txt3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(p_txt3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 280, 160, 30));
+
+        jLabel19.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel19.setText("Product:");
+        getContentPane().add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, -1, -1));
 
         emp_txt.setEditable(false);
         emp_txt.setEnabled(false);
-        getContentPane().add(emp_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 30, 130, 30));
+        getContentPane().add(emp_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 130, 30));
 
-        jButton4.setText("Add");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        view.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                viewActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 150, 60, 30));
+        getContentPane().add(view, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 540, -1, -1));
 
-        help_product_btn.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        help_product_btn.setText("?");
-        help_product_btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                help_product_btnActionPerformed(evt);
-            }
-        });
-        getContentPane().add(help_product_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 500, 40, 20));
-
-        product_table.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        product_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "รหัสสินค้า", "ชื่อสินค้า", "ราคาต่อชิ้น", "จำนวน", "หน่วย", "ราคารวม"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        product_table.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                product_tableMouseClicked(evt);
-            }
-        });
-        jScrollPane2.setViewportView(product_table);
-        if (product_table.getColumnModel().getColumnCount() > 0) {
-            product_table.getColumnModel().getColumn(0).setPreferredWidth(40);
-            product_table.getColumnModel().getColumn(2).setPreferredWidth(40);
-            product_table.getColumnModel().getColumn(3).setPreferredWidth(40);
-            product_table.getColumnModel().getColumn(4).setPreferredWidth(30);
-            product_table.getColumnModel().getColumn(5).setPreferredWidth(30);
-        }
-
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 540, 300));
-
-        jButton5.setText("jButton5");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 130, -1, -1));
+        jLabel15.setText("View");
+        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 540, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -871,7 +856,18 @@ try{
             adding = true;
             if(productnaja==0){
                 p_txt1.setSelectedItem(rs.getString("PRO_NAME"));
+            }else if(productnaja==1){
+                p_txt2.setSelectedItem(rs.getString("PRO_NAME"));
+            }else if(productnaja==2){
+                p_txt3.setSelectedItem(rs.getString("PRO_NAME"));
+            }else if(productnaja==3){
+                p_txt4.setSelectedItem(rs.getString("PRO_NAME"));
+            }else if(productnaja==4){
+                p_txt5.setSelectedItem(rs.getString("PRO_NAME"));
+            }else if(productnaja==5){
+                p_txt6.setSelectedItem(rs.getString("PRO_NAME"));
             }
+            productnaja++;
         }
         rs.close();
         st.close();
@@ -1083,14 +1079,6 @@ System.out.print(sql);
         clear();
         showid_txt.setText(createid);
         order_table.getSelectionModel().clearSelection();
-        productlisttoorder.clear();
-        DefaultTableModel model = (DefaultTableModel)product_table.getModel();
-        while(model.getRowCount()>0){
-                    model.removeRow(0);
-        }
-        sum = 0;
-        price_txt.setText(""+sum);
-        showProduct_list();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
@@ -1132,25 +1120,12 @@ System.out.print(sql);
 
     private void v_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_v_txtActionPerformed
         System.out.println(v_txt.getSelectedItem().toString());
-        if(v_txt.getSelectedIndex()==0){
-           p_txt1.removeAllItems();;
-           p_txt1.addItem(">>Choose<<");
-        }else{
         for(int i =0;i<vendor.size();i++){
-        System.out.print(vendor.get(i).getid());
-        productlisttoorder.clear();
-        DefaultTableModel model = (DefaultTableModel)product_table.getModel();
-        while(model.getRowCount()>0){
-                    model.removeRow(0);
-        }
-        sum = 0;
-        price_txt.setText(""+sum);
-        if(vendor.get(i).getname().equals(v_txt.getSelectedItem().toString())){
-        fillcomboproduct(vendor.get(i).getid());
-        System.err.println("eiei");
+            System.out.print(vendor.get(i).getid());
+            if(vendor.get(i).getname().equals(v_txt.getSelectedItem().toString())){
+                       fillcomboproduct(vendor.get(i).getid()); 
                        break;
             }
-        }
         }
     }//GEN-LAST:event_v_txtActionPerformed
 
@@ -1158,8 +1133,246 @@ System.out.print(sql);
         // TODO add your handling code here:
     }//GEN-LAST:event_paydateActionPerformed
 
+    private void p_txt6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt6ActionPerformed
+         boolean foundnull = false;
+        if(deletenakub==true||adding == true){
+           }else{
+         findproduct(p_txt6.getSelectedItem().toString());
+         boolean check = false;
+         boolean confirm = false;
+        if(p_txt6.getSelectedIndex()==0){ 
+       }else{
+           if(product.size()==0){
+               boolean checkint = true;
+               String amouth;
+               do{
+               JOptionPane.showMessageDialog(null,p_txt6.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
+               amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+                if(amouth  == null){  
+                p_txt6.setSelectedIndex(0);
+                foundnull = true;
+                }else{
+               for(int i =0;i<amouth.length();i++){
+                   if(Character.isDigit(amouth.charAt(i))==false){
+                       checkint = false;
+                       JOptionPane.showMessageDialog(null,"Please input integer.");
+                       break;
+                   }
+               }
+                }
+               }while(checkint != true);
+               if(foundnull==true){
+               JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt6.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               }
+               }
+               if(confirm==true){
+               Product_Order_Variable p = new Product_Order_Variable();
+               p.setproduct((p_txt6.getSelectedItem().toString()));
+               p.setproductunit(Integer.parseInt(amouth));
+               product.add(p);
+              price6 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
+              System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
+              price_txt.setText(""+sum);
+              p_txt6.setEnabled(false);
+               }else{
+                   p_txt6.setSelectedIndex(0);
+               }
+           }else{ 
+           for(int i =0;i<product.size();i++){
+               if(p_txt6.getSelectedItem().toString().equals(product.get(i).getproduct())){
+                   JOptionPane.showMessageDialog(null,"You were selected this product.\nPlease select another product");
+                   check=true;
+                   p_txt6.setSelectedIndex(0);
+                   break;
+       }
+     }      
+           if(check==false){
+               boolean checkint = true;
+               String amouth;
+               do{
+               JOptionPane.showMessageDialog(null,p_txt6.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
+               amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+                if(amouth  == null){  
+                p_txt6.setSelectedIndex(0);
+                foundnull = true;
+                }else{
+               for(int i =0;i<amouth.length();i++){
+                   if(Character.isDigit(amouth.charAt(i))==false){
+                       checkint = false;
+                       JOptionPane.showMessageDialog(null,"Please input integer.");
+                       break;
+                   }
+               }
+               }
+               }while(checkint != true);
+               if(foundnull==true){
+                   JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+                   
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt6.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               }
+               }
+               if(confirm==true){
+               System.out.print(amouth);
+               Product_Order_Variable p = new Product_Order_Variable();
+               p.setproduct(p_txt6.getSelectedItem().toString());
+               p.setproductunit(Integer.parseInt(amouth));
+               product.add(p);
+              productname = (p_txt6.getSelectedItem().toString());
+              price6 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
+              System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
+              price_txt.setText(""+sum);
+              p_txt6.setEnabled(false);
+           }else{
+             p_txt6.setSelectedIndex(0); 
+           }
+           }
+        }
+        }
+           System.out.print(productname);
+           }
+    }//GEN-LAST:event_p_txt6ActionPerformed
+
+    private void p_txt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt2ActionPerformed
+         boolean foundnull = false;
+        if(deletenakub==true||adding == true){
+           }else{
+         findproduct(p_txt2.getSelectedItem().toString());
+         boolean check = false;
+         boolean confirm = false;
+        if(p_txt2.getSelectedIndex()==0){ 
+       }else{
+           if(product.size()==0){
+               boolean checkint = true;
+               String amouth;
+               do{
+               JOptionPane.showMessageDialog(null,p_txt2.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
+               amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+                if(amouth  == null){  
+                p_txt2.setSelectedIndex(0);
+                foundnull = true;
+                }else{
+               for(int i =0;i<amouth.length();i++){
+                   if(Character.isDigit(amouth.charAt(i))==false){
+                       checkint = false;
+                       JOptionPane.showMessageDialog(null,"Please input integer.");
+                       break;
+                   }
+               }
+                }
+               }while(checkint != true);
+               if(foundnull==true){
+               JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt2.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               }
+               }
+               if(confirm==true){
+               Product_Order_Variable p = new Product_Order_Variable();
+               p.setproduct((p_txt2.getSelectedItem().toString()));
+               p.setproductunit(Integer.parseInt(amouth));
+               product.add(p);
+              price2 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
+              System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
+              price_txt.setText(""+sum);
+              p_txt2.setEnabled(false);
+               }else{
+                   p_txt2.setSelectedIndex(0);
+               }
+           }else{ 
+           for(int i =0;i<product.size();i++){
+               if(p_txt2.getSelectedItem().toString().equals(product.get(i).getproduct())){
+                   JOptionPane.showMessageDialog(null,"You were selected this product.\nPlease select another product");
+                   check=true;
+                   p_txt2.setSelectedIndex(0);
+                   break;
+       }
+     }
+           
+               
+           if(check==false){
+               boolean checkint = true;
+               String amouth;
+               do{
+               JOptionPane.showMessageDialog(null,p_txt2.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
+               amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+                if(amouth  == null){  
+                p_txt2.setSelectedIndex(0);
+                foundnull = true;
+                }else{
+               for(int i =0;i<amouth.length();i++){
+                   if(Character.isDigit(amouth.charAt(i))==false){
+                       checkint = false;
+                       JOptionPane.showMessageDialog(null,"Please input integer.");
+                       break;
+                   }
+               }
+               }
+               }while(checkint != true);
+               if(foundnull==true){
+                   JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+                   
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt2.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               }
+               }
+               if(confirm==true){
+               System.out.print(amouth);
+               Product_Order_Variable p = new Product_Order_Variable();
+               p.setproduct(p_txt2.getSelectedItem().toString());
+               p.setproductunit(Integer.parseInt(amouth));
+               product.add(p);
+              productname = (p_txt2.getSelectedItem().toString());
+              price2 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
+              System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
+              price_txt.setText(""+sum);
+              p_txt2.setEnabled(false);
+           }else{
+             p_txt2.setSelectedIndex(0); 
+           }
+           }
+        }
+        }
+           System.out.print(productname);
+           }
+    }//GEN-LAST:event_p_txt2ActionPerformed
+
     private void p_txt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt1ActionPerformed
-/*         boolean foundnull = false;
+         boolean foundnull = false;
         if(deletenakub==true||adding == true){
            }else{
          findproduct(p_txt1.getSelectedItem().toString());
@@ -1275,117 +1488,384 @@ System.out.print(sql);
         }
         }
            System.out.print(productname);
-           }*/
+           }
     }//GEN-LAST:event_p_txt1ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        if(productlisttoorder.isEmpty()){
-            System.err.println("Array was Empty.");
-        }else{
-        for(Product_variable p:productlisttoorder){
-            System.out.print(p.getid()+" ");
-            System.out.print(p.getname()+" ");
-            System.out.print(p.getprice()+" ");
-            System.out.print(p.getunit()+"\n");
-        }
-        }  
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        double units = 0;
-        if(p_txt1.getSelectedIndex()!=0){
-            try{
-        for(Product_variable p:productlist){
-            if(p_txt1.getSelectedItem().toString().equals(p.getname())){
-                try{
-                units = Double.parseDouble(JOptionPane.showInputDialog(null,"กรุณากรอกจำนวนที่สั่ง\nหน่วย "+p.getunit_type()));
-                        }catch(Exception e){
-                            throw new NullPointerException();
-                        }
-                Product_variable pv = new Product_variable();
-                pv.setid(p.getid());
-                pv.setname(p.getname());
-                pv.setprice(p.getprice());
-                pv.setunit(units);
-                pv.setunits_type(p.getunit_type());
-                pv.settotal_price(units*p.getprice());
-                sum = sum+pv.gettotal_price();
-                productlisttoorder.add(pv);
-                p_txt1.removeItemAt(p_txt1.getSelectedIndex());
-                System.out.print(p.getname());
-            }
-        }
-                DefaultTableModel model = (DefaultTableModel)product_table.getModel();
-                while(model.getRowCount()>0){
-                    model.removeRow(0);
+    private void p_txt4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt4ActionPerformed
+          boolean foundnull = false;
+        if(deletenakub==true||adding == true){
+           }else{
+         findproduct(p_txt4.getSelectedItem().toString());
+         boolean check = false;
+         boolean confirm = false;
+        if(p_txt4.getSelectedIndex()==0){ 
+       }else{
+           if(product.size()==0){
+               boolean checkint = true;
+               String amouth;
+               do{
+               JOptionPane.showMessageDialog(null,p_txt4.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
+               amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+                if(amouth  == null){  
+                p_txt4.setSelectedIndex(0);
+                foundnull = true;
+                }else{
+               for(int i =0;i<amouth.length();i++){
+                   if(Character.isDigit(amouth.charAt(i))==false){
+                       checkint = false;
+                       JOptionPane.showMessageDialog(null,"Please input integer.");
+                       break;
+                   }
+               }
                 }
-                price_txt.setText(""+sum);
-                showProduct_list();
-                p_txt1.setSelectedIndex(0);
-            }catch(NullPointerException e){
-                
-            }
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void price_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_price_txtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_price_txtActionPerformed
-
-    private void product_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_product_tableMouseClicked
-        int index = 0;
-        if(!productlisttoorder.isEmpty()){
-        if(doubleclick == product_table.getModel().getValueAt(product_table.getSelectedRow(),0).toString()){
-        if(JOptionPane.showConfirmDialog(null, "คุณต้องการที่จะลบ "+product_table.getModel().getValueAt(product_table.getSelectedRow(),0).toString()+" ",null,JOptionPane.YES_NO_OPTION)==YES_OPTION){
-        try{
-        for(Product_variable p:productlisttoorder){
-            index ++;
-        System.err.println(product_table.getModel().getValueAt(product_table.getSelectedRow(),0).toString());
-        System.err.println(p.getid());
-        if(product_table.getModel().getValueAt(product_table.getSelectedRow(),0).toString().equals(p.getid())){
-            sum =0;
-            price_txt.setText(""+sum);
-            productlisttoorder.remove(index-1);
-            DefaultTableModel model = (DefaultTableModel)product_table.getModel();
-                while(model.getRowCount()>0){
-                    model.removeRow(0);
+               }while(checkint != true);
+               if(foundnull==true){
+               JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt4.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
                 }
-                showProduct_list();
-                for(Vendor_variable v:vendor){
-                    if(v_txt.getSelectedItem().toString().equals(v.getname())){
-                        System.err.println(v.getid());
-                        fillcomboproduct(v.getid());
-                    }
+               }
+               }
+               if(confirm==true){
+               Product_Order_Variable p = new Product_Order_Variable();
+               p.setproduct((p_txt4.getSelectedItem().toString()));
+               p.setproductunit(Integer.parseInt(amouth));
+               product.add(p);
+              price4 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
+              System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
+              price_txt.setText(""+sum);
+              p_txt4.setEnabled(false);
+               }else{
+                   p_txt4.setSelectedIndex(0);
+               }
+           }else{ 
+           for(int i =0;i<product.size();i++){
+               if(p_txt4.getSelectedItem().toString().equals(product.get(i).getproduct())){
+                   JOptionPane.showMessageDialog(null,"You were selected this product.\nPlease select another product");
+                   check=true;
+                   p_txt4.setSelectedIndex(0);
+                   break;
+       }
+     }
+           
+               
+           if(check==false){
+               boolean checkint = true;
+               String amouth;
+               do{
+               JOptionPane.showMessageDialog(null,p_txt4.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
+               amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+                if(amouth  == null){  
+                p_txt4.setSelectedIndex(0);
+                foundnull = true;
+                }else{
+               for(int i =0;i<amouth.length();i++){
+                   if(Character.isDigit(amouth.charAt(i))==false){
+                       checkint = false;
+                       JOptionPane.showMessageDialog(null,"Please input integer.");
+                       break;
+                   }
+               }
+               }
+               }while(checkint != true);
+               if(foundnull==true){
+                   JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+                   
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt4.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
                 }
-                doubleclick = null;
-                JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
+               }
+               }
+               if(confirm==true){
+               System.out.print(amouth);
+               Product_Order_Variable p = new Product_Order_Variable();
+               p.setproduct(p_txt4.getSelectedItem().toString());
+               p.setproductunit(Integer.parseInt(amouth));
+               product.add(p);
+              productname = (p_txt4.getSelectedItem().toString());
+              price4 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
+              System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
+              price_txt.setText(""+sum);
+              p_txt4.setEnabled(false);
+           }else{
+             p_txt4.setSelectedIndex(0); 
+           }
+           }
         }
         }
-        }catch(Exception e){
-            System.err.println(e);
-        }
-        }else{
-            doubleclick = null;
-            JOptionPane.showMessageDialog(null,"ยกเลิกรายการ");
-        }
-        }else{
-            doubleclick = product_table.getModel().getValueAt(product_table.getSelectedRow(),0).toString();
-        }
-        }else{
-            System.err.println("ไม่มีอะไรเกิดขึ้น");
-        }
-    }//GEN-LAST:event_product_tableMouseClicked
+           System.out.print(productname);
+           }
+    }//GEN-LAST:event_p_txt4ActionPerformed
 
-    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        if(Window_Activated ==false){
-            JOptionPane.showMessageDialog(null,"หลังจากที่คุณได้เพิ่มวัตถุดิบที่จะสั่ง\nคุณสามารถลบได้โดยการดับเบิ้ลคลิ๊ก\nที่ตารางวัตถุดิบที่แสดง\nคุณสามารถดูหน้าต่างนี้ได้\n\n<โดยการกดปุ่ม ? ในตาราง>");
-            Window_Activated = true;
+    private void p_txt5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt5ActionPerformed
+          boolean foundnull = false;
+        if(deletenakub==true||adding == true){
+           }else{
+         findproduct(p_txt5.getSelectedItem().toString());
+         boolean check = false;
+         boolean confirm = false;
+        if(p_txt5.getSelectedIndex()==0){ 
+       }else{
+           if(product.size()==0){
+               boolean checkint = true;
+               String amouth;
+               do{
+               JOptionPane.showMessageDialog(null,p_txt5.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
+               amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+                if(amouth  == null){  
+                p_txt5.setSelectedIndex(0);
+                foundnull = true;
+                }else{
+               for(int i =0;i<amouth.length();i++){
+                   if(Character.isDigit(amouth.charAt(i))==false){
+                       checkint = false;
+                       JOptionPane.showMessageDialog(null,"Please input integer.");
+                       break;
+                   }
+               }
+                }
+               }while(checkint != true);
+               if(foundnull==true){
+               JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt5.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               }
+               }
+               if(confirm==true){
+               Product_Order_Variable p = new Product_Order_Variable();
+               p.setproduct((p_txt5.getSelectedItem().toString()));
+               p.setproductunit(Integer.parseInt(amouth));
+               product.add(p);
+              price5 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
+              System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
+              price_txt.setText(""+sum);
+              p_txt5.setEnabled(false);
+               }else{
+                   p_txt5.setSelectedIndex(0);
+               }
+           }else{ 
+           for(int i =0;i<product.size();i++){
+               if(p_txt5.getSelectedItem().toString().equals(product.get(i).getproduct())){
+                   JOptionPane.showMessageDialog(null,"You were selected this product.\nPlease select another product");
+                   check=true;
+                   p_txt5.setSelectedIndex(0);
+                   break;
+       }
+     }
+           
+               
+           if(check==false){
+               boolean checkint = true;
+               String amouth;
+               do{
+               JOptionPane.showMessageDialog(null,p_txt5.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
+               amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+                if(amouth  == null){  
+                p_txt5.setSelectedIndex(0);
+                foundnull = true;
+                }else{
+               for(int i =0;i<amouth.length();i++){
+                   if(Character.isDigit(amouth.charAt(i))==false){
+                       checkint = false;
+                       JOptionPane.showMessageDialog(null,"Please input integer.");
+                       break;
+                   }
+               }
+               }
+               }while(checkint != true);
+               if(foundnull==true){
+                   JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+                   
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt5.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               }
+               }
+               if(confirm==true){
+               System.out.print(amouth);
+               Product_Order_Variable p = new Product_Order_Variable();
+               p.setproduct(p_txt5.getSelectedItem().toString());
+               p.setproductunit(Integer.parseInt(amouth));
+               product.add(p);
+              productname = (p_txt5.getSelectedItem().toString());
+              price5 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
+              System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
+              price_txt.setText(""+sum);
+              p_txt5.setEnabled(false);
+           }else{
+             p_txt5.setSelectedIndex(0); 
+           }
+           }
         }
-    }//GEN-LAST:event_formWindowActivated
+        }
+           System.out.print(productname);
+           }
+    }//GEN-LAST:event_p_txt5ActionPerformed
 
-    private void help_product_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_help_product_btnActionPerformed
-           JOptionPane.showMessageDialog(null,"หลังจากที่คุณได้เพิ่มวัตถุดิบที่จะสั่ง\nคุณสามารถลบได้โดยการดับเบิ้ลคลิ๊ก\nที่ตารางวัตถุดิบที่แสดง");
-    }//GEN-LAST:event_help_product_btnActionPerformed
+    private void p_txt3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p_txt3ActionPerformed
+         boolean foundnull = false;
+        if(deletenakub==true||adding == true){
+           }else{
+         findproduct(p_txt3.getSelectedItem().toString());
+         boolean check = false;
+         boolean confirm = false;
+        if(p_txt3.getSelectedIndex()==0){ 
+       }else{
+           if(product.size()==0){
+               boolean checkint = true;
+               String amouth;
+               do{
+               JOptionPane.showMessageDialog(null,p_txt3.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
+               amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+                if(amouth  == null){  
+                p_txt3.setSelectedIndex(0);
+                foundnull = true;
+                }else{
+               for(int i =0;i<amouth.length();i++){
+                   if(Character.isDigit(amouth.charAt(i))==false){
+                       checkint = false;
+                       JOptionPane.showMessageDialog(null,"Please input integer.");
+                       break;
+                   }
+               }
+                }
+               }while(checkint != true);
+               if(foundnull==true){
+               JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                  if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt3.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               }
+               }
+               if(confirm==true){
+               Product_Order_Variable p = new Product_Order_Variable();
+               p.setproduct((p_txt3.getSelectedItem().toString()));
+               p.setproductunit(Integer.parseInt(amouth));
+               product.add(p);
+              price3 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
+              System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
+              price_txt.setText(""+sum);
+              p_txt3.setEnabled(false);
+               }else{
+                   p_txt3.setSelectedIndex(0);
+               }
+           }else{ 
+           for(int i =0;i<product.size();i++){
+               if(p_txt3.getSelectedItem().toString().equals(product.get(i).getproduct())){
+                   JOptionPane.showMessageDialog(null,"You were selected this product.\nPlease select another product");
+                   check=true;
+                   p_txt3.setSelectedIndex(0);
+                   break;
+       }
+     }
+           
+               
+           if(check==false){
+               boolean checkint = true;
+               String amouth;
+               do{
+               JOptionPane.showMessageDialog(null,p_txt3.getSelectedItem().toString()+"'s cost is "+productprice+" Baht/unit.");
+               amouth = JOptionPane.showInputDialog(null,"Please input amount of product");
+                if(amouth  == null){  
+                p_txt3.setSelectedIndex(0);
+                foundnull = true;
+                }else{
+               for(int i =0;i<amouth.length();i++){
+                   if(Character.isDigit(amouth.charAt(i))==false){
+                       checkint = false;
+                       JOptionPane.showMessageDialog(null,"Please input integer.");
+                       break;
+                   }
+               }
+               }
+               }while(checkint != true);
+               if(foundnull==true){
+                   JOptionPane.showMessageDialog(null,"Denided Process!\nUnits can't empty.",null,JOptionPane.ERROR_MESSAGE);
+               }else{
+                   
+               if(Integer.parseInt(amouth)==0){
+                JOptionPane.showMessageDialog(null,"You can't type zero unit for ordering!",null,JOptionPane.ERROR_MESSAGE);
+                }else{
+                if(JOptionPane.showConfirmDialog(null,"Product:"+p_txt3.getSelectedItem().toString()+"\nAmount:"+amouth+"\nPrice:"+productprice+"\nTotal:"+(productprice*Integer.parseInt(amouth)),"",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    confirm = true;
+                }else{
+                    confirm = false;
+                }
+               }
+               }
+               if(confirm==true){
+               System.out.print(amouth);
+               Product_Order_Variable p = new Product_Order_Variable();
+               p.setproduct(p_txt3.getSelectedItem().toString());
+               p.setproductunit(Integer.parseInt(amouth));
+               product.add(p);
+              productname = (p_txt3.getSelectedItem().toString());
+              price3 = Integer.parseInt(amouth)*productprice;
+              sum = price1+price2+price3+price4+price5+price6;
+              System.out.print("current ="+currentprice+"old ="+oldprice+"sum ="+sum);
+              price_txt.setText(""+sum);
+              p_txt3.setEnabled(false);
+           }else{
+             p_txt3.setSelectedIndex(0); 
+           }
+           }
+        }
+        }
+           System.out.print(productname);
+           }
+    }//GEN-LAST:event_p_txt3ActionPerformed
+
+    private void viewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewActionPerformed
+
+        clear();
+        lock(); 
+        order_table.getSelectionModel().clearSelection();
+        JOptionPane.showMessageDialog(null,"Double Click Row of Table for view details of Order!");
+        delete.setEnabled(true);
+        create.setEnabled(true);
+        view.setEnabled(false);
+        create.setSelected(false);
+        delete.setSelected(false);
+        deletenaja = false;
+        createnaja = false;
+        viewnaja = true;
+    }//GEN-LAST:event_viewActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1398,7 +1878,7 @@ System.out.print(sql);
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
+                if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -1489,35 +1969,42 @@ System.out.print(sql);
     private javax.swing.JRadioButton create;
     private javax.swing.JRadioButton delete;
     private javax.swing.JTextField emp_txt;
-    private javax.swing.JButton help_product_btn;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel locked;
     private javax.swing.JTable order_table;
     private javax.swing.JComboBox<String> p_txt1;
+    private javax.swing.JComboBox<String> p_txt2;
+    private javax.swing.JComboBox<String> p_txt3;
+    private javax.swing.JComboBox<String> p_txt4;
+    private javax.swing.JComboBox<String> p_txt5;
+    private javax.swing.JComboBox<String> p_txt6;
     private datechooser.beans.DateChooserCombo pay_date;
     private javax.swing.JTextField paydate;
     private javax.swing.JTextField price_txt;
-    private javax.swing.JTable product_table;
     private datechooser.beans.DateChooserCombo receive_date;
     private javax.swing.JTextField receivedate;
     private javax.swing.JTextField showid_txt;
     private javax.swing.JComboBox<String> v_txt;
+    private javax.swing.JRadioButton view;
     // End of variables declaration//GEN-END:variables
 }

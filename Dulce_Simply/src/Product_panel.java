@@ -142,7 +142,7 @@ public String find(){
                ArrayList<Product_variable> Product_list = new ArrayList<>();
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="select PRO_ID,V_ID,V_NAME,PRO_NAME,PRO_PRICE,PRO_UNITS,PRO_MIN FROM PRODUCT NATURAL JOIN VENDOR WHERE PRO_DEL = 'N' ORDER BY PRO_ID";         
+        String sql  ="select PRO_ID,V_ID,V_NAME,PRO_NAME,PRO_PRICE,PRO_UNITS_TYPE,PRO_UNITS,PRO_MIN FROM PRODUCT NATURAL JOIN VENDOR WHERE PRO_DEL = 'N' ORDER BY PRO_ID";         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
          con = DriverManager.getConnection(d.url(),d.username(),d.password());
        st = con.createStatement();
@@ -155,6 +155,7 @@ public String find(){
             p.setname(rs.getString("PRO_NAME"));
             p.setprice(rs.getInt("PRO_PRICE"));
             p.setunit(rs.getInt("PRO_UNITS"));
+            p.setunits_type(rs.getString("PRO_UNITS_TYPE"));
             p.setmin(rs.getInt("PRO_MIN"));
             Product_list.add(p);
         }
@@ -169,14 +170,15 @@ public String find(){
     public void show_product(){
         ArrayList<Product_variable>ProductList = ProductList();
         DefaultTableModel model = (DefaultTableModel)product_table.getModel();
-        Object[] row = new Object[6];
+        Object[] row = new Object[7];
         for(int i=0;i<ProductList.size();i++){
             row[0]=ProductList.get(i).getid();
             row[1]=ProductList.get(i).getname();
             row[2]=ProductList.get(i).getprice();
             row[3]=ProductList.get(i).getunit();
-            row[4]=ProductList.get(i).getmin();
-            row[5]=ProductList.get(i).getvname();
+            row[4]=ProductList.get(i).getunit_type();
+            row[5]=ProductList.get(i).getmin();
+            row[6]=ProductList.get(i).getvname();
             model.addRow(row);
         }
     }
@@ -211,6 +213,8 @@ public String find(){
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        unit_combo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -220,14 +224,14 @@ public String find(){
 
             },
             new String [] {
-                "ID", "Name", "Price", "Units", "Min", "Vendor"
+                "รหัสสินค้า", "ชื่อสินค้า", "ราคา", "จำนวน", "หน่วยของสินค้า", "จำนวนขั้นต่ำ", "ผู้จัดจำหน่าย"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -250,8 +254,8 @@ public String find(){
 
         showid_txt.setEditable(false);
         showid_txt.setEnabled(false);
-        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, 110, 30));
-        getContentPane().add(pro_name_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 150, 370, 30));
+        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 110, 30));
+        getContentPane().add(pro_name_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150, 220, 30));
 
         pro_price_txt.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -263,23 +267,23 @@ public String find(){
                 pro_price_txtActionPerformed(evt);
             }
         });
-        getContentPane().add(pro_price_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 310, 90, 30));
-        getContentPane().add(pro_min_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 310, 90, 30));
+        getContentPane().add(pro_price_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 310, 90, 30));
+        getContentPane().add(pro_min_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 310, 90, 30));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel2.setText("ID:");
+        jLabel2.setText("รหัสวัตถุดิบ:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel4.setText("Product Name:");
+        jLabel4.setText("ชื่อวัตถุดิบ:");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel6.setText("Price:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, -1, -1));
+        jLabel6.setText("ราคาต่อหน่วย:");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel7.setText("Minumum:");
+        jLabel7.setText("จำนวนขั้นต่ำที่ต้องมีในคลัง:");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 310, -1, -1));
 
         jButton1.setText("Close");
@@ -307,11 +311,11 @@ public String find(){
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 670, 120, 50));
 
         v_txt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        getContentPane().add(v_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 220, 130, 30));
+        getContentPane().add(v_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 230, 120, 30));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel11.setText("Vendor:");
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
+        jLabel11.setText("ผู้จัดจำหน่าย:");
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, -1, -1));
 
         delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -321,7 +325,7 @@ public String find(){
         getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 400, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel12.setText("Function:");
+        jLabel12.setText("ฟังก์ชั่น");
         getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, -1, -1));
 
         create.setSelected(true);
@@ -345,14 +349,26 @@ public String find(){
         });
         getContentPane().add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 400, -1, -1));
 
-        jLabel13.setText("Delete");
+        jLabel13.setText("ลบ");
         getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 400, -1, -1));
 
-        jLabel14.setText("Create");
+        jLabel14.setText("สร้าง");
         getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 400, -1, -1));
 
-        jLabel15.setText("Edit");
+        jLabel15.setText("แก้ไข");
         getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 400, -1, -1));
+
+        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel16.setText("หน่วยปริมาตร:");
+        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 230, -1, -1));
+
+        unit_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "กรัม", "กิโลกรัม", "ลิตร", "มิลลิลิตร", "ขวด", "ฟอง", "เครื่อง", "อัน", "ชิ้น", "แก้ว", " " }));
+        unit_combo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unit_comboActionPerformed(evt);
+            }
+        });
+        getContentPane().add(unit_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 230, 130, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -376,7 +392,7 @@ public String find(){
         String price = pro_price_txt.getText();
         String min = pro_min_txt.getText();
         if(createnaja==true){
-        String eiei = "INSERT INTO PRODUCT VALUE('"+id+"','"+vendor+"','"+proname+"','"+price+"','0','"+min+"','N')";  
+        String eiei = "INSERT INTO PRODUCT VALUE('"+id+"','"+vendor+"','"+proname+"','"+price+"','0','"+unit_combo.getSelectedItem().toString()+"','"+min+"','N')";  
         System.out.print(eiei);
         try{
         Class.forName("com.mysql.jdbc.Driver");
@@ -397,7 +413,7 @@ public String find(){
         id();
         clear();
         }else if(editnaja==true){
-            String edit = "UPDATE PRODUCT SET V_ID = '"+vendor+"',PRO_NAME = '"+proname+"',PRO_PRICE = '"+price+"',PRO_UNITS = '"+unit+"',PRO_MIN = '"+min+"' WHERE PRO_ID = '"+id+"'";  
+            String edit = "UPDATE PRODUCT SET V_ID = '"+vendor+"',PRO_NAME = '"+proname+"',PRO_PRICE = '"+price+"',PRO_UNITS_TYPE = '"+unit_combo.getSelectedItem().toString()+"',PRO_MIN = '"+min+"' WHERE PRO_ID = '"+id+"'";  
             System.out.print(edit);
             try{
                Class.forName("com.mysql.jdbc.Driver");
@@ -511,6 +527,10 @@ public String find(){
      this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void unit_comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unit_comboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_unit_comboActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -561,6 +581,7 @@ public String find(){
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
@@ -571,6 +592,7 @@ public String find(){
     private javax.swing.JTextField pro_price_txt;
     private javax.swing.JTable product_table;
     private javax.swing.JTextField showid_txt;
+    private javax.swing.JComboBox<String> unit_combo;
     private javax.swing.JComboBox<String> v_txt;
     // End of variables declaration//GEN-END:variables
 }
