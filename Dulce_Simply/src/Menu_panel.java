@@ -156,7 +156,7 @@ public String find(){
   }
     void fillproductcombo(){
         try{
-            String sql = "SELECT PRO_ID,PRO_NAME,PRO_UNITS FROM PRODUCT WHERE PRO_DEL = 'N'";
+            String sql = "SELECT PRO_ID,PRO_NAME,PRO_UNITS,PRO_UNITS_TYPE,PRO_LIST_ID FROM PRODUCT WHERE PRO_DEL = 'N'";
             pat = getcon().prepareStatement(sql);
             rs = pat.executeQuery(sql);
             while(rs.next()){
@@ -164,8 +164,12 @@ public String find(){
                 p.setid(rs.getString("PRO_ID"));
                 p.setname(rs.getString("PRO_NAME"));
                 p.setunit(rs.getDouble("PRO_UNITS"));
+                p.setunits_type(rs.getString("PRO_UNITS_TYPE"));
+                p.setProduct_type(rs.getString("PRO_LIST_ID"));
                 productarray.add(p);
+                if(rs.getString("PRO_LIST_ID").equals("04")){
                 product_combo.addItem(rs.getString("PRO_NAME"));
+                }
             }
         }catch(Exception e){
             System.err.println(e);
@@ -266,14 +270,14 @@ public String find(){
 
             },
             new String [] {
-                "รหัสวัตถุดิบ", "ชื่อวัตถุดิบ", "จำนวนที่ใช้"
+                "รหัสวัตถุดิบ", "ชื่อวัตถุดิบ", "จำนวนที่ใช้", "หน่วยของวัตถุดิบ"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -639,13 +643,24 @@ public String find(){
 
     private void addproduct_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addproduct_btnActionPerformed
         Double units = 0.0;
+        String units_type = null;
+        String productid = null;
+        String productname = null;
         if(product_combo.getSelectedIndex()==0){
             
         }else{
+        for(Product_variable pv:productarray){
+            if(pv.getname().equals(product_combo.getSelectedItem().toString())){
+                System.out.print(productid);
+                productid = pv.getid();
+                productname = pv.getname();
+                units_type = pv.getunit_type();
+            }
+        }
         for(int i =0;i<productarray.size();i++){
             if(product_combo.getSelectedItem().toString().equals(productarray.get(i).getname())){
                try{
-                   units = Double.parseDouble(JOptionPane.showInputDialog(null,"กรุณากรอกปริมาณของวัตถุดิบที่จะใช้ด้วยครับ\n(ต่อหน่วยของวัตถุดิบ)\nตัวอย่างเช่น ใช้ 100มิลลิลิตรให้กรอก 0.1\nถ้าหากใช้ 10กรัมให้กรอก 0.01"));
+                   units = Double.parseDouble(JOptionPane.showInputDialog(null,"\""+productname+"\" มีหน่วยเป็น \""+units_type+"\"\n\nกรุณากรอกปริมาณของวัตถุดิบที่จะใช้ด้วยครับ\n(ต่อหน่วยของวัตถุดิบ)\nตัวอย่างเช่น ใช้ 100มิลลิลิตรให้กรอก 0.1\nถ้าหากใช้ 10กรัมให้กรอก 0.01\nถ้าใช้ 1/20 ของขวด ให้กรอก 0.05"));
                    //-----
                    Product_variable p = new Product_variable();
                    p.setid(productarray.get(i).getid());

@@ -137,6 +137,7 @@ Main_variable m = new Main_variable();
         Inventory_btn = new javax.swing.JButton();
         Management_btn = new javax.swing.JButton();
         Employee_btn = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         Selection = new javax.swing.JPanel();
         Firstpage = new javax.swing.JPanel();
         Menu_Ordering = new javax.swing.JPanel();
@@ -277,6 +278,9 @@ Main_variable m = new Main_variable();
         });
         ButtonPanel.add(Employee_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 143, 55));
 
+        jButton1.setText("ปิดยอดขาย");
+        ButtonPanel.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 590, 160, 60));
+
         getContentPane().add(ButtonPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 62, -1, 678));
 
         Selection.setBackground(new java.awt.Color(254, 255, 239));
@@ -291,14 +295,14 @@ Main_variable m = new Main_variable();
         Menu_Ordering.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Heading_MO.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        Heading_MO.setText("Menu Ordering");
-        Menu_Ordering.add(Heading_MO, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, -1, -1));
+        Heading_MO.setText("การออร์เดอร์");
+        Menu_Ordering.add(Heading_MO, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 30, -1, -1));
 
         jButton2.setText("Menu Ordering");
         Menu_Ordering.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 150, 160, 90));
 
         jButton11.setText("Table");
-        Menu_Ordering.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, 170, 90));
+        Menu_Ordering.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, 180, 90));
 
         jButton12.setText("Promotion");
         Menu_Ordering.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 150, 170, 90));
@@ -1188,6 +1192,7 @@ if ((s != null) && (s.length() > 0)) {
     private javax.swing.JPanel TopPanel;
     private javax.swing.JButton View_Employee_Payment_btn;
     private javax.swing.JButton editenrolled;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;

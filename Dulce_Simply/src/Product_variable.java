@@ -19,7 +19,7 @@ private double unit =0;
 private int min=0;
 private double total_price = 0;
 private String unit_type = null;
-
+private String Product_type = null;
 public String getid(){
     return this.id;
 }
@@ -47,6 +47,9 @@ public int getmin(){
 public double gettotal_price(){
     return this.total_price;
 }
+public String getProduct_type(){
+    return this.Product_type;
+}
 public void setid(String id){
     this.id = id;
 }
@@ -73,5 +76,8 @@ public void setunits_type(String type){
 }
 public void settotal_price(double price){
     this.total_price = price;
+}
+public void setProduct_type(String type){
+    this.Product_type = type;
 }
 }
