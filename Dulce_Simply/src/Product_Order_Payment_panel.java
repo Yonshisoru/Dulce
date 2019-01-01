@@ -44,9 +44,9 @@ public class Product_Order_Payment_panel extends javax.swing.JFrame {
         rs = st.executeQuery(sql);
         while(rs.next()){
            Product_Order_Variable p = new Product_Order_Variable();
-            p.setid(rs.getString("POL_NUMBER"));
+            p.setProduct_Order_Receive_id(rs.getString("POL_NUMBER"));
             System.out.print(rs.getString("POL_NUMBER"));
-            p.setproduct(rs.getString("PRO_NAME"));
+            p.setproductname(rs.getString("PRO_NAME"));
             p.setunit(rs.getInt("PRO_UNITS"));
             p.setprice(rs.getInt("PRO_PRICE"));
             Product_order_list.add(p);
@@ -64,7 +64,7 @@ public class Product_Order_Payment_panel extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)Product_Order_View_Table.getModel();
         Object[] row = new Object[5];
         for(int i=0;i<Product_order_list.size();i++){
-            row[0]=Product_order_list.get(i).getid();
+            row[0]=Product_order_list.get(i).getProduct_Order_Receive_id();
             row[1]=Product_order_list.get(i).getproduct();
             row[2]=Product_order_list.get(i).getunit();
             row[3]=Product_order_list.get(i).getprice();
@@ -95,19 +95,19 @@ public class Product_Order_Payment_panel extends javax.swing.JFrame {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tekton Pro", 0, 36)); // NOI18N
-        jLabel1.setText("Order ID:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, -1, -1));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setText("รหัสการสั่งสินค้า");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, -1, -1));
 
-        ordering_id.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        getContentPane().add(ordering_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 20, 160, 40));
+        ordering_id.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        getContentPane().add(ordering_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, 160, 40));
 
         Product_Order_View_Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Pay Date", "ID", "Vendor", "Price", "Status"
+                "วันที่จ่าย", "รายการ", "ผู้จัดจำหน่าย", "ราคา", "สถานะการจ่ายเงิน"
             }
         ) {
             boolean[] canEdit = new boolean [] {

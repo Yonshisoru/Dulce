@@ -138,23 +138,23 @@ public double findcurrent(String product){
         received_txt.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         getContentPane().add(received_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 110, 150, -1));
 
-        jLabel2.setText("Product:");
+        jLabel2.setText("ชื่อสินค้า:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, -1, -1));
 
-        jLabel3.setText("Expiry Date:");
+        jLabel3.setText("วันหมดอายุ:");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 160, -1, -1));
 
-        jLabel4.setText("Price:");
+        jLabel4.setText("ราตาต่อหน่วย:");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 70, -1, -1));
 
-        jLabel5.setText("Received:");
+        jLabel5.setText("รับสินค้าไปแล้ว:");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, -1, -1));
 
-        jLabel6.setText("Receiving:");
+        jLabel6.setText("รับสินค้าทั้งหมด:");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, -1, -1));
         getContentPane().add(exp_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 160, 180, -1));
 
-        jLabel7.setText("ID:");
+        jLabel7.setText("รายการที่:");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, -1, -1));
 
         id_txt.setText(" ");
@@ -169,7 +169,7 @@ public double findcurrent(String product){
         price_txt.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         getContentPane().add(price_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 70, 150, -1));
 
-        jButton1.setText("Cancel");
+        jButton1.setText("ยกเลิก");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -177,7 +177,7 @@ public double findcurrent(String product){
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, -1, -1));
 
-        jButton2.setText("Submit");
+        jButton2.setText("ยืนยัน");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -185,13 +185,13 @@ public double findcurrent(String product){
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 190, -1, -1));
 
-        getContentPane().add(receiving_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 40, -1));
+        getContentPane().add(receiving_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 130, 40, -1));
 
         unit_txt.setText(" ");
         unit_txt.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         getContentPane().add(unit_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, 150, -1));
 
-        jLabel8.setText("Ordering Unit:");
+        jLabel8.setText("จำนวนที่สั่ง:");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, -1, -1));
 
         pack();
@@ -299,7 +299,7 @@ public double findcurrent(String product){
             System.out.print(e);
         }    
         }
-        JOptionPane.showMessageDialog(null, "Success");
+        JOptionPane.showMessageDialog(null, "ทำรายการเสร็จสิ้น");
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 

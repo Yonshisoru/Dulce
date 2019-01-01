@@ -914,9 +914,9 @@ Main_variable m = new Main_variable();
     }//GEN-LAST:event_Ordering_product1ActionPerformed
 
     private void jButton32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton32ActionPerformed
+    m.setorderpayment(1);
     Product_Order_view p = new Product_Order_view();
     p.setVisible(true);
-    m.setorderpayment(1);
     }//GEN-LAST:event_jButton32ActionPerformed
 
     private void Employee_salary_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Employee_salary_btnActionPerformed
@@ -1082,9 +1082,9 @@ if ((s != null) && (s.length() > 0)) {
     }//GEN-LAST:event_jButton23ActionPerformed
 
     private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
-        Product_Order_view p = new Product_Order_view();
-    p.setVisible(true);
     m.setreceive(1);
+    Product_Order_view p = new Product_Order_view();
+    p.setVisible(true);
     }//GEN-LAST:event_jButton25ActionPerformed
 
     private void Employee_Payment_btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Employee_Payment_btn1ActionPerformed

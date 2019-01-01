@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
@@ -53,9 +54,9 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
         rs = st.executeQuery(sql);
         while(rs.next()){
            Product_Order_Variable p = new Product_Order_Variable();
-            p.setid(rs.getString("PRL_NUMBER"));
+            p.setProduct_Order_Receive_id(rs.getString("PRL_NUMBER"));
             p.setreceiveid(rs.getString("PR_ID"));
-            p.setproduct(rs.getString("PRO_NAME"));
+            p.setproductname(rs.getString("PRO_NAME"));
             p.setproductid(rs.getString("PRO_ID"));
             p.setunit(rs.getInt("PRL_UNITS"));
             p.setprice(rs.getInt("PRL_PRICE"));
@@ -76,7 +77,7 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)Product_Order_View_Table.getModel();
         Object[] row = new Object[7];
         for(int i=0;i<Product_order_list.size();i++){
-            row[0]=Product_order_list.get(i).getid();
+            row[0]=Product_order_list.get(i).getProduct_Order_Receive_id();
             row[1]=Product_order_list.get(i).getproduct();
             row[2]=Product_order_list.get(i).getunit();
             row[3]=Product_order_list.get(i).getprice();
@@ -111,10 +112,11 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
         Product_Order_View_Table = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocationByPlatform(true);
-        setPreferredSize(new java.awt.Dimension(739, 531));
+        setPreferredSize(new java.awt.Dimension(800, 500));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -122,19 +124,19 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tekton Pro", 0, 36)); // NOI18N
-        jLabel1.setText("Order ID:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, -1, -1));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setText("รหัสการสั่งสินค้า:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 20, -1, -1));
 
         ordering_id.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        getContentPane().add(ordering_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 20, 160, 40));
+        getContentPane().add(ordering_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 20, 160, 40));
 
         Product_Order_View_Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Name", "Amount", "Price", "Total", "Current", "Receive Status"
+                "รายการที่", "ชื่อสินค้า", "จำนวน", "ราคาต่อหน่วย", "ราคาสุทธิ", "รับสินค้าแล้วทั้งหมด", "สถานะการรับสินค้า"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -152,7 +154,7 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(Product_Order_View_Table);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 630, 330));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 740, 330));
 
         jButton1.setText("Close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -160,7 +162,7 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 420, 150, 50));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 420, 150, 50));
 
         jButton2.setText("Refresh");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -168,7 +170,10 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 420, 150, 50));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 420, 150, 50));
+
+        jButton3.setText("jButton3");
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -181,21 +186,29 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
        boolean confirm = false;
        boolean isnum = false;
        boolean isnull =false;
-       String receiveid = Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),0).toString();
-       int current = Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),5).toString());
-       int max = Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),2).toString());
-       int price = Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),3).toString());
-       String name =Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),1).toString();
-       String input = "fantasticbeastverygood";
-       int received = 0;
+       String receiveid = null;
+       int current = 0;
+       int max = 0;
+       double price = 0;
+       String name = null;
+       String input = null;
         if(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),1).toString().equals(id)){
+       System.out.println("DoubleClick");
+       receiveid = Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),0).toString();
+       current = Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),5).toString());
+       max = Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),2).toString());
+       price = Double.parseDouble(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),3).toString());
+       name =Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),1).toString();
+       input = "fantasticbeastverygood";
+       int received = 0;
             if(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),6).toString().equals("Y")||Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),2).toString())==Integer.parseInt(Product_Order_View_Table.getModel().getValueAt(Product_Order_View_Table.getSelectedRow(),5).toString())){
-                JOptionPane.showMessageDialog(null, "This Product was received",null,JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "สินค้ารายการนี้มีการรับเรียบร้อยแล้ว",null,JOptionPane.ERROR_MESSAGE);
             }else{
-                  if(JOptionPane.showConfirmDialog(null,"Did "+name+" has received?","Confirm",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                  if(JOptionPane.showConfirmDialog(null,""+name+"มีการรับสินค้าแล้วใช่หรือไม่",null,YES_NO_OPTION)==JOptionPane.YES_OPTION){
                     confirm = true;
                     id=null;
                 }else{
+                    id=null;
                     confirm = false;
                 }
             }
@@ -325,6 +338,7 @@ public class Product_Order_Receive_view extends javax.swing.JFrame {
     private javax.swing.JTable Product_Order_View_Table;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel ordering_id;

@@ -22,8 +22,8 @@ static private int currentedit = 0;
 static private int currentleave = 0;
 static private boolean change = false;
 static private boolean leavenaja = false;
-static private int orderpay;
-static private int receive;
+static private int orderpay=0;
+static private int receive=0;
 public int getorderpay(){
     return orderpay;
 }

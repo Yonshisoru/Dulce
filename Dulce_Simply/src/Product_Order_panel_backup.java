@@ -466,7 +466,7 @@ public String receivelist(){
         rs = st.executeQuery(sql);
         while(rs.next()){
            Product_Order_Variable p = new Product_Order_Variable();
-            p.setid(rs.getString("PO_ID"));
+            p.setProduct_Order_Receive_id(rs.getString("PO_ID"));
             p.e.setid(rs.getString("EMP_ID"));
             p.e.setfname(rs.getString("EMP_FNAME"));
             p.e.setlname(rs.getString("EMP_LNAME"));
@@ -496,7 +496,7 @@ public String receivelist(){
         Object[] row = new Object[10];
         for(int i=0;i<Product_order_list.size();i++){
             row[0]=Product_order_list.get(i).getdate();
-            row[1]=Product_order_list.get(i).getid();
+            row[1]=Product_order_list.get(i).getProduct_Order_Receive_id();
             row[2]=Product_order_list.get(i).getunit();
             row[3]=Product_order_list.get(i).getprice();
             row[4]=Product_order_list.get(i).getrec_date();
@@ -1176,7 +1176,7 @@ System.out.print(sql);
                }
                if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
-               p.setproduct((p_txt6.getSelectedItem().toString()));
+               p.setproductname((p_txt6.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               price6 = Integer.parseInt(amouth)*productprice;
@@ -1232,7 +1232,7 @@ System.out.print(sql);
                if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
-               p.setproduct(p_txt6.getSelectedItem().toString());
+               p.setproductname(p_txt6.getSelectedItem().toString());
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               productname = (p_txt6.getSelectedItem().toString());
@@ -1294,7 +1294,7 @@ System.out.print(sql);
                }
                if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
-               p.setproduct((p_txt2.getSelectedItem().toString()));
+               p.setproductname((p_txt2.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               price2 = Integer.parseInt(amouth)*productprice;
@@ -1352,7 +1352,7 @@ System.out.print(sql);
                if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
-               p.setproduct(p_txt2.getSelectedItem().toString());
+               p.setproductname(p_txt2.getSelectedItem().toString());
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               productname = (p_txt2.getSelectedItem().toString());
@@ -1414,7 +1414,7 @@ System.out.print(sql);
                }
                if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
-               p.setproduct((p_txt1.getSelectedItem().toString()));
+               p.setproductname((p_txt1.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               price1 = Integer.parseInt(amouth)*productprice;
@@ -1472,7 +1472,7 @@ System.out.print(sql);
                if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
-               p.setproduct(p_txt1.getSelectedItem().toString());
+               p.setproductname(p_txt1.getSelectedItem().toString());
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               productname = (p_txt1.getSelectedItem().toString());
@@ -1534,7 +1534,7 @@ System.out.print(sql);
                }
                if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
-               p.setproduct((p_txt4.getSelectedItem().toString()));
+               p.setproductname((p_txt4.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               price4 = Integer.parseInt(amouth)*productprice;
@@ -1592,7 +1592,7 @@ System.out.print(sql);
                if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
-               p.setproduct(p_txt4.getSelectedItem().toString());
+               p.setproductname(p_txt4.getSelectedItem().toString());
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               productname = (p_txt4.getSelectedItem().toString());
@@ -1654,7 +1654,7 @@ System.out.print(sql);
                }
                if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
-               p.setproduct((p_txt5.getSelectedItem().toString()));
+               p.setproductname((p_txt5.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               price5 = Integer.parseInt(amouth)*productprice;
@@ -1712,7 +1712,7 @@ System.out.print(sql);
                if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
-               p.setproduct(p_txt5.getSelectedItem().toString());
+               p.setproductname(p_txt5.getSelectedItem().toString());
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               productname = (p_txt5.getSelectedItem().toString());
@@ -1774,7 +1774,7 @@ System.out.print(sql);
                }
                if(confirm==true){
                Product_Order_Variable p = new Product_Order_Variable();
-               p.setproduct((p_txt3.getSelectedItem().toString()));
+               p.setproductname((p_txt3.getSelectedItem().toString()));
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               price3 = Integer.parseInt(amouth)*productprice;
@@ -1832,7 +1832,7 @@ System.out.print(sql);
                if(confirm==true){
                System.out.print(amouth);
                Product_Order_Variable p = new Product_Order_Variable();
-               p.setproduct(p_txt3.getSelectedItem().toString());
+               p.setproductname(p_txt3.getSelectedItem().toString());
                p.setproductunit(Integer.parseInt(amouth));
                product.add(p);
               productname = (p_txt3.getSelectedItem().toString());

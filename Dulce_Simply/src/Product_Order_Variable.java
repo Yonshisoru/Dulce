@@ -12,31 +12,39 @@
 public class Product_Order_Variable {
 Employee e = new Employee();
 Vendor_variable v = new Vendor_variable();
-static private String view = "O001";
-static private String receiveid = null;
-static private String orderid = null;
-private String id;
-private int unit;
-private String date;
-private String receive_date;
-private String pay_date;
-private int price;
-private int productunit;
-private String product;
-private String productid;
-private int productprice; 
-private String paystatus;
-private String receivestatus;
-private int current;
 static String list_showid;
 static String list_productid;
 static String list_productname;
+static private String view = "O011";
+static private String receiveid = null;
+static private String orderid = null;
 static int list_unit;
-static int list_price;
+static double list_price;
 static int list_current;
 static boolean detect = false;
+private String Product_Order_Receive_id;
+private String productname;
+private String productid;
+private String paystatus;
+private String Product_Order_id;
+private String receivestatus;
+private String date;
+private String receive_date;
+private String pay_date;
+private String Product_Order_Receive_List_Number;
+private int unit;
+private int productunit;
+private int productprice; 
+private int current;
+private double price;
 public int getlist_unit(){
     return this.list_unit;
+}
+public String getProduct_Order_Receive_List_Number(){
+    return this.Product_Order_Receive_List_Number;
+}
+public String getProduct_Order_ID(){
+    return this.Product_Order_id;
 }
 public String getreceiveid(){
     return this.receiveid;
@@ -56,7 +64,7 @@ public boolean getdetect(){
 public void setdetect(boolean b){
     this.detect = b;
 }
-public int getlist_price(){
+public double getlist_price(){
     return this.list_price;
 }
 public int getlist_current(){
@@ -71,8 +79,8 @@ public String getlist_productname(){
 public String getlist_productid(){
     return this.list_productid;
 }
-public String getid(){
-    return id;
+public String getProduct_Order_Receive_id(){
+    return Product_Order_Receive_id;
 }
 public String getview(){
     return view;
@@ -83,7 +91,7 @@ public int getunit(){
 public int getcurrent(){
     return current;
 }
-public int getprice(){
+public double getprice(){
     return price;
 }
 public String getrec_date(){
@@ -96,7 +104,7 @@ public String getdate(){
     return date;
 }
 public String getproduct(){
-    return product;
+    return productname;
 }
 public String getproductid(){
     return productid;
@@ -113,8 +121,11 @@ public int getproductprice(){
 public int getproductunit(){
     return productunit;
 }
-public void setid(String id){
-    this.id = id;
+public void setProduct_Order_Receive_id(String id){
+    this.Product_Order_Receive_id = id;
+}
+public void setProduct_Order_ID(String id){
+    this.Product_Order_id = id;
 }
 public void setcurrent(int current){
     this.current = current;
@@ -128,7 +139,7 @@ public void setreceivestatus(String receivestatus){
 public void setunit(int unit){
     this.unit = unit;
 }
-public void setprice(int price){
+public void setprice(double price){
     this.price = price;
 }
 public void setdate(String date){
@@ -140,8 +151,8 @@ public void setrec_date(String rec_date){
 public void setpay_date(String pay_date){
     this.pay_date = pay_date;
 }
-public void setproduct(String product){
-    this.product = product;
+public void setproductname(String product){
+    this.productname = product;
 }
 public void setproductid(String productid){
     this.productid = productid;
@@ -164,7 +175,7 @@ public void setlist_product(String product){
 public void setlist_unit(int units){
     this.list_unit = units;
 }
-public void setlist_price(int price){
+public void setlist_price(double price){
     this.list_price = price;
 }
 public void setlist_current(int current){
@@ -172,5 +183,8 @@ public void setlist_current(int current){
 }
 public void setlist_productid(String list_productid){
     this.list_productid = list_productid;
+}
+public void setProduct_Order_Receive_List_Number(String number){
+    this.Product_Order_Receive_List_Number= number;
 }
 }

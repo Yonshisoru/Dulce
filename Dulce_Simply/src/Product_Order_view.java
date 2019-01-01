@@ -35,6 +35,8 @@ public class Product_Order_view extends javax.swing.JFrame {
     public Product_Order_view() {
         initComponents();
         show_order_view();
+        System.out.print(m.getorderpay());
+        System.err.print(m.getreceive());
     }
    public ArrayList<Product_Order_Variable>Product_order_List(){
                ArrayList<Product_Order_Variable> Product_order_list = new ArrayList<>();
@@ -47,7 +49,7 @@ public class Product_Order_view extends javax.swing.JFrame {
         rs = st.executeQuery(sql);
         while(rs.next()){
            Product_Order_Variable p = new Product_Order_Variable();
-            p.setid(rs.getString("PO_ID"));
+            p.setProduct_Order_Receive_id(rs.getString("PO_ID"));
             p.e.setid(rs.getString("EMP_ID"));
             p.e.setfname(rs.getString("EMP_FNAME"));
             p.e.setlname(rs.getString("EMP_LNAME"));
@@ -76,7 +78,7 @@ public class Product_Order_view extends javax.swing.JFrame {
         Object[] row = new Object[10];
         for(int i=0;i<Product_order_list.size();i++){
             row[0]=Product_order_list.get(i).getdate();
-            row[1]=Product_order_list.get(i).getid();
+            row[1]=Product_order_list.get(i).getProduct_Order_Receive_id();
             row[2]=Product_order_list.get(i).getunit();
             row[3]=Product_order_list.get(i).getprice();
             row[8]=Product_order_list.get(i).getrec_date();
@@ -104,7 +106,7 @@ public class Product_Order_view extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(875, 650));
+        setPreferredSize(new java.awt.Dimension(1000, 700));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
@@ -120,7 +122,7 @@ public class Product_Order_view extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Date", "ID", "Total", "Price", "Employee", "Vendor", "Pay date", "Pay Status", "Receive date", "Receive Status"
+                "วันที่", "รหัสการสั่ง", "จำนวนสินค้า", "ราคารวม", "ชื่อพนักงาน", "ชื่อผู้จัดจำหน่าย", "วันที่จ่ายเงิน", "สถานะการจ่ายเงิน", "วันที่รับสินค้า", "สถานะการรับสินค้า"
             }
         ) {
             Class[] types = new Class [] {
@@ -146,10 +148,10 @@ public class Product_Order_view extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(order_view_table);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 830, 450));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 960, 500));
 
-        jLabel1.setFont(new java.awt.Font("Tekton Pro", 0, 48)); // NOI18N
-        jLabel1.setText("Ordering List");
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel1.setText("ตารางการสั่งสินค้า");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 20, -1, -1));
 
         jButton1.setText("Close");
@@ -158,7 +160,7 @@ public class Product_Order_view extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 550, 130, 50));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 610, 130, 50));
 
         jButton2.setText("Refresh");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -166,7 +168,7 @@ public class Product_Order_view extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 550, 150, 50));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 610, 150, 50));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -176,7 +178,7 @@ public class Product_Order_view extends javax.swing.JFrame {
             
         }else{
         if(count == 0){
-        JOptionPane.showMessageDialog(null,"Double Click Row of Table for view Order Details.");
+        JOptionPane.showMessageDialog(null,"คุณสามารถดับเบิ้ลคลิ๊กเพื่อดูรายละเอียดของการสั่งสินค้ารายการต่างๆได้");
         count = 1;
         }
         }
@@ -201,8 +203,11 @@ public class Product_Order_view extends javax.swing.JFrame {
     private void order_view_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_order_view_tableMouseClicked
         boolean confirm = false;
         if(order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),1).toString().equals(id)){
-            if(m.getorderpay()==1){
-                  if(JOptionPane.showConfirmDialog(null,order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),1).toString()+" was paid already?","Confirm",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+            if(m.getorderpay()==1&&m.getreceive()==0){
+                if(order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),7).toString().equals("Y")){
+                JOptionPane.showMessageDialog(null,"รายการนี้ได้จ่ายเงินเรียบร้อยแล้ว\nยกเลิกรายการ","Dulce",ERROR_MESSAGE);
+                }else{
+                if(JOptionPane.showConfirmDialog(null,order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),1).toString()+" ได้จ่ายเงินแล้วหรือไม่",null,JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
                     confirm = true;
                 }else{
                     confirm = false;
@@ -228,16 +233,18 @@ public class Product_Order_view extends javax.swing.JFrame {
         }
         show_order_view();
         }
-            }else if(m.getreceive()==1){
+        }
+            }else if(m.getreceive()==1&&m.getorderpay()==0){
+            System.out.print(order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),7).toString());
             if(order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),7).toString().equals("Y")){
             Product_Order_Variable p = new Product_Order_Variable();
             p.setview(order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),1).toString());
             Product_Order_Receive_view pr = new Product_Order_Receive_view();
             pr.setVisible(true);
             id = null; 
-            }else{
-                JOptionPane.showMessageDialog(null,"You didn't paid this order!!","Dulce",ERROR_MESSAGE);
-            }
+            }else if(order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),7).toString().equals("N")){
+                JOptionPane.showMessageDialog(null,"คุณยังไม่ได้จ่ายเงินในการสั่งสินค้ารายการนี้","Dulce",ERROR_MESSAGE);
+            } 
             }else{
             Product_Order_Variable p = new Product_Order_Variable();
             p.setview(order_view_table.getModel().getValueAt(order_view_table.getSelectedRow(),1).toString());
