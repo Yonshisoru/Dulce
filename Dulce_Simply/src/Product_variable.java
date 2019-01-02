@@ -10,6 +10,7 @@
  * @author Yonshisoru
  */
 public class Product_variable {
+Menu_variable m = new Menu_variable();
 private String id = null;
 private String v_id = null;
 private String v_name = null;
@@ -20,6 +21,7 @@ private int min=0;
 private double total_price = 0;
 private String unit_type = null;
 private String Product_type = null;
+private String Ingredient_ID = null;
 public String getid(){
     return this.id;
 }
@@ -50,6 +52,9 @@ public double gettotal_price(){
 public String getProduct_type(){
     return this.Product_type;
 }
+public String getIngredient_ID(){
+    return this.Ingredient_ID;
+}
 public void setid(String id){
     this.id = id;
 }
@@ -79,5 +84,8 @@ public void settotal_price(double price){
 }
 public void setProduct_type(String type){
     this.Product_type = type;
+}
+public void setIngredient_ID(String id){
+    this.Ingredient_ID = id;
 }
 }

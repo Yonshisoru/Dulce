@@ -15,8 +15,12 @@ private String name = null;
 private int price = 0;
 private String cataname = null;
 private String cataid = null;
+static String Global_Menu_ID = null;
 public String getid(){
     return this.id;
+}
+public String getGlobal_Menu_Id(){
+    return this.Global_Menu_ID ;
 }
 public String getname(){
     return this.name;
@@ -45,4 +49,8 @@ public void setcataname(String cataname){
 public void setcataid(String cataid){
     this.cataid = cataid;
 }
+public void setGlobal_Menu_ID(String id){
+    this.Global_Menu_ID  = id;
+}
+
 }
