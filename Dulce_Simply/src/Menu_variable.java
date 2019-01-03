@@ -16,6 +16,7 @@ private int price = 0;
 private String cataname = null;
 private String cataid = null;
 static String Global_Menu_ID = null;
+private String delete_status = null;
 public String getid(){
     return this.id;
 }
@@ -33,6 +34,9 @@ public String getcataname(){
 }
 public String getcataid(){
     return this.cataid;
+}
+public String getdelete_status(){
+    return this.delete_status;
 }
 public void setid(String id){
     this.id = id;
@@ -52,5 +56,7 @@ public void setcataid(String cataid){
 public void setGlobal_Menu_ID(String id){
     this.Global_Menu_ID  = id;
 }
-
+public void setdelete_status(String status){
+    this.delete_status  = status;
+}
 }

@@ -10,9 +10,10 @@
  * @author Yonshisoru
  */
 public class Database {
-private String url = "jdbc:mysql://privatehosting.website:3306/u787124245_dulce";
-private String username = "u787124245_gg";
-private String password ="death123";
+//private String url = "jdbc:mysql://privatehosting.website:3306/u787124245_dulce";
+private String url = "jdbc:mysql://localhost:3306/test";
+private String username = "root";
+private String password ="";
 public String url(){
     return url;
 }

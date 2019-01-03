@@ -17,6 +17,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -37,14 +39,17 @@ public class Menu_panel extends javax.swing.JFrame {
     ArrayList<Product_variable> productarray = new ArrayList<>();
     ArrayList<Product_variable> productusing = new ArrayList<>();
     ArrayList<Product_variable> Ingredient_Array = new ArrayList<>();
+    ArrayList<Product_variable> edit_Ingredient_Array = new ArrayList<>();
     ArrayList<Menu_variable> menu_type_array = new ArrayList<>();
     ArrayList<Menu_variable> Menu_Array = new ArrayList<>();
+    ArrayList<Product_variable> delete_Ingredient_Array = new ArrayList<>();
     
     //------------------------
     String output = null;
     String menu = null;
     String password= null;
     String createid = null;
+    String newid = null;
     //------------------------
     int max = 0;
     //------------------------
@@ -55,6 +60,8 @@ public class Menu_panel extends javax.swing.JFrame {
     //--------------------------
     public String id = null;
     public String Menu_edit_id = null;
+    public String doubleclick = "";
+    public String doubleclick_on_menu_table = "";
     /**
      * Creates new form Employee_create
      */
@@ -69,6 +76,9 @@ public class Menu_panel extends javax.swing.JFrame {
     }
     public void clear(){
          m_name_txt.setText("");
+         doubleclick = "";
+         doubleclick_on_menu_table = "";
+         menu_table.clearSelection();
          m_cata_txt.setSelectedIndex(0);
          m_price_txt.setText("");
          product_combo.removeAllItems();
@@ -86,16 +96,24 @@ public class Menu_panel extends javax.swing.JFrame {
          
     }
     public void lock(){
-         m_name_txt.setEnabled(false);
-         m_cata_txt.setEnabled(false);
-         m_price_txt.setEnabled(false);
-         create_btn.setEnabled(false);
+        showid_txt.setText("");
+        catagoly_create_btn.setEnabled(false);
+        product_table.setEnabled(false);
+        m_name_txt.setEnabled(false);
+        m_cata_txt.setEnabled(false);
+        m_price_txt.setEnabled(false);
+        product_combo.setEnabled(false);
+        addproduct_btn.setEnabled(false);
     }
     public void unlock(){
-         m_name_txt.setEnabled(true);
-         m_cata_txt.setEnabled(true);
-         m_price_txt.setEnabled(true);
-         create_btn.setEnabled(true);
+        showid_txt.setText(createid);
+        catagoly_create_btn.setEnabled(true);
+        product_table.setEnabled(true);
+        m_name_txt.setEnabled(true);
+        m_cata_txt.setEnabled(true);
+        m_price_txt.setEnabled(true);
+        product_combo.setEnabled(true);
+        addproduct_btn.setEnabled(true);
     }
 public Connection getcon(){
     try{
@@ -130,6 +148,7 @@ public String find(){
   }
   public String id(){
        int count=0;
+       max = 0;
           String sql  ="select MENU_ID from MENU";
     try{
     pat = getcon().prepareStatement(sql);
@@ -163,7 +182,8 @@ public String find(){
    }
   public String getIngredientsID(){
     int count=0;
-    String sql  ="select ING_NUMBER from INGREDIENT WHERE ING_DEL = 'N'";
+    max = 0;
+    String sql  ="select ING_NUMBER from INGREDIENT";
     try{
     pat = getcon().prepareStatement(sql);
     rs = pat.executeQuery(sql);
@@ -178,6 +198,7 @@ public String find(){
     }
     max += 1;
     output = ""+max;
+    System.out.println(output);
     rs.close();
     pat.close();
     getcon().close();
@@ -208,7 +229,7 @@ public String find(){
   }
     void getIngredient(){
       try{
-        String sql = "SELECT ING_NUMBER,MENU_ID,PRO_ID,PRO_NAME,PRO_UNITS_TYPE,ING_UNITS FROM INGREDIENT NATURAL JOIN PRODUCT WHERE ING_DEL = 'N'";
+        String sql = "SELECT ING_NUMBER,MENU_ID,PRO_ID,PRO_NAME,PRO_UNITS_TYPE,ING_UNITS FROM INGREDIENT NATURAL JOIN PRODUCT WHERE ING_DEL = 'N' ORDER BY PRO_ID";
         st = getcon().createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
@@ -216,7 +237,7 @@ public String find(){
             p.setIngredient_ID(rs.getString("ING_NUMBER"));
             p.m.setid(rs.getString("MENU_ID"));
             p.setname(rs.getString("PRO_NAME"));
-            p.setProduct_type(rs.getString("PRO_UNITS_TYPE"));
+            p.setunits_type(rs.getString("PRO_UNITS_TYPE"));
             p.setid(rs.getString("PRO_ID"));
             p.setunit(rs.getDouble("ING_UNITS"));
             Ingredient_Array.add(p);
@@ -308,7 +329,7 @@ public String find(){
             o[0] = p.getid();
             o[1] = p.getname();
             o[2] = p.getunit();
-            o[3] = p.getProduct_type();
+            o[3] = p.getunit_type();
         productmodel.addRow(o);   
         }
         }
@@ -342,7 +363,7 @@ public String find(){
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        catagoly_create_btn = new javax.swing.JLabel();
         product_labal = new javax.swing.JLabel();
         product_combo = new javax.swing.JComboBox<>();
         addproduct_btn = new javax.swing.JButton();
@@ -352,6 +373,7 @@ public String find(){
         jButton4 = new javax.swing.JButton();
         helping_menu_btn = new javax.swing.JButton();
         helping_product_btn = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1400, 800));
@@ -380,6 +402,7 @@ public String find(){
                 return canEdit [columnIndex];
             }
         });
+        product_table.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         product_table.getTableHeader().setReorderingAllowed(false);
         product_table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -419,7 +442,7 @@ public String find(){
         jLabel6.setText("ราคา:");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, -1, -1));
 
-        jButton1.setText("Close");
+        jButton1.setText("ปิด");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -427,7 +450,7 @@ public String find(){
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 670, 120, 50));
 
-        create_btn.setText("Create");
+        create_btn.setText("ยืนยัน");
         create_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 create_btnActionPerformed(evt);
@@ -435,7 +458,7 @@ public String find(){
         });
         getContentPane().add(create_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 670, 120, 50));
 
-        jButton3.setText("Clear");
+        jButton3.setText("เคลียร์");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -482,29 +505,29 @@ public String find(){
         });
         getContentPane().add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 620, -1, -1));
 
-        jLabel13.setText("Delete");
+        jLabel13.setText("ลบ");
         getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 620, -1, -1));
 
-        jLabel14.setText("Create");
+        jLabel14.setText("สร้าง");
         getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 620, -1, -1));
 
-        jLabel15.setText("Edit");
+        jLabel15.setText("แก้ไข");
         getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 620, -1, -1));
 
-        jLabel1.setForeground(new java.awt.Color(0, 0, 255));
-        jLabel1.setText("สร้างหมวดหมู่ คลิ๊กที่นี้");
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+        catagoly_create_btn.setForeground(new java.awt.Color(0, 0, 255));
+        catagoly_create_btn.setText("สร้างหมวดหมู่ คลิ๊กที่นี้");
+        catagoly_create_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
+                catagoly_create_btnMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel1MouseEntered(evt);
+                catagoly_create_btnMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel1MouseExited(evt);
+                catagoly_create_btnMouseExited(evt);
             }
         });
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 255, -1, -1));
+        getContentPane().add(catagoly_create_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 255, -1, -1));
 
         product_labal.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         product_labal.setText("วัตถุดิบ:");
@@ -576,11 +599,46 @@ public String find(){
         helping_product_btn.setText("?");
         getContentPane().add(helping_product_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 580, -1, -1));
 
+        jButton2.setText("Deleted Menu");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 740, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void product_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_product_tableMouseClicked
-       /*if(editnaja==true||deletenaja==true){
+       if(doubleclick.equals(product_table.getModel().getValueAt(product_table.getSelectedRow(),0).toString())){
+           if(JOptionPane.showConfirmDialog(null, "คุณต้องการที่จะลบวัตถุดิบรหัส "+doubleclick+" หรือไม่",null,YES_NO_OPTION)==YES_OPTION){
+           try{
+               for(Product_variable p:productusing){
+               if(p.getid().equals(product_table.getModel().getValueAt(product_table.getSelectedRow(),0).toString())){
+                   Product_variable pv = new Product_variable();
+                   pv.setIngredient_ID(p.getIngredient_ID());
+                   delete_Ingredient_Array.add(pv);
+                   productusing.remove(p);
+                   DefaultTableModel model = (DefaultTableModel)product_table.getModel();
+                   while(model.getRowCount()>0){
+                       model.removeRow(0);
+                   }
+                   productusing();
+                   doubleclick="";
+           System.out.println("Kappa");
+           }else{
+               doubleclick="";
+           }
+           }
+           }catch(Exception e){
+                   System.out.println(e);
+           }
+           }
+       }else{
+           doubleclick = product_table.getModel().getValueAt(product_table.getSelectedRow(),0).toString();
+       }
+        /*if(editnaja==true||deletenaja==true){
         showid_txt.setText(product_table.getModel().getValueAt(product_table.getSelectedRow(),0).toString());
         m_name_txt.setText(product_table.getModel().getValueAt(product_table.getSelectedRow(),1).toString());
         m_price_txt.setText(product_table.getModel().getValueAt(product_table.getSelectedRow(),2).toString());
@@ -589,6 +647,7 @@ public String find(){
     }//GEN-LAST:event_product_tableMouseClicked
 
     private void create_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_create_btnActionPerformed
+        if(createnaja==true){
         String id = null;
         String menu_name = null;
         String menu_type = null;
@@ -718,6 +777,89 @@ public String find(){
         show_product();
         }*/
         }
+        }else if(editnaja==true){
+            if(delete_Ingredient_Array.isEmpty()){
+            for(Product_variable p:productusing){
+            try{
+                if(p.getIngredient_ID().isEmpty()){
+                System.err.println(p.getIngredient_ID()+" "+p.getid());
+                }
+            }catch(NullPointerException e){
+                System.out.println(p.getIngredient_ID()+" "+p.getid());
+                Product_variable pv = new Product_variable();
+                pv.setid(p.getid());
+                pv.setname(p.getname());
+                pv.setunit(p.getunit());
+                edit_Ingredient_Array.add(pv);
+            }
+            }
+           for(Product_variable p:edit_Ingredient_Array){
+               String Ingredient_ID = getIngredientsID();
+               String menu_ID = Menu_edit_id;
+               String Product_ID = p.getid();
+               double Ingredient_units = p.getunit();
+               String adding_Ingredient = "INSERT INTO INGREDIENT VALUE('"+Ingredient_ID+"','"+menu_ID+"','"+Product_ID+"','"+Ingredient_units+"','N')";
+               System.err.println(adding_Ingredient);
+               try{
+                   pat = getcon().prepareStatement(adding_Ingredient);
+                   pat.executeUpdate(adding_Ingredient);
+                   pat.close();
+                   getcon().close();
+               }catch(Exception e){
+                   System.out.println(e);
+               }
+           }
+           clear();
+           menu_table.clearSelection();
+           edit_Ingredient_Array.clear();
+           Ingredient_Array.clear();
+           getIngredient();
+            }else{
+                for(Product_variable p:delete_Ingredient_Array){
+                String deleteingredient = "UPDATE INGREDIENT SET ING_DEL = 'Y' WHERE ING_NUMBEr = '"+p.getIngredient_ID()+"'";
+                System.err.println(deleteingredient);
+                try{
+                    pat = getcon().prepareStatement(deleteingredient);
+                    pat.executeUpdate(deleteingredient);
+                    pat.close();
+                    getcon().close();
+                }catch(Exception e){
+                    System.out.println(e);
+                }
+                }
+            clear();
+            menu_table.clearSelection();
+            Ingredient_Array.clear();
+            getIngredient();
+            }
+        }else if(deletenaja==true){
+            String deletemenu = "UPDATE MENU SET MENU_DEL = 'Y' WHERE MENU_ID = '"+id+"'";
+            String deleteingredient = "UPDATE INGREDIENT SET ING_DEL  = 'Y' WHERE MENU_ID = '"+id+"'";
+            System.err.println(deletemenu+"\n"+deleteingredient);
+            try{
+                pat = getcon().prepareStatement(deletemenu);
+                pat.executeUpdate(deletemenu);
+                pat.close();
+                    pat = getcon().prepareStatement(deleteingredient);
+                    pat.executeUpdate(deleteingredient);
+                    pat.close();
+                    getcon().close();
+            }catch(Exception e){
+                System.err.println(e);
+            }
+            clear();
+            menu_table.clearSelection();
+            DefaultTableModel dm = (DefaultTableModel)menu_table.getModel();
+            System.out.print(dm.getRowCount());
+            while(dm.getRowCount() > 0)
+            {       
+            dm.removeRow(0);
+            }
+            Menu_Array.clear();
+            MenuList();
+            show_product();  
+            }   
+        JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
     }//GEN-LAST:event_create_btnActionPerformed
 
     private void m_price_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_price_txtActionPerformed
@@ -757,7 +899,6 @@ public String find(){
         product_table.getSelectionModel().clearSelection();
         System.out.print("edit!!");
         edit.setEnabled(false);
-        create_btn.setEnabled(false);
         create.setEnabled(true);                    
         delete.setEnabled(true);
         delete.setSelected(false);
@@ -790,23 +931,28 @@ public String find(){
      this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
-        jLabel1.setForeground(Color.white);
-        jLabel1.setCursor(new Cursor(HAND_CURSOR));
-    }//GEN-LAST:event_jLabel1MouseEntered
+    private void catagoly_create_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_catagoly_create_btnMouseEntered
+        catagoly_create_btn.setForeground(Color.white);
+        catagoly_create_btn.setCursor(new Cursor(HAND_CURSOR));
+    }//GEN-LAST:event_catagoly_create_btnMouseEntered
 
-    private void jLabel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseExited
-        jLabel1.setForeground(Color.blue);
-        jLabel1.setCursor(new Cursor(DEFAULT_CURSOR));
-    }//GEN-LAST:event_jLabel1MouseExited
+    private void catagoly_create_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_catagoly_create_btnMouseExited
+        catagoly_create_btn.setForeground(Color.blue);
+        catagoly_create_btn.setCursor(new Cursor(DEFAULT_CURSOR));
+    }//GEN-LAST:event_catagoly_create_btnMouseExited
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+    private void catagoly_create_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_catagoly_create_btnMouseClicked
         Menu_type_panel p = new Menu_type_panel();
         p.setVisible(true);
-    }//GEN-LAST:event_jLabel1MouseClicked
+    }//GEN-LAST:event_catagoly_create_btnMouseClicked
 
     private void menu_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_tableMouseClicked
         if(editnaja==true){
+            if(doubleclick_on_menu_table.equals(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString())){
+                JOptionPane.showMessageDialog(null,"คุณไม่สามารถเลือกรายการที่ได้ทำการเลือกไปแล้วได้ครับ\nกรุณาเลือกรายการใหม่ด้วยครับ");
+            }else{
+                doubleclick_on_menu_table = menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString();
+            delete_Ingredient_Array.clear();
             showid_txt.setText(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString());
             m_name_txt.setText(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),1).toString());
             for(Menu_variable m:menu_type_array){
@@ -824,12 +970,84 @@ public String find(){
             }
             Menu_edit_id = menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString();
             productusing_edit();
+            product_combo.removeAllItems();
+            product_combo.addItem(">>Choose Ingredients<<");
+            for(Product_variable pv:productarray){
+                int count = 0;
+                if(pv.getProduct_type().equals("04")){
+                        for(Product_variable p:Ingredient_Array){
+                        if(p.m.getid().equals(Menu_edit_id)){
+                        if(p.getid().equals(pv.getid())){
+                            count++;
+                        }
+                        }
+                    }
+                        if(count==0){
+                            product_combo.addItem(pv.getname());
+                        }
+                        count=0;
+                }
+            }
+            for(Product_variable p:Ingredient_Array){
+                if(p.m.getid().equals(Menu_edit_id)){
+                    Product_variable pv = new Product_variable();
+                    pv.setIngredient_ID(p.getIngredient_ID());
+                    pv.setid(p.getid());
+                    pv.setname(p.getname());
+                    pv.setunit(p.getunit());
+                    pv.m.setid(p.m.getid());
+                    pv.setunits_type(p.getunit_type());
+                    productusing.add(pv);
+                }
+            }
+            }
+            /*}
+                }*/
+            /*for(Product_variable p:productarray){
+                for(Product_variable pv:Ingredient_Array){
+                    if(p.getProduct_type().equals("04")){
+                        if(p.getid().equals(pv.getid()))
+                        System.err.println(p.getname());
+                        System.out.println(pv.getname());
+                        product_combo.addItem(p.getname());
+                        break;
+                    }
+                }
+            }
             /*Menu_variable m = new Menu_variable();
             m.setGlobal_Menu_ID(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString());
             Menu_List_Panel ml = new Menu_List_Panel();
             ml.setVisible(true);*/
         }else if(deletenaja==true){
-            
+            productusing.clear();
+            JOptionPane.showMessageDialog(null,"คุณได้เลือกเมนูรหัส "+menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString());
+            showid_txt.setText(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString());
+            m_name_txt.setText(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),1).toString());
+            for(Menu_variable m:menu_type_array){
+                if(m.getcataname().equals(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),3).toString())){
+                    System.out.println(m.getcataid());
+                    m_cata_txt.setSelectedIndex(Integer.parseInt(m.getcataid())+1);
+                    break;
+                }
+            }
+            m_price_txt.setText(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),2).toString());
+            id = menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString();
+            for(Product_variable p:Ingredient_Array){
+                if(p.m.getid().equals(id)){
+                    Product_variable pv = new Product_variable();
+                    pv.setIngredient_ID(p.getIngredient_ID());
+                    pv.setid(p.getid());
+                    pv.setname(p.getname());
+                    pv.setunits_type(p.getunit_type());
+                    pv.setunit(p.getunit());
+                    productusing.add(pv);
+                }
+            }
+            DefaultTableModel model = (DefaultTableModel)product_table.getModel();
+            while(model.getRowCount()>0){
+                model.removeRow(0);
+            }
+            productusing();
         }
     }//GEN-LAST:event_menu_tableMouseClicked
 
@@ -843,9 +1061,9 @@ public String find(){
         }else{
         for(Product_variable pv:productarray){
             if(pv.getname().equals(product_combo.getSelectedItem().toString())){
-                System.out.print(pv.getunit_type());
+                //System.out.print(pv.getunit_type());
                 productid = pv.getid();
-                System.out.print(productid);
+                //System.out.print(productid);
                 productname = pv.getname();
                 units_type = pv.getunit_type();
             }
@@ -869,7 +1087,7 @@ public String find(){
                    p.setunit(units);
                    productusing.add(p);
                    for(Product_variable pk:productusing){
-                       System.out.print(pk.getid());
+                       //System.out.print(pk.getid());
                    }
                    DefaultTableModel model = (DefaultTableModel)product_table.getModel();
                    while(model.getRowCount()>0){
@@ -893,12 +1111,24 @@ public String find(){
     }//GEN-LAST:event_product_comboActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        for(Product_variable p:productusing){
+            System.out.println("USING>>"+p.getIngredient_ID()+" "+p.getid()+" "+p.getname()+" "+p.getunit()+" "+p.getunit_type());
+        }
         for(Product_variable p:Ingredient_Array){
-            if(p.m.getid().equals(Menu_edit_id)){
-            System.out.println(p.m.getid()+" "+p.getname()+" "+p.getProduct_type());
-            }
+            System.out.println("ING>>"+p.getIngredient_ID()+" "+p.getid()+" "+p.getname()+" "+p.getunit()+" "+p.getunit_type());
+        }
+        for(Product_variable p:edit_Ingredient_Array){
+            System.out.println("EDIT>>"+p.getIngredient_ID()+" "+p.getid()+" "+p.getname()+" "+p.getunit()+" "+p.getunit_type());
+        }
+        for(Product_variable p:delete_Ingredient_Array){
+            System.out.println("DELETE>>"+p.getIngredient_ID()+" "+p.getid()+" "+p.getname()+" "+p.getunit()+" "+p.getunit_type());
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Menu_deleted_panel m = new Menu_deleted_panel();
+        m.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -944,6 +1174,7 @@ public String find(){
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addproduct_btn;
+    private javax.swing.JLabel catagoly_create_btn;
     private javax.swing.JRadioButton create;
     private javax.swing.JButton create_btn;
     private javax.swing.JRadioButton delete;
@@ -951,9 +1182,9 @@ public String find(){
     private javax.swing.JButton helping_menu_btn;
     private javax.swing.JButton helping_product_btn;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
