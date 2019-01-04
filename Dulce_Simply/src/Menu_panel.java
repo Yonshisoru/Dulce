@@ -56,6 +56,7 @@ public class Menu_panel extends javax.swing.JFrame {
     boolean editnaja = false;
     boolean createnaja = true;
     boolean deletenaja = false;
+    boolean viewnaja = false;
     boolean pass = false;
     //--------------------------
     public String id = null;
@@ -353,7 +354,7 @@ public String find(){
         jLabel6 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         create_btn = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        clear_btn = new javax.swing.JButton();
         m_cata_txt = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         delete = new javax.swing.JRadioButton();
@@ -370,13 +371,16 @@ public String find(){
         menu_ = new javax.swing.JScrollPane();
         menu_table = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
         helping_menu_btn = new javax.swing.JButton();
         helping_product_btn = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        delete1 = new javax.swing.JRadioButton();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1400, 800));
+        setPreferredSize(new java.awt.Dimension(1400, 850));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         product_table.setModel(new javax.swing.table.DefaultTableModel(
@@ -411,7 +415,7 @@ public String find(){
         });
         jScrollPane1.setViewportView(product_table);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 660, 250));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 660, 250));
 
         showid_txt.setEditable(false);
         showid_txt.setEnabled(false);
@@ -458,13 +462,13 @@ public String find(){
         });
         getContentPane().add(create_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 670, 120, 50));
 
-        jButton3.setText("เคลียร์");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        clear_btn.setText("เคลียร์");
+        clear_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                clear_btnActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 670, 120, 50));
+        getContentPane().add(clear_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 670, 120, 50));
 
         m_cata_txt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
         getContentPane().add(m_cata_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, 130, 30));
@@ -582,30 +586,55 @@ public String find(){
 
         getContentPane().add(menu_, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 60, 670, 670));
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel3.setText("ตารางเมนู");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 30, -1, -1));
-
-        jButton4.setText("jButton4");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 40, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 20, -1, -1));
 
         helping_menu_btn.setText("?");
+        helping_menu_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helping_menu_btnActionPerformed(evt);
+            }
+        });
         getContentPane().add(helping_menu_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1320, 730, -1, -1));
 
         helping_product_btn.setText("?");
-        getContentPane().add(helping_product_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 580, -1, -1));
+        helping_product_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helping_product_btnActionPerformed(evt);
+            }
+        });
+        getContentPane().add(helping_product_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 610, -1, -1));
 
-        jButton2.setText("Deleted Menu");
+        jButton2.setText("รีเฟรชเมนู");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 740, -1, -1));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 730, -1, -1));
+
+        jButton5.setText("กู้คืนเมนูที่ถูกลบ");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 730, -1, -1));
+
+        delete1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delete1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(delete1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 620, -1, -1));
+
+        jLabel16.setText("ดู");
+        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 620, -1, -1));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("ตารางวัตถุดิบ");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 335, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -870,15 +899,17 @@ public String find(){
 
     }//GEN-LAST:event_m_price_txtFocusGained
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void clear_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear_btnActionPerformed
         clear();
         showid_txt.setText(createid);
         product_table.getSelectionModel().clearSelection();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_clear_btnActionPerformed
 
     private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
         unlock(); 
         clear();
+        create_btn.setEnabled(true);
+        clear_btn.setEnabled(true);
         product_table.getSelectionModel().clearSelection();
         System.out.print("create!!");         
         create.setEnabled(false);   
@@ -891,6 +922,7 @@ public String find(){
         createnaja = true;
         editnaja = false;
         deletenaja = false;
+        viewnaja = false;
     }//GEN-LAST:event_createActionPerformed
 
     private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
@@ -898,29 +930,41 @@ public String find(){
         clear();
         product_table.getSelectionModel().clearSelection();
         System.out.print("edit!!");
+        clear_btn.setEnabled(true); 
+        create_btn.setEnabled(true);
         edit.setEnabled(false);
         create.setEnabled(true);                    
         delete.setEnabled(true);
+        delete1.setEnabled(true);
         delete.setSelected(false);
         create.setSelected(false);
         editnaja=true;
         createnaja = false;
         deletenaja = false;
+        viewnaja = false;
+        JOptionPane.showMessageDialog(null,"คุณสามารถดับเบิ้ลคลิ๊กที่ตารางวัตถุดิบเพื่อลบวัตถุดิบที่ใช้กับเมนูได้");    
+        JOptionPane.showMessageDialog(null,"คุณสามารถคลิ๊กที่ตารางเมนูเพื่อเลือกเมนูที่จะแก้ไขได้\n\nคลิ๊กที่ปุ่ม ? ใต้ตารางเมนูเพื่อดูข้อความนี้อีกครั้ง"); 
     }//GEN-LAST:event_editActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         lock(); 
         clear();
+        create_btn.setEnabled(true);
+        clear_btn.setEnabled(false);
         product_table.getSelectionModel().clearSelection();
         System.out.print("delete!!");
-                    delete.setEnabled(false);
-                    create.setEnabled(true);
-                    edit.setEnabled(true);
+        delete.setEnabled(false);
+        create.setEnabled(true);
+        edit.setEnabled(true);
+        delete1.setEnabled(true);
+        delete1.setSelected(false);
         create.setSelected(false);
         edit.setSelected(false);
         deletenaja = true;
-               editnaja = false;
+        editnaja = false;
         createnaja = false;
+        viewnaja = false;
+        JOptionPane.showMessageDialog(null,"คุณสามารถคลิ๊กที่ตารางเมนูเพื่อเลือกเมนูที่จะลบได้\n\nคลิ๊กที่ปุ่ม ? ใต้ตารางเมนูเพื่อดูข้อความนี้อีกครั้ง"); 
     }//GEN-LAST:event_deleteActionPerformed
 
     private void editFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_editFocusLost
@@ -1018,7 +1062,7 @@ public String find(){
             m.setGlobal_Menu_ID(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString());
             Menu_List_Panel ml = new Menu_List_Panel();
             ml.setVisible(true);*/
-        }else if(deletenaja==true){
+        }else if(deletenaja==true||viewnaja==true){
             productusing.clear();
             JOptionPane.showMessageDialog(null,"คุณได้เลือกเมนูรหัส "+menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString());
             showid_txt.setText(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString());
@@ -1110,25 +1154,57 @@ public String find(){
         // TODO add your handling code here:
     }//GEN-LAST:event_product_comboActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        for(Product_variable p:productusing){
-            System.out.println("USING>>"+p.getIngredient_ID()+" "+p.getid()+" "+p.getname()+" "+p.getunit()+" "+p.getunit_type());
-        }
-        for(Product_variable p:Ingredient_Array){
-            System.out.println("ING>>"+p.getIngredient_ID()+" "+p.getid()+" "+p.getname()+" "+p.getunit()+" "+p.getunit_type());
-        }
-        for(Product_variable p:edit_Ingredient_Array){
-            System.out.println("EDIT>>"+p.getIngredient_ID()+" "+p.getid()+" "+p.getname()+" "+p.getunit()+" "+p.getunit_type());
-        }
-        for(Product_variable p:delete_Ingredient_Array){
-            System.out.println("DELETE>>"+p.getIngredient_ID()+" "+p.getid()+" "+p.getname()+" "+p.getunit()+" "+p.getunit_type());
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Menu_Array.clear();
+        DefaultTableModel model = (DefaultTableModel) menu_table.getModel();
+        while(model.getRowCount()>0){
+            model.removeRow(0);
+        }
+        MenuList();
+        show_product();
+        JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         Menu_deleted_panel m = new Menu_deleted_panel();
         m.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void helping_product_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helping_product_btnActionPerformed
+        JOptionPane.showMessageDialog(null,"คุณสามารถดับเบิ้ลคลิ๊กที่ตารางเพื่อลบวัตถุดิบที่ใช้กับเมนูได้");
+    }//GEN-LAST:event_helping_product_btnActionPerformed
+
+    private void delete1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete1ActionPerformed
+        lock(); 
+        clear();
+        product_table.getSelectionModel().clearSelection();
+        create_btn.setEnabled(false);
+        clear_btn.setEnabled(false);
+        System.out.print("delete!!");
+        delete1.setEnabled(false);
+        create.setEnabled(true);
+        edit.setEnabled(true);
+        delete.setEnabled(true);
+        delete1.setSelected(true);
+        create.setSelected(false);
+        edit.setSelected(false);
+        delete.setSelected(false);
+        deletenaja = false;
+        editnaja = false;
+        createnaja = false;
+        viewnaja = true;
+        JOptionPane.showMessageDialog(null,"คุณสามารถคลิ๊กที่ตารางเมนูเพื่อดูรายละเอียดของวัตถุดิบได้\n\nคลิ๊กที่ปุ่ม ? ใต้ตารางเมนูเพื่อดูข้อความนี้อีกครั้ง");
+    }//GEN-LAST:event_delete1ActionPerformed
+
+    private void helping_menu_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helping_menu_btnActionPerformed
+        if(viewnaja==true){
+        JOptionPane.showMessageDialog(null,"คุณสามารถคลิ๊กที่ตารางเมนูเพื่อดูรายละเอียดของวัตถุดิบได้");   
+        }else if(deletenaja==true){
+        JOptionPane.showMessageDialog(null,"คุณสามารถคลิ๊กที่ตารางเมนูเพื่อเลือกเมนูที่จะลบได้");   
+        }else if(editnaja==true){
+        JOptionPane.showMessageDialog(null,"คุณสามารถคลิ๊กที่ตารางเมนูเพื่อเลือกเมนูที่จะแก้ไขได้"); 
+        }
+    }//GEN-LAST:event_helping_menu_btnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1175,21 +1251,24 @@ public String find(){
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addproduct_btn;
     private javax.swing.JLabel catagoly_create_btn;
+    private javax.swing.JButton clear_btn;
     private javax.swing.JRadioButton create;
     private javax.swing.JButton create_btn;
     private javax.swing.JRadioButton delete;
+    private javax.swing.JRadioButton delete1;
     private javax.swing.JRadioButton edit;
     private javax.swing.JButton helping_menu_btn;
     private javax.swing.JButton helping_product_btn;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

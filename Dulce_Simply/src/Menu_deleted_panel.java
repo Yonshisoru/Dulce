@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -29,6 +32,10 @@ public class Menu_deleted_panel extends javax.swing.JFrame {
     ResultSet rs = null;
     //------------------------------
     ArrayList<Menu_variable> Menu_Array = new ArrayList<>();
+    //---------------------------------
+    int windowactive = 0;
+    //----------------------------------
+    String doubleclick = "";
     /**
      * Creates new form Menu_deleted_panel
      */
@@ -73,15 +80,14 @@ public Connection getcon(){
         }
 }
     public void show_product(){
-        ArrayList<Menu_variable>MenuList = Menu_Array;
         DefaultTableModel model = (DefaultTableModel)menu_table.getModel();
         Object[] row = new Object[4];
-        for(int i=0;i<MenuList.size();i++){
-            row[0]=MenuList.get(i).getid();
-            row[1]=MenuList.get(i).getname();
-            row[2]=MenuList.get(i).getprice();
-            row[3]=MenuList.get(i).getcataname();
-            if(MenuList.get(i).getdelete_status().equals("Y")){
+        for(int i=0;i<Menu_Array.size();i++){
+            row[3]=Menu_Array.get(i).getcataname();
+            row[0]=Menu_Array.get(i).getid();
+            row[1]=Menu_Array.get(i).getname();
+            row[2]=Menu_Array.get(i).getprice();
+            if(Menu_Array.get(i).getdelete_status().equals("Y")){
             model.addRow(row);
             }
         }
@@ -97,10 +103,21 @@ public Connection getcon(){
 
         jScrollPane1 = new javax.swing.JScrollPane();
         menu_table = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(750, 550));
         setPreferredSize(new java.awt.Dimension(700, 500));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         menu_table.setModel(new javax.swing.table.DefaultTableModel(
@@ -108,7 +125,7 @@ public Connection getcon(){
 
             },
             new String [] {
-                "หมวดหมู่", "รหัสเมนู", "ชื่อเมนู", "ราคา"
+                "รหัสเมนู", "ชื่อเมนู", "ราคา", "หมวดหมู่"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -119,12 +136,99 @@ public Connection getcon(){
                 return canEdit [columnIndex];
             }
         });
+        menu_table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menu_tableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(menu_table);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 530, 430));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, 530, 370));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setText("ตารางเมนูที่ถูกลบ");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, -1, -1));
+
+        jButton1.setText("รีเฟรช");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 440, 100, 40));
+
+        jButton2.setText("ปิด");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 440, 90, 40));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+
+    }//GEN-LAST:event_formWindowActivated
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        if(windowactive==0){
+            JOptionPane.showMessageDialog(null,"คุณสามารถดับเบิ้ลคลิ๊กที่ตาราง\nเพื่อยกเลิกการลบเมนู");
+            windowactive = 1;
+        }
+    }//GEN-LAST:event_formWindowOpened
+
+    private void menu_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_tableMouseClicked
+        if(doubleclick.equals(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString())){
+            if(JOptionPane.showConfirmDialog(null,"คุณต้องการที่จะกู้คืนเมนูรหัส "+menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString()+" หรือไม่ ",null,YES_NO_OPTION)==YES_OPTION){
+            doubleclick = "";
+            String id = menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString();
+            String renewmenu = "UPDATE MENU SET MENU_DEL = 'N' WHERE MENU_ID = '"+id+"'";
+            String renewingredient = "UPDATE INGREDIENT SET ING_DEL = 'N' WHERE MENU_ID = '"+id+"'";
+            System.out.println(renewmenu);
+            System.out.println(renewingredient);
+            try{
+                pat = getcon().prepareStatement(renewmenu);
+                pat.executeUpdate(renewmenu);
+                pat.close();
+                    pat = getcon().prepareStatement(renewingredient);
+                    pat.executeUpdate(renewingredient);
+                    pat.close();
+                    getcon().close();
+            }catch(Exception e){
+                System.err.println(e);
+            }
+        Menu_Array.clear();
+        DefaultTableModel model = (DefaultTableModel)menu_table.getModel();
+        while(model.getRowCount()>0){
+            model.removeRow(0);
+        }
+        MenuList();
+        show_product();   
+            JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น\nกู้คืนเมนูรหัส "+id+" สำเร็จ");
+            }else{
+            doubleclick = "";
+            } 
+        }else{
+            doubleclick = menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString();
+        }
+    }//GEN-LAST:event_menu_tableMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Menu_Array.clear();
+        DefaultTableModel model = (DefaultTableModel)menu_table.getModel();
+        while(model.getRowCount()>0){
+            model.removeRow(0);
+        }
+        MenuList();
+        show_product();   
+        JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -162,6 +266,9 @@ public Connection getcon(){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable menu_table;
     // End of variables declaration//GEN-END:variables
