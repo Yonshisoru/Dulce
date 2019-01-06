@@ -40,6 +40,7 @@ public class Menu_panel extends javax.swing.JFrame {
     ArrayList<Product_variable> productusing = new ArrayList<>();
     ArrayList<Product_variable> Ingredient_Array = new ArrayList<>();
     ArrayList<Product_variable> edit_Ingredient_Array = new ArrayList<>();
+    ArrayList<Product_variable> Product_Unit_Array = new ArrayList<>();
     ArrayList<Menu_variable> menu_type_array = new ArrayList<>();
     ArrayList<Menu_variable> Menu_Array = new ArrayList<>();
     ArrayList<Product_variable> delete_Ingredient_Array = new ArrayList<>();
@@ -68,12 +69,15 @@ public class Menu_panel extends javax.swing.JFrame {
      */
     public Menu_panel() {
         initComponents();
+        getMenu_List();
+        fillMenu_List();
+        getProduct();
+        fillProduct();
+        getIngredient();
         MenuList();
         show_product();
+        getProduct_Unit();
         id();
-        fillcombo();
-        fillproductcombo();
-        getIngredient();
     }
     public void clear(){
          m_name_txt.setText("");
@@ -208,8 +212,8 @@ public String find(){
             }
     return output;
    }
-    void fillcombo(){
-      try{
+  void getMenu_List(){
+       try{
           String sql = "SELECT M_T_ID,M_T_NAME FROM MENU_TYPE WHERE M_T_DEL = 'N'";
         st = getcon().createStatement();
         rs = st.executeQuery(sql);
@@ -217,15 +221,36 @@ public String find(){
             Menu_variable m = new Menu_variable();
             m.setcataid(rs.getString("M_T_ID"));
             m.setcataname(rs.getString("M_T_NAME"));
-            menu_type_array.add(m);
-            m_cata_txt.addItem(rs.getString("M_T_NAME"));
-            
+            menu_type_array.add(m);     
         }
         rs.close();
         st.close();
         getcon().close();
       }catch(Exception e){
           
+      }
+  }
+  void getProduct_Unit(){
+       try{
+          String sql = "SELECT PRO_UNITS_TYPE,PRO_UNITS_TYPE_NAME FROM PRODUCT_UNIT_LIST WHERE PRO_UNITS_TYPE_DEL = 'N'";
+        st = getcon().createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+            Product_variable p = new Product_variable();
+            p.setunits_type(rs.getString("PRO_UNITS_TYPE"));
+            p.setunits_type_name(rs.getString("PRO_UNITS_TYPE_NAME"));
+            Product_Unit_Array.add(p);
+        }
+        rs.close();
+        st.close();
+        getcon().close();
+      }catch(Exception e){
+          
+      }
+  }
+    void fillMenu_List(){
+      for(Menu_variable m :menu_type_array){
+          m_cata_txt.addItem(m.getcataname());
       }
   }
     void getIngredient(){
@@ -250,9 +275,9 @@ public String find(){
           System.out.println(e);
       } 
     }
-    void fillproductcombo(){
+    void getProduct(){
         try{
-            String sql = "SELECT PRO_ID,PRO_NAME,PRO_UNITS,PRO_UNITS_TYPE_NAME,PRO_LIST_ID FROM PRODUCT NATUAL JOIN PRODUCT_UNIT_LIST WHERE PRO_DEL = 'N'";
+            String sql = "SELECT PRO_ID,PRO_NAME,PRO_UNITS,PRO_UNITS_TYPE,PRO_LIST_ID FROM PRODUCT WHERE PRO_DEL = 'N' GROUP BY PRO_ID";
             pat = getcon().prepareStatement(sql);
             rs = pat.executeQuery(sql);
             while(rs.next()){
@@ -260,21 +285,25 @@ public String find(){
                 p.setid(rs.getString("PRO_ID"));
                 p.setname(rs.getString("PRO_NAME"));
                 p.setunit(rs.getDouble("PRO_UNITS"));
-                p.setunits_type_name(rs.getString("PRO_UNITS_TYPE_NAME"));
+                p.setunits_type(rs.getString("PRO_UNITS_TYPE"));
                 p.setProduct_type(rs.getString("PRO_LIST_ID"));
                 productarray.add(p);
-                if(rs.getString("PRO_LIST_ID").equals("04")){
-                product_combo.addItem(rs.getString("PRO_NAME"));
-                }
             }
         }catch(Exception e){
             System.err.println(e);
         }
     }
+    void fillProduct(){
+        for(Product_variable p:productarray){
+            if(p.getProduct_type().equals("04")){
+                product_combo.addItem(p.getname());
+            }
+        }
+    }
    public void MenuList(){
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="select MENU_ID,MENU_NAME,MENU_PRICE,M_T_ID,M_T_NAME FROM MENU NATURAL JOIN MENU_TYPE WHERE MENU_DEL = 'N' ORDER BY MENU_ID";         
+        String sql  ="select MENU_ID,MENU_NAME,MENU_PRICE,M_T_ID FROM MENU WHERE MENU_DEL = 'N' ORDER BY MENU_ID";         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
         pat = getcon().prepareStatement(sql);
         rs = pat.executeQuery(sql);
@@ -284,7 +313,11 @@ public String find(){
             m.setname(rs.getString("MENU_NAME"));
             m.setprice(rs.getInt("MENU_PRICE"));
             m.setcataid(rs.getString("M_T_ID"));
-            m.setcataname(rs.getString("M_T_NAME"));
+            for(Menu_variable mv:menu_type_array){
+                if(mv.getcataid().equals(rs.getString("M_T_ID"))){
+                    m.setcataname(mv.getcataname());
+                }
+            }
             Menu_Array.add(m);
         }
         rs.close();
@@ -378,6 +411,7 @@ public String find(){
         delete1 = new javax.swing.JRadioButton();
         jLabel16 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1400, 850));
@@ -472,8 +506,8 @@ public String find(){
         });
         getContentPane().add(clear_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 670, 120, 50));
 
-        m_cata_txt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        getContentPane().add(m_cata_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, 130, 30));
+        m_cata_txt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { ">>Choose Catagory<<" }));
+        getContentPane().add(m_cata_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, 160, 30));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel11.setText("หมวดหมู่:");
@@ -638,6 +672,14 @@ public String find(){
         jLabel1.setText("ตารางวัตถุดิบ");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 335, -1, -1));
 
+        jButton3.setText("jButton3");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 80, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -645,19 +687,22 @@ public String find(){
        if(doubleclick.equals(product_table.getModel().getValueAt(product_table.getSelectedRow(),0).toString())){
            if(JOptionPane.showConfirmDialog(null, "คุณต้องการที่จะลบวัตถุดิบรหัส "+doubleclick+" หรือไม่",null,YES_NO_OPTION)==YES_OPTION){
            try{
-               for(Product_variable p:productusing){
-               if(p.getid().equals(product_table.getModel().getValueAt(product_table.getSelectedRow(),0).toString())){
-                   Product_variable pv = new Product_variable();
-                   pv.setIngredient_ID(p.getIngredient_ID());
-                   delete_Ingredient_Array.add(pv);
-                   productusing.remove(p);
-                   DefaultTableModel model = (DefaultTableModel)product_table.getModel();
-                   while(model.getRowCount()>0){
-                       model.removeRow(0);
-                   }
-                   productusing();
-                   doubleclick="";
-           System.out.println("Kappa");
+           for(Product_variable p:productusing){
+           if(p.getid().equals(product_table.getModel().getValueAt(product_table.getSelectedRow(),0).toString())){
+           Product_variable pv = new Product_variable();
+           pv.setIngredient_ID(p.getIngredient_ID());
+           delete_Ingredient_Array.add(pv);
+           productusing.remove(p);
+           DefaultTableModel model = (DefaultTableModel)product_table.getModel();
+           while(model.getRowCount()>0){
+           model.removeRow(0);
+           }
+           productusing();
+           product_combo.removeAllItems();
+           product_combo.addItem(">>Choose Ingredients<<");
+           getProduct();
+           fillProduct();
+           doubleclick="";
            }else{
                doubleclick="";
            }
@@ -678,11 +723,19 @@ public String find(){
     }//GEN-LAST:event_product_tableMouseClicked
 
     private void create_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_create_btnActionPerformed
-        if(createnaja==true){
         String id = null;
-        String menu_name = null;
+        String menu_name = m_name_txt.getText();
         String menu_type = null;
         double menu_price = 0.0;
+        String cata_id = null;
+        for(Menu_variable m:menu_type_array){
+            if(m_cata_txt.getSelectedItem().toString().equals(m.getcataname())){
+                menu_type = m.getcataid();
+                break;
+            }
+        }
+        System.out.print(">>"+menu_type+"<<");
+        if(createnaja==true){
         if(productusing.isEmpty()){
             JOptionPane.showMessageDialog(null,"คุณยังไม่ได้ทำการเพิ่มวัตถุดิบ\nกรุณาเพิ่มวัตถุดิบด้วยครับ");
             clear();
@@ -713,12 +766,6 @@ public String find(){
         }catch(Exception e){
             System.out.println(e);
             clear();
-        }
-        for(Menu_variable m:menu_type_array){
-            if(m_cata_txt.getSelectedItem().toString().equals(m.getcataname())){
-                menu_type = m.getcataid();
-                break;
-            }
         }
         //String createmenu = "INSERT INTO MENU VALUES('"+id+"','"+menu_name+"','"+menu_price+"','"+menu_type+"','N')";
         String createmenu = "INSERT INTO MENU VALUES(?,?,?,?,'N')";
@@ -760,6 +807,7 @@ public String find(){
         show_product(); 
         Ingredient_Array.clear();
         getIngredient();
+        JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
         /*if(createnaja==true){
         String eiei = "INSERT INTO MENU VALUE('"+id+"','"+menu_name+"','"+menu_price+"','"+menu+"','N')";  
         System.out.print(eiei);
@@ -816,6 +864,14 @@ public String find(){
         }*/
         }
         }else if(editnaja==true){
+            id = showid_txt.getText();
+            try{
+            menu_price = Double.parseDouble(m_price_txt.getText());
+            }catch(NullPointerException e){
+                throw new NullPointerException();
+            }catch(NumberFormatException e){
+                throw new NumberFormatException();
+            }
             if(delete_Ingredient_Array.isEmpty()){
             for(Product_variable p:productusing){
             try{
@@ -860,12 +916,22 @@ public String find(){
                     pat = getcon().prepareStatement(deleteingredient);
                     pat.executeUpdate(deleteingredient);
                     pat.close();
-                    getcon().close();
                 }catch(Exception e){
                     System.out.println(e);
                 }
                 }
             menu_table.clearSelection();
+            }
+            String updatemenu = "UPDATE MENU SET MENU_NAME = '"+menu_name+"',M_T_ID = '"+menu_type+"',MENU_PRICE = '"+menu_price+"' WHERE MENU_ID = '"+id+"'";
+            System.out.println(updatemenu);
+            try{
+                pat = getcon().prepareStatement(updatemenu);
+                pat.executeUpdate(updatemenu);
+                pat.close();
+                getcon().close();
+            }catch(Exception e){
+                
+            }
             DefaultTableModel dm = (DefaultTableModel)menu_table.getModel();
             System.out.print(dm.getRowCount());
             while(dm.getRowCount() > 0)
@@ -879,7 +945,7 @@ public String find(){
             menu_table.clearSelection();
             Ingredient_Array.clear();
             getIngredient();
-            }
+            JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
         }else if(deletenaja==true){
             String deletemenu = "UPDATE MENU SET MENU_DEL = 'Y' WHERE MENU_ID = '"+id+"'";
             String deleteingredient = "UPDATE INGREDIENT SET ING_DEL  = 'Y' WHERE MENU_ID = '"+id+"'";
@@ -906,8 +972,8 @@ public String find(){
             Menu_Array.clear();
             MenuList();
             show_product();  
+            JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
             }   
-        JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
     }//GEN-LAST:event_create_btnActionPerformed
 
     private void m_price_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_price_txtActionPerformed
@@ -1129,14 +1195,21 @@ public String find(){
                 productid = pv.getid();
                 //System.out.print(productid);
                 productname = pv.getname();
-                units_type = pv.getunit_type();
+                for(Product_variable p:Product_Unit_Array){
+                    System.err.println(pv.getunit_type());
+                    System.out.println(p.getunit_type()+" "+p.getunit_type_name());
+                    if(pv.getunit_type().equals(p.getunit_type())){
+                        units_type = p.getunit_type_name();
+                        break;
+                    }
+                }
             }
         }
         for(int i =0;i<productarray.size();i++){
             if(product_combo.getSelectedItem().toString().equals(productarray.get(i).getname())){
                try{
                    units = Double.parseDouble(JOptionPane.showInputDialog(null,"\""+productname+"\" มีหน่วยเป็น \""+units_type+"\"\n\nกรุณากรอกปริมาณของวัตถุดิบที่จะใช้ด้วยครับ\n(ต่อหน่วยของวัตถุดิบ)\nตัวอย่างเช่น ใช้ 100มิลลิลิตรให้กรอก 0.1\nถ้าหากใช้ 10กรัมให้กรอก 0.01\nถ้าใช้ 1/20 ของขวด ให้กรอก 0.05"));
-                   if(units>99){
+                   if(units>999){
                        JOptionPane.showMessageDialog(null,"คุณกรอกจำนวนมากเกินไป\nกรุณาทำรายการใหม่ด้วยครับ");
                        product_combo.setSelectedIndex(0);
                    }else if(units<=0){
@@ -1148,6 +1221,11 @@ public String find(){
                    p.setid(productarray.get(i).getid());
                    p.setname(productarray.get(i).getname());
                    p.setunits_type(productarray.get(i).getunit_type());
+                   for(Product_variable pv:Product_Unit_Array){
+                       if(p.getunit_type().equals(pv.getunit_type())){
+                           p.setunits_type_name(pv.getunit_type_name());
+                       }
+                   }
                    p.setunit(units);
                    productusing.add(p);
                    for(Product_variable pk:productusing){
@@ -1226,6 +1304,13 @@ public String find(){
         }
     }//GEN-LAST:event_helping_menu_btnActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        System.err.println(m_cata_txt.getSelectedItem());
+        for(Menu_variable mv:Menu_Array){
+            System.out.println(mv.getid()+" "+mv.getname()+" "+mv.getcataid()+" "+mv.getcataname());
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1281,6 +1366,7 @@ public String find(){
     private javax.swing.JButton helping_product_btn;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
