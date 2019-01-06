@@ -161,7 +161,7 @@ public Connection getcon(){
   
     void fillcombo(){
       try{
-          String sql = "SELECT PRO_ID,PRO_NAME,PRO_UNITS,PRO_UNITS_TYPE FROM PRODUCT WHERE PRO_DEL = 'N'";
+          String sql = "SELECT PRO_ID,PRO_NAME,PRO_UNITS,PRO_UNITS_TYPE,PRO_UNITS_TYPE_NAME FROM PRODUCT NATURAL JOIN PRODUCT_UNIT_LIST WHERE PRO_DEL = 'N'";
         st = getcon().createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
@@ -170,6 +170,7 @@ public Connection getcon(){
             p.setname(rs.getString("PRO_NAME"));
             p.setunit(rs.getDouble("PRO_UNITS"));
             p.setunits_type(rs.getString("PRO_UNITS_TYPE"));
+            p.setunits_type_name(rs.getString("PRO_UNITS_TYPE_NAME"));
             Product_Array.add(p);
             product_combo.addItem(rs.getString("PRO_NAME"));
         }
@@ -182,7 +183,7 @@ public Connection getcon(){
   }
         void getProduct(){
       try{
-          String sql = "SELECT PRO_ID,PRO_NAME,PRO_UNITS,PRO_UNITS_TYPE FROM PRODUCT WHERE PRO_DEL = 'N'";
+          String sql = "SELECT PRO_ID,PRO_NAME,PRO_UNITS,PRO_UNITS_TYPE,PRO_UNITS_TYPE_NAME FROM PRODUCT NATURAL JOIN PRODUCT_UNIT_LIST WHERE PRO_DEL = 'N'";
         st = getcon().createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
@@ -191,6 +192,7 @@ public Connection getcon(){
             p.setname(rs.getString("PRO_NAME"));
             p.setunit(rs.getDouble("PRO_UNITS"));
             p.setunits_type(rs.getString("PRO_UNITS_TYPE"));
+            p.setunits_type_name(rs.getString("PRO_UNITS_TYPE_NAME"));
             Product_Array.add(p);
         }
         rs.close();
@@ -699,7 +701,7 @@ public Connection getcon(){
         }else{
             for(Product_variable p:Product_Array){
                 if(product_combo.getSelectedItem().toString().equals(p.getname())){
-                   JOptionPane.showMessageDialog(null,"รหัส : "+p.getid()+"\nชื่อสินค้า : "+p.getname()+"\nจำนวนที่มีอยู่ : "+p.getunit()+"\nหน่วยของสินค้า : "+p.getunit_type());
+                   JOptionPane.showMessageDialog(null,"รหัส : "+p.getid()+"\nชื่อสินค้า : "+p.getname()+"\nจำนวนที่มีอยู่ : "+p.getunit()+"\nหน่วยของสินค้า : "+p.getunit_type_name());
                    unit_type_txt.setText(p.getunit_type());
                    break;
                 }

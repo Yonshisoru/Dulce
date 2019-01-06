@@ -22,56 +22,85 @@ import javax.swing.table.DefaultTableModel;
  * @author Yonshisoru
  */
 public class Product_panel extends javax.swing.JFrame {
-    boolean editnaja = false;
-    boolean createnaja = true;
-    boolean deletenaja = false;
-    boolean pass = false;
     Database d = new Database();
     Employee e = new Employee();
     Main_variable m = new Main_variable();
-    public String id = null;
+//--------------------------------------------------
+    ArrayList<Product_variable> Product_Array= new ArrayList<>();    
+    ArrayList<Product_variable> Product_Unit_Array= new ArrayList<>();
+    ArrayList<Vendor_variable> Vendor_Array= new ArrayList<>();
+    ArrayList<Product_variable> Product_List_Array= new ArrayList<>();
+//-----------------------------------------------------
     Connection con = null;
     Statement st = null;
     PreparedStatement pat = null;
     ResultSet rs = null;
+//------------------------------------------
     String output = null;
     String ven = null;
     String password= null;
     String createid = null;
+    public String id = null;
+//---------------------------------------------
     int max = 0;
+//--------------------------------------------
+    boolean editnaja = false;
+    boolean createnaja = true;
+    boolean deletenaja = false;
+    boolean pass = false;
     /**
      * Creates new form Employee_create
      */
     public Product_panel() {
         initComponents();
+        ProductList();
         show_product();
+        getProduct_type();
+        setProduct_type_combo();
+        getProduct_unit_type();
+        setProduct_unit_type();
+        getVendor();
+        setVendor();
         id();
-        fillcombo();
     }
     public void clear(){
+         product_type_combo.setSelectedIndex(0);
+         unit_combo.setSelectedIndex(0);
          pro_name_txt.setText("");
          v_txt.setSelectedIndex(0);
          pro_price_txt.setText("");
          pro_min_txt.setText("");
     }
     public void lock(){
+         showid_txt.setText("NAN");
+         product_type_combo.setEnabled(false);
+         unit_combo.setEnabled(false);
          pro_name_txt.setEnabled(false);
          v_txt.setEnabled(false);
          pro_price_txt.setEnabled(false);
          pro_min_txt.setEnabled(false);
     }
     public void unlock(){
+         product_type_combo.setEnabled(true);
+         unit_combo.setEnabled(true);
          pro_name_txt.setEnabled(true);
          v_txt.setEnabled(true);
          pro_price_txt.setEnabled(true);
          pro_min_txt.setEnabled(true);
     }
+public Connection getcon(){
+    try{
+            Class.forName("com.mysql.jdbc.Driver");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+    }catch(Exception e){
+        System.err.println(e);
+    }
+    return con;
+}
 public String find(){
             String find = "SELECT V_ID,V_NAME FROM VENDOR";
         try{
-            Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(find);
+        pat = getcon().prepareStatement(find);
         rs = pat.executeQuery(find);
         while(rs.next()){
             if(v_txt.getSelectedItem().toString().equals(rs.getString("V_NAME"))){
@@ -81,7 +110,7 @@ public String find(){
         }
         rs.close();
         pat.close();
-        con.close();
+        getcon().close();
         }catch(Exception e){ 
             System.out.print(e);
         } 
@@ -91,9 +120,7 @@ public String find(){
        int count=0;
           String sql  ="select PRO_ID from PRODUCT";
     try{
-    Class.forName("com.mysql.jdbc.Driver");
-    con = DriverManager.getConnection(d.url(),d.username(),d.password());
-    pat = con.prepareStatement(sql);
+    pat = getcon().prepareStatement(sql);
      rs = pat.executeQuery(sql);
     while(rs.next()){
         count++;
@@ -114,38 +141,107 @@ public String find(){
     }
     showid_txt.setText(output);
     createid = output;
-    con.close();
-    pat.close();
     rs.close();
+    pat.close();
+    getcon().close();
             }catch(Exception e){
                 e.printStackTrace();
             }
     return output;
    }
-    void fillcombo(){
+    void getVendor(){
       try{
           String sql = "SELECT V_ID,V_NAME FROM VENDOR WHERE V_DEL = 'N'";
-         con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        st = con.createStatement();
+        st = getcon().createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
-            v_txt.addItem(rs.getString("V_NAME"));
+            Vendor_variable v = new Vendor_variable();
+            v.setid(rs.getString("V_ID"));
+            v.setname(rs.getString("V_NAME"));
+            Vendor_Array.add(v);
         }
         rs.close();
         st.close();
-        con.close();
+        getcon().close();
       }catch(Exception e){
           
       }
   }
-   public ArrayList<Product_variable>ProductList(){
-               ArrayList<Product_variable> Product_list = new ArrayList<>();
+    void getProduct_Unit_Type_Array(String name){
+        int count = 0;
+      for(Product_variable p :Product_Unit_Array){
+          count ++;
+          if(p.getunit_type().equals(name)){
+              unit_combo.setSelectedIndex(count);
+              break;
+          }
+          /*if(i!=0){
+              System.out.println(unit_combo.getSelectedItem().toString());
+          if(unit_combo.getItemAt(i).equals(name)){
+              unit_combo.setSelectedIndex(i);
+              break;
+          }
+          }*/
+      }
+  }
+    void setVendor(){
+      for(Vendor_variable v:Vendor_Array){
+          v_txt.addItem(v.getname());
+      }
+  }
+
+    void getProduct_type(){
+      try{
+          String sql = "SELECT PRO_LIST_ID,PRO_LIST_NAME FROM PRODUCT_LIST WHERE PRO_LIST_DEL = 'N'";
+        st = getcon().createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+            Product_variable p = new Product_variable();
+            p.setProduct_type_ID(rs.getString("PRO_LIST_ID"));
+            p.setProduct_type(rs.getString("PRO_LIST_NAME"));
+            Product_List_Array.add(p);
+        }
+        rs.close();
+        st.close();
+        getcon().close();
+      }catch(Exception e){
+          
+      }
+    }
+    void getProduct_unit_type(){
+      try{
+        String sql = "SELECT PRO_UNITS_TYPE,PRO_UNITS_TYPE_NAME FROM PRODUCT_UNIT_LIST WHERE PRO_UNITS_TYPE_DEL = 'N'";
+        st = getcon().createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+            Product_variable p = new Product_variable();
+            p.setunits_type(rs.getString("PRO_UNITS_TYPE"));
+            p.setunits_type_name(rs.getString("PRO_UNITS_TYPE_NAME"));
+            Product_Unit_Array.add(p);
+        }
+        rs.close();
+        st.close();
+        getcon().close();
+      }catch(Exception e){
+          
+      }
+    }
+    void setProduct_unit_type(){
+        for(Product_variable p:Product_Unit_Array){
+            unit_combo.addItem(p.getunit_type_name());
+        }
+    }
+    void setProduct_type_combo(){
+        for(Product_variable p:Product_List_Array){
+            System.out.println(p.getProduct_type());
+            product_type_combo.addItem(p.getProduct_type());
+        }
+    }
+   public void ProductList(){
         try{
-        Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="select PRO_ID,V_ID,V_NAME,PRO_NAME,PRO_PRICE,PRO_UNITS_TYPE,PRO_UNITS,PRO_MIN FROM PRODUCT NATURAL JOIN VENDOR WHERE PRO_DEL = 'N' ORDER BY PRO_ID";         
+        String sql  ="select PRO_ID,V_ID,V_NAME,PRO_NAME,PRO_PRICE,PRO_UNITS_TYPE,PRO_UNITS,PRO_UNITS_TYPE_NAME,PRO_LIST_ID,PRO_MIN FROM PRODUCT NATURAL JOIN VENDOR NATURAL JOIN PRODUCT_UNIT_LIST WHERE PRO_DEL = 'N' ORDER BY PRO_ID";         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
-         con = DriverManager.getConnection(d.url(),d.username(),d.password());
-       st = con.createStatement();
+        st = getcon().createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
             Product_variable p = new Product_variable();
@@ -156,19 +252,20 @@ public String find(){
             p.setprice(rs.getInt("PRO_PRICE"));
             p.setunit(rs.getInt("PRO_UNITS"));
             p.setunits_type(rs.getString("PRO_UNITS_TYPE"));
+            p.setunits_type_name(rs.getString("PRO_UNITS_TYPE_NAME"));
             p.setmin(rs.getInt("PRO_MIN"));
-            Product_list.add(p);
+            p.setProduct_type_ID(rs.getString("PRO_LIST_ID"));
+            Product_Array.add(p);
         }
         rs.close();
         st.close();
-        con.close();
+        getcon().close();
         }catch(Exception e){
             System.out.print(e);
         }
-        return Product_list;
 }
     public void show_product(){
-        ArrayList<Product_variable>ProductList = ProductList();
+        ArrayList<Product_variable>ProductList = Product_Array;
         DefaultTableModel model = (DefaultTableModel)product_table.getModel();
         Object[] row = new Object[7];
         for(int i=0;i<ProductList.size();i++){
@@ -176,7 +273,7 @@ public String find(){
             row[1]=ProductList.get(i).getname();
             row[2]=ProductList.get(i).getprice();
             row[3]=ProductList.get(i).getunit();
-            row[4]=ProductList.get(i).getunit_type();
+            row[4]=ProductList.get(i).getunit_type_name();
             row[5]=ProductList.get(i).getmin();
             row[6]=ProductList.get(i).getvname();
             model.addRow(row);
@@ -215,6 +312,8 @@ public String find(){
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         unit_combo = new javax.swing.JComboBox<>();
+        product_type_combo = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -310,8 +409,8 @@ public String find(){
         });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 670, 120, 50));
 
-        v_txt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        getContentPane().add(v_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 230, 120, 30));
+        v_txt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { ">>Choose Vendor<<" }));
+        getContentPane().add(v_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 230, 140, 30));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel11.setText("ผู้จัดจำหน่าย:");
@@ -360,45 +459,99 @@ public String find(){
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel16.setText("หน่วยปริมาตร:");
-        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 230, -1, -1));
+        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 230, -1, -1));
 
-        unit_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "กรัม", "กิโลกรัม", "ลิตร", "มิลลิลิตร", "ขวด", "ฟอง", "เครื่อง", "อัน", "ชิ้น", "แก้ว", " " }));
+        unit_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { ">>Choose Units Type<<" }));
         unit_combo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 unit_comboActionPerformed(evt);
             }
         });
-        getContentPane().add(unit_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 230, 130, 30));
+        getContentPane().add(unit_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 230, 170, 30));
+
+        product_type_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { ">>Choose Product Type<<" }));
+        getContentPane().add(product_type_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 70, 160, 30));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("ประเภทของวัตถุดิบ:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 80, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void product_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_product_tableMouseClicked
+        String producttypeid = null;
+        String vendor = null;
         if(editnaja==true||deletenaja==true){
         showid_txt.setText(product_table.getModel().getValueAt(product_table.getSelectedRow(),0).toString());
+        vendor = product_table.getModel().getValueAt(product_table.getSelectedRow(),6).toString();
+        for(Product_variable p:Product_Array){
+            if(product_table.getModel().getValueAt(product_table.getSelectedRow(),0).toString().equals(p.getid())){
+                producttypeid = p.getProduct_type_ID();
+                getProduct_Unit_Type_Array(p.getunit_type());
+                System.out.println(p.getid());
+                System.out.println(producttypeid);
+                break;
+            }
+        }
+        int count = 0;
+        for(Product_variable p:Product_List_Array){
+            count ++;
+            if(p.getProduct_type_ID().equals(producttypeid)){
+                product_type_combo.setSelectedIndex(count);
+                break;
+            }
+        }
+        count = 0;
+        for(Vendor_variable v:Vendor_Array){
+            count++;
+            if(v.getname().equals(vendor)){
+                v_txt.setSelectedIndex(count);
+                break;
+            }
+        }
+        /*for(Product_variable p:Product_List_Array){
+            if()
+        }*/
         pro_name_txt.setText(product_table.getModel().getValueAt(product_table.getSelectedRow(),1).toString());
         pro_price_txt.setText(product_table.getModel().getValueAt(product_table.getSelectedRow(),2).toString());
-        pro_min_txt.setText(product_table.getModel().getValueAt(product_table.getSelectedRow(),4).toString());
-        v_txt.setSelectedItem(product_table.getModel().getValueAt(product_table.getSelectedRow(),5).toString());
+        pro_min_txt.setText(product_table.getModel().getValueAt(product_table.getSelectedRow(),5).toString());
+        }
+        if(deletenaja==true){
+            JOptionPane.showMessageDialog(null,"คุณได้เลือกสินค้ารหัส "+product_table.getModel().getValueAt(product_table.getSelectedRow(),0).toString());
         }
     }//GEN-LAST:event_product_tableMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-           System.out.print("create!!");
         String id = showid_txt.getText();
         String proname = pro_name_txt.getText();
         String vendor = find();
         String price = pro_price_txt.getText();
         String min = pro_min_txt.getText();
+        String unit_type_id = null;
+        String product_type = null;
+        for(Product_variable p:Product_Unit_Array){
+            System.out.print(p.getunit_type_name());
+            System.err.print(unit_combo.getSelectedItem().toString()+"\n");
+            if(p.getunit_type_name().equals(unit_combo.getSelectedItem().toString())){
+                JOptionPane.showMessageDialog(null, "Kappa");
+                unit_type_id = p.getunit_type();
+                break;
+            }
+        }
+        for(Product_variable p :Product_List_Array){
+            System.out.print(p.getProduct_type());
+            System.err.print(product_type_combo.getSelectedItem().toString()+"\n");
+            if(p.getProduct_type().equals(product_type_combo.getSelectedItem().toString())){
+                product_type = p.getProduct_type_ID();
+            }
+        }
         if(createnaja==true){
-        String eiei = "INSERT INTO PRODUCT VALUE('"+id+"','"+vendor+"','"+proname+"','"+price+"','0','"+unit_combo.getSelectedItem().toString()+"','"+min+"','N')";  
-        System.out.print(eiei);
+        String createproduct = "INSERT INTO PRODUCT VALUE('"+id+"','"+vendor+"','"+proname+"','"+price+"','0','"+unit_type_id+"','"+min+"','"+product_type+"','N')";  
+        System.out.print(createproduct);
         try{
-        Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(eiei);
-        pat.executeUpdate(eiei);
+        pat = getcon().prepareStatement(createproduct);
+        pat.executeUpdate(createproduct);
         pat.close();
         con.close();
         }catch(Exception e){
@@ -409,11 +562,13 @@ public String find(){
         {       
         dm.removeRow(0);
         }
+        Product_Array.clear();
+        ProductList();
         show_product();
         id();
         clear();
         }else if(editnaja==true){
-            String edit = "UPDATE PRODUCT SET V_ID = '"+vendor+"',PRO_NAME = '"+proname+"',PRO_PRICE = '"+price+"',PRO_UNITS_TYPE = '"+unit_combo.getSelectedItem().toString()+"',PRO_MIN = '"+min+"' WHERE PRO_ID = '"+id+"'";  
+            String edit = "UPDATE PRODUCT SET V_ID = '"+vendor+"',PRO_NAME = '"+proname+"',PRO_PRICE = '"+price+"',PRO_UNITS_TYPE = '"+unit_type_id+"',PRO_MIN = '"+min+"',PRO_LIST_ID = '"+product_type+"' WHERE PRO_ID = '"+id+"'";  
             System.out.print(edit);
             try{
                Class.forName("com.mysql.jdbc.Driver");
@@ -427,14 +582,16 @@ public String find(){
             }catch(Exception e){
                 System.out.print(e);
             }
-                  DefaultTableModel dm = (DefaultTableModel)product_table.getModel();
-        System.out.print(dm.getRowCount());
+       DefaultTableModel dm = (DefaultTableModel)product_table.getModel();
         while(dm.getRowCount() > 0)
         {       
         dm.removeRow(0);
         }
-        show_product();  
-        }else if(deletenaja==true){
+        Product_Array.clear();
+        ProductList();
+        show_product();
+        clear();
+        /*}else if(deletenaja==true){
             String delete = "UPDATE PRODUCT SET PRO_DEL = 'Y' WHERE PRO_ID ='"+id+"'";
             System.out.print(delete);
             try{
@@ -455,8 +612,9 @@ public String find(){
         {       
         dm.removeRow(0);
         }
-        show_product();
+        show_product();*/
         }
+        JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void pro_price_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pro_price_txtActionPerformed
@@ -476,6 +634,7 @@ public String find(){
     private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
         unlock(); 
         clear();
+        showid_txt.setText(createid);
         product_table.getSelectionModel().clearSelection();
         System.out.print("create!!");         
         create.setEnabled(false);       
@@ -492,6 +651,7 @@ public String find(){
     private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
         unlock();
         clear();
+        showid_txt.setText("NAN");
         product_table.getSelectionModel().clearSelection();
         System.out.print("edit!!");
         edit.setEnabled(false);
@@ -542,7 +702,7 @@ public String find(){
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -576,6 +736,7 @@ public String find(){
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -591,6 +752,7 @@ public String find(){
     private javax.swing.JTextField pro_name_txt;
     private javax.swing.JTextField pro_price_txt;
     private javax.swing.JTable product_table;
+    private javax.swing.JComboBox<String> product_type_combo;
     private javax.swing.JTextField showid_txt;
     private javax.swing.JComboBox<String> unit_combo;
     private javax.swing.JComboBox<String> v_txt;

@@ -230,7 +230,7 @@ public String find(){
   }
     void getIngredient(){
       try{
-        String sql = "SELECT ING_NUMBER,MENU_ID,PRO_ID,PRO_NAME,PRO_UNITS_TYPE,ING_UNITS FROM INGREDIENT NATURAL JOIN PRODUCT WHERE ING_DEL = 'N' ORDER BY PRO_ID";
+        String sql = "SELECT ING_NUMBER,MENU_ID,PRO_ID,PRO_NAME,PRO_UNITS_TYPE_NAME,PRO_UNITS_TYPE,ING_UNITS FROM (INGREDIENT NATURAL JOIN PRODUCT) NATURAL JOIN PRODUCT_UNIT_LIST WHERE ING_DEL = 'N' ORDER BY PRO_ID";
         st = getcon().createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
@@ -238,7 +238,7 @@ public String find(){
             p.setIngredient_ID(rs.getString("ING_NUMBER"));
             p.m.setid(rs.getString("MENU_ID"));
             p.setname(rs.getString("PRO_NAME"));
-            p.setunits_type(rs.getString("PRO_UNITS_TYPE"));
+            p.setunits_type_name(rs.getString("PRO_UNITS_TYPE_NAME"));
             p.setid(rs.getString("PRO_ID"));
             p.setunit(rs.getDouble("ING_UNITS"));
             Ingredient_Array.add(p);
@@ -252,7 +252,7 @@ public String find(){
     }
     void fillproductcombo(){
         try{
-            String sql = "SELECT PRO_ID,PRO_NAME,PRO_UNITS,PRO_UNITS_TYPE,PRO_LIST_ID FROM PRODUCT WHERE PRO_DEL = 'N'";
+            String sql = "SELECT PRO_ID,PRO_NAME,PRO_UNITS,PRO_UNITS_TYPE_NAME,PRO_LIST_ID FROM PRODUCT NATUAL JOIN PRODUCT_UNIT_LIST WHERE PRO_DEL = 'N'";
             pat = getcon().prepareStatement(sql);
             rs = pat.executeQuery(sql);
             while(rs.next()){
@@ -260,7 +260,7 @@ public String find(){
                 p.setid(rs.getString("PRO_ID"));
                 p.setname(rs.getString("PRO_NAME"));
                 p.setunit(rs.getDouble("PRO_UNITS"));
-                p.setunits_type(rs.getString("PRO_UNITS_TYPE"));
+                p.setunits_type_name(rs.getString("PRO_UNITS_TYPE_NAME"));
                 p.setProduct_type(rs.getString("PRO_LIST_ID"));
                 productarray.add(p);
                 if(rs.getString("PRO_LIST_ID").equals("04")){
@@ -276,8 +276,8 @@ public String find(){
         Class.forName("com.mysql.jdbc.Driver");
         String sql  ="select MENU_ID,MENU_NAME,MENU_PRICE,M_T_ID,M_T_NAME FROM MENU NATURAL JOIN MENU_TYPE WHERE MENU_DEL = 'N' ORDER BY MENU_ID";         
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
-       st = getcon().createStatement();
-        rs = st.executeQuery(sql);
+        pat = getcon().prepareStatement(sql);
+        rs = pat.executeQuery(sql);
         while(rs.next()){
            Menu_variable m = new Menu_variable();
             m.setid(rs.getString("MENU_ID"));
@@ -288,7 +288,7 @@ public String find(){
             Menu_Array.add(m);
         }
         rs.close();
-        st.close();
+        pat.close();
         getcon().close();
         }catch(Exception e){
             System.out.print(e);
@@ -315,7 +315,7 @@ public String find(){
         o[0] = product.get(i).getid();
         o[1] = product.get(i).getname();
         o[2] = product.get(i).getunit();
-        o[3] = product.get(i).getunit_type();
+        o[3] = product.get(i).getunit_type_name();
         productmodel.addRow(o);
         }
     }
@@ -330,7 +330,7 @@ public String find(){
             o[0] = p.getid();
             o[1] = p.getname();
             o[2] = p.getunit();
-            o[3] = p.getunit_type();
+            o[3] = p.getunit_type_name();
         productmodel.addRow(o);   
         }
         }
@@ -420,6 +420,8 @@ public String find(){
         showid_txt.setEditable(false);
         showid_txt.setEnabled(false);
         getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 110, 30));
+
+        m_name_txt.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         getContentPane().add(m_name_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, 370, 30));
 
         m_price_txt.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -718,11 +720,16 @@ public String find(){
                 break;
             }
         }
-        String createmenu = "INSERT INTO MENU VALUES('"+id+"','"+menu_name+"','"+menu_price+"','"+menu_type+"','N')";
+        //String createmenu = "INSERT INTO MENU VALUES('"+id+"','"+menu_name+"','"+menu_price+"','"+menu_type+"','N')";
+        String createmenu = "INSERT INTO MENU VALUES(?,?,?,?,'N')";
         System.out.println(createmenu);
         try{
             pat = getcon().prepareStatement(createmenu);
-            pat.executeUpdate(createmenu);
+            pat.setString(1,id);
+            pat.setString(2,menu_name);
+            pat.setDouble(3,menu_price);
+            pat.setString(4,menu_type);
+            pat.execute();
             pat.close();
             for(Product_variable p:productusing){
                 String ingredient_id = getIngredientsID();
@@ -750,7 +757,9 @@ public String find(){
         }
         Menu_Array.clear();
         MenuList();
-        show_product();  
+        show_product(); 
+        Ingredient_Array.clear();
+        getIngredient();
         /*if(createnaja==true){
         String eiei = "INSERT INTO MENU VALUE('"+id+"','"+menu_name+"','"+menu_price+"','"+menu+"','N')";  
         System.out.print(eiei);
@@ -856,6 +865,16 @@ public String find(){
                     System.out.println(e);
                 }
                 }
+            menu_table.clearSelection();
+            DefaultTableModel dm = (DefaultTableModel)menu_table.getModel();
+            System.out.print(dm.getRowCount());
+            while(dm.getRowCount() > 0)
+            {       
+            dm.removeRow(0);
+            }
+            Menu_Array.clear();
+            MenuList();
+            show_product(); 
             clear();
             menu_table.clearSelection();
             Ingredient_Array.clear();
@@ -1083,6 +1102,7 @@ public String find(){
                     pv.setid(p.getid());
                     pv.setname(p.getname());
                     pv.setunits_type(p.getunit_type());
+                    pv.setunits_type_name(p.getunit_type_name());
                     pv.setunit(p.getunit());
                     productusing.add(pv);
                 }

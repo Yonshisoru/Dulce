@@ -11,7 +11,7 @@
  */
 public class Database {
 //private String url = "jdbc:mysql://privatehosting.website:3306/u787124245_dulce";
-private String url = "jdbc:mysql://localhost:3306/test";
+private String url = "jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8";
 private String username = "root";
 private String password ="";
 public String url(){
