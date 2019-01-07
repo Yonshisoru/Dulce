@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Yonshisoru
  */
-public class Product_panel extends javax.swing.JFrame {
+public class Product_Panel extends javax.swing.JFrame {
     Database d = new Database();
     Employee e = new Employee();
     Main_variable m = new Main_variable();
@@ -54,7 +54,7 @@ public class Product_panel extends javax.swing.JFrame {
     /**
      * Creates new form Employee_create
      */
-    public Product_panel() {
+    public Product_Panel() {
         initComponents();
         ProductList();
         show_product();
@@ -67,8 +67,16 @@ public class Product_panel extends javax.swing.JFrame {
         id();
     }
     public void clear(){
-         product_type_combo.setSelectedIndex(0);
-         unit_combo.setSelectedIndex(0);
+         product_type_combo.removeAllItems();
+         product_type_combo.addItem(">>Choose Product Type<<");
+         Product_List_Array.clear();
+         getProduct_type();
+         setProduct_type_combo();
+         unit_combo.removeAllItems();
+         unit_combo.addItem(">>Choose Units Type<<");
+         Product_Unit_Array.clear();
+         getProduct_unit_type();
+         setProduct_unit_type();
          pro_name_txt.setText("");
          v_txt.setSelectedIndex(0);
          pro_price_txt.setText("");
@@ -790,7 +798,8 @@ public String find(){
     }//GEN-LAST:event_unit_comboActionPerformed
 
     private void Unit_type_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Unit_type_btnMouseClicked
-
+       Product_Units_Type_Panel p = new Product_Units_Type_Panel();
+       p.setVisible(true);
     }//GEN-LAST:event_Unit_type_btnMouseClicked
 
     private void Unit_type_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Unit_type_btnMouseEntered
@@ -804,19 +813,8 @@ public String find(){
     }//GEN-LAST:event_Unit_type_btnMouseExited
 
     private void Product_type_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Product_type_btnMouseClicked
-        String Product_type = null;
-        try{
-            Product_type = JOptionPane.showInputDialog(null,"กรุณากรอกชนิดของสินค้าที่คุณต้องการด้วยครับ");
-        }catch(NullPointerException e){
-            
-        }
-        if(Product_type.isEmpty()==false){
-            if(JOptionPane.showConfirmDialog(null,"คุณแน่ใจแล้วหรือว่าจะสร้างชนิดของสินค้าใหม่ที่มีชื่อว่า "+Product_type,null,YES_NO_OPTION)==YES_OPTION){
-                String Product_Unit_ID = findProduct_Unit_ID();
-                String createproduct_unit_type = "INSERT INTO PRO_UNITS_TYPE VALUES('"+Product_Unit_ID+"','"+Product_type+"','N')";
-                JOptionPane.showMessageDialog(null,"Kappa");
-            }
-        }
+        Product_Type_Panel p = new Product_Type_Panel();
+        p.setVisible(true);
     }//GEN-LAST:event_Product_type_btnMouseClicked
 
     private void Product_type_btnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Product_type_btnMouseEntered
@@ -846,14 +844,18 @@ public String find(){
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Product_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Product_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Product_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Product_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Product_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Product_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Product_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Product_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -862,7 +864,7 @@ public String find(){
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Product_panel().setVisible(true);
+                new Product_Panel().setVisible(true);
             }
         });
     }
