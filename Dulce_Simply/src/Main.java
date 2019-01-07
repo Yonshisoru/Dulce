@@ -903,7 +903,7 @@ Main_variable m = new Main_variable();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void product_panelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_product_panelActionPerformed
-       Product_panel s = new Product_panel();
+       Product_Panel s = new Product_Panel();
        s.setVisible(true);
     }//GEN-LAST:event_product_panelActionPerformed
 
@@ -1096,7 +1096,7 @@ if ((s != null) && (s.length() > 0)) {
     }//GEN-LAST:event_Employee_Payment_btn1ActionPerformed
 
     private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
-        Product_panel p = new Product_panel();
+        Product_Panel p = new Product_Panel();
         p.setVisible(true);
     }//GEN-LAST:event_jButton22ActionPerformed
 

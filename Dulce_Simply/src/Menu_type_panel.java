@@ -157,7 +157,7 @@ public class Menu_type_panel extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Catagory"
+                "รหัสหมวดหมู่", "ชื่อหมวดหมู่"
             }
         ) {
             Class[] types = new Class [] {
@@ -187,18 +187,18 @@ public class Menu_type_panel extends javax.swing.JFrame {
 
         showid_txt.setEditable(false);
         showid_txt.setEnabled(false);
-        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 110, 30));
+        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 40, 110, 30));
         getContentPane().add(m_name_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 190, 30));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel2.setText("ID:");
+        jLabel2.setText("รหัสหมวดหมู่:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel4.setText("Menu Type:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, -1, -1));
+        jLabel4.setText("ชื่อหมวดหมู่:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1, -1));
 
-        jButton1.setText("Close");
+        jButton1.setText("ปิด");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -206,7 +206,7 @@ public class Menu_type_panel extends javax.swing.JFrame {
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 190, 80, 30));
 
-        jButton2.setText("Submit");
+        jButton2.setText("ยืนยัน");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -214,7 +214,7 @@ public class Menu_type_panel extends javax.swing.JFrame {
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 80, 30));
 
-        jButton3.setText("Clear");
+        jButton3.setText("เคลียร์");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -230,8 +230,8 @@ public class Menu_type_panel extends javax.swing.JFrame {
         getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel12.setText("Function:");
-        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
+        jLabel12.setText("ฟังก์ชั่น:");
+        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, -1, -1));
 
         create.setSelected(true);
         create.setEnabled(false);
@@ -254,13 +254,13 @@ public class Menu_type_panel extends javax.swing.JFrame {
         });
         getContentPane().add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, -1, -1));
 
-        jLabel13.setText("Delete");
+        jLabel13.setText("ลบ");
         getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 140, -1, -1));
 
-        jLabel14.setText("Create");
+        jLabel14.setText("สร้าง");
         getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 140, -1, -1));
 
-        jLabel15.setText("Edit");
+        jLabel15.setText("แก้ไข");
         getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 140, -1, -1));
 
         pack();
@@ -274,10 +274,12 @@ public class Menu_type_panel extends javax.swing.JFrame {
     }//GEN-LAST:event_menu_tableMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
         String menutypeid = showid_txt.getText();
         String menutypename = m_name_txt.getText();
         if(createnaja==true){
+            if(menutypename.isEmpty()){
+                JOptionPane.showMessageDialog(null,"KAPPA");
+            }else{  
         String eiei = "INSERT INTO MENU_TYPE VALUE('"+menutypeid+"','"+menutypename+"','N')";  
         System.out.print(eiei);
         try{
@@ -299,6 +301,7 @@ public class Menu_type_panel extends javax.swing.JFrame {
         show_product();
         id();
         clear();
+        }
         }else if(editnaja==true){
             String edit = "UPDATE MENU_TYPE SET M_T_NAME = '"+menutypename+"' WHERE M_T_ID = '"+menutypeid+"'";  
             System.out.print(edit);
@@ -371,6 +374,7 @@ public class Menu_type_panel extends javax.swing.JFrame {
     private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
         unlock();
         clear();
+        showid_txt.setText("NAN");
         menu_table.getSelectionModel().clearSelection();
         System.out.print("edit!!");
         edit.setEnabled(false);
@@ -386,11 +390,12 @@ public class Menu_type_panel extends javax.swing.JFrame {
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         lock(); 
         clear();
+        showid_txt.setText("NAN");
         menu_table.getSelectionModel().clearSelection();
         System.out.print("delete!!");
-                    delete.setEnabled(false);
-                    create.setEnabled(true);
-                    edit.setEnabled(true);
+        delete.setEnabled(false);
+        create.setEnabled(true);
+        edit.setEnabled(true);
         create.setSelected(false);
         edit.setSelected(false);
         deletenaja = true;
