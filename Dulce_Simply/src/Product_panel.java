@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Yonshisoru
  */
-public class Product_Panel extends javax.swing.JFrame {
+public class Product_panel extends javax.swing.JFrame {
     Database d = new Database();
     Employee e = new Employee();
     Main_variable m = new Main_variable();
@@ -54,7 +54,7 @@ public class Product_Panel extends javax.swing.JFrame {
     /**
      * Creates new form Employee_create
      */
-    public Product_Panel() {
+    public Product_panel() {
         initComponents();
         ProductList();
         show_product();
@@ -844,13 +844,13 @@ public String find(){
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Product_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Product_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Product_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Product_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Product_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Product_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Product_Panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Product_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -864,7 +864,7 @@ public String find(){
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Product_Panel().setVisible(true);
+                new Product_panel().setVisible(true);
             }
         });
     }
