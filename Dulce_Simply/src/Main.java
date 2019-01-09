@@ -903,7 +903,7 @@ Main_variable m = new Main_variable();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void product_panelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_product_panelActionPerformed
-       Product_Panel s = new Product_Panel();
+       Product_panel s = new Product_panel();
        s.setVisible(true);
     }//GEN-LAST:event_product_panelActionPerformed
 
