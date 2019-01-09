@@ -10,6 +10,7 @@
  * @author Yonshisoru
  */
 public class Menu_variable {
+    Promotion_variable p = new Promotion_variable();
 private String id = null;
 private String name = null;
 private int price = 0;

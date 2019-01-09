@@ -133,9 +133,7 @@ public Connection getcon(){
 public String find(){
             String find = "SELECT M_T_ID,M_T_NAME FROM MENU_TYPE";
         try{
-            Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(find);
+        pat = getcon().prepareStatement(find);
         rs = pat.executeQuery(find);
         while(rs.next()){
             if(m_cata_txt.getSelectedItem().toString().equals(rs.getString("M_T_NAME"))){
@@ -145,7 +143,7 @@ public String find(){
         }
         rs.close();
         pat.close();
-        con.close();
+        getcon().close();
         }catch(Exception e){ 
             System.out.print(e);
         } 
