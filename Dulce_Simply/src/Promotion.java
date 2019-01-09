@@ -4,8 +4,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -23,9 +28,14 @@ public class Promotion extends javax.swing.JFrame {
 //---------------------------------------------------
     ArrayList<Menu_variable> Menu_Array = new ArrayList<>();
     ArrayList<Menu_variable> Promotion_Menu_List_Array = new ArrayList<>();
+    ArrayList<Promotion_variable> Promotion_Array = new ArrayList<>();
 //----------------------------------------------------  
     Database d = new Database();
     //----------------------
+    boolean create = true;
+    boolean delete = false;
+    boolean edit = false;
+    //------------------------------
     Connection con = null;
     Statement st = null;
     PreparedStatement pat = null;
@@ -35,15 +45,39 @@ public class Promotion extends javax.swing.JFrame {
     //------------------------
     String output = null;
     String Promotion_id = null;
+    int doubleclick = 0;
     /**
      * Creates new form Promotion
      */
     public Promotion() {
         initComponents();
+        getPromotion();
+        getPromotion_Table();
         getPromotion_ID();
         getMenu();
         setMenu_Combo();
         print();
+    }
+    public void clear(){
+        promotion_name_txt.setText("");
+        Promotion_Menu_List_Array.clear();
+        DefaultTableModel model = (DefaultTableModel)menu_table.getModel();
+        while(model.getRowCount()>0){
+        model.removeRow(0);
+        }
+        String year = ""+(Integer.parseInt(LocalDate.now().toString().substring(0,4))+543);
+        String month = LocalDate.now().toString().substring(5,7);
+        String day = LocalDate.now().toString().substring(8,10);
+        String now = month+"/"+day+"/"+year;
+        try{
+        Calendar cal = Calendar.getInstance();
+        java.util.Date date = new SimpleDateFormat("MM/dd/yy").parse(now);
+        cal.setTime(date);
+        startdate_txt.setSelectedDate(cal);
+        enddate_txt.setSelectedDate(cal);
+        }catch(Exception e){
+        System.out.print(e);
+        }
     }
 public Connection getcon(){
     try{
@@ -90,6 +124,32 @@ public Connection getcon(){
             }
     return output;
    }
+    public String getPromotion_List_ID(){
+       int count=0;
+       max = 0;
+          String sql  ="select PM_ID from PROMOTION_MENU";
+    try{
+    pat = getcon().prepareStatement(sql);
+    rs = pat.executeQuery(sql);
+    while(rs.next()){
+        count++;
+        if(Integer.parseInt(rs.getString("PM_ID"))>max){
+            max = Integer.parseInt(rs.getString("PM_ID"));
+        }
+    }
+    if(count==0){
+            max = 0;
+    }
+    max += 1;
+    output = ""+max;
+    rs.close();
+    pat.close();
+    getcon().close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+    return output;
+   }
   public void getMenu(){
       String getmenu = "SELECT MENU_ID,MENU_NAME,MENU_PRICE,M_T_ID FROM MENU WHERE MENU_DEL = 'N'";
       try{
@@ -102,6 +162,26 @@ public Connection getcon(){
               m.setprice(rs.getInt("MENU_PRICE"));
               m.setcataid(rs.getString("M_T_ID"));
               Menu_Array.add(m);
+          }
+          rs.close();
+          pat.close();
+          getcon().close();
+      }catch(Exception e){
+          
+      }
+  }
+    public void getPromotion(){
+      String getmenu = "SELECT PN_ID,PN_NAME,PN_S_DATE,PN_E_DATE FROM PROMOTION WHERE PN_DEL = 'N'";
+      try{
+          pat = getcon().prepareStatement(getmenu);
+          rs = pat.executeQuery(getmenu);
+          while(rs.next()){
+              Promotion_variable p = new Promotion_variable();
+              p.setid(rs.getString("PN_ID"));
+              p.setname(rs.getString("PN_NAME"));
+              p.setstartdate(rs.getString("PN_S_DATE"));
+              p.setenddate(rs.getString("PN_E_DATE"));
+              Promotion_Array.add(p);
           }
           rs.close();
           pat.close();
@@ -129,6 +209,18 @@ public Connection getcon(){
           row[2] = Promotion_Menu_List_Array.get(i).getprice();
           row[3] = Promotion_Menu_List_Array.get(i).p.getdiscount();
           row[4] = Promotion_Menu_List_Array.get(i).p.gettotal();
+          model.addRow(row);
+      }
+  }
+  public void getPromotion_Table(){
+      ArrayList<Promotion_variable> promotion = Promotion_Array;
+      DefaultTableModel model = (DefaultTableModel)promotion_table.getModel();
+      Object[] row = new Object[4];
+      for(int i =0;i<promotion.size();i++){
+          row[0] = promotion.get(i).getid();
+          row[1] = promotion.get(i).getname();
+          row[2] = promotion.get(i).getstartdate();
+          row[3] = promotion.get(i).getenddate();
           model.addRow(row);
       }
   }
@@ -164,6 +256,7 @@ public Connection getcon(){
         close_btn = new javax.swing.JButton();
         submit_btn = new javax.swing.JButton();
         clear_btn = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1020, 590));
@@ -198,11 +291,16 @@ public Connection getcon(){
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        menu_table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menu_tableMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(menu_table);
@@ -255,7 +353,13 @@ public Connection getcon(){
 
         buttonGroup1.add(create_radio);
         create_radio.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        create_radio.setSelected(true);
         create_radio.setText("สร้าง");
+        create_radio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                create_radioActionPerformed(evt);
+            }
+        });
         getContentPane().add(create_radio, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 425, -1, -1));
 
         buttonGroup1.add(jRadioButton2);
@@ -276,10 +380,23 @@ public Connection getcon(){
         getContentPane().add(close_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 480, 110, 50));
 
         submit_btn.setText("ยืนยัน");
+        submit_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submit_btnActionPerformed(evt);
+            }
+        });
         getContentPane().add(submit_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 480, 110, 50));
 
         clear_btn.setText("เคลียร์");
         getContentPane().add(clear_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 480, 110, 50));
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 30, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -305,11 +422,10 @@ public Connection getcon(){
             }
             JOptionPane.showMessageDialog(null,"คุณได้เลือกเมนูรหัส "+id);
             try{
-               stringdiscount = JOptionPane.showInputDialog(null,"กรุณากรอกส่วนลดในเมนูรหัส "+id+" ด้วยครับ\nกรอกเป็นจำนวนเต็ม 1-100");
+               stringdiscount = JOptionPane.showInputDialog(null,"กรุณากรอกส่วนลด(%)ในเมนูรหัส "+id+" ด้วยครับ\n\nกรอกเปอร์เซนต์เป็นจำนวนเต็ม 0-100\n\nหมายเหตุ:ถ้าหากเมนูไหนฟรีให้กรอกส่วนลด 100%");
                if(stringdiscount == null){
                    throw new NullPointerException();
                }else{
-                   int count = 0;
                    for(int i =1;i<=stringdiscount.length();i++){
                        if((stringdiscount.substring(i-1,i).contains(" ")==false)&&(Character.isDigit(stringdiscount.charAt(i-1))==true)){
                            stringdiscountwithoutspace += stringdiscount.substring(i-1,i);
@@ -321,6 +437,13 @@ public Connection getcon(){
                        throw new NumberFormatException();
                    }else{
                    Menu_variable m = new Menu_variable();
+                   if(Promotion_Menu_List_Array.isEmpty()){
+                       m.p.setmenunumber(0);
+                   }else{
+                       for(Menu_variable mk :Promotion_Menu_List_Array){
+                           m.p.setmenunumber(mk.p.getmenunumber()+1);
+                       }
+                   }
                    m.setid(id);
                    m.setname(name);
                    m.setprice(price);
@@ -333,6 +456,8 @@ public Connection getcon(){
                        model.removeRow(0);
                    }
                    getProduct_Menu_Table();
+                   menu_combo.setSelectedIndex(0);
+                   JOptionPane.showMessageDialog(null,"เพิ่มเมนูเสร็จสิ้น");
                    }
                }
             }catch(NumberFormatException e){
@@ -348,6 +473,97 @@ public Connection getcon(){
             
         }
     }//GEN-LAST:event_menu_add_btnActionPerformed
+
+    private void menu_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_tableMouseClicked
+        System.out.println(menu_table.getSelectedRow());
+        if(doubleclick==menu_table.getSelectedRow()){
+        if(JOptionPane.showConfirmDialog(null,"คุณต้องการลบเมนูรหัส "+menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString(),null,YES_NO_OPTION)==YES_OPTION){
+            /*for(Menu_variable m:Promotion_Menu_List_Array){
+                
+            }*/
+            System.out.println(Promotion_Menu_List_Array.get(menu_table.getSelectedRow()).getid()+" "+Promotion_Menu_List_Array.get(menu_table.getSelectedRow()).getname()+" "+Promotion_Menu_List_Array.get(menu_table.getSelectedRow()).getprice()+" "+Promotion_Menu_List_Array.get(menu_table.getSelectedRow()).p.getdiscount()+" "+Promotion_Menu_List_Array.get(menu_table.getSelectedRow()).p.gettotal());
+            Promotion_Menu_List_Array.remove(menu_table.getSelectedRow()).getid();
+            DefaultTableModel model = (DefaultTableModel)menu_table.getModel();
+            while(model.getRowCount()>0){
+                model.removeRow(0);
+            }
+            getProduct_Menu_Table();
+            JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
+        }else{
+            JOptionPane.showMessageDialog(null,"ยกเลิกรายการ");
+        }
+        }else{
+            doubleclick = menu_table.getSelectedRow();
+        }
+    }//GEN-LAST:event_menu_tableMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        System.out.println("_______________________________________________________________________________");
+        System.out.println("|รหัสเมนู|    |ชื่อเมนู|     |ราคา|      |ส่วนลด(%)|      |ราคาสุทธิ|");
+        System.out.println("-------------------------------------------------------------------------------");
+        for(Menu_variable m:Promotion_Menu_List_Array){
+            System.out.println(m.p.getmenunumber()+"|"+m.getid()+"|    |"+m.getname()+"|      |"+m.getprice()+"|         |"+m.p.getdiscount()+"|         |"+m.p.gettotal()+"|");
+        }
+        System.out.println("_______________________________________________________________________________");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void create_radioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_create_radioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_create_radioActionPerformed
+
+    private void submit_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submit_btnActionPerformed
+        String promotionid = promotionid_txt.getText();
+        String promotionname = null;
+        try{
+        promotionname = promotion_name_txt.getText();
+        if(promotionname.equals("")){
+            throw new NullPointerException();
+        }
+        }catch(NullPointerException e){
+            JOptionPane.showMessageDialog(null,"คุณยังไม่ได้กรอกชื่อโปรโมชั่น\nกรุณาทำรายการใหม่ด้วยครับ");
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String startdate = sdf.format(startdate_txt.getSelectedDate().getTime());
+        String enddate = sdf.format(enddate_txt.getSelectedDate().getTime());
+        String insertpromotion = "INSERT INTO PROMOTION VALUES('"+promotionid+"','"+promotionname+"','"+startdate+"','"+enddate+"','N')";
+        try{
+            System.out.println(insertpromotion);
+            pat = getcon().prepareStatement(insertpromotion);
+            pat.executeUpdate(insertpromotion);
+            pat.close();
+            getcon().close();
+                for(Menu_variable m:Promotion_Menu_List_Array){
+                String insertpromotionlist = "INSERT INTO PROMOTION_MENU VALUE('"+getPromotion_List_ID()+"','"+promotionid+"','"+m.getid()+"','"+((double)m.p.getdiscount()/(double)100)+"','N')";
+                    try{
+                    System.out.println(insertpromotionlist);
+                    pat = getcon().prepareStatement(insertpromotionlist);
+                    pat.executeUpdate(insertpromotionlist);
+                    pat.close();
+                    getcon().close();
+                    }catch(Exception e){
+                        System.err.println(e);
+                    }
+                }
+        Promotion_Array.clear();
+        Promotion_Menu_List_Array.clear();
+        clear();
+        DefaultTableModel menu = (DefaultTableModel)menu_table.getModel();
+        while(menu.getRowCount()>0){
+        menu.removeRow(0);
+        }
+        DefaultTableModel model = (DefaultTableModel)promotion_table.getModel();
+        while(model.getRowCount()>0){
+        model.removeRow(0);
+            }
+        getPromotion();
+        getPromotion_Table();
+        getPromotion_ID();
+        JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิน");
+        }catch(Exception e){
+            
+        }
+        
+    }//GEN-LAST:event_submit_btnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -391,6 +607,7 @@ public Connection getcon(){
     private javax.swing.JRadioButton create_radio;
     private javax.swing.JLabel enddate_label;
     private datechooser.beans.DateChooserCombo enddate_txt;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;

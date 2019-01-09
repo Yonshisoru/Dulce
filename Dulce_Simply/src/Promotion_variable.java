@@ -11,8 +11,11 @@
 public class Promotion_variable {
     private String promotionid;
     private String promotionname;
+    private String startdate;
+    private String enddate;
     private int discount;
     private double total;
+    private int menunumber;
     public String getid(){
         return promotionid;
     }
@@ -25,6 +28,15 @@ public class Promotion_variable {
     public double gettotal(){
         return total;
     }
+    public int getmenunumber(){
+        return menunumber;
+    }
+    public String getstartdate(){
+        return startdate;
+    }
+    public String getenddate(){
+        return enddate;
+    }
     public void setid(String id){
         this.promotionid = id;
     }
@@ -36,5 +48,14 @@ public class Promotion_variable {
     }
     public void settotal(double total){
         this.total = total;
+    }
+    public void setmenunumber(int number){
+        this.menunumber = number;
+    }
+    public void setstartdate(String date){
+        this.startdate = date;
+    }
+        public void setenddate(String date){
+        this.enddate = date;
     }
 }
