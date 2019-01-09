@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 public class Promotion extends javax.swing.JFrame {
 //---------------------------------------------------
     ArrayList<Menu_variable> Menu_Array = new ArrayList<>();
+    ArrayList<Menu_variable> Promotion_Menu_List_Array = new ArrayList<>();
 //----------------------------------------------------  
     Database d = new Database();
     //----------------------
@@ -117,6 +120,18 @@ public Connection getcon(){
         System.out.println(m.getid()+" "+m.getname());
     }
 }
+  public void getProduct_Menu_Table(){
+      DefaultTableModel model = (DefaultTableModel)menu_table.getModel();
+      Object[] row = new Object[5];
+      for(int i =0;i<Promotion_Menu_List_Array.size();i++){
+          row[0] = Promotion_Menu_List_Array.get(i).getid();
+          row[1] = Promotion_Menu_List_Array.get(i).getname();
+          row[2] = Promotion_Menu_List_Array.get(i).getprice();
+          row[3] = Promotion_Menu_List_Array.get(i).p.getdiscount();
+          row[4] = Promotion_Menu_List_Array.get(i).p.gettotal();
+          model.addRow(row);
+      }
+  }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -227,9 +242,15 @@ public Connection getcon(){
         menu_label.setText("เมนู:");
         getContentPane().add(menu_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, -1, -1));
 
+        menu_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { ">>Choose Menu<<" }));
         getContentPane().add(menu_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 160, 30));
 
         menu_add_btn.setText("Add");
+        menu_add_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_add_btnActionPerformed(evt);
+            }
+        });
         getContentPane().add(menu_add_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 130, 60, 30));
 
         buttonGroup1.add(create_radio);
@@ -262,6 +283,71 @@ public Connection getcon(){
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void menu_add_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_add_btnActionPerformed
+        String id = null;
+        String stringdiscount = null;
+        String stringdiscountwithoutspace = "";
+        int discount = 0;
+        String name = null;
+        int price = 0;
+        double total = 0.0;
+        if(menu_combo.getSelectedIndex()==0){
+            
+        }else{
+            for(Menu_variable m:Menu_Array){
+                if(m.getname().equals(menu_combo.getSelectedItem().toString())){
+                    id = m.getid();
+                    name = m.getname();
+                    price = m.getprice();
+                    break;
+                }
+            }
+            JOptionPane.showMessageDialog(null,"คุณได้เลือกเมนูรหัส "+id);
+            try{
+               stringdiscount = JOptionPane.showInputDialog(null,"กรุณากรอกส่วนลดในเมนูรหัส "+id+" ด้วยครับ\nกรอกเป็นจำนวนเต็ม 1-100");
+               if(stringdiscount == null){
+                   throw new NullPointerException();
+               }else{
+                   int count = 0;
+                   for(int i =1;i<=stringdiscount.length();i++){
+                       if((stringdiscount.substring(i-1,i).contains(" ")==false)&&(Character.isDigit(stringdiscount.charAt(i-1))==true)){
+                           stringdiscountwithoutspace += stringdiscount.substring(i-1,i);
+                       }
+                   }
+                   System.out.println(stringdiscountwithoutspace);
+                   discount = Integer.parseInt(stringdiscountwithoutspace);
+                   if(discount>100){
+                       throw new NumberFormatException();
+                   }else{
+                   Menu_variable m = new Menu_variable();
+                   m.setid(id);
+                   m.setname(name);
+                   m.setprice(price);
+                   m.p.setdiscount(discount);
+                   System.out.println(price+"-"+((double)price*((double)discount/(double)100)));
+                   m.p.settotal((double)price-((double)price*((double)discount/(double)100)));
+                   Promotion_Menu_List_Array.add(m);
+                   DefaultTableModel model = (DefaultTableModel)menu_table.getModel();
+                   while(model.getRowCount()>0){
+                       model.removeRow(0);
+                   }
+                   getProduct_Menu_Table();
+                   }
+               }
+            }catch(NumberFormatException e){
+                System.err.println(e);
+                JOptionPane.showMessageDialog(null,"คุณกรอกข้อมูลไม่ถูกต้อง\nยกเลิกรายการ");
+                menu_combo.setSelectedIndex(0);
+            }
+            catch(NullPointerException e){
+                System.err.println(e);
+                JOptionPane.showMessageDialog(null,"คุณยังไม่ได้กรอกข้อมูล\nยกเลิกรายการ");
+                menu_combo.setSelectedIndex(0);
+            }
+            
+        }
+    }//GEN-LAST:event_menu_add_btnActionPerformed
 
     /**
      * @param args the command line arguments
