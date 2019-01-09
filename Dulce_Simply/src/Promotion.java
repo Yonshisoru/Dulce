@@ -1,3 +1,11 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,14 +18,105 @@
  * @author Yonshisoru
  */
 public class Promotion extends javax.swing.JFrame {
-
+//---------------------------------------------------
+    ArrayList<Menu_variable> Menu_Array = new ArrayList<>();
+//----------------------------------------------------  
+    Database d = new Database();
+    //----------------------
+    Connection con = null;
+    Statement st = null;
+    PreparedStatement pat = null;
+    ResultSet rs = null;
+    //------------------------
+    int max = 0;
+    //------------------------
+    String output = null;
+    String Promotion_id = null;
     /**
      * Creates new form Promotion
      */
     public Promotion() {
         initComponents();
+        getPromotion_ID();
+        getMenu();
+        setMenu_Combo();
+        print();
     }
+public Connection getcon(){
+    try{
+        Class.forName("com.mysql.jdbc.Driver");
+        con = DriverManager.getConnection(d.url(),d.username(),d.password());
+    }catch(Exception e){
+        System.err.println("Cannot connect to server");
+        throw new RuntimeException(e);
+    }
+    return con;
+}
 
+  public String getPromotion_ID(){
+       int count=0;
+       max = 0;
+          String sql  ="select PN_ID from PROMOTION";
+    try{
+    pat = getcon().prepareStatement(sql);
+    rs = pat.executeQuery(sql);
+    while(rs.next()){
+        count++;
+        if(Integer.parseInt(rs.getString("PN_ID").substring(1,4))>max){
+            max = Integer.parseInt(rs.getString("PN_ID").substring(1,4));
+        }
+    }
+    if(count==0){
+            max = 0;
+    }
+    max += 1;
+    if(max<10){
+        output = "P00"+max;
+    }else if(max<100){
+        output = "P0"+max;
+    }else{
+        output = "P"+max;
+    }
+    promotionid_txt.setText(output);
+    Promotion_id = output;
+    rs.close();
+    pat.close();
+    getcon().close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+    return output;
+   }
+  public void getMenu(){
+      String getmenu = "SELECT MENU_ID,MENU_NAME,MENU_PRICE,M_T_ID FROM MENU WHERE MENU_DEL = 'N'";
+      try{
+          pat = getcon().prepareStatement(getmenu);
+          rs = pat.executeQuery(getmenu);
+          while(rs.next()){
+              Menu_variable m = new Menu_variable();
+              m.setid(rs.getString("MENU_ID"));
+              m.setname(rs.getString("MENU_NAME"));
+              m.setprice(rs.getInt("MENU_PRICE"));
+              m.setcataid(rs.getString("M_T_ID"));
+              Menu_Array.add(m);
+          }
+          rs.close();
+          pat.close();
+          getcon().close();
+      }catch(Exception e){
+          
+      }
+  }
+  public void setMenu_Combo(){
+      for(Menu_variable m:Menu_Array){
+          menu_combo.addItem(m.getname());
+      }
+  }
+  public void print(){
+    for(Menu_variable m:Menu_Array){
+        System.out.println(m.getid()+" "+m.getname());
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,18 +126,139 @@ public class Promotion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        promotion_table = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        menu_table = new javax.swing.JTable();
+        promotion_name_label = new javax.swing.JLabel();
+        promotion_name_txt = new javax.swing.JTextField();
+        promotionid_txt = new javax.swing.JTextField();
+        promotionid_label = new javax.swing.JLabel();
+        startdate_txt = new datechooser.beans.DateChooserCombo();
+        enddate_txt = new datechooser.beans.DateChooserCombo();
+        enddate_label = new javax.swing.JLabel();
+        startdate_label = new javax.swing.JLabel();
+        menu_label = new javax.swing.JLabel();
+        menu_combo = new javax.swing.JComboBox<>();
+        menu_add_btn = new javax.swing.JButton();
+        create_radio = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jRadioButton3 = new javax.swing.JRadioButton();
+        jLabel6 = new javax.swing.JLabel();
+        close_btn = new javax.swing.JButton();
+        submit_btn = new javax.swing.JButton();
+        clear_btn = new javax.swing.JButton();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1020, 590));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        promotion_table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "รหัสโปรโมชั่น", "ชื่อโปรโมชั่น", "วันเริ่มต้น", "วันสิ้นสุด"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(promotion_table);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 47, -1, 410));
+
+        menu_table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "รหัสเมนู", "ชื่อเมนู", "ราคา", "ส่วนลด %", "ราคาสุทธิ"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(menu_table);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 490, 200));
+
+        promotion_name_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        promotion_name_label.setText("ชื่อโปรโมชั่น:");
+        getContentPane().add(promotion_name_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
+
+        promotion_name_txt.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        getContentPane().add(promotion_name_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 190, 30));
+
+        promotionid_txt.setEditable(false);
+        promotionid_txt.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        getContentPane().add(promotionid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 30, 70, 30));
+
+        promotionid_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        promotionid_label.setText("รหัสโปรโมชั่น:");
+        getContentPane().add(promotionid_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
+
+        startdate_txt.setFieldFont(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 14));
+        getContentPane().add(startdate_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 390, -1, -1));
+
+        enddate_txt.setFieldFont(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 14));
+        getContentPane().add(enddate_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 390, -1, -1));
+
+        enddate_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        enddate_label.setText("วันสิ้นสุด:");
+        getContentPane().add(enddate_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 390, -1, -1));
+
+        startdate_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        startdate_label.setText("วันเริ่มต้น:");
+        getContentPane().add(startdate_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 390, -1, -1));
+
+        menu_label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        menu_label.setText("เมนู:");
+        getContentPane().add(menu_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, -1, -1));
+
+        getContentPane().add(menu_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 160, 30));
+
+        menu_add_btn.setText("Add");
+        getContentPane().add(menu_add_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 130, 60, 30));
+
+        buttonGroup1.add(create_radio);
+        create_radio.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        create_radio.setText("สร้าง");
+        getContentPane().add(create_radio, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 425, -1, -1));
+
+        buttonGroup1.add(jRadioButton2);
+        jRadioButton2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jRadioButton2.setText("แก้ไข");
+        getContentPane().add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 425, -1, -1));
+
+        buttonGroup1.add(jRadioButton3);
+        jRadioButton3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jRadioButton3.setText("ลบ");
+        getContentPane().add(jRadioButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 425, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel6.setText("ฟังก์ชั่น");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
+
+        close_btn.setText("ปิด");
+        getContentPane().add(close_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 480, 110, 50));
+
+        submit_btn.setText("ยืนยัน");
+        getContentPane().add(submit_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 480, 110, 50));
+
+        clear_btn.setText("เคลียร์");
+        getContentPane().add(clear_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 480, 110, 50));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -79,5 +299,28 @@ public class Promotion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton clear_btn;
+    private javax.swing.JButton close_btn;
+    private javax.swing.JRadioButton create_radio;
+    private javax.swing.JLabel enddate_label;
+    private datechooser.beans.DateChooserCombo enddate_txt;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton menu_add_btn;
+    private javax.swing.JComboBox<String> menu_combo;
+    private javax.swing.JLabel menu_label;
+    private javax.swing.JTable menu_table;
+    private javax.swing.JLabel promotion_name_label;
+    private javax.swing.JTextField promotion_name_txt;
+    private javax.swing.JTable promotion_table;
+    private javax.swing.JLabel promotionid_label;
+    private javax.swing.JTextField promotionid_txt;
+    private javax.swing.JLabel startdate_label;
+    private datechooser.beans.DateChooserCombo startdate_txt;
+    private javax.swing.JButton submit_btn;
     // End of variables declaration//GEN-END:variables
 }
