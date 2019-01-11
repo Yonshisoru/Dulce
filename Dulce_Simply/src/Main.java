@@ -182,7 +182,6 @@ Main_variable m = new Main_variable();
         Claim_btn = new javax.swing.JButton();
         jButton24 = new javax.swing.JButton();
         Claim_receive = new javax.swing.JButton();
-        promotion_btn = new javax.swing.JButton();
         Employee_panel = new javax.swing.JPanel();
         Heading_INV1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -299,16 +298,16 @@ Main_variable m = new Main_variable();
         Heading_MO.setText("การออร์เดอร์");
         Menu_Ordering.add(Heading_MO, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 30, -1, -1));
 
-        jButton2.setText("Menu Ordering");
+        jButton2.setText("ออเดอร์");
         Menu_Ordering.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 150, 160, 90));
 
-        jButton11.setText("Table");
+        jButton11.setText("ดูสถานะโต๊ะ");
         Menu_Ordering.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, 180, 90));
 
-        jButton12.setText("Promotion");
+        jButton12.setText("จัดการโปรโมชั่น");
         Menu_Ordering.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 150, 170, 90));
 
-        jButton3.setText("Payment");
+        jButton3.setText("จ่ายบิล");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -316,10 +315,10 @@ Main_variable m = new Main_variable();
         });
         Menu_Ordering.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, 180, 90));
 
-        jButton13.setText("Report");
+        jButton13.setText("รายงาน");
         Menu_Ordering.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 280, 170, 100));
 
-        jButton14.setText("History");
+        jButton14.setText("ประวัติการสั่ง");
         Menu_Ordering.add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 290, 160, 90));
 
         ordering_management.setText("Ordering management");
@@ -488,7 +487,7 @@ Main_variable m = new Main_variable();
                 Product_Orderview_btnActionPerformed(evt);
             }
         });
-        Inventory_panel.add(Product_Orderview_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 210, -1, 70));
+        Inventory_panel.add(Product_Orderview_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, -1, 70));
 
         Product_OrderReceive_btn.setText("การรับสินค้าจากการสั่ง");
         Product_OrderReceive_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -496,7 +495,7 @@ Main_variable m = new Main_variable();
                 Product_OrderReceive_btnActionPerformed(evt);
             }
         });
-        Inventory_panel.add(Product_OrderReceive_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 210, 150, 70));
+        Inventory_panel.add(Product_OrderReceive_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 210, 150, 70));
 
         Waste_btn.setText("จัดการของเสีย");
         Inventory_panel.add(Waste_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, 150, 70));
@@ -515,7 +514,7 @@ Main_variable m = new Main_variable();
                 Product_Order_btnActionPerformed(evt);
             }
         });
-        Inventory_panel.add(Product_Order_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, 150, 70));
+        Inventory_panel.add(Product_Order_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 120, 150, 70));
 
         Product_OrderPayment_btn.setText("<html><center>การจ่ายเงินสั่งอุปกรณ์<br>และวัตถุดิบ</center></br></html>");
         Product_OrderPayment_btn.setActionCommand("");
@@ -524,7 +523,7 @@ Main_variable m = new Main_variable();
                 Product_OrderPayment_btnActionPerformed(evt);
             }
         });
-        Inventory_panel.add(Product_OrderPayment_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 210, 150, 70));
+        Inventory_panel.add(Product_OrderPayment_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 210, 150, 70));
 
         Stock_btn.setText("การนำเข้าสินค้า");
         Stock_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -532,7 +531,7 @@ Main_variable m = new Main_variable();
                 Stock_btnActionPerformed(evt);
             }
         });
-        Inventory_panel.add(Stock_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 300, 150, 60));
+        Inventory_panel.add(Stock_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 210, 150, 60));
 
         Claim_btn.setText("<html><center>การเคลมอุปกรณ์<br>และวัตถุดิบ</center></br></html>");
         Claim_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -556,15 +555,7 @@ Main_variable m = new Main_variable();
                 Claim_receiveActionPerformed(evt);
             }
         });
-        Inventory_panel.add(Claim_receive, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 300, 150, 60));
-
-        promotion_btn.setText("จัดการโปรโมชั่น");
-        promotion_btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                promotion_btnActionPerformed(evt);
-            }
-        });
-        Inventory_panel.add(promotion_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 120, 150, 70));
+        Inventory_panel.add(Claim_receive, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 300, 150, 60));
 
         Employee_panel.setBackground(new java.awt.Color(254, 255, 239));
 
@@ -1140,11 +1131,6 @@ if ((s != null) && (s.length() > 0)) {
         crp.setVisible(true);
     }//GEN-LAST:event_Claim_receiveActionPerformed
 
-    private void promotion_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_promotion_btnActionPerformed
-        Promotion p = new Promotion();
-        p.setVisible(true);
-    }//GEN-LAST:event_promotion_btnActionPerformed
-
     private void Claim_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Claim_btnActionPerformed
         Claim_panel c = new Claim_panel();
         c.setVisible(true);
@@ -1261,7 +1247,6 @@ if ((s != null) && (s.length() > 0)) {
     private javax.swing.JButton ordering_management;
     private javax.swing.JButton preenrolled;
     private javax.swing.JButton product_panel;
-    private javax.swing.JButton promotion_btn;
     private javax.swing.JLabel showname;
     private javax.swing.JButton view_leave;
     // End of variables declaration//GEN-END:variables
