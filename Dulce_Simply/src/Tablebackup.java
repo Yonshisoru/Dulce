@@ -9,12 +9,12 @@
  *
  * @author Yonshisoru
  */
-public class Table extends javax.swing.JFrame {
+public class Tablebackup extends javax.swing.JFrame {
 
     /**
      * Creates new form Table
      */
-    public Table() {
+    public Tablebackup() {
         initComponents();
     }
 
