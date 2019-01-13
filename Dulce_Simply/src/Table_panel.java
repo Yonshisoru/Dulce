@@ -29,8 +29,10 @@ class table{
         this.button = button;
     }
 }
-public class Table_panel extends JFrame
+
+public class Table_panel extends javax.swing.JFrame
 {
+    Table_variable tv = new Table_variable();
     static ArrayList<table> Table_Array = new ArrayList<>();
     static ArrayList<JButton> btn = new ArrayList<>();
     private static final String INITIAL_TEXT = "Nothing Pressed";
@@ -49,6 +51,11 @@ public class Table_panel extends JFrame
     private String url = "jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8";
     private String username = "root";
     private String password ="";
+    public Table_panel(){
+        Table_Array.clear();
+        btn.clear();
+        createAndDisplayGUI();
+    }
     public String url(){
         return url;
     }
@@ -107,10 +114,6 @@ public class Table_panel extends JFrame
 
         }
     }
-    public Table_panel()
-    {
-        super("");
-    }
     public JPanel setbuttonpanel(){
         JPanel buttonPanel = new JPanel(new GridLayout());
         buttonPanel.setLayout(new GridLayout(gridSize, gridSize, 25, 25));
@@ -127,6 +130,7 @@ public class Table_panel extends JFrame
             button.addActionListener(new ActionListener()
             {
                 public void actionPerformed(ActionEvent ae) {
+                    if(tv.getview()==false){
                     JButton but = (JButton) ae.getSource();
                     but.setBackground(Color.RED);
                     for (table t : Table_Array) {
@@ -136,6 +140,7 @@ public class Table_panel extends JFrame
                     }
                     JOptionPane.showMessageDialog(null,"EIEI");
                 }
+                    }
             });
             buttonPanel.add(button);
             e.setbutton(button);
@@ -196,7 +201,8 @@ public class Table_panel extends JFrame
             {
                 close();
                 Table_Array.clear();
-                new Table_panel().createAndDisplayGUI();
+                btn.clear();
+                new Table_panel();
                 /*for(table t:Table_Array){
                     if(t.getstatus().equals("T")){
                         JButton eiei = t.getbtn();
@@ -237,15 +243,35 @@ public class Table_panel extends JFrame
 
     public static void main(String[] args)
     {
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Table_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Table_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Table_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Table_panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
         if (args.length > 0)
         {
             gridSize = Integer.parseInt(args[0]);
         }
-        SwingUtilities.invokeLater(new Runnable()
+        SwingUtilities
+        /*java.awt.EventQueue*/.invokeLater(new Runnable()
         {
             public void run()
             {
-                new Table_panel().createAndDisplayGUI();
+                Table_variable tv = new Table_variable();
+                Table_panel p = new Table_panel();
+                tv.setframe(p);
+                
             }
         });
     }
