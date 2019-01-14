@@ -69,6 +69,7 @@ public class Menu_panel extends javax.swing.JFrame {
      */
     public Menu_panel() {
         initComponents();
+        getProduct_Unit();
         getMenu_List();
         fillMenu_List();
         getProduct();
@@ -76,7 +77,6 @@ public class Menu_panel extends javax.swing.JFrame {
         getIngredient();
         MenuList();
         show_product();
-        getProduct_Unit();
         id();
     }
     public void clear(){
@@ -253,7 +253,7 @@ public String find(){
   }
     void getIngredient(){
       try{
-        String sql = "SELECT ING_NUMBER,MENU_ID,PRO_ID,PRO_NAME,PRO_UNITS_TYPE_NAME,PRO_UNITS_TYPE,ING_UNITS FROM (INGREDIENT NATURAL JOIN PRODUCT) NATURAL JOIN PRODUCT_UNIT_LIST WHERE ING_DEL = 'N' ORDER BY PRO_ID";
+        String sql = "SELECT ING_NUMBER,MENU_ID,PRO_ID,PRO_NAME,PRO_UNITS_TYPE,PRO_UNITS_TYPE_NAME,PRO_UNITS_TYPE,ING_UNITS FROM (INGREDIENT NATURAL JOIN PRODUCT) NATURAL JOIN PRODUCT_UNIT_LIST WHERE ING_DEL = 'N' ORDER BY PRO_ID";
         st = getcon().createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
@@ -261,6 +261,7 @@ public String find(){
             p.setIngredient_ID(rs.getString("ING_NUMBER"));
             p.m.setid(rs.getString("MENU_ID"));
             p.setname(rs.getString("PRO_NAME"));
+            p.setunits_type(rs.getString("PRO_UNITS_TYPE"));
             p.setunits_type_name(rs.getString("PRO_UNITS_TYPE_NAME"));
             p.setid(rs.getString("PRO_ID"));
             p.setunit(rs.getDouble("ING_UNITS"));
@@ -410,6 +411,10 @@ public String find(){
         jLabel16 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1400, 850));
@@ -677,6 +682,38 @@ public String find(){
             }
         });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 80, -1, -1));
+
+        jButton4.setText("jButton4");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 70, -1, -1));
+
+        jButton6.setText("jButton6");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, -1, -1));
+
+        jButton7.setText("jButton7");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 90, -1, -1));
+
+        jButton8.setText("jButton8");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 160, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1092,7 +1129,7 @@ public String find(){
             m_price_txt.setText(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),2).toString());
             productusing.clear();
             DefaultTableModel model = (DefaultTableModel)product_table.getModel();
-            while(model.getRowCount()<0){
+            while(model.getRowCount()>0){
                 model.removeRow(0);
             }
             Menu_edit_id = menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString();
@@ -1124,6 +1161,7 @@ public String find(){
                     pv.setunit(p.getunit());
                     pv.m.setid(p.m.getid());
                     pv.setunits_type(p.getunit_type());
+                    pv.setunits_type_name(p.getunit_type_name());
                     productusing.add(pv);
                 }
             }
@@ -1220,8 +1258,12 @@ public String find(){
                    p.setname(productarray.get(i).getname());
                    p.setunits_type(productarray.get(i).getunit_type());
                    for(Product_variable pv:Product_Unit_Array){
+                       System.out.println(p.getunit_type());
+                       System.err.println(pv.getunit_type());
                        if(p.getunit_type().equals(pv.getunit_type())){
+                           System.out.println("eiei");
                            p.setunits_type_name(pv.getunit_type_name());
+                           break;
                        }
                    }
                    p.setunit(units);
@@ -1309,6 +1351,32 @@ public String find(){
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        for(Product_variable pv:productusing){
+            System.out.println(pv.getid()+" "+pv.getname()+" "+pv.getunit_type()+" "+pv.getunit_type_name());
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        for(Product_variable pv:Product_Unit_Array){
+            System.out.println(pv.getunit_type()+" "+pv.getunit_type_name());
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        for(Product_variable pv:productarray){
+            System.out.println(pv.getid()+" "+pv.getname()+" "+pv.getunit_type());
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        DefaultTableModel model = (DefaultTableModel)product_table.getModel();
+            while(model.getRowCount()>0){
+                model.removeRow(0);
+        }
+        productusing();
+    }//GEN-LAST:event_jButton8ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1365,7 +1433,11 @@ public String find(){
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
