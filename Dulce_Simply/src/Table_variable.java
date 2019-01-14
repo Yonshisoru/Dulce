@@ -12,18 +12,26 @@ import javax.swing.JFrame;
  * @author Yonshisoru
  */
 public class Table_variable {
-  static boolean view = false;
-  static JFrame mainframe = null;
+  static private boolean view = false;
+  static private JFrame mainframe = null;
+  static private String tableid = null;
    public boolean getview(){
        return this.view;
    }
    public JFrame getframe(){
        return this.mainframe;
    }
+   public String getid(){
+       return tableid;
+   }
    public void setview(Boolean view){
        this.view = view;
    }
    public void setframe(JFrame frame){
        this.mainframe = frame;
+   }
+   public void setid(String id){
+       System.err.println(id);
+       this.tableid = id;
    }
 }

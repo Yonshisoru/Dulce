@@ -1,3 +1,6 @@
+
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,12 +13,14 @@
  * @author Yonshisoru
  */
 public class Table extends javax.swing.JFrame {
-
+Table_variable t= new Table_variable();
     /**
      * Creates new form Table
      */
     public Table() {
         initComponents();
+        JOptionPane.showMessageDialog(null,t.getid());
+        jLabel5.setText(t.getid());    
     }
 
     /**
@@ -63,6 +68,7 @@ public class Table extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(610, 600));
@@ -308,10 +314,11 @@ public class Table extends javax.swing.JFrame {
 
         getContentPane().add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 230, -1, -1));
 
-        jPanel11.setBackground(new java.awt.Color(0, 255, 0));
+        jPanel11.setBackground(new java.awt.Color(255, 255, 255));
 
         jButton1.setFont(new java.awt.Font("Tekton Pro", 0, 36)); // NOI18N
         jButton1.setText("1");
+        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton1.setContentAreaFilled(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -475,6 +482,9 @@ public class Table extends javax.swing.JFrame {
         jLabel4.setText("หน้าต่อไป");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 490, -1, -1));
 
+        jLabel5.setText("jLabel5");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 60, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -549,7 +559,7 @@ public class Table extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -593,6 +603,7 @@ public class Table extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;

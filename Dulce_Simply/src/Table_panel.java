@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 
-class table{
+class table_v{
     private String tablenumber;
     private String status;
     private JButton button;
@@ -32,8 +32,9 @@ class table{
 
 public class Table_panel extends javax.swing.JFrame
 {
+    Database d = new Database();
     Table_variable tv = new Table_variable();
-    static ArrayList<table> Table_Array = new ArrayList<>();
+    static ArrayList<table_v> Table_Array = new ArrayList<>();
     static ArrayList<JButton> btn = new ArrayList<>();
     private static final String INITIAL_TEXT = "Nothing Pressed";
     private static final String ADDED_TEXT = " was Pressed";
@@ -55,6 +56,7 @@ public class Table_panel extends javax.swing.JFrame
         Table_Array.clear();
         btn.clear();
         createAndDisplayGUI();
+
     }
     public String url(){
         return url;
@@ -83,7 +85,7 @@ public class Table_panel extends javax.swing.JFrame
     public Connection getcon(){
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            return DriverManager.getConnection(url(),username(),password());
+            return DriverManager.getConnection(d.url(),d.username(),d.password());
         }catch(Exception e){
             System.out.println(e.getMessage());
             System.out.println("Didn';t connect");
@@ -95,11 +97,11 @@ public class Table_panel extends javax.swing.JFrame
         gridSize = 1;
         String sql = "SELECT T_ID,T_STATUS FROM TABLEZ WHERE T_DEL = 'N'";
         try{
-            pat = getcon().prepareCall(sql);
-            rs = pat.executeQuery();
+            pat = getcon().prepareStatement(sql);
+            rs = pat.executeQuery(sql);
             while(rs.next()){
                 count++;
-                table t = new table();
+                table_v t = new table_v();
                 t.settablenumber(rs.getString("T_ID"));
                 t.setstatus(rs.getString("T_STATUS"));
                 Table_Array.add(t);
@@ -117,10 +119,9 @@ public class Table_panel extends javax.swing.JFrame
     public JPanel setbuttonpanel(){
         JPanel buttonPanel = new JPanel(new GridLayout());
         buttonPanel.setLayout(new GridLayout(gridSize, gridSize, 25, 25));
-        buttonPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
-        for(table e:Table_Array){
+        for(table_v e:Table_Array){
             JButton button = new JButton(e.gettablenumber());
-            button.setPreferredSize(new Dimension(50,50));
+            button.setPreferredSize(new Dimension(25,25));
             if(e.getstatus().equals("Y")){
                 button.setBackground(Color.RED);
             }else{
@@ -133,9 +134,16 @@ public class Table_panel extends javax.swing.JFrame
                     if(tv.getview()==false){
                     JButton but = (JButton) ae.getSource();
                     but.setBackground(Color.RED);
-                    for (table t : Table_Array) {
+                    for (table_v t : Table_Array) {
                         if (but.getText().equals(t.gettablenumber())) {
                             settable(but.getText());
+                            but.setSelected(false);
+                            System.out.println(but.getText());
+                            Table_variable globalid = new Table_variable();
+                            globalid.setid(t.gettablenumber());
+                            Table tt = new Table();
+                            tt.setVisible(true);
+                            close();
                         }
                     }
                     JOptionPane.showMessageDialog(null,"EIEI");
@@ -180,7 +188,7 @@ public class Table_panel extends javax.swing.JFrame
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel contentPane = new JPanel();
-        contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 30));
+        contentPane.setLayout(new BorderLayout(10,30));
         contentPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
 
         /*JPanel contentPane2 = new JPanel();
@@ -191,9 +199,12 @@ public class Table_panel extends javax.swing.JFrame
         contentPane.add(contentPane2);*/
 
 
-        JPanel bottomPanel = new JPanel();
+        JPanel bottomPanel = new JPanel(new GridLayout(1,0,10,0));
         //leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         JPanel buttonLeftPanel = new JPanel();
+        JLabel text1 = new JLabel("<html><u><b><font color=red>สถานะสีแดงคือโต๊ะที่ไม่พร้อมใช้งาน</font></b></u><br><u><b><font color=green>สถานะสีเขียวคือโต๊ะที่พร้อมใช้งาน</font></b></u></html>",SwingConstants.LEFT);
+        //text1.setForeground(Color.RED);
+        bottomPanel.add(text1);
         resetButton = new JButton("รีเฟรช");
         resetButton.addActionListener(new ActionListener()
         {
@@ -231,9 +242,13 @@ public class Table_panel extends javax.swing.JFrame
         buttonLeftPanel.add(resetButton);
         bottomPanel.add(buttonLeftPanel);
         bottomPanel.setBounds(500,300,20,20);
-
-        contentPane.add(setbuttonpanel());
-        contentPane.add(bottomPanel);
+        JPanel toppanel = new JPanel();
+        JLabel title = new JLabel("หน้าต่างเลือกโต๊ะ",SwingConstants.CENTER);
+        title.setFont(new java.awt.Font("Tekton Pro", 0, 36));
+        toppanel.add(title);
+        contentPane.add(title,BorderLayout.PAGE_START);
+        contentPane.add(setbuttonpanel(),BorderLayout.CENTER);
+        contentPane.add(bottomPanel,BorderLayout.PAGE_END);
 
         setContentPane(contentPane);
         pack();
@@ -245,7 +260,7 @@ public class Table_panel extends javax.swing.JFrame
     {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
