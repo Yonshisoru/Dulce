@@ -14,6 +14,8 @@ public class Menu_variable {
 private String id = null;
 private String name = null;
 private int price = 0;
+private int units = 0;
+private int menu_number = 0;
 private String cataname = null;
 private String cataid = null;
 static String Global_Menu_ID = null;
@@ -29,6 +31,12 @@ public String getname(){
 }
 public int getprice(){
     return this.price;
+}
+public int getunits(){
+    return this.units;
+}
+public int getmenu_number(){
+    return this.menu_number;
 }
 public String getcataname(){
     return this.cataname;
@@ -47,6 +55,12 @@ public void setname(String name){
 }
 public void setprice(int price){
     this.price = price;
+}
+public void setunits(int units){
+    this.units = units;
+}
+public void setmenu_number(int number){
+    this.menu_number= number;
 }
 public void setcataname(String cataname){
     this.cataname = cataname;

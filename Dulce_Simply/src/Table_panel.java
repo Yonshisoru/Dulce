@@ -70,18 +70,6 @@ public class Table_panel extends javax.swing.JFrame
     public void close(){
         this.setVisible(false);
     }
-    public void settable(String s){
-        String sql = "UPDATE TABLEZ SET T_STATUS = 'Y' WHERE T_ID = '"+s+"'";
-        System.out.println(sql);
-        try{
-            pat = getcon().prepareCall(sql);
-            pat.executeUpdate(sql);
-            pat.close();
-            getcon().close();
-        }catch(Exception e){
-            System.out.println(e);
-        }
-    }
     public Connection getcon(){
         try{
             Class.forName("com.mysql.jdbc.Driver");
@@ -136,17 +124,22 @@ public class Table_panel extends javax.swing.JFrame
                     but.setBackground(Color.RED);
                     for (table_v t : Table_Array) {
                         if (but.getText().equals(t.gettablenumber())) {
-                            settable(but.getText());
+                            if(t.getstatus().equals("N")){
                             but.setSelected(false);
                             System.out.println(but.getText());
                             Table_variable globalid = new Table_variable();
                             globalid.setid(t.gettablenumber());
-                            Table tt = new Table();
-                            tt.setVisible(true);
+                            Customer_Panel cp = new Customer_Panel();
+                            cp.setVisible(true);
                             close();
+                            break;
+                            }else{
+                               JOptionPane.showMessageDialog(null,"This table is unavailable"); 
+                            break;
+                            }
+                        }else{
                         }
                     }
-                    JOptionPane.showMessageDialog(null,"EIEI");
                 }
                     }
             });
@@ -199,7 +192,7 @@ public class Table_panel extends javax.swing.JFrame
         contentPane.add(contentPane2);*/
 
 
-        JPanel bottomPanel = new JPanel(new GridLayout(1,0,10,0));
+        JPanel bottomPanel = new JPanel(new GridLayout(1,0,30,0));
         //leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         JPanel buttonLeftPanel = new JPanel();
         JLabel text1 = new JLabel("<html><u><b><font color=red>สถานะสีแดงคือโต๊ะที่ไม่พร้อมใช้งาน</font></b></u><br><u><b><font color=green>สถานะสีเขียวคือโต๊ะที่พร้อมใช้งาน</font></b></u></html>",SwingConstants.LEFT);
@@ -239,7 +232,18 @@ public class Table_panel extends javax.swing.JFrame
                 }*/
             }
         });
+        resetButton.setPreferredSize(new Dimension(100,40));
         buttonLeftPanel.add(resetButton);
+        JButton closeButton = new JButton("ปิด");
+        closeButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ae)
+            {
+                close();
+            }
+        });
+        closeButton.setPreferredSize(new Dimension(100,40));
+        buttonLeftPanel.add(closeButton);
         bottomPanel.add(buttonLeftPanel);
         bottomPanel.setBounds(500,300,20,20);
         JPanel toppanel = new JPanel();

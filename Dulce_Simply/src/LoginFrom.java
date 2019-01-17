@@ -142,7 +142,6 @@ public class LoginFrom extends javax.swing.JFrame {
         processlogin_label.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
         getContentPane().add(processlogin_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 290, 40, -1));
 
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Yonshisoru\\Documents\\GitHubProject\\Dulce\\Dulce_Simply\\picture\\1.jpg")); // NOI18N
         jLabel4.setText("jLabel4");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, -10, 530, 370));
 

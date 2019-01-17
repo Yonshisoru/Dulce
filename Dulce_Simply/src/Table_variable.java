@@ -15,6 +15,9 @@ public class Table_variable {
   static private boolean view = false;
   static private JFrame mainframe = null;
   static private String tableid = null;
+  Table_variable(){
+      this.tableid = "55";
+  }
    public boolean getview(){
        return this.view;
    }
