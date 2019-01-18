@@ -443,7 +443,7 @@ public Connection getcon(){
                count++;
                if(stock_table.getModel().getValueAt(stock_table.getSelectedRow(),1).toString().equals(p.getname())){
                    product_combo.setSelectedIndex(count);
-                   unit_type_txt.setText(p.getunit_type());
+                   unit_type_txt.setText(p.getunit_type_name());
                    break;
            }
            }
@@ -535,6 +535,7 @@ public Connection getcon(){
         Product_Array.clear();
         getProduct();
         id();
+        showid_txt.setText(id());
         clear();
     }else if(deletenaja==true){
        String stockid = showid_txt.getText();
@@ -702,7 +703,7 @@ public Connection getcon(){
             for(Product_variable p:Product_Array){
                 if(product_combo.getSelectedItem().toString().equals(p.getname())){
                    JOptionPane.showMessageDialog(null,"รหัส : "+p.getid()+"\nชื่อสินค้า : "+p.getname()+"\nจำนวนที่มีอยู่ : "+p.getunit()+"\nหน่วยของสินค้า : "+p.getunit_type_name());
-                   unit_type_txt.setText(p.getunit_type());
+                   unit_type_txt.setText(p.getunit_type_name());
                    break;
                 }
             }

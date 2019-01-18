@@ -82,7 +82,7 @@ public class Claim_panel extends javax.swing.JFrame{
             return DriverManager.getConnection(d.url(),d.username(),d.password());
         }catch(Exception e){
             System.out.println(e.getMessage());
-            System.out.println("Didn';t connect");
+            System.out.println("Didn't connect");
             throw new RuntimeException(e);
         }
     }

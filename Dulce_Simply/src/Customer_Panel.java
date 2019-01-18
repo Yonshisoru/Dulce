@@ -24,12 +24,14 @@ public class Customer_Panel extends javax.swing.JFrame {
     Table_variable t = new Table_variable();
     Employee e = new Employee();
 //-------------------------------------------------
+ArrayList<Stock_Variable>Stock_Array = new ArrayList<>();
+ArrayList<Product_variable>Menu_Ingredient_Array = new ArrayList<>();
 ArrayList<Menu_variable>Menu_Array = new ArrayList<>();
 ArrayList<Menu_variable>Menu_List_Array = new ArrayList<>();
 ArrayList<Menu_variable>Promotion_List_Array = new ArrayList<>();
+ArrayList<Menu_variable>Order_List_Array = new ArrayList<>();
 ArrayList<Promotion_variable>Promotion_Array = new ArrayList<>();
 ArrayList<Promotion_variable>Promotion_Using_Array = new ArrayList<>();
-ArrayList<Menu_variable>Order_List_Array = new ArrayList<>();
 //-----------------------------------------------------------
 Connection con = null;
 PreparedStatement pat = null;
@@ -59,6 +61,8 @@ boolean pro_using = false;
         getPromotion();
         getPromotion_Menu();
         showpromotion_table();
+        getIngredient();
+        getStock();
     }
     public Connection getcon(){
         try{
@@ -138,6 +142,47 @@ public String getorderlistid(){
                 m.setcataid(rs.getString("M_T_ID"));
                 m.setcataname(rs.getString("M_T_NAME"));
                 Menu_List_Array.add(m);
+            }
+            rs.close();
+            pat.close();
+            getcon().close();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    public void getStock(){
+        String sql = "Select STOCK_NUMBER,PRO_ID,STOCK_EXP,STOCK_STARTDATE,STOCK_UNITS,PO_ID FROM STOCK WHERE STOCK_DEL = 'N' ORDER BY STOCK_EXP";
+        try{
+            pat = getcon().prepareStatement(sql);
+            rs = pat.executeQuery(sql);
+            while(rs.next()){
+                Stock_Variable s = new Stock_Variable();
+                s.setstocknumber(rs.getInt("STOCK_NUMBER"));
+                s.setproductid(rs.getString("PRO_ID"));
+                s.setstockexpdate(rs.getString("STOCK_EXP"));
+                s.setstockstartdate(rs.getString("STOCK_STARTDATE"));
+                s.setstockunits(rs.getDouble("STOCK_UNITS"));
+                Stock_Array.add(s);
+            }
+            rs.close();
+            pat.close();
+            getcon().close();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    public void getIngredient(){
+        String sql = "Select ING_NUMBER,MENU_ID,PRO_ID,ING_UNITS FROM INGREDIENT WHERE ING_DEL = 'N'";
+        try{
+            pat = getcon().prepareStatement(sql);
+            rs = pat.executeQuery(sql);
+            while(rs.next()){
+                Product_variable p = new Product_variable();
+                p.setIngredient_ID(rs.getString("ING_NUMBER"));
+                p.m.setid(rs.getString("MENU_ID"));
+                p.setid(rs.getString("PRO_ID"));
+                p.setunit(rs.getDouble("ING_UNITS"));
+                Menu_Ingredient_Array.add(p);
             }
             rs.close();
             pat.close();
@@ -282,6 +327,8 @@ public String getorderlistid(){
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1200, 750));
@@ -478,7 +525,7 @@ public String getorderlistid(){
                 jButton4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 90, -1, -1));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, -1, -1));
 
         jButton5.setText("jButton5");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -495,6 +542,22 @@ public String getorderlistid(){
             }
         });
         getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 60, -1, -1));
+
+        jButton7.setText("jButton7");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 90, -1, -1));
+
+        jButton8.setText("jButton8");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 20, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -679,7 +742,24 @@ public String getorderlistid(){
                     }catch(Exception e){
                         System.out.println(e);
                     }
-                    
+                    for(Product_variable p:Menu_Ingredient_Array){
+                        if(p.m.getid().equals(m.getid())){
+                            System.out.print(p.getIngredient_ID()+" ");
+                            System.out.print(p.m.getid()+" ");
+                            System.out.print(p.getid()+" ");
+                            System.out.print(p.getunit()+"\n");
+                            for(Stock_Variable s:Stock_Array){
+                                if(s.getproductid().equals(p.getid())&&s.getstockunits()>0){
+                                System.out.print(s.getstocknumber()+" ");
+                                System.out.print(s.getproductid()+" ");
+                                System.out.print(s.getstockexpdate()+" ");
+                                System.out.print(s.getstockstartdate()+" ");
+                                System.out.print(s.getstockunits()+"\n");
+                                break;
+                                }
+                            }
+                        }
+                    }
                 }
                 try{
                     String settable = "UPDATE TABLEZ SET T_STATUS = 'Y' WHERE T_ID = '"+tablenumber+"'";
@@ -717,6 +797,25 @@ public String getorderlistid(){
             System.out.println(m.p.gettotal());
         }
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        for(Product_variable p:Menu_Ingredient_Array){
+            System.out.println(p.getIngredient_ID());
+            System.out.println(p.m.getid());
+            System.out.println(p.getid());
+            System.out.println(p.getunit());
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        for(Stock_Variable p:Stock_Array){
+            System.out.print(p.getstocknumber()+" ");
+            System.out.print(p.getproductid()+" ");
+            System.out.print(p.getstockexpdate()+" ");
+            System.out.print(p.getstockstartdate()+" ");
+            System.out.print(p.getstockunits()+"\n");
+        }
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -760,6 +859,8 @@ public String getorderlistid(){
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
