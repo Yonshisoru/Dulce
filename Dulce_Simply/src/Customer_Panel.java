@@ -4,6 +4,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -20,11 +21,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Customer_Panel extends javax.swing.JFrame {
 //---------------------------------------------------
-    Database d = new Database();
-    Table_variable t = new Table_variable();
-    Employee e = new Employee();
+Database d = new Database();
+Table_variable t = new Table_variable();
+Employee e = new Employee();
+Customer_variable c= new Customer_variable();
 //-------------------------------------------------
 ArrayList<Stock_Variable>Stock_Array = new ArrayList<>();
+ArrayList<Stock_Variable>Stock_Units = new ArrayList<>();
 ArrayList<Product_variable>Menu_Ingredient_Array = new ArrayList<>();
 ArrayList<Menu_variable>Menu_Array = new ArrayList<>();
 ArrayList<Menu_variable>Menu_List_Array = new ArrayList<>();
@@ -45,6 +48,7 @@ int count = 1;
 int max = 0;
 //------------------------------------------------------------------
 double totalprice =0;
+double stock_units = 0.0;
 //------------------------------------------------------------------
 boolean pro_using = false;
 
@@ -54,7 +58,6 @@ boolean pro_using = false;
      */
     public Customer_Panel() {
         initComponents();
-        table_number_txt.setText(t.getid());
         getMenu_Catagory();
         getMenu();
         showmenu_table();
@@ -63,6 +66,13 @@ boolean pro_using = false;
         showpromotion_table();
         getIngredient();
         getStock();
+        if(c.getmaintenance()==true){
+            t.setid("55");
+            maintenance_panel.setVisible(true);
+        }else{
+           maintenance_panel.setVisible(false); 
+        }
+        table_number_txt.setText(t.getid());
     }
     public Connection getcon(){
         try{
@@ -151,7 +161,8 @@ public String getorderlistid(){
         }
     }
     public void getStock(){
-        String sql = "Select STOCK_NUMBER,PRO_ID,STOCK_EXP,STOCK_STARTDATE,STOCK_UNITS,PO_ID FROM STOCK WHERE STOCK_DEL = 'N' ORDER BY STOCK_EXP";
+        String sql = "Select STOCK_NUMBER,PRO_ID,STOCK_EXP,STOCK_STARTDATE,STOCK_UNITS,PO_ID FROM STOCK WHERE STOCK_DEL = 'N' AND STOCK_EXP >= '"+LocalDate.now()+"' ORDER BY STOCK_EXP";
+        System.out.println(sql);
         try{
             pat = getcon().prepareStatement(sql);
             rs = pat.executeQuery(sql);
@@ -163,6 +174,13 @@ public String getorderlistid(){
                 s.setstockstartdate(rs.getString("STOCK_STARTDATE"));
                 s.setstockunits(rs.getDouble("STOCK_UNITS"));
                 Stock_Array.add(s);
+                Stock_Variable ss = new Stock_Variable();
+                ss.setstocknumber(rs.getInt("STOCK_NUMBER"));
+                ss.setproductid(rs.getString("PRO_ID"));
+                ss.setstockexpdate(rs.getString("STOCK_EXP"));
+                ss.setstockstartdate(rs.getString("STOCK_STARTDATE"));
+                ss.setstockunits(rs.getDouble("STOCK_UNITS"));
+                Stock_Units.add(ss);
             }
             rs.close();
             pat.close();
@@ -217,6 +235,24 @@ public String getorderlistid(){
             
         }
     }
+    public void eiei1(){
+        for(Stock_Variable p:Stock_Array){
+            System.err.print("<<"+p.getstocknumber()+" ");
+            System.err.print("<<"+p.getproductid()+" ");
+            System.err.print("<<"+p.getstockexpdate()+" ");
+            System.err.print("<<"+p.getstockstartdate()+" ");
+            System.err.print("<<"+p.getstockunits()+"\n");
+        }
+    }
+    public void eiei2(){
+        for(Stock_Variable p:Stock_Units){
+            System.err.print(">>"+p.getstocknumber()+" ");
+            System.err.print(">>"+p.getproductid()+" ");
+            System.err.print(">>"+p.getstockexpdate()+" ");
+            System.err.print(">>"+p.getstockstartdate()+" ");
+            System.err.print(">>"+p.getstockunits()+"\n");
+        }
+    }
     public void getPromotion(){
         String sql = "Select PN_ID,PN_NAME,PN_S_DATE,PN_E_DATE FROM PROMOTION WHERE PN_DEL = 'N' AND PN_E_DATE > '"+LocalDate.now()+"' AND PN_S_DATE <= '"+LocalDate.now()+"'";
         System.out.println(sql);
@@ -258,6 +294,28 @@ public String getorderlistid(){
         }catch(Exception e){
             
         }
+    }
+public void setStock(){
+        for(Stock_Variable s:Stock_Array){
+            for(Stock_Variable ss:Stock_Units){
+                if(s.getstocknumber()==ss.getstocknumber()){
+                if(s.getstockunits()!=ss.getstockunits()){
+                    String sql = "UPDATE STOCK SET STOCK_UNITS = '"+s.getstockunits()+"' WHERE STOCK_NUMBER = '"+s.getstocknumber()+"'";
+                    System.err.println(sql);
+                    try{
+                        pat = getcon().prepareStatement(sql);
+                        pat.executeUpdate(sql);
+                        pat.close();
+                        getcon().close();
+                    }catch(Exception e){
+                        System.out.println(e); 
+                    }
+                break;
+                    }
+                }
+            }
+        }
+        Stock_Units.clear();
     }
     public void showmenu_table(){
         DefaultTableModel model = (DefaultTableModel)menu_table.getModel();
@@ -324,11 +382,13 @@ public String getorderlistid(){
         totalmenu_txt = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        maintenance_panel = new javax.swing.JPanel();
+        jButton9 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1200, 750));
@@ -519,37 +579,13 @@ public String getorderlistid(){
         jLabel10.setText("บาท");
         getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 540, -1, -1));
 
-        jButton4.setText("jButton4");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        jButton9.setText("jButton9");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jButton9ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, -1, -1));
-
-        jButton5.setText("jButton5");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 60, -1, -1));
-
-        jButton6.setText("jButton5");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 60, -1, -1));
-
-        jButton7.setText("jButton7");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 90, -1, -1));
+        maintenance_panel.add(jButton9);
 
         jButton8.setText("jButton8");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
@@ -557,7 +593,41 @@ public String getorderlistid(){
                 jButton8ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 20, -1, -1));
+        maintenance_panel.add(jButton8);
+
+        jButton5.setText("jButton5");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        maintenance_panel.add(jButton5);
+
+        jButton6.setText("jButton5");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        maintenance_panel.add(jButton6);
+
+        jButton4.setText("jButton4");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        maintenance_panel.add(jButton4);
+
+        jButton7.setText("jButton7");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+        maintenance_panel.add(jButton7);
+
+        getContentPane().add(maintenance_panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 200, 90));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -579,7 +649,7 @@ public String getorderlistid(){
                 }
             for(Menu_variable m:Menu_Array){
                 if(menu_id.equals(m.getid())){
-                    System.out.println(m.getid()+" "+m.getname()+" "+m.getprice());
+                    //System.out.println(m.getid()+" "+m.getname()+" "+m.getprice());
                      Menu_variable b = new Menu_variable();
                      b.setmenu_number(count);
                      b.setid(m.getid());
@@ -625,12 +695,12 @@ public String getorderlistid(){
                  pp.setid(p.getid());
                  pp.setname(p.getname());
                  Promotion_Using_Array.add(pp);
-                 System.out.print(p.getid()+" ");
-                 System.out.print(p.getname()+"\n");
+                 //System.out.print(p.getid()+" ");
+                 //System.out.print(p.getname()+"\n");
                  for(Menu_variable mv:Promotion_List_Array){
                      if(promotion_doubleclick.equals(mv.p.getid())){
-                         System.out.print(mv.p.getmenunumber()+" ");
-                         System.out.print(mv.getid()+" ");
+                         //System.out.print(mv.p.getmenunumber()+" ");
+                         //System.out.print(mv.getid()+" ");
                          for(Menu_variable m:Menu_Array){
                              if(mv.getid().equals(m.getid())){
                                  Menu_variable mm = new Menu_variable();
@@ -643,10 +713,10 @@ public String getorderlistid(){
                                     mm.setunits(1);
                                     mm.p.settotal(m.getprice()*((double)mv.p.getdiscount()/100.0));
                                  Order_List_Array.add(mm);
-                                    System.out.print(m.getname()+" ");
-                                    System.out.print(m.getprice()+" ");
-                                    System.out.print((double)mv.p.getdiscount()/100.0+" ");
-                                    System.out.print(m.getprice()*((double)mv.p.getdiscount()/100.0)+"\n");
+                                    //System.out.print(m.getname()+" ");
+                                    //System.out.print(m.getprice()+" ");
+                                   // System.out.print((double)mv.p.getdiscount()/100.0+" ");
+                                   // System.out.print(m.getprice()*((double)mv.p.getdiscount()/100.0)+"\n");
                                  totalprice += mm.p.gettotal();
                                  break;
                              }
@@ -718,24 +788,54 @@ public String getorderlistid(){
         if(Order_List_Array.isEmpty()){
             JOptionPane.showMessageDialog(null,"คุณยังไม่ได้เลือกเมนูในออเดอร์การสั่ง\nกรุณาทำรายการใหม่ครับ");
         }else{
+            boolean isfound = false;
+            try{
+            for(Menu_variable mv:Order_List_Array){
+                    for(Product_variable pv:Menu_Ingredient_Array){
+                       boolean available = false;
+                        if(mv.getid().equals(pv.m.getid())){
+                        for(Stock_Variable sv:Stock_Array){
+                            if(pv.getid().equals(sv.getproductid())){
+                                isfound = true;
+                                //System.out.println("eiei");
+                                    //System.out.println(sv.getstockunits());
+                                    //System.out.println(pv.getunit());
+                                if(sv.getstockunits()-pv.getunit()<0){
+                                    available = false;
+                                }else{
+                                    available = true;
+                                    //System.out.println(sv.getstocknumber());   
+                                }
+                            }
+                            /*if(isfound==false){
+                                JOptionPane.showMessageDialog(null,"เมนู "+mv.getname()+"วัตถุดิบไม่เพียงพอ กรุณาทำรายการใหม่ด้วยครับ");
+                                break;
+                            }*/
+                        }
+                        if(available==false){
+                            JOptionPane.showMessageDialog(null,"เมนู "+mv.getname()+" มีวุตถุดิบไม่เพียงพอ กรุณาทำรายการใหม่ด้วยครับ");
+                            throw new NullPointerException();
+                        }
+                    }
+                }
+            }
             String tablenumber = table_number_txt.getText();
             String orderid = getorderid();
             String emp_id = e.getshowid();
-            String datenow = LocalDate.now().toString();
+            String datenow = LocalDate.now().toString() +" "+ LocalTime.now().toString().substring(0,9);
+            System.out.println(datenow);
             double total_price = totalprice;
             String paytype = ""; 
             String sql = "INSERT INTO ORDERING VALUE('"+orderid+"','"+emp_id+"','"+tablenumber+"','"+datenow+"','"+total_price+"','','N')";
-            System.out.println(sql);
-            try{
+            //System.out.println(sql);
                 pat = getcon().prepareStatement(sql);
                 pat.executeUpdate(sql);
                 pat.close();
-                System.out.println(Order_List_Array.size());
+                //System.out.println(Order_List_Array.size());
                 for(Menu_variable m:Order_List_Array){
-                    System.err.println("eiie");
                     String addordermenu = "INSERT INTO ORDER_MENU_LIST VALUE('"+getorderlistid()+"','"+orderid+"','"+m.getid()+"','"+m.getunits()+"','"+m.p.gettotal()+"','N','N')";
                     try{
-                    System.err.println(addordermenu);
+                    //System.err.println(addordermenu);
                     pat = getcon().prepareStatement(addordermenu);
                     pat.executeUpdate(addordermenu);
                     pat.close();
@@ -743,22 +843,48 @@ public String getorderlistid(){
                         System.out.println(e);
                     }
                     for(Product_variable p:Menu_Ingredient_Array){
+                        for(int i =0;i<m.getunits();i++){
                         if(p.m.getid().equals(m.getid())){
-                            System.out.print(p.getIngredient_ID()+" ");
-                            System.out.print(p.m.getid()+" ");
-                            System.out.print(p.getid()+" ");
-                            System.out.print(p.getunit()+"\n");
-                            for(Stock_Variable s:Stock_Array){
-                                if(s.getproductid().equals(p.getid())&&s.getstockunits()>0){
-                                System.out.print(s.getstocknumber()+" ");
-                                System.out.print(s.getproductid()+" ");
-                                System.out.print(s.getstockexpdate()+" ");
-                                System.out.print(s.getstockstartdate()+" ");
-                                System.out.print(s.getstockunits()+"\n");
+                                try{
+                                    String deletefromproduct = "UPDATE PRODUCT SET PRO_UNITS = PRO_UNITS - '"+p.getunit()+" WHERE PRO_ID = '"+p.getid()+"'";
+                                    System.out.println(deletefromproduct);
+                                    pat = getcon().prepareStatement(deletefromproduct);
+                                    pat.executeUpdate(deletefromproduct);
+                                    pat.close();
+                                    getcon().close();
+                                }catch(Exception e){
+                                    
+                                }
+                            //System.out.print(p.getIngredient_ID()+" ");
+                            //System.out.print(p.m.getid()+" ");
+                            //System.out.print(p.getid()+" ");
+                            //System.out.print(p.getunit()+"\n");
+                            /*for(Stock_Variable s:Stock_Array){
+                                if(s.getproductid().equals(p.getid())){
+                                if(s.getstockunits()-p.getunit()<0){
+                                    stock_units = p.getunit()-s.getstockunits();
+                                    s.setstockunits(0);
+                                    System.out.println("-"+stock_units);
+                                    for(Stock_Variable ss:Stock_Array){
+                                        if(ss.getproductid().equals(p.getid())&&ss.getstockunits()>0){
+                                            ss.setstockunits(ss.getstockunits()-stock_units);
+                                            stock_units = 0;
+                                            break;
+                                        }
+                                    }
+                                }else{
+                                    s.setstockunits(s.getstockunits()-p.getunit());
+                                }
+                                //System.out.print(s.getstocknumber()+" ");
+                                //System.out.print(s.getproductid()+" ");
+                                //System.out.print(s.getstockexpdate()+" ");
+                                //System.out.print(s.getstockstartdate()+" ");
+                                //System.out.print(s.getstockunits()+"\n");
                                 break;
                                 }
-                            }
+                            }*/
                         }
+                    }
                     }
                 }
                 try{
@@ -769,7 +895,12 @@ public String getorderlistid(){
                 }catch(Exception e){
                     System.out.println(e);
                 }
-                getcon().close();
+                //eiei1();
+                //eiei2();
+            getcon().close();
+            /*setStock();
+            Stock_Array.clear();
+            getStock();*/
             Order_List_Array.clear();
             Promotion_Using_Array.clear();
             totalprice=  0;
@@ -781,12 +912,24 @@ public String getorderlistid(){
             totalmenu_txt.setText("0");
             totalprice_txt.setText(String.format("%.2f",(totalprice)));
             JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
-            this.setVisible(false);
+            /*this.setVisible(false);
             Table_panel t = new Table_panel();
             t.setVisible(true);
             }catch(Exception e){
                     
-             }
+             }*/
+            }catch(Exception e){
+            Order_List_Array.clear();
+            Promotion_Using_Array.clear();
+            totalprice=  0;
+            count = 1;
+            DefaultTableModel model = (DefaultTableModel)order_table.getModel();
+            while(model.getRowCount()>0){
+            model.removeRow(0);
+            }
+            totalmenu_txt.setText("0");
+            totalprice_txt.setText(String.format("%.2f",(totalprice)));
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -809,13 +952,23 @@ public String getorderlistid(){
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         for(Stock_Variable p:Stock_Array){
-            System.out.print(p.getstocknumber()+" ");
-            System.out.print(p.getproductid()+" ");
-            System.out.print(p.getstockexpdate()+" ");
-            System.out.print(p.getstockstartdate()+" ");
-            System.out.print(p.getstockunits()+"\n");
+            System.err.print(p.getstocknumber()+"*");
+            System.err.print(p.getproductid()+" ");
+            System.err.print(p.getstockexpdate()+" ");
+            System.err.print(p.getstockstartdate()+" ");
+            System.err.print(p.getstockunits()+"\n");
         }
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        for(Stock_Variable p:Stock_Units){
+            System.err.print(p.getstocknumber()+"-");
+            System.err.print(p.getproductid()+" ");
+            System.err.print(p.getstockexpdate()+" ");
+            System.err.print(p.getstockstartdate()+" ");
+            System.err.print(p.getstockunits()+"\n");
+        }
+    }//GEN-LAST:event_jButton9ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -861,6 +1014,7 @@ public String getorderlistid(){
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
@@ -872,6 +1026,7 @@ public String getorderlistid(){
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JPanel maintenance_panel;
     private javax.swing.JTable menu_table;
     private javax.swing.JTable order_table;
     private javax.swing.JTable promotion_table;

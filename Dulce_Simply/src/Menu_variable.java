@@ -10,7 +10,10 @@
  * @author Yonshisoru
  */
 public class Menu_variable {
-    Promotion_variable p = new Promotion_variable();
+Customer_variable c = new Customer_variable();
+Promotion_variable p = new Promotion_variable();
+Employee e = new Employee();
+Table_variable t = new Table_variable();
 private String id = null;
 private String name = null;
 private int price = 0;

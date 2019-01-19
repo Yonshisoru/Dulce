@@ -5,17 +5,10 @@
  */
 package Other;
 
+import java.time.LocalTime;
+
 public class CheckLogin {
     public static void main(String[] args){
-        String eiei = "12.12";
-        try{
-            if((Double.valueOf(eiei)*100)%100==0){
-            System.out.println("yes");
-            }else{
-                System.out.println("no");
-            }
-        }catch(Exception e){
-            System.out.println(e);
-        }
+        System.out.println(LocalTime.now().toString());
     }
 }

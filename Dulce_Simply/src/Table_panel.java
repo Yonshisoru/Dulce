@@ -119,23 +119,38 @@ public class Table_panel extends javax.swing.JFrame
             button.addActionListener(new ActionListener()
             {
                 public void actionPerformed(ActionEvent ae) {
-                    if(tv.getview()==false){
+                    if(tv.getview()==false||tv.getorder()==true){
                     JButton but = (JButton) ae.getSource();
-                    but.setBackground(Color.RED);
                     for (table_v t : Table_Array) {
                         if (but.getText().equals(t.gettablenumber())) {
                             if(t.getstatus().equals("N")){
+                            if(tv.getorder()==true){
+                             JOptionPane.showMessageDialog(null,"โต๊ะนี้ยังไม่มีออเดอร์ที่ค้างอยู่ กรุณาทำรายการใหม่ด้วยครับ");   
+                            }else{
                             but.setSelected(false);
-                            System.out.println(but.getText());
-                            Table_variable globalid = new Table_variable();
-                            globalid.setid(t.gettablenumber());
+                            if(tv.getview()==false){
+                            //System.out.println(but.getText());
+                            Table_variable g = new Table_variable();
+                            g.setid(t.gettablenumber());
+                            Customer_variable cv = new Customer_variable();
+                            cv.setmaintenance(false);
                             Customer_Panel cp = new Customer_Panel();
+                            cp.setVisible(true);
+                            }
+                            close();
+                            break;
+                            }
+                            }else{
+                            if(tv.getorder()==true){
+                            Table_variable g = new Table_variable();
+                            g.setid(t.gettablenumber());
+                            Customer_View cp = new Customer_View();
                             cp.setVisible(true);
                             close();
                             break;
                             }else{
-                               JOptionPane.showMessageDialog(null,"This table is unavailable"); 
-                            break;
+                               JOptionPane.showMessageDialog(null,"โต๊ะนี้ไม่พร้อมใช้งาน กรุณาทำรายการใหม่ด้วยครับ");
+                                }
                             }
                         }else{
                         }
@@ -148,6 +163,11 @@ public class Table_panel extends javax.swing.JFrame
         }
         return buttonPanel;
     }
+        private void formWindowClosed(java.awt.event.WindowEvent evt) {                                  
+        Table_variable t = new Table_variable();
+        t.setorder(false);
+        t.setview(false);
+    } 
     /*
  JPanel buttonPanel = new JPanel(new GridLayout());
         buttonPanel.setLayout(new GridLayout(gridSize, gridSize, 10, 10));
@@ -179,7 +199,11 @@ public class Table_panel extends javax.swing.JFrame
         this.setPreferredSize(new Dimension(600,600));
         this.setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
         JPanel contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout(10,30));
         contentPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));

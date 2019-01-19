@@ -52,7 +52,7 @@ Main_variable m = new Main_variable();
         showname.setText(e.getdisfname()+" "+e.getdislname());
         showTime();
         showtime();
-        System.out.print(e.gettype_id());
+        //System.out.print(e.gettype_id());
         if(e.gettype_id()==0||e.gettype_id()==1){
             Inventory_btn.setVisible(true);
             Management_btn.setVisible(true);
@@ -73,12 +73,12 @@ Main_variable m = new Main_variable();
         void showtime(){
          Date d = new Date();
         SimpleDateFormat s = new SimpleDateFormat("YYYY-MM-dd");
-        year = String.valueOf(Integer.parseInt(s.format(d).substring(0,4))-543);
+        year = String.valueOf(Integer.parseInt(s.format(d).substring(0,4)));
         month = String.valueOf(Integer.parseInt(s.format(d).substring(5,7)));
         day = String.valueOf(Integer.parseInt(s.format(d).substring(s.format(d).length()-2,s.format(d).length())));
         start = "'"+year+"-01-01'";
         end = "'"+year+"-12-31'";
-        System.out.print(year+month+day);
+        //System.out.print(year+month+day);
     }
    public String id(){
        int count=0;
@@ -148,6 +148,7 @@ Main_variable m = new Main_variable();
         jButton13 = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
         ordering_management = new javax.swing.JButton();
+        confirm_order_btn = new javax.swing.JButton();
         Schedule = new javax.swing.JPanel();
         Heading_Sc = new javax.swing.JLabel();
         leave = new javax.swing.JButton();
@@ -303,7 +304,7 @@ Main_variable m = new Main_variable();
                 jButton2ActionPerformed(evt);
             }
         });
-        Menu_Ordering.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 150, 160, 90));
+        Menu_Ordering.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 150, 190, 90));
 
         jButton11.setText("ดูสถานะโต๊ะ");
         jButton11.addActionListener(new java.awt.event.ActionListener() {
@@ -314,13 +315,13 @@ Main_variable m = new Main_variable();
         Menu_Ordering.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, 180, 90));
 
         jButton12.setText("จัดการโปรโมชั่น");
-        Menu_Ordering.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 150, 170, 90));
+        Menu_Ordering.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, 180, 90));
 
         jButton13.setText("รายงาน");
-        Menu_Ordering.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 290, 160, 90));
+        Menu_Ordering.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 290, 170, 90));
 
         jButton14.setText("ประวัติการขาย");
-        Menu_Ordering.add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, 180, 90));
+        Menu_Ordering.add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 190, 90));
 
         ordering_management.setText("Ordering management");
         ordering_management.addActionListener(new java.awt.event.ActionListener() {
@@ -329,6 +330,14 @@ Main_variable m = new Main_variable();
             }
         });
         Menu_Ordering.add(ordering_management, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 410, 180, 90));
+
+        confirm_order_btn.setText("ยืนยันออเดอร์");
+        confirm_order_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirm_order_btnActionPerformed(evt);
+            }
+        });
+        Menu_Ordering.add(confirm_order_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 150, 170, 90));
 
         Schedule.setBackground(new java.awt.Color(254, 255, 239));
         Schedule.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1161,6 +1170,13 @@ if ((s != null) && (s.length() > 0)) {
         // TODO add your handling code here:
     }//GEN-LAST:event_ordering_managementActionPerformed
 
+    private void confirm_order_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirm_order_btnActionPerformed
+            Table_panel t = new Table_panel();
+            Table_variable tv = new Table_variable();
+            t.setVisible(true);
+            tv.setorder(true);
+    }//GEN-LAST:event_confirm_order_btnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1243,6 +1259,7 @@ if ((s != null) && (s.length() > 0)) {
     private javax.swing.JPanel TopPanel;
     private javax.swing.JButton View_Employee_Payment_btn;
     private javax.swing.JButton Waste_btn;
+    private javax.swing.JButton confirm_order_btn;
     private javax.swing.JButton editenrolled;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton11;
