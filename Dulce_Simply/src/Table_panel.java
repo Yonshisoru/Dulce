@@ -124,7 +124,7 @@ public class Table_panel extends javax.swing.JFrame
                     for (table_v t : Table_Array) {
                         if (but.getText().equals(t.gettablenumber())) {
                             if(t.getstatus().equals("N")){
-                            if(tv.getorder()==true){
+                            if(tv.getorder()==true||tv.getedit()==true){
                              JOptionPane.showMessageDialog(null,"โต๊ะนี้ยังไม่มีออเดอร์ที่ค้างอยู่ กรุณาทำรายการใหม่ด้วยครับ");   
                             }else{
                             but.setSelected(false);
@@ -148,6 +148,13 @@ public class Table_panel extends javax.swing.JFrame
                             cp.setVisible(true);
                             close();
                             break;
+                            }else if(tv.getedit()){
+                            Table_variable g = new Table_variable();
+                            g.setid(t.gettablenumber());
+                            Customer_Edit ce = new Customer_Edit();
+                            ce.setVisible(true);
+                            close();
+                            break;    
                             }else{
                                JOptionPane.showMessageDialog(null,"โต๊ะนี้ไม่พร้อมใช้งาน กรุณาทำรายการใหม่ด้วยครับ");
                                 }
@@ -167,6 +174,7 @@ public class Table_panel extends javax.swing.JFrame
         Table_variable t = new Table_variable();
         t.setorder(false);
         t.setview(false);
+        t.setedit(false);
     } 
     /*
  JPanel buttonPanel = new JPanel(new GridLayout());

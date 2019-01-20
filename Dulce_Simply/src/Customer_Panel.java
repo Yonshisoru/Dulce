@@ -67,7 +67,7 @@ boolean pro_using = false;
         getIngredient();
         getStock();
         if(c.getmaintenance()==true){
-            t.setid("55");
+            t.setid("01");
             maintenance_panel.setVisible(true);
         }else{
            maintenance_panel.setVisible(false); 
@@ -233,24 +233,6 @@ public String getorderlistid(){
             getcon().close();
         }catch(Exception e){
             
-        }
-    }
-    public void eiei1(){
-        for(Stock_Variable p:Stock_Array){
-            System.err.print("<<"+p.getstocknumber()+" ");
-            System.err.print("<<"+p.getproductid()+" ");
-            System.err.print("<<"+p.getstockexpdate()+" ");
-            System.err.print("<<"+p.getstockstartdate()+" ");
-            System.err.print("<<"+p.getstockunits()+"\n");
-        }
-    }
-    public void eiei2(){
-        for(Stock_Variable p:Stock_Units){
-            System.err.print(">>"+p.getstocknumber()+" ");
-            System.err.print(">>"+p.getproductid()+" ");
-            System.err.print(">>"+p.getstockexpdate()+" ");
-            System.err.print(">>"+p.getstockstartdate()+" ");
-            System.err.print(">>"+p.getstockunits()+"\n");
         }
     }
     public void getPromotion(){
@@ -712,6 +694,7 @@ public void setStock(){
                                     mm.p.setname(p.getname());
                                     mm.setunits(1);
                                     mm.p.settotal(m.getprice()*((double)mv.p.getdiscount()/100.0));
+                                    mm.p.setname(p.getname());
                                  Order_List_Array.add(mm);
                                     //System.out.print(m.getname()+" ");
                                     //System.out.print(m.getprice()+" ");
@@ -833,7 +816,7 @@ public void setStock(){
                 pat.close();
                 //System.out.println(Order_List_Array.size());
                 for(Menu_variable m:Order_List_Array){
-                    String addordermenu = "INSERT INTO ORDER_MENU_LIST VALUE('"+getorderlistid()+"','"+orderid+"','"+m.getid()+"','"+m.getunits()+"','"+m.p.gettotal()+"','N','N')";
+                    String addordermenu = "INSERT INTO ORDER_MENU_LIST VALUE('"+getorderlistid()+"','"+orderid+"','"+m.getid()+"','"+m.getunits()+"','"+m.p.gettotal()+"','N','"+m.p.getname()+"','N')";
                     try{
                     //System.err.println(addordermenu);
                     pat = getcon().prepareStatement(addordermenu);

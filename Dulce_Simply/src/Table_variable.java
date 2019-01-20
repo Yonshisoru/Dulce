@@ -15,8 +15,9 @@ public class Table_variable {
   static private boolean view = false;
   static private JFrame mainframe = null;
   static private String tableid = null;
-   private String id = null;
-   static private boolean confirmorder = false;
+  private String id = null;
+  static private boolean confirmorder = false;
+  static private boolean editorder = false;
   Table_variable(){
       //this.tableid = "55";
   }
@@ -25,6 +26,12 @@ public class Table_variable {
    }
    public boolean getorder(){
        return this.confirmorder;
+   }
+   public boolean getedit(){
+       return this.editorder;
+   }
+   public void setedit(boolean edit){
+       this.editorder = edit;
    }
    public void setorder(Boolean order){
        this.confirmorder = order;
