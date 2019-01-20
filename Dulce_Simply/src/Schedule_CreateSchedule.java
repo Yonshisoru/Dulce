@@ -249,13 +249,13 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
         int chooseperiod = 0;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String gg = sdf.format(Schedule_date.getSelectedDate().getTime());
-        System.out.print("SELECT SC_ID,SCS_ID FROM SCHEDULE WHERE SC_DATE ='"+(Integer.parseInt(gg.substring(0,4))-543)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length())+"' AND SC_DEL='N'");
+        System.out.print("SELECT SC_ID,SCS_ID FROM SCHEDULE WHERE SC_DATE ='"+(Integer.parseInt(gg.substring(0,4)))+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length())+"' AND SC_DEL='N'");
         int count = 0;
         boolean firstperiod = false;
         boolean secondperiod = false;
-        System.out.print((Integer.parseInt(gg.substring(0,4))-543)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length()));
+        System.out.print((Integer.parseInt(gg.substring(0,4)))+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length()));
         String sql  ="Insert into SCHEDULE(SC_ID,SC_DATE,SCS_ID,SC_EMPLIMIT,SC_DEL) VALUES (?,?,?,?,'N')";  
-        String check = "SELECT SC_ID,SCS_ID FROM SCHEDULE WHERE SC_DATE ='"+(Integer.parseInt(gg.substring(0,4))-543)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length())+"' AND SC_DEL='N'";
+        String check = "SELECT SC_ID,SCS_ID FROM SCHEDULE WHERE SC_DATE ='"+(Integer.parseInt(gg.substring(0,4)))+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length())+"' AND SC_DEL='N'";
         try{
         Class.forName("com.mysql.jdbc.Driver");
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
@@ -288,7 +288,7 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
         pat = con.prepareStatement(sql);
         pat.setString(1, Schedule_showid.getText());
         String date = Schedule_date.getText();
-        pat.setString(2, (Integer.parseInt(gg.substring(0,4))-543)+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length()));
+        pat.setString(2, (Integer.parseInt(gg.substring(0,4)))+"-"+gg.substring(gg.length()-5,gg.length()-3)+"-"+gg.substring(gg.length()-2,gg.length()));
         if(ChoosePeriod.getSelectedItem().equals("08.00-15.30")){
             pat.setString(3,"1");
         }else if(ChoosePeriod.getSelectedItem().equals("15.00-22.30")){

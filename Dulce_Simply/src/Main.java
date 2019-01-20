@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -61,7 +62,7 @@ Main_variable m = new Main_variable();
     }
     void showTime(){
         new Timer(0,new ActionListener(){
-            
+
             @Override
             public void actionPerformed(ActionEvent e){
         Date d = new Date();
@@ -76,8 +77,8 @@ Main_variable m = new Main_variable();
         year = String.valueOf(Integer.parseInt(s.format(d).substring(0,4)));
         month = String.valueOf(Integer.parseInt(s.format(d).substring(5,7)));
         day = String.valueOf(Integer.parseInt(s.format(d).substring(s.format(d).length()-2,s.format(d).length())));
-        start = "'"+year+"-01-01'";
-        end = "'"+year+"-12-31'";
+        /*start = "'"+year+"-01-01'";
+        end = "'"+year+"-12-31'";*/
         //System.out.print(year+month+day);
     }
    public String id(){
@@ -113,7 +114,7 @@ Main_variable m = new Main_variable();
                 e.printStackTrace();
             }
     return output;
-   } 
+   }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -150,6 +151,7 @@ Main_variable m = new Main_variable();
         ordering_management = new javax.swing.JButton();
         confirm_order_btn = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton15 = new javax.swing.JButton();
         Schedule = new javax.swing.JPanel();
         Heading_Sc = new javax.swing.JLabel();
         leave = new javax.swing.JButton();
@@ -316,13 +318,13 @@ Main_variable m = new Main_variable();
         Menu_Ordering.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, 180, 90));
 
         jButton12.setText("จัดการโปรโมชั่น");
-        Menu_Ordering.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 190, 90));
+        Menu_Ordering.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 410, 190, 90));
 
         jButton13.setText("รายงาน");
-        Menu_Ordering.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 410, 180, 90));
+        Menu_Ordering.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 410, 190, 90));
 
-        jButton14.setText("ประวัติการขาย");
-        Menu_Ordering.add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 190, 90));
+        jButton14.setText("จ่ายเงิน");
+        Menu_Ordering.add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 190, 90));
 
         ordering_management.setText("Ordering management");
         ordering_management.addActionListener(new java.awt.event.ActionListener() {
@@ -330,7 +332,7 @@ Main_variable m = new Main_variable();
                 ordering_managementActionPerformed(evt);
             }
         });
-        Menu_Ordering.add(ordering_management, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 410, 190, 90));
+        Menu_Ordering.add(ordering_management, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 410, 190, 90));
 
         confirm_order_btn.setText("ยืนยันออเดอร์");
         confirm_order_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -338,7 +340,7 @@ Main_variable m = new Main_variable();
                 confirm_order_btnActionPerformed(evt);
             }
         });
-        Menu_Ordering.add(confirm_order_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 150, 170, 90));
+        Menu_Ordering.add(confirm_order_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 150, 200, 90));
 
         jButton3.setText("แก้ไขออเดอร์");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -347,6 +349,9 @@ Main_variable m = new Main_variable();
             }
         });
         Menu_Ordering.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, 180, 90));
+
+        jButton15.setText("ประวัติการขาย");
+        Menu_Ordering.add(jButton15, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 190, 90));
 
         Schedule.setBackground(new java.awt.Color(254, 255, 239));
         Schedule.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -782,7 +787,7 @@ Main_variable m = new Main_variable();
         Management_panel.setVisible(false);
         Inventory_panel.setVisible(false);
         Employee_panel.setVisible(false);
-         Employee.setVisible(false);  
+         Employee.setVisible(false);
          ordering_management.setVisible(false);
          if(e.gettype_id()==0||e.gettype_id()==1){
              ordering_management.setVisible(true);
@@ -806,7 +811,7 @@ Main_variable m = new Main_variable();
             CreateSchedule.setVisible(false);
             Change_schedule.setVisible(false);
             Leave_list.setVisible(false);
-    }    
+    }
     }//GEN-LAST:event_Schedule_btnActionPerformed
 
     private void Management_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Management_btnActionPerformed
@@ -854,12 +859,12 @@ Main_variable m = new Main_variable();
         }else{
             Employee_Table k = new Employee_Table();
             k.setVisible(true);
-    }    
+    }
     }//GEN-LAST:event_Employee_btnActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
- if (JOptionPane.showConfirmDialog(this, 
-            "Are you sure you want to close without signout?", "Close Window?", 
+ if (JOptionPane.showConfirmDialog(this,
+            "Are you sure you want to close without signout?", "Close Window?",
             JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
             LoginFrom l = new LoginFrom();
@@ -973,7 +978,7 @@ String s = (String)JOptionPane.showInputDialog(
 //If a string was returned, say so.
 if ((s != null) && (s.length() > 0)) {
            String sql  ="select EMP_ID from EMPLOYEE WHERE EMP_DEL = 'N'";
-        try{        
+        try{
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(sql);
@@ -987,83 +992,85 @@ if ((s != null) && (s.length() > 0)) {
         pat.close();
         con.close();
         }catch(Exception e){
-            
+
         }
+        String year = LocalDate.now().toString().substring(0,4);
+        String month = LocalDate.now().toString().substring(5,7);
     if(s.equals("First Period")){
         if(month.equals("01")){
         start = "'"+year+"-01-01'";
-        end = "'"+year+"-01-15'"; 
+        end = "'"+year+"-01-15'";
         }else if(month.equals("02")){
         start = "'"+year+"-02-01'";
-        end = "'"+year+"-02-15'";     
+        end = "'"+year+"-02-15'";
         }else if(month.equals("03")){
         start = "'"+year+"-03-01'";
-        end = "'"+year+"-03-15'";    
+        end = "'"+year+"-03-15'";
         }else if(month.equals("04")){
         start = "'"+year+"-04-01'";
-        end = "'"+year+"-04-15'";     
+        end = "'"+year+"-04-15'";
         }else if(month.equals("05")){
         start = "'"+year+"-05-01'";
-        end = "'"+year+"-05-15'";     
+        end = "'"+year+"-05-15'";
         }else if(month.equals("06")){
          start = "'"+year+"-06-01'";
-        end = "'"+year+"-06-15'";    
+        end = "'"+year+"-06-15'";
         }else if(month.equals("07")){
         start = "'"+year+"-07-01'";
-        end = "'"+year+"-07-15'";     
+        end = "'"+year+"-07-15'";
         }else if(month.equals("08")){
          start = "'"+year+"-08-01'";
-        end = "'"+year+"-08-15'";     
+        end = "'"+year+"-08-15'";
         }else if(month.equals("09")){
          start = "'"+year+"-09-01'";
-        end = "'"+year+"-09-15'";    
+        end = "'"+year+"-09-15'";
         }else if(month.equals("10")){
-         start = "'"+year+"-10-01'";
-        end = "'"+year+"-10-15'";    
+        start = "'"+year+"-10-01'";
+        end = "'"+year+"-10-15'";
         }else if(month.equals("11")){
         start = "'"+year+"-11-01'";
-        end = "'"+year+"-11-15'";     
+        end = "'"+year+"-11-15'";
         }else if(month.equals("12")){
         start = "'"+year+"-12-01'";
-        end = "'"+year+"-12-15'";     
+        end = "'"+year+"-12-15'";
         }
-    }else if(s.equals("Second Period")){ 
+    }else if(s.equals("Second Period")){
         if(month.equals("01")){
         start = "'"+year+"-01-15'";
-        end = "'"+year+"-01-31'"; 
+        end = "'"+year+"-01-31'";
         }else if(month.equals("02")){
         start = "'"+year+"-02-15'";
-        end = "'"+year+"-02-28'";     
+        end = "'"+year+"-02-28'";
         }else if(month.equals("03")){
         start = "'"+year+"-03-15'";
-        end = "'"+year+"-03-31'";    
+        end = "'"+year+"-03-31'";
         }else if(month.equals("04")){
         start = "'"+year+"-04-15'";
-        end = "'"+year+"-04-30'";     
+        end = "'"+year+"-04-30'";
         }else if(month.equals("05")){
         start = "'"+year+"-05-15'";
-        end = "'"+year+"-05-31'";     
+        end = "'"+year+"-05-31'";
         }else if(month.equals("06")){
          start = "'"+year+"-06-15'";
-        end = "'"+year+"-06-30'";    
+        end = "'"+year+"-06-30'";
         }else if(month.equals("07")){
         start = "'"+year+"-07-15'";
-        end = "'"+year+"-07-31'";     
+        end = "'"+year+"-07-31'";
         }else if(month.equals("08")){
          start = "'"+year+"-08-15'";
-        end = "'"+year+"-08-31'";     
+        end = "'"+year+"-08-31'";
         }else if(month.equals("09")){
          start = "'"+year+"-09-15'";
-        end = "'"+year+"-09-31'";    
+        end = "'"+year+"-09-31'";
         }else if(month.equals("10")){
          start = "'"+year+"-10-15'";
-        end = "'"+year+"-10-31'";    
+        end = "'"+year+"-10-31'";
         }else if(month.equals("11")){
         start = "'"+year+"-11-15'";
-        end = "'"+year+"-11-30'";     
+        end = "'"+year+"-11-30'";
         }else if(month.equals("12")){
         start = "'"+year+"-12-15'";
-        end = "'"+year+"-12-31'";     
+        end = "'"+year+"-12-31'";
         }
         System.out.print(em.size()+start+end);
         for(int i =0;i<em.size();i++){
@@ -1071,7 +1078,7 @@ if ((s != null) && (s.length() > 0)) {
             System.out.println(""+em.size());
         String check  = "INSERT INTO SALARY_PAYMENT VALUES('"+id()+"','"+em.get(i).getid()+"','"+year+"-"+month+"-"+day+"',"+start+","+end+",'N')";
         System.out.println(check);
-        try{        
+        try{
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(check);
@@ -1087,7 +1094,8 @@ if ((s != null) && (s.length() > 0)) {
     }//GEN-LAST:event_Employee_Payment_btnActionPerformed
 
     private void View_Employee_Payment_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_View_Employee_Payment_btnActionPerformed
-        // TODO add your handling code here:
+       Salary_payment s = new Salary_payment();
+       s.setVisible(true);
     }//GEN-LAST:event_View_Employee_Payment_btnActionPerformed
 
     private void Set_Period_Payment_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Set_Period_Payment_btnActionPerformed
@@ -1200,7 +1208,7 @@ if ((s != null) && (s.length() > 0)) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -1225,7 +1233,7 @@ if ((s != null) && (s.length() > 0)) {
             public void run() {
                 new Main().setVisible(true);
             }
-            
+
         });
     }
 
@@ -1282,6 +1290,7 @@ if ((s != null) && (s.length() > 0)) {
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
+    private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton20;
