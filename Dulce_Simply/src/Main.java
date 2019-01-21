@@ -152,6 +152,7 @@ Main_variable m = new Main_variable();
         confirm_order_btn = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton15 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         Schedule = new javax.swing.JPanel();
         Heading_Sc = new javax.swing.JLabel();
         leave = new javax.swing.JButton();
@@ -307,7 +308,7 @@ Main_variable m = new Main_variable();
                 jButton2ActionPerformed(evt);
             }
         });
-        Menu_Ordering.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 150, 190, 90));
+        Menu_Ordering.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 150, 200, 90));
 
         jButton11.setText("ดูสถานะโต๊ะ");
         jButton11.addActionListener(new java.awt.event.ActionListener() {
@@ -318,13 +319,13 @@ Main_variable m = new Main_variable();
         Menu_Ordering.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, 180, 90));
 
         jButton12.setText("จัดการโปรโมชั่น");
-        Menu_Ordering.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 410, 190, 90));
+        Menu_Ordering.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 410, 200, 90));
 
         jButton13.setText("รายงาน");
-        Menu_Ordering.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 410, 190, 90));
+        Menu_Ordering.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 410, 200, 90));
 
         jButton14.setText("จ่ายเงิน");
-        Menu_Ordering.add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 190, 90));
+        Menu_Ordering.add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 150, 200, 90));
 
         ordering_management.setText("Ordering management");
         ordering_management.addActionListener(new java.awt.event.ActionListener() {
@@ -332,7 +333,7 @@ Main_variable m = new Main_variable();
                 ordering_managementActionPerformed(evt);
             }
         });
-        Menu_Ordering.add(ordering_management, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 410, 190, 90));
+        Menu_Ordering.add(ordering_management, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 520, 190, 90));
 
         confirm_order_btn.setText("ยืนยันออเดอร์");
         confirm_order_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -340,7 +341,7 @@ Main_variable m = new Main_variable();
                 confirm_order_btnActionPerformed(evt);
             }
         });
-        Menu_Ordering.add(confirm_order_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 150, 200, 90));
+        Menu_Ordering.add(confirm_order_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, 190, 90));
 
         jButton3.setText("แก้ไขออเดอร์");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -348,10 +349,18 @@ Main_variable m = new Main_variable();
                 jButton3ActionPerformed(evt);
             }
         });
-        Menu_Ordering.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, 180, 90));
+        Menu_Ordering.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 200, 90));
 
         jButton15.setText("ประวัติการขาย");
-        Menu_Ordering.add(jButton15, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 190, 90));
+        Menu_Ordering.add(jButton15, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 410, 190, 90));
+
+        jButton4.setText("ลบออเดอร์");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        Menu_Ordering.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 200, 90));
 
         Schedule.setBackground(new java.awt.Color(254, 255, 239));
         Schedule.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1195,11 +1204,21 @@ if ((s != null) && (s.length() > 0)) {
     }//GEN-LAST:event_confirm_order_btnActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Table_panel t = new Table_panel();
+            Customer_variable c = new Customer_variable();
+            c.setmaintenance(false);
+            Table_panel t = new Table_panel();
             Table_variable tv = new Table_variable();
             t.setVisible(true);
             tv.setedit(true);
+            
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        Table_panel t = new Table_panel();
+            Table_variable tv = new Table_variable();
+            t.setVisible(true);
+            tv.setdelete(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1298,6 +1317,7 @@ if ((s != null) && (s.length() > 0)) {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton30;
     private javax.swing.JButton jButton31;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;

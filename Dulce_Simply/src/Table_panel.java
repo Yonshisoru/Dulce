@@ -5,6 +5,10 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import static javax.swing.JOptionPane.WARNING_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
 
 class table_v{
     private String tablenumber;
@@ -30,12 +34,13 @@ class table_v{
     }
 }
 
-public class Table_panel extends javax.swing.JFrame
-{
+public class Table_panel extends javax.swing.JFrame {
     Database d = new Database();
     Table_variable tv = new Table_variable();
     static ArrayList<table_v> Table_Array = new ArrayList<>();
     static ArrayList<JButton> btn = new ArrayList<>();
+    ArrayList<Menu_variable>Ordering_Array = new ArrayList<>();
+    ArrayList<Menu_variable>Order_List_Array = new ArrayList<>();
     private static final String INITIAL_TEXT = "Nothing Pressed";
     private static final String ADDED_TEXT = " was Pressed";
     private JLabel positionLabel;
@@ -55,6 +60,8 @@ public class Table_panel extends javax.swing.JFrame
     public Table_panel(){
         Table_Array.clear();
         btn.clear();
+        getorder();
+        getorder_menu();
         createAndDisplayGUI();
 
     }
@@ -78,6 +85,111 @@ public class Table_panel extends javax.swing.JFrame
             System.out.println(e.getMessage());
             System.out.println("Didn';t connect");
             throw new RuntimeException(e);
+        }
+    }
+    public void checkdelete(String id,String table){
+        if(JOptionPane.showConfirmDialog(null,"คุณต้องการที่จะลบออเดอร์ของโต๊ะ "+id+" จริงหรือไม่\n(ถ้าหากว่าคุณได้ลบออเดอร์ไปแล้วจะไม่สามารถเรียกกลับมาได้)",null,WARNING_MESSAGE,YES_NO_OPTION)==YES_OPTION){
+        boolean canidelete = true;
+        String orderid = null;
+        for(Menu_variable m:Ordering_Array){
+            if(m.c.gettable().equals(id)&&m.c.getpaytype().isEmpty()==true){
+                orderid = m.c.getorderid();
+                for(Menu_variable mm:Order_List_Array){
+                    if(mm.c.getorderid().equals(m.c.getorderid())){
+                        //System.out.println
+                        if(mm.c.getorder_menu_status().equals("Y")){
+                        canidelete = false;
+                        break;
+                        }
+                    }
+                }
+                System.out.println(m.c.getorderid());
+                break;
+            }
+        }
+        if(canidelete==true){
+            String deleteorder = "UPDATE ORDERING SET ORD_DEL = 'Y' WHERE ORD_ID = '"+orderid+"'";
+            String deleteorder_list = "UPDATE ORDER_MENU_LIST SET OM_DEL = 'Y' WHERE ORD_ID = '"+orderid+"'";
+            String updatetable = "UPDATE TABLEZ SET T_STATUS = 'N' WHERE T_ID = '"+table+"'";
+            System.out.println(deleteorder);
+            System.out.println(deleteorder_list);
+            System.out.println(updatetable);
+            try{
+                pat = getcon().prepareStatement(deleteorder);
+                pat.executeUpdate(deleteorder);
+                pat.close();
+                    pat =getcon().prepareStatement(deleteorder_list);
+                    pat.executeUpdate(deleteorder_list);
+                    pat.close();
+                        pat = getcon().prepareStatement(updatetable);
+                        pat.executeUpdate(updatetable);
+                        pat.close();
+                getcon().close();
+            }catch(Exception e){
+                System.out.println(e);
+            }
+          //JOptionPane.showMessageDialog(null,"ลบได้");     
+          JOptionPane.showMessageDialog(null,"ลบออเดอร์หมายเลข "+orderid+" เสร็จสิ้น"); 
+          close();
+          Table_Array.clear();
+          
+          Order_List_Array.clear();
+          Ordering_Array.clear();
+          btn.clear();
+          Table_panel pp = new Table_panel();
+          pp.setVisible(true);
+        }else{
+           JOptionPane.showMessageDialog(null,"ออเดอร์นี้มีการเสิร์ฟเมนูบางส่วนแล้ว ไม่สามารถลบได้ครับ");  
+        }
+        }else{
+           JOptionPane.showMessageDialog(null,"ยกเลิกรายการ");   
+        }
+    }
+public void getorder(){
+        String sql = "Select ORD_ID,EMP_ID,T_ID,ORD_DATE,ORD_TOTAL,ORD_PAYTYPE FROM ORDERING WHERE ORD_DEL = 'N'";
+        //System.out.println(sql);
+        try{
+            pat = getcon().prepareStatement(sql);
+            rs = pat.executeQuery(sql);
+            while(rs.next()){
+                Menu_variable m = new Menu_variable();
+                m.c.setorderid(rs.getString("ORD_ID"));
+                m.e.setid(rs.getString("EMP_ID"));
+                m.c.settable(rs.getString("T_ID"));
+                m.c.setorderdate(rs.getString("ORD_DATE"));
+                m.c.settotal(rs.getDouble("ORD_TOTAL"));
+                m.c.setpaytype(rs.getString("ORD_PAYTYPE"));
+                Ordering_Array.add(m);
+            }
+            rs.close();
+            pat.close();
+            getcon().close();
+        }catch(Exception e){
+            
+        }
+    }
+    public void getorder_menu(){
+        String sql = "Select OM_ID,ORD_ID,MENU_ID,OM_UNITS,OM_PRICE,OM_PROMOTION,OM_STATUS FROM ORDER_MENU_LIST WHERE OM_DEL = 'N'";
+        //System.out.println(sql);
+        try{
+            pat = getcon().prepareStatement(sql);
+            rs = pat.executeQuery(sql);
+            while(rs.next()){
+                Menu_variable m = new Menu_variable();
+                m.c.setorder_menu_id(rs.getString("OM_ID"));
+                m.c.setorderid(rs.getString("ORD_ID"));
+                m.setid(rs.getString("MENU_ID"));
+                m.c.setunits(rs.getInt("OM_UNITS"));
+                m.c.settotal(rs.getDouble("OM_PRICE"));
+                m.p.setname(rs.getString("OM_PROMOTION")); 
+                m.c.setorder_menu_status(rs.getString("OM_STATUS"));
+                Order_List_Array.add(m);
+            }
+            rs.close();
+            pat.close();
+            getcon().close();
+        }catch(Exception e){
+            
         }
     }
     public void getTable(){
@@ -107,6 +219,7 @@ public class Table_panel extends javax.swing.JFrame
     public JPanel setbuttonpanel(){
         JPanel buttonPanel = new JPanel(new GridLayout());
         buttonPanel.setLayout(new GridLayout(gridSize, gridSize, 25, 25));
+        try{
         for(table_v e:Table_Array){
             JButton button = new JButton(e.gettablenumber());
             button.setPreferredSize(new Dimension(25,25));
@@ -124,7 +237,7 @@ public class Table_panel extends javax.swing.JFrame
                     for (table_v t : Table_Array) {
                         if (but.getText().equals(t.gettablenumber())) {
                             if(t.getstatus().equals("N")){
-                            if(tv.getorder()==true||tv.getedit()==true){
+                            if(tv.getorder()==true||tv.getedit()==true||tv.getdelete()==true){
                              JOptionPane.showMessageDialog(null,"โต๊ะนี้ยังไม่มีออเดอร์ที่ค้างอยู่ กรุณาทำรายการใหม่ด้วยครับ");   
                             }else{
                             but.setSelected(false);
@@ -148,13 +261,15 @@ public class Table_panel extends javax.swing.JFrame
                             cp.setVisible(true);
                             close();
                             break;
-                            }else if(tv.getedit()){
+                            }else if(tv.getedit()==true){
                             Table_variable g = new Table_variable();
                             g.setid(t.gettablenumber());
                             Customer_Edit ce = new Customer_Edit();
                             ce.setVisible(true);
                             close();
                             break;    
+                            }else if(tv.getdelete()==true){
+                                checkdelete(t.gettablenumber(),t.gettablenumber());
                             }else{
                                JOptionPane.showMessageDialog(null,"โต๊ะนี้ไม่พร้อมใช้งาน กรุณาทำรายการใหม่ด้วยครับ");
                                 }
@@ -168,6 +283,9 @@ public class Table_panel extends javax.swing.JFrame
             buttonPanel.add(button);
             e.setbutton(button);
         }
+        }catch(Exception e){
+            System.out.println(e);
+        }
         return buttonPanel;
     }
         private void formWindowClosed(java.awt.event.WindowEvent evt) {                                  
@@ -175,6 +293,7 @@ public class Table_panel extends javax.swing.JFrame
         t.setorder(false);
         t.setview(false);
         t.setedit(false);
+        t.setdelete(false);
     } 
     /*
  JPanel buttonPanel = new JPanel(new GridLayout());
@@ -237,6 +356,8 @@ public class Table_panel extends javax.swing.JFrame
             {
                 close();
                 Table_Array.clear();
+                Order_List_Array.clear();
+                Ordering_Array.clear();
                 btn.clear();
                 new Table_panel();
                 /*for(table t:Table_Array){

@@ -356,6 +356,12 @@ public void getorder(){
             pat = getcon().prepareStatement(sql);
             rs = pat.executeQuery(sql);
             while(rs.next()){
+                //System.out.println(t.getid());
+                //System.out.println(rs.getString("T_ID"));
+                if(t.getid().equals(rs.getString("T_ID"))){
+                    orderid = rs.getString("ORD_ID");
+                    System.out.println(orderid);
+                }
                 Menu_variable m = new Menu_variable();
                 m.c.setorderid(rs.getString("ORD_ID"));
                 m.e.setid(rs.getString("EMP_ID"));
@@ -379,6 +385,7 @@ public void getorder(){
             pat = getcon().prepareStatement(sql);
             rs = pat.executeQuery(sql);
             while(rs.next()){
+                if(orderid.equals(rs.getString("ORD_ID"))){
                 Menu_variable m = new Menu_variable();
                 m.c.setorder_menu_id(rs.getString("OM_ID"));
                 m.c.setorderid(rs.getString("ORD_ID"));
@@ -410,6 +417,7 @@ public void getorder(){
                         count++;
                     }
                     break;
+                }
                 }
             }
             rs.close();
@@ -913,6 +921,8 @@ public void getorder(){
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
+        Table_panel t = new Table_panel();
+        t.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

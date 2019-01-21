@@ -18,6 +18,7 @@ public class Table_variable {
   private String id = null;
   static private boolean confirmorder = false;
   static private boolean editorder = false;
+  static private boolean deleteorder = false;
   Table_variable(){
       //this.tableid = "55";
   }
@@ -32,6 +33,12 @@ public class Table_variable {
    }
    public void setedit(boolean edit){
        this.editorder = edit;
+   }
+   public boolean getdelete(){
+       return this.deleteorder;
+   }
+   public void setdelete(boolean delete){
+       this.deleteorder = delete;
    }
    public void setorder(Boolean order){
        this.confirmorder = order;

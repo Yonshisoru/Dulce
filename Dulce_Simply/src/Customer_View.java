@@ -48,8 +48,6 @@ boolean fullserve = false;
      */
     public Customer_View() {
         initComponents();
-        t.setid("01");
-        tableid = t.getid();
         tableid_txt.setText(t.getid());
         //System.out.println(tableid);
         getMenu();
