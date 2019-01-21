@@ -16,9 +16,11 @@ public class Table_variable {
   static private JFrame mainframe = null;
   static private String tableid = null;
   private String id = null;
+  static private String orderid = null;
   static private boolean confirmorder = false;
   static private boolean editorder = false;
   static private boolean deleteorder = false;
+  static private boolean paymentorder = false;
   Table_variable(){
       //this.tableid = "55";
   }
@@ -28,11 +30,23 @@ public class Table_variable {
    public boolean getorder(){
        return this.confirmorder;
    }
+   public String getorderid(){
+       return this.orderid;
+   }
+   public void setorderid(String orderid){
+       this.orderid = orderid;
+   }
    public boolean getedit(){
        return this.editorder;
    }
    public void setedit(boolean edit){
        this.editorder = edit;
+   }
+   public boolean getpayment(){
+       return this.paymentorder;
+   }
+   public void setpayment(boolean payment){
+       this.paymentorder = payment;
    }
    public boolean getdelete(){
        return this.deleteorder;

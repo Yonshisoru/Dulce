@@ -888,10 +888,12 @@ public void getorder(){
                 JOptionPane.showMessageDialog(null,"คุณไม่สามารถแก้ไขเมนูที่เสิร์ฟไปแล้วได้ กรุณาทำรายการใหม่ด้วยครับ",null,ERROR_MESSAGE);
             }else{
             if(JOptionPane.showConfirmDialog(null,"คุณต้องการที่จะลบเมนูรายการที่ "+(order_table.getSelectedRow()+1)+" ของโต๊ะ "+t.getid()+" หรือไม่",null,YES_NO_OPTION)==YES_OPTION){
-                if(order_table.getValueAt(order_table.getSelectedRow(),4)==null){
+                if(order_table.getValueAt(order_table.getSelectedRow(),4)==null||order_table.getValueAt(order_table.getSelectedRow(),4).toString().equals("")){
                 totalprice -= (double)order_table.getValueAt(order_table.getSelectedRow(),3);
                 edit_Order_List_Array.remove(order_table.getSelectedRow());
+                if(adding_Order_List_Array.isEmpty()!=false){
                 adding_Order_List_Array.remove(order_table.getSelectedRow());
+                }
                 count--;
                 }else{
                 String promotion = order_table.getValueAt(order_table.getSelectedRow(),4).toString();

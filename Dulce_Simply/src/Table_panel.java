@@ -87,7 +87,27 @@ public class Table_panel extends javax.swing.JFrame {
             throw new RuntimeException(e);
         }
     }
-    public void checkdelete(String id,String table){
+public boolean checkserve(String id){
+        boolean canipayment = true;
+        for(Menu_variable m:Ordering_Array){
+            if(m.c.gettable().equals(id)&&m.c.getpaytype().isEmpty()==true){
+                for(Menu_variable mm:Order_List_Array){
+                    if(mm.c.getorderid().equals(m.c.getorderid())){
+                        if(mm.c.getorder_menu_status().equals("N")){
+                        canipayment = false;
+                        break;
+                        }
+                    }
+                }
+                Table_variable t = new Table_variable();
+                t.setorderid(m.c.getorderid());
+                System.out.println(m.c.getorderid());
+                break;
+            }
+        }
+        return canipayment;
+    }
+    public void checkdelete(String id){
         if(JOptionPane.showConfirmDialog(null,"คุณต้องการที่จะลบออเดอร์ของโต๊ะ "+id+" จริงหรือไม่\n(ถ้าหากว่าคุณได้ลบออเดอร์ไปแล้วจะไม่สามารถเรียกกลับมาได้)",null,WARNING_MESSAGE,YES_NO_OPTION)==YES_OPTION){
         boolean canidelete = true;
         String orderid = null;
@@ -110,7 +130,7 @@ public class Table_panel extends javax.swing.JFrame {
         if(canidelete==true){
             String deleteorder = "UPDATE ORDERING SET ORD_DEL = 'Y' WHERE ORD_ID = '"+orderid+"'";
             String deleteorder_list = "UPDATE ORDER_MENU_LIST SET OM_DEL = 'Y' WHERE ORD_ID = '"+orderid+"'";
-            String updatetable = "UPDATE TABLEZ SET T_STATUS = 'N' WHERE T_ID = '"+table+"'";
+            String updatetable = "UPDATE TABLEZ SET T_STATUS = 'N' WHERE T_ID = '"+id+"'";
             System.out.println(deleteorder);
             System.out.println(deleteorder_list);
             System.out.println(updatetable);
@@ -237,7 +257,7 @@ public void getorder(){
                     for (table_v t : Table_Array) {
                         if (but.getText().equals(t.gettablenumber())) {
                             if(t.getstatus().equals("N")){
-                            if(tv.getorder()==true||tv.getedit()==true||tv.getdelete()==true){
+                            if(tv.getorder()==true||tv.getedit()==true||tv.getdelete()==true||tv.getpayment()==true){
                              JOptionPane.showMessageDialog(null,"โต๊ะนี้ยังไม่มีออเดอร์ที่ค้างอยู่ กรุณาทำรายการใหม่ด้วยครับ");   
                             }else{
                             but.setSelected(false);
@@ -269,7 +289,17 @@ public void getorder(){
                             close();
                             break;    
                             }else if(tv.getdelete()==true){
-                                checkdelete(t.gettablenumber(),t.gettablenumber());
+                                checkdelete(t.gettablenumber());
+                            }else if(tv.getpayment()==true){
+                                if(checkserve(t.gettablenumber())==true){
+                                    Table_variable g = new Table_variable();
+                                    g.setid(t.gettablenumber());
+                                    Customer_Payment ce = new Customer_Payment();
+                                    ce.setVisible(true);
+                                    close();
+                                }else{
+                                   JOptionPane.showMessageDialog(null,"ไม่สามารถจ่ายเงินได้ เนื่องจากออเดอร์นี้ยังเสิร์ฟไม่ครบทุกเมนู"); 
+                                }
                             }else{
                                JOptionPane.showMessageDialog(null,"โต๊ะนี้ไม่พร้อมใช้งาน กรุณาทำรายการใหม่ด้วยครับ");
                                 }
@@ -294,6 +324,7 @@ public void getorder(){
         t.setview(false);
         t.setedit(false);
         t.setdelete(false);
+        t.setpayment(false);
     } 
     /*
  JPanel buttonPanel = new JPanel(new GridLayout());
@@ -393,6 +424,11 @@ public void getorder(){
             public void actionPerformed(ActionEvent ae)
             {
                 close();
+                tv.setorder(false);
+                tv.setview(false);
+                tv.setedit(false);
+                tv.setdelete(false);
+                tv.setpayment(false);
             }
         });
         closeButton.setPreferredSize(new Dimension(100,40));

@@ -825,19 +825,6 @@ public void setStock(){
                     }catch(Exception e){
                         System.out.println(e);
                     }
-                    for(Product_variable p:Menu_Ingredient_Array){
-                        for(int i =0;i<m.getunits();i++){
-                        if(p.m.getid().equals(m.getid())){
-                                try{
-                                    String deletefromproduct = "UPDATE PRODUCT SET PRO_UNITS = PRO_UNITS - '"+p.getunit()+" WHERE PRO_ID = '"+p.getid()+"'";
-                                    System.out.println(deletefromproduct);
-                                    pat = getcon().prepareStatement(deletefromproduct);
-                                    pat.executeUpdate(deletefromproduct);
-                                    pat.close();
-                                    getcon().close();
-                                }catch(Exception e){
-                                    
-                                }
                             //System.out.print(p.getIngredient_ID()+" ");
                             //System.out.print(p.m.getid()+" ");
                             //System.out.print(p.getid()+" ");
@@ -866,9 +853,6 @@ public void setStock(){
                                 break;
                                 }
                             }*/
-                        }
-                    }
-                    }
                 }
                 try{
                     String settable = "UPDATE TABLEZ SET T_STATUS = 'Y' WHERE T_ID = '"+tablenumber+"'";
@@ -894,6 +878,9 @@ public void setStock(){
             }
             totalmenu_txt.setText("0");
             totalprice_txt.setText(String.format("%.2f",(totalprice)));
+            this.setVisible(false);
+            Table_panel p = new Table_panel();
+            p.setVisible(true);
             JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
             /*this.setVisible(false);
             Table_panel t = new Table_panel();
