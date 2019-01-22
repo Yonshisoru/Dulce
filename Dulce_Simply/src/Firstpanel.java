@@ -122,6 +122,7 @@ public class Firstpanel extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -245,21 +246,31 @@ public class Firstpanel extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tekton Pro", 0, 48)); // NOI18N
         jLabel1.setText("Dulce Simply ");
 
+        jLabel3.setForeground(new java.awt.Color(142, 41, 41));
+        jLabel3.setText("@powered by Yonshisoru");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(212, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(184, 184, 184))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(175, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(184, 184, 184))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(387, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 362, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addContainerGap())
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 650, 470));
@@ -297,7 +308,7 @@ public class Firstpanel extends javax.swing.JFrame {
         }catch(Exception e){
         }
          if(count!=1){
-            JOptionPane.showMessageDialog(null, "Not Found This ID.","System",ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ไม่พบรหัสพนักงานนี้ กรุณาแจ้งผู้จัดการหรือเจ้าของร้านด้วยครับ",null,ERROR_MESSAGE);
         }else{
        String checkschedule  ="select SL_NUMBER,SC_ID from (SCHEDULE_LIST NATURAL JOIN SCHEDULE)NATURAL JOIN EMPLOYEE where EMP_ID = '"+id+"' AND SC_DATE = '"+LocalDate.now()+"' AND SL_STATUS = 'N'";
        System.out.println(schedulestatus);
@@ -319,7 +330,7 @@ public class Firstpanel extends javax.swing.JFrame {
             System.out.print(e);
         }
         if(schedulestatus!=0){
-            JOptionPane.showMessageDialog(null, "You didn't enroll schedule today!!\nDenied process");
+            JOptionPane.showMessageDialog(null, "ทำรายการผิดพลาด\nเนื่องจากคุณไม่ได้ลงเวลาเข้างานในวันนี้");
         }else{
              String checkclockinout  ="select W_ID,W_STATUS from WORKTIME where EMP_ID = '"+id+"' AND W_DATE = '"+LocalDate.now()+"'";
         try{            
@@ -339,7 +350,7 @@ public class Firstpanel extends javax.swing.JFrame {
             System.out.print(e);
         }
         if(checkclock==1){
-            JOptionPane.showMessageDialog(null, "You already Clock-in/Clock-out today!!","System",ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "คุณได้ลงเวลาเข้า/ลงเวลาออก เรียบร้อยแล้วในวันนี้",null,ERROR_MESSAGE);
         }else{
         String create = "INSERT INTO WORKTIME VALUE('"+id()+"','"+id+"','"+time+"',"+null+",'"+LocalDate.now()+"','0','N','N')";
         if(check()==0){
@@ -349,7 +360,7 @@ public class Firstpanel extends javax.swing.JFrame {
         pat = con.prepareStatement(create);
         pat.executeUpdate(create);
         pat.close();
-        JOptionPane.showMessageDialog(null, "Insert Success");
+        JOptionPane.showMessageDialog(null, "ลงเวลาเข้างานสำเร็จ");
         con.close();
                    }catch(Exception e){
                        System.out.print(e);
@@ -405,7 +416,7 @@ public class Firstpanel extends javax.swing.JFrame {
         pat = con.prepareStatement(updatestatus);
         pat.executeUpdate(updatestatus);
         pat.close();
-                JOptionPane.showMessageDialog(null, "Update Success");
+                JOptionPane.showMessageDialog(null, "ลงเวลาออกงานสำเร็จ");
                 con.close();
         }catch(Exception e){
                 System.out.print(e);
@@ -470,6 +481,7 @@ public class Firstpanel extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables

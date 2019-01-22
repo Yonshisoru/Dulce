@@ -150,10 +150,11 @@ public class LoginFrom extends javax.swing.JFrame {
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
         timer.stop();
-        if(JOptionPane.showConfirmDialog(null,"Exit Confirm","System",JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
-                    JOptionPane.showMessageDialog(this, "Closing Software","System",INFORMATION_MESSAGE);
+        if(JOptionPane.showConfirmDialog(null,"คุณต้องการจะออกจากโปรแกรมจริงหรือไม่",null,JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION){
+                    JOptionPane.showMessageDialog(this, "ขอบคุณที่ใช้งานซอฟต์แวร์ของเรา\nกำลังออกจากหน้าต่างโปรแกรม","System",INFORMATION_MESSAGE);
         this.setVisible(false);
-        System.exit(0);
+        Firstpanel f =new Firstpanel();
+        f.setVisible(true);
         }else{
             Exit.setEnabled(true);
             if(logincheck==1){
@@ -164,11 +165,11 @@ public class LoginFrom extends javax.swing.JFrame {
 
     private void LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginActionPerformed
         if(Jusername.getText().equals("")&&Jpassword.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Username and password was empty.\nPlease fill your username and password.","System",ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ชื่อผู้ใช้งานและรหัสยังไม่ถูกกรอก.\nกรุณากรอกชื่อผู้ใช้งานและรหัสผ่านด้วยครับ.","System",ERROR_MESSAGE);
         }else if(Jpassword.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Password was empty!!","System",ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "คุณยังไม่ได้กรอกรหัสผ่าน",null,ERROR_MESSAGE);
     }else if(Jusername.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Username was empty!!","System",ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "คุณยังไม่ได้กรอกชื่อผู้ใช้งาน",null,ERROR_MESSAGE);
     }else{
         String sql  ="select EMP_ID,EMP_PASS,EMP_FNAME,EMP_LNAME,POS_ID from EMPLOYEE where EMP_ID=? and EMP_PASS=? AND EMP_DEL = 'N'";
         try{  
@@ -222,14 +223,16 @@ public class LoginFrom extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
          if(logincheck==0){
-        JOptionPane.showMessageDialog(null,"Please press exit button for close.","System",ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null,"กรุณาออกจากซอฟต์แวร์จากปุ่มออกด้วยครับ",null,ERROR_MESSAGE);
          }else {
              timer.stop();
              if (JOptionPane.showConfirmDialog(this, 
-            "Current in loading process.\nAre you sure to quit?", "Close Window?", 
+            "กำลังอยู่ในหน้าต่างโหลดเข้าใช้งาน.\nคุณต้องการออกจากซอฟต์แวร์จริงหรือไม่t?",null, 
             JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){ 
-            System.exit(0);
+            this.setVisible(false);
+            Firstpanel f =new Firstpanel();
+            f.setVisible(true);
          }else if(logincheck==1){
         timer.start();
         }
