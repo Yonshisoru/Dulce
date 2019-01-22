@@ -17,10 +17,12 @@ public class Table_variable {
   static private String tableid = null;
   private String id = null;
   static private String orderid = null;
+  static private String order_list = null;
   static private boolean confirmorder = false;
   static private boolean editorder = false;
   static private boolean deleteorder = false;
   static private boolean paymentorder = false;
+  static private boolean claimorder = false;
   Table_variable(){
       //this.tableid = "55";
   }
@@ -35,6 +37,18 @@ public class Table_variable {
    }
    public void setorderid(String orderid){
        this.orderid = orderid;
+   }
+   public String getorder_list(){
+       return this.order_list;
+   }
+   public void setorder_list(String order_list){
+       this.order_list = order_list;
+   }
+   public boolean getclaimorder(){
+       return this.claimorder;
+   }
+   public void setclaimorder(boolean claimorder){
+       this.claimorder = claimorder;
    }
    public boolean getedit(){
        return this.editorder;

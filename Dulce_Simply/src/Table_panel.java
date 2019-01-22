@@ -257,7 +257,7 @@ public void getorder(){
                     for (table_v t : Table_Array) {
                         if (but.getText().equals(t.gettablenumber())) {
                             if(t.getstatus().equals("N")){
-                            if(tv.getorder()==true||tv.getedit()==true||tv.getdelete()==true||tv.getpayment()==true){
+                            if(tv.getorder()==true||tv.getedit()==true||tv.getdelete()==true||tv.getpayment()==true||tv.getclaimorder()==true){
                              JOptionPane.showMessageDialog(null,"โต๊ะนี้ยังไม่มีออเดอร์ที่ค้างอยู่ กรุณาทำรายการใหม่ด้วยครับ");   
                             }else{
                             but.setSelected(false);
@@ -290,6 +290,12 @@ public void getorder(){
                             break;    
                             }else if(tv.getdelete()==true){
                                 checkdelete(t.gettablenumber());
+                            }else if(tv.getclaimorder()==true){
+                                    Table_variable g = new Table_variable();
+                                    g.setid(t.gettablenumber());
+                                    Customer_Claim ce = new Customer_Claim();
+                                    ce.setVisible(true);
+                                    close(); 
                             }else if(tv.getpayment()==true){
                                 if(checkserve(t.gettablenumber())==true){
                                     Table_variable g = new Table_variable();

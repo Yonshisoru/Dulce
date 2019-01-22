@@ -9,6 +9,9 @@
  * @author Yonshisoru
  */
 public class Customer_variable {
+    private String reportid = null;
+    private String date =  null;
+    private String detail = null;
     static boolean maintenance = true;
     private String orderid = null;
     private String tableid = null;
@@ -26,7 +29,24 @@ public class Customer_variable {
     public void setunits(int units){
         this.units = units;
     }
-      
+    public String getreportid(){
+        return reportid;
+    }
+    public void setreportid(String reportid){
+        this.reportid = reportid;
+    } 
+    public String getdate(){
+        return date;
+    }
+    public void setdate(String date){
+        this.date = date;
+    } 
+    public String getdetail(){
+        return detail;
+    }
+    public void setdetail(String detail){
+        this.detail = detail;
+    } 
     public boolean getmaintenance(){
         return maintenance;
     }
