@@ -39,6 +39,16 @@ public class Firstpanel extends javax.swing.JFrame {
         initComponents();
         showTime();
     }
+    public Connection getcon(){
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            return DriverManager.getConnection(d.url(),d.username(),d.password());
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            System.out.println("Didn't connect");
+            throw new RuntimeException(e);
+        }
+    }
         void showTime(){
         Date d = new Date();
         SimpleDateFormat s = new SimpleDateFormat("YYYY-MM-dd");
@@ -119,10 +129,11 @@ public class Firstpanel extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         Sign_in = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -137,7 +148,8 @@ public class Firstpanel extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 255, 204));
-        setPreferredSize(new java.awt.Dimension(650, 500));
+        setMinimumSize(new java.awt.Dimension(630, 470));
+        setPreferredSize(new java.awt.Dimension(660, 500));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Main.setBackground(new java.awt.Color(153, 255, 204));
@@ -238,40 +250,23 @@ public class Firstpanel extends javax.swing.JFrame {
 
         getContentPane().add(Main, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
 
-        jLabel2.setText("Time:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
-
         jPanel1.setBackground(new java.awt.Color(102, 255, 204));
+        jPanel1.setPreferredSize(new java.awt.Dimension(700, 520));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Tekton Pro", 0, 48)); // NOI18N
         jLabel1.setText("Dulce Simply ");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 43, -1, 40));
 
         jLabel3.setForeground(new java.awt.Color(142, 41, 41));
         jLabel3.setText("@powered by Yonshisoru");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(518, 445, -1, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(175, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(184, 184, 184))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addContainerGap())))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 362, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addContainerGap())
-        );
+        jLabel4.setText("Time:");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
+
+        jLabel2.setText("Time:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 20, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 650, 470));
 
@@ -295,16 +290,14 @@ public class Firstpanel extends javax.swing.JFrame {
     }
           String sql  ="select EMP_ID from EMPLOYEE where EMP_ID = '"+id+"' AND EMP_DEL = 'N'";
         try{            
-        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(sql);
+        pat = getcon().prepareStatement(sql);
         rs = pat.executeQuery();
         while(rs.next()){
             count=1;
         }
         rs.close();
         pat.close();
-        con.close();
+        getcon().close();
         }catch(Exception e){
         }
          if(count!=1){
@@ -315,8 +308,7 @@ public class Firstpanel extends javax.swing.JFrame {
        System.out.print(checkschedule);
         try{            
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(checkschedule);
+        pat = getcon().prepareStatement(checkschedule);
         rs = pat.executeQuery();
         while(rs.next()){
             System.out.print("EIEI");
@@ -325,7 +317,7 @@ public class Firstpanel extends javax.swing.JFrame {
         }
         rs.close();
         pat.close();
-        con.close();
+        getcon().close();
         }catch(Exception e){
             System.out.print(e);
         }
@@ -335,8 +327,7 @@ public class Firstpanel extends javax.swing.JFrame {
              String checkclockinout  ="select W_ID,W_STATUS from WORKTIME where EMP_ID = '"+id+"' AND W_DATE = '"+LocalDate.now()+"'";
         try{            
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(checkclockinout);
+        pat = getcon().prepareStatement(checkclockinout);
         rs = pat.executeQuery();
         while(rs.next()){
             if(rs.getString("W_STATUS").equals("Y")){
@@ -345,7 +336,7 @@ public class Firstpanel extends javax.swing.JFrame {
         }
         rs.close();
         pat.close();
-        con.close();
+        getcon().close();
         }catch(Exception e){
             System.out.print(e);
         }
@@ -355,13 +346,11 @@ public class Firstpanel extends javax.swing.JFrame {
         String create = "INSERT INTO WORKTIME VALUE('"+id()+"','"+id+"','"+time+"',"+null+",'"+LocalDate.now()+"','0','N','N')";
         if(check()==0){
                    try{            
-        /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(create);
+        pat = getcon().prepareStatement(create);
         pat.executeUpdate(create);
         pat.close();
         JOptionPane.showMessageDialog(null, "ลงเวลาเข้างานสำเร็จ");
-        con.close();
+        getcon().close();
                    }catch(Exception e){
                        System.out.print(e);
                    }
@@ -369,19 +358,17 @@ public class Firstpanel extends javax.swing.JFrame {
         String update = "UPDATE WORKTIME SET W_CLOCKOUT = '"+time+"',W_STATUS = 'Y',W_TOTALTIME = '"+hour+"' WHERE EMP_ID = '"+id+"';"; 
         System.out.println(update);
         try{
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(update);
+        pat = getcon().prepareStatement(update);
         pat.executeUpdate(update);
         pat.close();
-        con.close();
+        getcon().close();
         }catch(Exception e){
                 System.out.print(e);
                 }
         String searchtime = "SELECT W_ID,TIMESTAMPDIFF(MINUTE, W_CLOCKIN, W_CLOCKOUT) FROM WORKTIME WHERE EMP_ID = '"+id+"' AND W_DATE = '"+LocalDate.now()+"'"; 
         System.out.println(searchtime);
         try{
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(searchtime); 
+        pat = getcon().prepareStatement(searchtime); 
         rs = pat.executeQuery();
         while(rs.next()){
             System.out.println(rs.getString("W_ID"));
@@ -394,7 +381,7 @@ public class Firstpanel extends javax.swing.JFrame {
         }
         rs.close();
         pat.close();
-        con.close();
+        getcon().close();
         }catch(Exception e){
             System.out.print(e);
         }
@@ -402,22 +389,15 @@ public class Firstpanel extends javax.swing.JFrame {
         String updatestatus = "UPDATE SCHEDULE_LIST SET SL_STATUS = 'Y' WHERE EMP_ID = '"+id+"'AND SC_ID = '"+scheduleid+"'"; 
         try{
         System.out.println(updatehour);
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(updatehour);
+        pat = getcon().prepareStatement(updatehour);
         pat.executeUpdate(updatehour);
         pat.close();
-        con.close();
-        }catch(Exception e){
-            System.out.print(e);
-        }
-         try{
-        System.out.println(updatestatus);
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(updatestatus);
-        pat.executeUpdate(updatestatus);
-        pat.close();
+            System.out.println(updatestatus);
+            pat = getcon().prepareStatement(updatestatus);
+            pat.executeUpdate(updatestatus);
+            pat.close();
                 JOptionPane.showMessageDialog(null, "ลงเวลาออกงานสำเร็จ");
-                con.close();
+                getcon().close();
         }catch(Exception e){
                 System.out.print(e);
                 }
@@ -427,7 +407,7 @@ public class Firstpanel extends javax.swing.JFrame {
         }
         }
          }else{
-                 JOptionPane.showMessageDialog(null,"This isn't time for clock-in/out!","System",ERROR_MESSAGE);
+                 JOptionPane.showMessageDialog(null,"ยังไม่ถึงเวลาที่จะลงเวลาเข้า/ลงเวลาออก","System",ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -482,6 +462,7 @@ public class Firstpanel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables

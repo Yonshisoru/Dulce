@@ -21,13 +21,17 @@ Database d = new Database();
 Connection con = null;
 PreparedStatement pat = null;
 ResultSet rs = null;
+ArrayList<Menu_variable> Menu_Array = new ArrayList<>();
+ArrayList<Menu_variable> Ordering_List_Array = new ArrayList<>();
 ArrayList<Customer_variable>Report_Array= new ArrayList<>();
     /**
      * Creates new form Customer_Claim_View
      */
     public Customer_Claim_View() {
         initComponents();
+        getMenu();
         getReport();
+        getorder_menu();
         setReport();
     }
  public Connection getcon(){
@@ -38,6 +42,26 @@ ArrayList<Customer_variable>Report_Array= new ArrayList<>();
             System.out.println(e.getMessage());
             System.out.println("Didn't connect");
             throw new RuntimeException(e);
+        }
+    }
+    public void getMenu(){
+        String sql = "Select MENU_ID,MENU_NAME,MENU_PRICE,M_T_ID FROM MENU WHERE MENU_DEL = 'N'";
+        try{
+            pat = getcon().prepareStatement(sql);
+            rs = pat.executeQuery(sql);
+            while(rs.next()){
+                Menu_variable m = new Menu_variable();
+                m.setid(rs.getString("MENU_ID"));
+                m.setname(rs.getString("MENU_NAME"));
+                m.setprice(rs.getInt("MENU_PRICE"));
+                m.setcataid(rs.getString("M_T_ID"));
+                Menu_Array.add(m);
+            }
+            rs.close();
+            pat.close();
+            getcon().close();
+        }catch(Exception e){
+
         }
     }
    public void getReport(){
@@ -60,14 +84,54 @@ ArrayList<Customer_variable>Report_Array= new ArrayList<>();
             System.out.println(e);
         }
     }
+    public void getorder_menu(){
+        String sql = "Select OM_ID,ORD_ID,MENU_ID,OM_UNITS,OM_PRICE,OM_STATUS FROM ORDER_MENU_LIST";
+        //System.out.println(sql);
+        try{
+            pat = getcon().prepareStatement(sql);
+            rs = pat.executeQuery(sql);
+            while(rs.next()){
+                Menu_variable m = new Menu_variable();
+                m.c.setorder_menu_id(rs.getString("OM_ID"));
+                m.c.setorderid(rs.getString("ORD_ID"));
+                m.setid(rs.getString("MENU_ID"));
+                for(Menu_variable mv :Menu_Array){
+                    if(m.getid().equals(mv.getid())){
+                        m.setname(mv.getname());
+                        break;
+                    }
+                }
+                m.c.setunits(rs.getInt("OM_UNITS"));
+                m.c.settotal(rs.getDouble("OM_PRICE"));
+                m.c.setorder_menu_status(rs.getString("OM_STATUS"));
+                Ordering_List_Array.add(m);
+            }
+            rs.close();
+            pat.close();
+            getcon().close();
+        }catch(Exception e){
+
+        }
+    }
    public void setReport(){
        DefaultTableModel model = (DefaultTableModel)report_table.getModel();
-       Object[] row = new Object[4];
+       Object[] row = new Object[6];
        for(Customer_variable c:Report_Array){
            row[0] = c.getreportid();
            row[1] = c.getorder_menu_id();
-           row[2] = c.getdate();
-           row[3] = c.getdetail();
+           for(Menu_variable m:Ordering_List_Array){
+               if(m.c.getorder_menu_id().equals(c.getorder_menu_id())){
+                   for(Menu_variable mm:Menu_Array){
+                       if(m.getid().equals(mm.getid())){
+                                      row[2] = mm.getname();
+                       }
+                   }
+               }
+                          row[3] = m.c.gettotal();
+                          break;
+           }
+           row[4] = c.getdate();
+           row[5] = c.getdetail();
            model.addRow(row);
        }
    }
@@ -93,11 +157,11 @@ ArrayList<Customer_variable>Report_Array= new ArrayList<>();
 
             },
             new String [] {
-                "รายการที่", "รหัสออเดอร์ที่", "วันที่", "รายละเอียด"
+                "รายการที่", "รหัสออเดอร์ที่", "ชื่อเมนู", "ราคา", "วันที่", "รายละเอียด"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -107,13 +171,16 @@ ArrayList<Customer_variable>Report_Array= new ArrayList<>();
         jScrollPane1.setViewportView(report_table);
         if (report_table.getColumnModel().getColumnCount() > 0) {
             report_table.getColumnModel().getColumn(0).setResizable(false);
-            report_table.getColumnModel().getColumn(0).setPreferredWidth(30);
+            report_table.getColumnModel().getColumn(0).setPreferredWidth(70);
             report_table.getColumnModel().getColumn(1).setResizable(false);
-            report_table.getColumnModel().getColumn(1).setPreferredWidth(30);
+            report_table.getColumnModel().getColumn(1).setPreferredWidth(120);
             report_table.getColumnModel().getColumn(2).setResizable(false);
-            report_table.getColumnModel().getColumn(2).setPreferredWidth(100);
+            report_table.getColumnModel().getColumn(2).setPreferredWidth(200);
             report_table.getColumnModel().getColumn(3).setResizable(false);
-            report_table.getColumnModel().getColumn(3).setPreferredWidth(500);
+            report_table.getColumnModel().getColumn(4).setResizable(false);
+            report_table.getColumnModel().getColumn(4).setPreferredWidth(200);
+            report_table.getColumnModel().getColumn(5).setResizable(false);
+            report_table.getColumnModel().getColumn(5).setPreferredWidth(500);
         }
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 40, 890, 380));

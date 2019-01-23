@@ -22,6 +22,8 @@ public class Salary_variable {
     private double total = 0;
     private double worktime = 0;
     private double sum = 0;
+    private String status = null;
+    private String workid = null;
     Salary_variable(String id,String fname,String lname,String date,int salary,String start,String end,double worktime,double sum){
         this.id = id;
         this.displayfname = fname;
@@ -32,6 +34,9 @@ public class Salary_variable {
         this.end = end;
         this.worktime = worktime;
         this.sum = sum;
+    }
+    Salary_variable(){
+        
     }
                 /*ep.setid(rs.getString("SP_ID"));
             System.out.println(ep.getid());
@@ -48,6 +53,18 @@ public class Salary_variable {
 }
     public void setid(String id){
     this.id = id;
+}
+    public String getworkid(){
+    return this.workid;
+}
+    public void setworkid(String workid){
+    this.workid = workid;
+}
+ public String getstatus(){
+    return this.status;
+}
+    public void setstatus(String status){
+    this.status = status;
 }
     public int getsalary(){
     return this.salary;

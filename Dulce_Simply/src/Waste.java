@@ -1,3 +1,13 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,14 +20,75 @@
  * @author Yonshisoru
  */
 public class Waste extends javax.swing.JFrame {
-
+ArrayList<Waste_variable>Waste_Array = new ArrayList<>();
+//-----------------------------------------
+    Database d = new Database();
+    Employee e = new Employee();
+    Main_variable m = new Main_variable();
+    Waste_variable w = new Waste_variable();
+//------------------------------------------
+    Connection con = null;
+    Statement st = null;
+    PreparedStatement pat = null;
+    ResultSet rs = null;
+    
+    int count = 0;
+    
+    String doubleclick = "";
     /**
      * Creates new form Waste
      */
     public Waste() {
         initComponents();
+        getWaste();
+        System.out.println(Waste_Array.size());
+        showWaste();
     }
-
+    public Connection getcon(){
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            return DriverManager.getConnection(d.url(),d.username(),d.password());
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            System.out.println("Didn';t connect");
+            throw new RuntimeException(e);
+        }
+    }
+   public void getWaste(){
+        try{
+        String sql  ="SELECT W_ID,W_TOTAL,W_DATE,W_TOTAL_PRICE,EMP_ID,EMP_FNAME,EMP_LNAME FROM WASTE NATURAL JOIN EMPLOYEE WHERE W_DEL = 'N' AND EMP_DEL = 'N'";
+        pat = getcon().prepareStatement(sql);
+        rs = pat.executeQuery(sql);
+        while(rs.next()){
+           Waste_variable w = new Waste_variable();
+           w.setid(rs.getString("W_ID"));
+           w.settotal(rs.getInt("W_TOTAL"));
+           w.setdate(rs.getString("W_DATE"));
+           w.settotalprice(rs.getDouble("W_TOTAL_PRICE"));
+           w.setempid(rs.getString("EMP_ID"));
+           w.setemp_fname(rs.getString("EMP_FNAME"));
+           w.setemp_lname(rs.getString("EMP_LNAME"));
+           Waste_Array.add(w);
+        }
+        rs.close();
+        pat.close();
+        getcon().close();
+        }catch(Exception e){
+            System.out.print(e);
+        }
+}
+    public void showWaste(){
+        DefaultTableModel model = (DefaultTableModel)waste_table.getModel();
+        Object[] row = new Object[5];
+        for(int i=0;i< Waste_Array.size();i++){
+            row[0]= Waste_Array.get(i).getid();
+            row[1]= Waste_Array.get(i).getdate();
+            row[2]= Waste_Array.get(i).gettotal();
+            row[3]= Waste_Array.get(i).gettotalprice();
+            row[4]= Waste_Array.get(i).getemp_fname()+" "+Waste_Array.get(i).getemp_lname();
+            model.addRow(row);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,21 +98,109 @@ public class Waste extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jScrollPane1 = new javax.swing.JScrollPane();
+        waste_table = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(800, 470));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        waste_table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "WasteID", "วันที่", "จำนวนทั้งหมด", "มูลค่ารวม", "พนักงานที่ดูแล"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        waste_table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                waste_tableMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(waste_table);
+        if (waste_table.getColumnModel().getColumnCount() > 0) {
+            waste_table.getColumnModel().getColumn(0).setPreferredWidth(70);
+            waste_table.getColumnModel().getColumn(1).setPreferredWidth(120);
+        }
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(63, 20, 640, 310));
+
+        jButton1.setText("ปิด");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 370, 110, 50));
+
+        jButton2.setText("สร้างรายการทิ้ง");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 370, 110, 50));
+
+        jButton3.setText("?");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 330, 40, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    Waste_panel p = new Waste_panel();
+    p.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+     this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+       if(count==0){
+           count=1;
+           JOptionPane.showMessageDialog(null,"ดับเบิ้ลคลิ๊กตารางเพื่อดูรายละเอียดของการทิ้งวัตถุดิบ");
+       }
+    }//GEN-LAST:event_formWindowOpened
+
+    private void waste_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_waste_tableMouseClicked
+       if(doubleclick.equals(waste_table.getValueAt(waste_table.getSelectedRow(),0).toString())){
+           Waste_variable w = new Waste_variable();
+           w.setglobalid(doubleclick);
+           w.setgetcraete(false);
+           Waste_View p = new Waste_View();
+           p.setVisible(true);
+           this.setVisible(false);
+       }else{
+          doubleclick = waste_table.getValueAt(waste_table.getSelectedRow(),0).toString();
+       }
+    }//GEN-LAST:event_waste_tableMouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        JOptionPane.showMessageDialog(null,"ดับเบิ้ลคลิ๊กตารางเพื่อดูรายละเอียดของการทิ้งวัตถุดิบ");
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +238,10 @@ public class Waste extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable waste_table;
     // End of variables declaration//GEN-END:variables
 }

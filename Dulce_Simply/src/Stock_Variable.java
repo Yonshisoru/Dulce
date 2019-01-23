@@ -11,6 +11,7 @@
  */
 public class Stock_Variable {
     Claim_Variable c = new Claim_Variable();
+    Product_variable p = new Product_variable();
     private int stocknumber;
     private String productid;
     private String productname;
@@ -18,6 +19,27 @@ public class Stock_Variable {
     private String stockstartdate;
     private double stockunits;
     private String orderid;
+    private String detail;
+    private double wasteunits;
+    private double stockprice;
+    public double getstockprice(){
+       return stockprice;
+    }
+    public void setstockprice(double stockprice){
+       this.stockprice = stockprice;
+    }
+    public double getwasteunits(){
+       return wasteunits;
+    }
+    public void setwasteunits(double wasteunits){
+       this.wasteunits = wasteunits;
+    }
+    public String getdetail(){
+       return detail;
+    }
+    public void setdetail(String detail){
+       this.detail = detail;
+    }
     public int getstocknumber(){
         return this.stocknumber;
     }

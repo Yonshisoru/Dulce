@@ -41,16 +41,14 @@ public class Employee_Salary extends javax.swing.JFrame {
     void showtime(){
          Date d = new Date();
         SimpleDateFormat s = new SimpleDateFormat("YYYY-MM-dd");
-        year = String.valueOf(Integer.parseInt(s.format(d).substring(0,4))-543);
+        year = String.valueOf(Integer.parseInt(s.format(d).substring(0,4)));
         month = String.valueOf(Integer.parseInt(s.format(d).substring(5,7)));
         day = String.valueOf(Integer.parseInt(s.format(d).substring(s.format(d).length()-2,s.format(d).length())));
-        start = "'"+year+"-01-01'";
-        end = "'"+year+"-12-31'";
         System.out.print(year+month+day);
     }
    public ArrayList<Employee>ScheduleList(){
-        String change = "SELECT EMP_ID,EMP_FNAME,EMP_LNAME,EMP_SALARY,SUM(W_TOTALTIME) FROm WORKTIME NATURAL JOIN EMPLOYEE WHERE W_STATUS = 'Y' AND W_DATE BETWEEN "+start+" AND "+end+" GROUP BY EMP_ID HAVING SUM(W_TOTALTIME) ORDER BY EMP_ID";         
-       System.out.println(change);
+        String change = "SELECT EMP_ID,EMP_FNAME,EMP_LNAME,EMP_SALARY,SUM(W_TOTALTIME) FROm WORKTIME NATURAL JOIN EMPLOYEE WHERE W_STATUS = 'Y' AND W_DATE BETWEEN "+start+" AND "+end+" GROUP BY EMP_ID HAVING SUM(W_TOTALTIME) ORDER BY EMP_ID;";         
+        System.out.println(change);
         ArrayList<Employee> Schedulelist = new ArrayList<>();
         try{
         Class.forName("com.mysql.jdbc.Driver");     
@@ -157,8 +155,8 @@ public class Employee_Salary extends javax.swing.JFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
 if(jComboBox1.getSelectedItem().equals("Total")){
-        start = "'"+year+"-01-01'";
-        end = "'"+year+"-12-31'";
+        start = "'"+year+"-02-01'";
+        end = "'"+(""+(Integer.parseInt(year)-1))+"-12-31'";
             DefaultTableModel dk = (DefaultTableModel)Show_payment.getModel();
             while(dk.getRowCount() > 0)
             {       
@@ -176,7 +174,7 @@ if(jComboBox1.getSelectedItem().equals("Total")){
             showSchedule();
         }else if(jComboBox1.getSelectedItem().equals("February")){
             start = "'"+year+"-02-01'";
-            end = "'"+year+"-02-28'";
+            end = "'"+year+"-03-01'";
             DefaultTableModel dk = (DefaultTableModel)Show_payment.getModel();
             while(dk.getRowCount() > 0)
             {       
@@ -266,7 +264,7 @@ if(jComboBox1.getSelectedItem().equals("Total")){
             showSchedule();
         }else if(jComboBox1.getSelectedItem().equals("December")){
             start = "'"+year+"-12-01'";
-            end = "'"+year+"'-12-31'";
+            end = "'"+year+"-12-31'";
             DefaultTableModel dk = (DefaultTableModel)Show_payment.getModel();
             while(dk.getRowCount() > 0)
             {       

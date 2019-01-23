@@ -44,9 +44,9 @@
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="3" rowCount="0">
-                <Column editable="false" title="Date" type="java.lang.Object"/>
-                <Column editable="false" title="Period" type="java.lang.Object"/>
-                <Column editable="false" title="Status" type="java.lang.Object"/>
+                <Column editable="false" title="&#xe27;&#xe31;&#xe19;&#xe17;&#xe35;&#xe48;" type="java.lang.Object"/>
+                <Column editable="false" title="&#xe01;&#xe30;&#xe40;&#xe27;&#xe25;&#xe32;" type="java.lang.Object"/>
+                <Column editable="false" title="&#xe2a;&#xe16;&#xe32;&#xe19;&#xe30;" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -80,11 +80,11 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="36" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Schedule"/>
+        <Property name="text" type="java.lang.String" value="&#xe15;&#xe32;&#xe23;&#xe32;&#xe07;&#xe07;&#xe32;&#xe19;"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="290" y="10" width="166" height="59"/>
+          <AbsoluteConstraints x="280" y="10" width="166" height="59"/>
         </Constraint>
       </Constraints>
     </Component>

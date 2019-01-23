@@ -31,14 +31,15 @@ public class Schedule_show_emp_leave extends javax.swing.JFrame {
     public Schedule_show_emp_leave() {
         initComponents();
         showid.setText(em.getshowid());
-        showname.setText(em.getdisfname()+" "+em.getdislname());   
+        showname.setText(em.getdisfname()+" "+em.getdislname());  
         showSchedule();
     }
   public ArrayList<Schedule>ScheduleList(){
         ArrayList<Schedule> Schedulelist = new ArrayList<>();
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="SELECT SL_NUMBER,EMP_ID,SCS_ID,SC_DATE,SL_STATUS,SCS_NAME,SL_CAUSE FROM (SCHEDULE NATURAL JOIN SC_SHIFT)NATURAL JOIN SCHEDULE_LIST WHERE EMP_ID = '"+em.getshowid()+"' AND SL_STATUS = 'O';";         
+        String sql  ="SELECT SL_NUMBER,EMP_ID,SCS_ID,SC_DATE,SL_STATUS,SCS_NAME,SL_CAUSE FROM (SCHEDULE NATURAL JOIN SC_SHIFT)NATURAL JOIN SCHEDULE_LIST WHERE SL_DEL = 'N' AND EMP_ID = '"+em.getshowid()+"' AND SL_STATUS = 'O';";         
+        System.out.println(sql);
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(sql);
@@ -89,13 +90,14 @@ public class Schedule_show_emp_leave extends javax.swing.JFrame {
         ShowSchedule = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        showid = new javax.swing.JLabel();
         id1 = new javax.swing.JLabel();
-        showname = new javax.swing.JLabel();
+        showid = new javax.swing.JLabel();
         id2 = new javax.swing.JLabel();
+        showname = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(694, 501));
+        setPreferredSize(new java.awt.Dimension(690, 530));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -111,7 +113,7 @@ public class Schedule_show_emp_leave extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Date", "Period", "Cause"
+                "รหัสการลงเวลางาน", "วันที่", "กะเวลา", "สาเหตุการลา"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -124,7 +126,7 @@ public class Schedule_show_emp_leave extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(ShowSchedule);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 650, 270));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 650, 270));
 
         jButton1.setText("Close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -132,25 +134,25 @@ public class Schedule_show_emp_leave extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 420, 170, 50));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 410, 170, 50));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel1.setText("Leave List");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 20, -1, -1));
-
-        showid.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        getContentPane().add(showid, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, 90, 20));
+        jLabel1.setText("ลิสต์การลา");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, -1, -1));
 
         id1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        id1.setText("ID:");
-        getContentPane().add(id1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, -1, -1));
+        id1.setText("รหัสพนักงาน:");
+        getContentPane().add(id1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 80, -1, -1));
 
-        showname.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        getContentPane().add(showname, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 90, 270, 20));
+        showid.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        getContentPane().add(showid, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 90, 20));
 
         id2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        id2.setText("Name:");
-        getContentPane().add(id2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 90, -1, -1));
+        id2.setText("ชื่อ:");
+        getContentPane().add(id2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, -1, -1));
+
+        showname.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        getContentPane().add(showname, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 80, 270, 20));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

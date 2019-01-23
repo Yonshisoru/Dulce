@@ -182,8 +182,9 @@ public String findreceive(String id){
         } 
         return receiveid;
   }
+
 public void getProduct(){
-    String sql = "SELECT PRO_ID,PRO_NAME,PRO_PRICE,PRO_UNITS,PRO_UNITS_TYPE,PRO_MIN,V_ID,V_NAME FROM PRODUCT NATURAL JOIN VENDOR WHERE PRO_DEL = 'N'";
+    String sql = "SELECT PRO_ID,PRO_NAME,PRO_PRICE,PRO_UNITS,PRO_UNITS_TYPE,PRO_UNITS_TYPE_NAME,PRO_MIN,V_ID,V_NAME FROM (PRODUCT NATURAL JOIN VENDOR) NATURAL JOIN PRODUCT_UNIT_LIST WHERE PRO_DEL = 'N'";
     try{
         pat = getcon().prepareStatement(sql);
         rs = pat.executeQuery(sql);
@@ -194,6 +195,7 @@ public void getProduct(){
             p.setprice(rs.getInt("PRO_PRICE"));
             p.setunit(rs.getDouble("PRO_UNITS"));
             p.setunits_type(rs.getString("PRO_UNITS_TYPE"));
+            p.setunits_type_name(rs.getString("PRO_UNITS_TYPE_NAME"));
             p.setmin(rs.getInt("PRO_MIN"));
             p.setvid(rs.getString("V_ID"));
             p.setvname(rs.getString("V_NAME"));
@@ -602,9 +604,7 @@ public void findproduct(String product){
         help_product_btn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         product_table = new javax.swing.JTable();
-        jButton5 = new javax.swing.JButton();
         help_product_btn1 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
@@ -662,7 +662,7 @@ public void findproduct(String product){
         jLabel6.setText("ผู้จัดจำหน่าย:");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, -1, -1));
 
-        jButton1.setText("Close");
+        jButton1.setText("ปิด");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -670,7 +670,7 @@ public void findproduct(String product){
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 710, 120, 50));
 
-        jButton2.setText("Submit");
+        jButton2.setText("ยืนยัน");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -678,7 +678,7 @@ public void findproduct(String product){
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 710, 120, 50));
 
-        jButton3.setText("Clear");
+        jButton3.setText("เคลียร์");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -817,14 +817,6 @@ public void findproduct(String product){
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 540, 260));
 
-        jButton5.setText("jButton5");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 80, -1, -1));
-
         help_product_btn1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         help_product_btn1.setText("?");
         help_product_btn1.addActionListener(new java.awt.event.ActionListener() {
@@ -833,14 +825,6 @@ public void findproduct(String product){
             }
         });
         getContentPane().add(help_product_btn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1440, 680, 40, 20));
-
-        jButton6.setText("jButton6");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 80, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel3.setText("ตารางการสั่งสินค้า");
@@ -1428,19 +1412,6 @@ System.out.print(sql);
            }*/
     }//GEN-LAST:event_p_txt1ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        if(productlisttoorder.isEmpty()){
-            System.err.println("Array was Empty.");
-        }else{
-        for(Product_variable p:productlisttoorder){
-            System.out.print(p.getid()+" ");
-            System.out.print(p.getname()+" ");
-            System.out.print(p.getprice()+" ");
-            System.out.print(p.getunit()+"\n");
-        }
-        }  
-    }//GEN-LAST:event_jButton5ActionPerformed
-
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         double units = 0;
         if(p_txt1.getSelectedIndex()!=0){
@@ -1448,7 +1419,7 @@ System.out.print(sql);
         for(Product_variable p:productlist){
             if(p_txt1.getSelectedItem().toString().equals(p.getname())){
                 try{
-                units = Double.parseDouble(JOptionPane.showInputDialog(null,"กรุณากรอกจำนวนที่สั่ง\nหน่วย "+p.getunit_type()));
+                units = Double.parseDouble(JOptionPane.showInputDialog(null,"กรุณากรอกจำนวนที่สั่ง\nหน่วย "+p.getunit_type_name()));
                         }catch(Exception e){
                             throw new NullPointerException();
                         }
@@ -1547,12 +1518,6 @@ System.out.print(sql);
         JOptionPane.showMessageDialog(null,"คุณสามารถดับเบิ้ลคลิ๊กที่ตารางการสั่ง\nเพื่อลบการสั่งสินค้าได้ครับ\n(หากการสั่งนั้นมีการรับสินค้าแล้วจะไม่สามารถลบได้)"); 
         }
     }//GEN-LAST:event_help_product_btn1ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        for(Product_Order_Variable p :Product_Order_Receive_Array){
-            System.out.println(p.getreceiveid());
-        }
-    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1662,8 +1627,6 @@ System.out.print(sql);
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;

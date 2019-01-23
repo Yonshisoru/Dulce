@@ -47,11 +47,11 @@ public class Schedule_leave extends javax.swing.JFrame {
         while(rs.next()){
             Schedule e = new Schedule(rs.getString("SC_ID"),rs.getString("SC_DATE"),rs.getString("SCS_NAME"),rs.getInt("SC_EMPLIMIT"),rs.getInt("SC_EMPCUR"),rs.getInt("SC_LEAVE"));
             if(rs.getString("SL_STATUS").equals("N")){
-                 e.setstatus("CURRENT");
+                 e.setstatus("อยู่ในเวลางาน");
             }else if(rs.getString("SL_STATUS").equals("Y")){
-            e.setstatus("IN-TIME");
+            e.setstatus("ลงเวลาออกเรียบร้อยแล้ว");
             }else if(rs.getString("SL_STATUS").equals("O")){
-            e.setstatus("OFF");  
+            e.setstatus("ลา/วันหยุด");  
             }
             e.setlistid(rs.getInt("SL_NUMBER"));
             Schedulelist.add(e);
@@ -101,7 +101,7 @@ public class Schedule_leave extends javax.swing.JFrame {
         id_txt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(700, 650));
+        setPreferredSize(new java.awt.Dimension(927, 651));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         ShowSchedule.setModel(new javax.swing.table.DefaultTableModel(
@@ -109,19 +109,30 @@ public class Schedule_leave extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Date", "Period", "Status"
+                "รหัสการลงเวลางาน", "วันที่", "กะเวลา", "สถานะ"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         ShowSchedule.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 ShowScheduleMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(ShowSchedule);
+        if (ShowSchedule.getColumnModel().getColumnCount() > 0) {
+            ShowSchedule.getColumnModel().getColumn(0).setPreferredWidth(50);
+        }
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 100, 340, 400));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 100, 560, 400));
 
-        Confirm.setText("Confirm");
+        Confirm.setText("ยืนยัน");
         Confirm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ConfirmActionPerformed(evt);
@@ -129,14 +140,19 @@ public class Schedule_leave extends javax.swing.JFrame {
         });
         getContentPane().add(Confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 537, 117, 48));
 
-        jButton2.setText("Close");
+        jButton2.setText("ปิด");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 537, 122, 48));
 
         date_txt.setEditable(false);
-        getContentPane().add(date_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 160, 141, 33));
+        getContentPane().add(date_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, 141, 33));
 
         period_txt.setEditable(false);
-        getContentPane().add(period_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 220, 141, 33));
+        getContentPane().add(period_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 220, 141, 33));
 
         cause.setColumns(20);
         cause.setRows(5);
@@ -145,27 +161,27 @@ public class Schedule_leave extends javax.swing.JFrame {
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, 257, 190));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Date:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 170, -1, -1));
+        jLabel1.setText("วันที่:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 170, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel2.setText("Period:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 230, -1, -1));
+        jLabel2.setText("กะเวลา:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel3.setText("Cause:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 270, -1, -1));
+        jLabel3.setText("สาเหตุการลา");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 280, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel4.setText("Leave Form");
+        jLabel4.setText("แบบฟอร์มการลา");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, -1, -1));
 
         ID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        ID.setText("ID:");
-        getContentPane().add(ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, -1, -1));
+        ID.setText("รหัสการลงเวลางาน:");
+        getContentPane().add(ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, -1));
 
         id_txt.setEditable(false);
-        getContentPane().add(id_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 110, 141, 33));
+        getContentPane().add(id_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 141, 33));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -184,8 +200,8 @@ public class Schedule_leave extends javax.swing.JFrame {
     }//GEN-LAST:event_ShowScheduleMouseClicked
 
     private void ConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmActionPerformed
-     if(status.equals("OFF")){
-         JOptionPane.showMessageDialog(null, "This schedule was off already.\nYou can't do it again!!","System",ERROR_MESSAGE);
+     if(status.equals("ลา/วันหยุด") || (status.equals("ลงเวลาออกเรียบร้อยแล้ว"))){
+         JOptionPane.showMessageDialog(null, "ยกเลิกรายการ เนื่องจากตารางเวลานี้มีการลาหรือลงเวลาออกเรียบร้อยแล้ว","System",ERROR_MESSAGE);
      }else{
      String sql  ="UPDATE SCHEDULE_LIST SET SL_STATUS = 'O',SL_CAUSE = '"+cause.getText()+"' WHERE SL_NUMBER = '"+id_txt.getText()+"'";
      String select = "SELECT SC_ID,SC_EMPLIMIT,SC_EMPCUR,SC_LEAVE FROM SCHEDULE WHERE SC_DATE = '"+date_txt.getText()+"' AND SCS_ID = '"+period+"' AND SC_DEL = 'N'";
@@ -229,7 +245,7 @@ public class Schedule_leave extends javax.swing.JFrame {
         con = DriverManager.getConnection(d.url(),d.username(),d.password());
         pat = con.prepareStatement(schedule);
         pat.executeUpdate(schedule);
-        JOptionPane.showMessageDialog(null, "Leave Completed");
+        JOptionPane.showMessageDialog(null, "บันทึกสำเร็จ");
         pat.close();
         con.close();
         }catch(Exception e){
@@ -243,6 +259,10 @@ public class Schedule_leave extends javax.swing.JFrame {
              showSchedule();
      }    
     }//GEN-LAST:event_ConfirmActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

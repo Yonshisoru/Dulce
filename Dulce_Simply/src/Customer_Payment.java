@@ -3,6 +3,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Desktop;
 import java.awt.event.KeyEvent;
@@ -10,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.WARNING_MESSAGE;
 import static javax.swing.JOptionPane.YES_NO_OPTION;
 import static javax.swing.JOptionPane.YES_OPTION;
@@ -37,6 +40,7 @@ import static javax.swing.text.StyleConstants.Bold;
  * @author Yonshisoru
  */
 public class Customer_Payment extends javax.swing.JFrame {
+public static File fontFile = new File("fonts/fontsgod.ttf");
 Database d = new Database();
 Table_variable t = new Table_variable();
 Employee e = new Employee();
@@ -46,6 +50,7 @@ ArrayList<Menu_variable>Menu_Array = new ArrayList<>();
 ArrayList<Menu_variable>Menu_List_Array = new ArrayList<>();
 ArrayList<Menu_variable>Ordering_Array = new ArrayList<>();
 ArrayList<Menu_variable>Order_List_Array = new ArrayList<>();
+ArrayList<Menu_variable>Pay_Menu = new ArrayList<>();
 //-----------------------------------------------------------
 Connection con = null;
 PreparedStatement pat = null;
@@ -70,16 +75,17 @@ double total = 0.0;
 Font TopFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
 Font Topic = new Font(Font.FontFamily.COURIER,24,Font.BOLD);
 Font Bold = new Font(Font.FontFamily.COURIER,18,Font.BOLD);
+Font minimal = new Font(Font.FontFamily.COURIER,8,Font.BOLD);
 Font normal = new Font(Font.FontFamily.COURIER,15,Font.NORMAL);
 /***************************************************************************/
 /**
      * Creates new form Customer_Payment
      */
     public Customer_Payment() {
+        initComponents();
         getMenu();
         getorder();
         getorder_menu();
-        initComponents();
         locknumberic();
         setorder_table(t.getid());
         price_txt.setText(""+price);
@@ -150,6 +156,7 @@ public void setorder_table(String table){
                 orderid = m.c.getorderid();
                 for(Menu_variable mm:Order_List_Array){
                     if(mm.c.getorderid().equals(orderid)){
+                        Pay_Menu.add(mm);
                         row[0] = amount;
                         row[1] = mm.getname();
                         row[2] = mm.c.gettotal();
@@ -246,14 +253,47 @@ public void getorder(){
         String filename = "$"+LocalDate.now()+"$"+time+"$"+t.getorderid()+".pdf";
         try{
         Document doc = new Document();
+        BaseFont baseFont = BaseFont.createFont("fonts/fontsgod.ttf", BaseFont.IDENTITY_H,true);
+        Font font = new Font(baseFont,18);
+        Font topicfont = new Font(baseFont,20);
+        Font bigfont = new Font(baseFont,30);
         PdfWriter.getInstance(doc,new FileOutputStream("Invoice/"+filename));
         doc.open();
-         doc.add(new Phrase(String.format("%38s","Date: "),Bold));
+        doc.add(new Paragraph(String.format("Dulce Simply"),bigfont));
+        String date = LocalDate.now().toString().substring(LocalDate.now().toString().length()-2,LocalDate.now().toString().length());
+        String month= LocalDate.now().toString().substring(5,7);
+        String year = LocalDate.now().toString().substring(0,4);
+        doc.add(new Paragraph(String.format("%s\n","วันที่: "+date+"/"+month+"/"+year),font));
+        doc.add(new Phrase(String.format("%s\n","เวลา: "+LocalTime.now().toString().substring(0,8)+" น."),font));
+        doc.add(new Paragraph(String.format("ประเภทการจ่ายเงิน: "+paytype_combo.getSelectedItem().toString()+" \n"),font));
+        doc.add(new Paragraph(String.format("%s","-----------------------------------------------------------------------------------------------------"),font));
+        doc.add(new Paragraph(String.format("%s\n","ใบเสร็จรับเงิน"),bigfont));
+        System.out.println(Order_List_Array.size());
+                for(Menu_variable mm:Pay_Menu){
+                        double eiei = (double)mm.c.gettotal()*(double)mm.c.getunits();
+                       doc.add(new Paragraph(String.format("%s",mm.c.getunits()+"          "+mm.getname()+"               "+String.format("%.2f",eiei)+" บาท"),font)); 
+            }
+     doc.add(new Paragraph(String.format("%s","-----------------------------------------------------------------------------------------------------"),font));  
+     doc.add(new Paragraph(String.format("%s\n","จำนวนสุทธิ: "+Pay_Menu.size()+" รายการ"),font));    
+     if(paytype_combo.getSelectedItem().toString().equals("เงินสด")){
+     doc.add(new Paragraph(String.format("%s\n","รับเงิน: "+String.format("%.2f",incame)+" บาท"),font));     
+     }   
+     doc.add(new Paragraph(String.format("%s\n","ราคารวมทั้งหมด: "+String.format("%.2f",price)+" บาท"),font)); 
+     if(paytype_combo.getSelectedItem().toString().equals("เงินสด")){
+     doc.add(new Paragraph(String.format("%s\n","เงินทอน: "+String.format("%.2f",total)+" บาท"),font));     
+     }
+     doc.add(new Paragraph(String.format("%s","\n\n\n"),font)); 
+     doc.add(new Paragraph(String.format("%s","                                       Thank you and please come again                         "),font)); 
+     doc.add(new Paragraph(String.format("%s","                                             Dulce Simply Since 2018                                "),font)); 
+     doc.add(new Paragraph(String.format("%s","\n\n\n"),font)); 
+     doc.add(new Paragraph(String.format("%s"," -------------------------------------------@powered by Yonshisoru---------------------------------------"),font));  
         doc.close();
 }catch (DocumentException ex){
     Logger.getLogger(Salary_payment.class.getName()).log(Level.SEVERE,null,ex);
 }      catch (FileNotFoundException ex) {
            Logger.getLogger(Salary_payment.class.getName()).log(Level.SEVERE, null, ex);
+       }catch(IOException ex){
+          Logger.getLogger(Salary_payment.class.getName()).log(Level.SEVERE, null, ex); 
        }
 try{
         Desktop.getDesktop().open(new File("./Invoice/"+filename));
@@ -750,6 +790,10 @@ try{
     }//GEN-LAST:event_formWindowClosing
 
     private void pay_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pay_btnActionPerformed
+        if(Double.parseDouble(change_txt.getText())<=0&&paytype_combo.getSelectedIndex()==1){
+            JOptionPane.showMessageDialog(null,"คุณกรอกจำนวนเงินไม่ถูกต้อง กรุณาลองใหม่อีกครั้งครับ",null,ERROR_MESSAGE);
+            clear();
+        }else{
         if(JOptionPane.showConfirmDialog(null,"ยืนยันการจ่ายเงิน",null,YES_NO_OPTION,WARNING_MESSAGE)==YES_OPTION){
             System.out.println(t.getorderid());
             String updateorder  ="UPDATE ORDERING SET ORD_PAYTYPE = '"+paytype_combo.getSelectedItem().toString()+"' WHERE ORD_ID = '"+t.getorderid()+"'";
@@ -772,6 +816,7 @@ try{
             p.setVisible(true);
             JOptionPane.showMessageDialog(null,"ชำระเงินเสร็จสิ้น");
             printInvoice();
+        }
         }
     }//GEN-LAST:event_pay_btnActionPerformed
 

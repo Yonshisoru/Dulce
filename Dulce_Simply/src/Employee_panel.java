@@ -265,7 +265,7 @@ public class Employee_panel extends javax.swing.JFrame {
         jCheckBox1 = new javax.swing.JCheckBox();
         jLabel16 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         emp_table.setModel(new javax.swing.table.DefaultTableModel(
@@ -356,7 +356,12 @@ public class Employee_panel extends javax.swing.JFrame {
         jLabel8.setText("ตำแหน่ง:");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 380, -1, -1));
 
-        jButton1.setText("ลบ");
+        jButton1.setText("ปิด");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 670, 120, 50));
 
         jButton2.setText("ยืนยัน");
@@ -687,6 +692,10 @@ public class Employee_panel extends javax.swing.JFrame {
         jLabel16.setForeground(Color.blue);
         jLabel16.setCursor(new Cursor(DEFAULT_CURSOR));
     }//GEN-LAST:event_jLabel16MouseExited
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

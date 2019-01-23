@@ -33,13 +33,25 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
     PreparedStatement pat = null;
     ResultSet rs = null;
     Statement st = null;
+    String doubleclick = "";
     /**
      * Creates new form CreateSchedule
      */
     public Schedule_CreateSchedule() {
         initComponents();
-    showSchedule();
+        showSchedule();
+        clear_btn.setEnabled(false);
 }
+        public Connection getcon(){
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            return DriverManager.getConnection(d.url(),d.username(),d.password());
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            System.out.println("Didn';t connect");
+            throw new RuntimeException(e);
+        }
+    }
    public String id(){
        int count=0;
           String sql  ="select SC_ID from SCHEDULE";
@@ -149,11 +161,11 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        clear_btn = new javax.swing.JButton();
         Schedule_date = new datechooser.beans.DateChooserCombo();
+        delete_btn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         ScheduleTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -161,7 +173,7 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Date", "Period", "Max", "Current", "Leave"
+                "ID", "วันที่", "กะเวลา", "พนักงานสูงสุด", "พนักงานขณะนี้", "พนักงานลา"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -173,25 +185,30 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
             }
         });
         ScheduleTable.getTableHeader().setReorderingAllowed(false);
+        ScheduleTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ScheduleTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(ScheduleTable);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, 460, 496));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, 460, 470));
 
-        CreateSchedule.setText("Create");
+        CreateSchedule.setText("สร้าง");
         CreateSchedule.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CreateScheduleActionPerformed(evt);
             }
         });
-        getContentPane().add(CreateSchedule, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 70, 40));
+        getContentPane().add(CreateSchedule, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, 70, 40));
 
-        jButton2.setText("Close");
+        jButton2.setText("ปิด");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 280, 70, 40));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 280, 70, 40));
 
         Schedule_showid.setEnabled(false);
         Schedule_showid.addActionListener(new java.awt.event.ActionListener() {
@@ -202,13 +219,13 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
         getContentPane().add(Schedule_showid, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 170, 30));
 
         MaxEmployee.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
-        getContentPane().add(MaxEmployee, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210, 170, 30));
+        getContentPane().add(MaxEmployee, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 210, 120, 30));
 
         ChoosePeriod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08.00-15.30", "15.00-22.30" }));
         getContentPane().add(ChoosePeriod, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 160, 170, 30));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Max Employee:");
+        jLabel1.setText("พนักงานสูงสุดประจำกะ:");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -216,26 +233,34 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setText("Date:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, 40, -1));
+        jLabel3.setText("วันที่:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 40, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setText("Period:");
+        jLabel4.setText("กะเวลา:");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 170, -1, -1));
 
-        jButton4.setText("Delete");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        clear_btn.setText("ลบ");
+        clear_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                clear_btnActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 280, 70, 40));
+        getContentPane().add(clear_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 500, 70, 20));
 
         Schedule_date.setCalendarPreferredSize(new java.awt.Dimension(350, 220));
         Schedule_date.setNothingAllowed(false);
         Schedule_date.setFieldFont(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 14));
         Schedule_date.setNavigateFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 11));
         getContentPane().add(Schedule_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 110, 170, 30));
+
+        delete_btn.setText("เคลียร์");
+        delete_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delete_btnActionPerformed(evt);
+            }
+        });
+        getContentPane().add(delete_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 500, 80, 20));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -311,18 +336,20 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_CreateScheduleActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void clear_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear_btnActionPerformed
         max--;
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="UPDATE SCHEDULE SET SC_DEL=? WHERE SC_ID= ?";         
+        String sql  ="UPDATE SCHEDULE SET SC_DEL=? WHERE SC_ID= ?";  
+        String sql2  ="UPDATE SCHEDULE_LIST SET SL_DEL=? WHERE SC_ID= 'Y'";  
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(sql);
+        pat = getcon().prepareStatement(sql);
         pat.setString(1,"Y");
         pat.setString(2,ScheduleTable.getModel().getValueAt(ScheduleTable.getSelectedRow(),0).toString());
         pat.executeUpdate();
-        con.close();
+            pat = getcon().prepareStatement(sql);
+            pat.execute();
+        getcon().close();
         }catch(Exception e){
             
         }finally{
@@ -339,12 +366,26 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
         dm.removeRow(0);
         }
         showSchedule();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_clear_btnActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.setVisible(false);
 
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void ScheduleTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ScheduleTableMouseClicked
+        if(doubleclick.equals(ScheduleTable.getValueAt(ScheduleTable.getSelectedRow(), 0).toString())){
+            clear_btn.setEnabled(true);
+        }else{
+            doubleclick = ScheduleTable.getValueAt(ScheduleTable.getSelectedRow(), 0).toString();
+            clear_btn.setEnabled(false);
+        }
+    }//GEN-LAST:event_ScheduleTableMouseClicked
+
+    private void delete_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_btnActionPerformed
+        clear_btn.setEnabled(false);
+        ScheduleTable.clearSelection();
+    }//GEN-LAST:event_delete_btnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -391,8 +432,9 @@ public class Schedule_CreateSchedule extends javax.swing.JFrame {
     private javax.swing.JTable ScheduleTable;
     private datechooser.beans.DateChooserCombo Schedule_date;
     private javax.swing.JTextField Schedule_showid;
+    private javax.swing.JButton clear_btn;
+    private javax.swing.JButton delete_btn;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

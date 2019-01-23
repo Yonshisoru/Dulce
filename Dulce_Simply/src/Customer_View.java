@@ -29,6 +29,7 @@ ArrayList<Menu_variable> Menu_Array = new ArrayList<>();
 ArrayList<Menu_variable> Ordering_List_Array = new ArrayList<>();  
 ArrayList<String> order_menu_id = new ArrayList<>();
 ArrayList<Product_variable>Menu_Ingredient_Array = new ArrayList<>();
+ArrayList<Menu_variable> eiei = new ArrayList<>();
 Database d = new Database();
 Table_variable t = new Table_variable();
 
@@ -184,7 +185,7 @@ public void setStock(){
         }
     }
     public void getorder_menu(){
-        String sql = "Select OM_ID,ORD_ID,MENU_ID,OM_UNITS,OM_PRICE,OM_STATUS FROM ORDER_MENU_LIST";
+        String sql = "Select OM_ID,ORD_ID,MENU_ID,OM_UNITS,OM_PRICE,OM_STATUS FROM ORDER_MENU_LIST WHERE OM_DEL = 'N'";
         //System.out.println(sql);
         try{
             pat = getcon().prepareStatement(sql);

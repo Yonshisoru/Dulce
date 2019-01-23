@@ -170,7 +170,7 @@ String status = null;    /**
 
             },
             new String [] {
-                "ID", "Date", "Period"
+                "รหัสการลงเวลางาน", "วันที่", "กะเวลา"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -190,26 +190,28 @@ String status = null;    /**
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 60, 440, 200));
 
-        jLabel1.setText("Date:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 260, -1, -1));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("วันที่:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 260, -1, -1));
 
-        jLabel2.setText("Period:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 330, -1, -1));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setText("กะเวลา:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 330, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel3.setText("Enrolled Schedule");
+        jLabel3.setText("ตารางกะเวลาที่ลงแล้ว");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel4.setText("Available Schedule");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 290, -1, -1));
+        jLabel4.setText("ตารางกะเวลาที่สามารถเปลี่ยนได้");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 290, -1, -1));
 
         Available.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Date", "Period", "Max", "Current", "Status"
+                "รหัสตารางงาน", "กะเวลา", "จำนวนสูงสุด", "จำนวนขณะนี้", "สถานะ"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -230,34 +232,38 @@ String status = null;    /**
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 330, 440, 200));
 
+        periodtochange.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         periodtochange.setEnabled(false);
         periodtochange.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 periodtochangeActionPerformed(evt);
             }
         });
-        getContentPane().add(periodtochange, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 320, 150, 30));
+        getContentPane().add(periodtochange, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 320, 150, 30));
 
-        jLabel5.setText("ID:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 200, -1, -1));
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel5.setText("รหัสการลงเวลางาน:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, -1, -1));
 
+        showid.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         showid.setEnabled(false);
         showid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showidActionPerformed(evt);
             }
         });
-        getContentPane().add(showid, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 190, 150, 30));
+        getContentPane().add(showid, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 190, 150, 30));
 
+        showdate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         showdate.setEnabled(false);
         showdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showdateActionPerformed(evt);
             }
         });
-        getContentPane().add(showdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 250, 150, 30));
+        getContentPane().add(showdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 250, 150, 30));
 
-        jButton1.setText("Edit");
+        jButton1.setText("แก้ไข");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -265,7 +271,7 @@ String status = null;    /**
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 410, 100, 50));
 
-        jButton2.setText("Close");
+        jButton2.setText("ปิด");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -273,17 +279,21 @@ String status = null;    /**
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 410, 110, 50));
 
-        jLabel6.setText("Employee Name:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, 100, -1));
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setText("ชื่อพนักงาน:");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 140, 100, -1));
 
-        jLabel7.setText("Employee ID:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 100, -1));
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel7.setText("รหัสพนักงาน:");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, 100, -1));
 
         emp_name.setEditable(false);
-        getContentPane().add(emp_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, 150, 30));
+        emp_name.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        getContentPane().add(emp_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 130, 150, 30));
 
         emp_id.setEditable(false);
-        getContentPane().add(emp_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 150, 30));
+        emp_id.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        getContentPane().add(emp_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 150, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

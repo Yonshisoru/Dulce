@@ -132,7 +132,6 @@ public class Payment extends javax.swing.JFrame {
         jComboBox2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         getContentPane().add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 80, -1));
 
-        jLabel6.setIcon(new javax.swing.ImageIcon("C:\\Users\\Yonshisoru\\Documents\\GitHubProject\\Dulce\\Dulce_Simply\\picture\\Payments-background.jpg")); // NOI18N
         jLabel6.setText("jLabel6");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(-790, -270, -1, -1));
 

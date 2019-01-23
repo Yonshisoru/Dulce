@@ -331,6 +331,7 @@ public void getorder(){
         t.setedit(false);
         t.setdelete(false);
         t.setpayment(false);
+        t.setclaimorder(false);
     } 
     /*
  JPanel buttonPanel = new JPanel(new GridLayout());
@@ -435,6 +436,7 @@ public void getorder(){
                 tv.setedit(false);
                 tv.setdelete(false);
                 tv.setpayment(false);
+                tv.setclaimorder(false);
             }
         });
         closeButton.setPreferredSize(new Dimension(100,40));

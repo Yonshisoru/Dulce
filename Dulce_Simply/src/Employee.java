@@ -28,6 +28,8 @@ public class Employee {
     private int salary;
     private double sumsalary;
     private double worktime;
+    private String cause;
+    private String status;
     public Employee(String employee_id,String fname,String lname,String position,int age,String gender,String phone,String email,String date){
     this.employee_id = employee_id;
     this.firstname = fname;
@@ -40,6 +42,18 @@ public class Employee {
     this.date = date;
     }
     public Employee(){
+    }
+    public String getstatus(){
+        return status;
+    }
+    public void setstatus(String status){
+        this.status = status;
+    }
+    public String getcause(){
+        return cause;
+    }
+    public void setcause(String cause){
+        this.cause = cause;
     }
     public String getaddress (){
         return address;

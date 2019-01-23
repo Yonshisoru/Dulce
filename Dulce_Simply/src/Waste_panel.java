@@ -17,6 +17,9 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -24,80 +27,107 @@ import javax.swing.table.DefaultTableModel;
  * @author Yonshisoru
  */
 public class Waste_panel extends javax.swing.JFrame {
-    boolean editnaja = false;
-    boolean createnaja = true;
-    boolean deletenaja = false;
-    boolean pass = false;
+ArrayList<Stock_Variable>Stock_Array = new ArrayList<>();
+ArrayList<Stock_Variable>Stock_Using_Array = new ArrayList<>();
+ArrayList<Stock_Variable>Waste_List_Array = new ArrayList<>();
+//-----------------------------------------
     Database d = new Database();
     Employee e = new Employee();
     Main_variable m = new Main_variable();
-    public String id = null;
+    Waste_variable w = new Waste_variable();
+//------------------------------------------
     Connection con = null;
     Statement st = null;
     PreparedStatement pat = null;
     ResultSet rs = null;
+//------------------------------------------------------
+    boolean editnaja = false;
+    boolean createnaja = true;
+    boolean deletenaja = false;
+    public String id = null;
     String output = null;
-    String menu = null;
-    String password= null;
     String createid = null;
+    String doubleclick = "";
+    double title = 0.0;
+    double totalall = 0.0;
     int max = 0;
+    int count = 0;
     /**
      * Creates new form Employee_create
      */
     public Waste_panel() {
         initComponents();
-        show_product();
-        id();
-        fillcombo();
+        getwasteid();
+        getStock();
+        showStock();
+        System.out.println(e.getshowid());
     }
     public void clear(){
-         m_name_txt.setText("");
-         m_cata_txt.setSelectedIndex(0);
-         m_price_txt.setText("");
+        showid_txt.setText(createid);
+        totalall=0;
+        total_txt.setText("0.00");
+        Stock_Array.clear();
+        Stock_Using_Array.clear();
+        getStock();
+                DefaultTableModel model1 = (DefaultTableModel)stock_table.getModel();
+                while(model1.getRowCount()>0){
+                    model1.removeRow(0);
+                }
+                showStock();
+                DefaultTableModel model2 = (DefaultTableModel)waste_stock_table.getModel();
+                while(model2.getRowCount()>0){
+                    model2.removeRow(0);
+                }
+                showStock_Using();
+        waste_stock_table.getSelectionModel().clearSelection();
+        stock_table.getSelectionModel().clearSelection(); 
     }
-    public void lock(){
-         m_name_txt.setEnabled(false);
-         m_cata_txt.setEnabled(false);
-         m_price_txt.setEnabled(false);
-    }
-    public void unlock(){
-         m_name_txt.setEnabled(true);
-         m_cata_txt.setEnabled(true);
-         m_price_txt.setEnabled(true);
-    }
-public String find(){
-            String find = "SELECT M_T_ID,M_T_NAME FROM MENU_TYPE";
+    public Connection getcon(){
         try{
             Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(find);
-        rs = pat.executeQuery(find);
-        while(rs.next()){
-            if(m_cata_txt.getSelectedItem().toString().equals(rs.getString("M_T_NAME"))){
-                menu = rs.getString("M_T_ID");
-                System.out.print(menu);
-            }
+            return DriverManager.getConnection(d.url(),d.username(),d.password());
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            System.out.println("Didn';t connect");
+            throw new RuntimeException(e);
         }
-        rs.close();
-        pat.close();
-        con.close();
-        }catch(Exception e){ 
-            System.out.print(e);
-        } 
-        return menu;
-  }
-  public String id(){
+    }
+  public String getwaste_list_id(){
        int count=0;
-          String sql  ="select MENU_ID from MENU";
+          String sql  ="select WL_NUMBER from WASTE_LIST";
     try{
-    Class.forName("com.mysql.jdbc.Driver");
-    con = DriverManager.getConnection(d.url(),d.username(),d.password());
-    pat = con.prepareStatement(sql);
+    pat = getcon().prepareStatement(sql);
      rs = pat.executeQuery(sql);
     while(rs.next()){
         count++;
-        if(Integer.parseInt(rs.getString("MENU_ID"))>max){
-            max = Integer.parseInt(rs.getString("MENU_ID"));
+        if(Integer.parseInt(rs.getString("WL_NUMBER"))>max){
+            max = Integer.parseInt(rs.getString("WL_NUMBER"));
+        }
+    }
+    if(count==0){
+            max = 0;
+    }
+    max += 1;
+    output = ""+max;
+    rs.close();
+    pat.close();
+    getcon().close();
+    }catch(Exception e){
+        e.printStackTrace();
+    }
+    return output;
+   }
+  public String getwasteid(){
+       int count=0;
+       max = 0;
+          String sql  ="select W_ID from WASTE";
+    try{
+    pat = getcon().prepareStatement(sql);
+     rs = pat.executeQuery(sql);
+    while(rs.next()){
+        count++;
+        if(Integer.parseInt(rs.getString("W_ID").substring(1,4))>max){
+            max = Integer.parseInt(rs.getString("W_ID").substring(1,4));
         }
     }
     if(count==0){
@@ -105,55 +135,41 @@ public String find(){
     }
     max += 1;
     if(max<10){
-        output = "000"+max;
+        output = "W00"+max;
     }else if(max<100){
-        output = "00"+max;
+        output = "W0"+max;
     }else{
-        output = "0"+max;
+        output = "W"+max;
     }
     showid_txt.setText(output);
     createid = output;
-    con.close();
-    pat.close();
     rs.close();
+    pat.close();
+    getcon().close();
             }catch(Exception e){
                 e.printStackTrace();
             }
     return output;
    }
-    void fillcombo(){
-      try{
-          String sql = "SELECT M_T_ID,M_T_NAME FROM MENU_TYPE WHERE M_T_DEL = 'N'";
-         con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        st = con.createStatement();
-        rs = st.executeQuery(sql);
-        while(rs.next()){
-            m_cata_txt.addItem(rs.getString("M_T_NAME"));
-        }
-        rs.close();
-        st.close();
-        con.close();
-      }catch(Exception e){
-          
-      }
-  }
-   public ArrayList<Menu_variable>MenuList(){
-               ArrayList<Menu_variable> Menu_list = new ArrayList<>();
+   public void getStock(){
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        String sql  ="select MENU_ID,MENU_NAME,MENU_PRICE,M_T_ID,M_T_NAME FROM MENU NATURAL JOIN MENU_TYPE WHERE MENU_DEL = 'N' ORDER BY MENU_ID";         
+        String sql  ="select STOCK_NUMBER,PRO_ID,PRO_NAME,PRO_PRICE,STOCK_EXP,STOCK_STARTDATE,STOCK_UNITS,PO_ID FROM STOCK NATURAL JOIN PRODUCT WHERE STOCK_DEL = 'N' ORDER BY STOCK_NUMBER";
         /*con = DriverManager.getConnection("jdbc:mysql://localhost:3306/u787124245_dulce","root","");*/
          con = DriverManager.getConnection(d.url(),d.username(),d.password());
        st = con.createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
-           Menu_variable m = new Menu_variable();
-            m.setid(rs.getString("MENU_ID"));
-            m.setname(rs.getString("MENU_NAME"));
-            m.setprice(rs.getInt("MENU_PRICE"));
-            m.setcataid(rs.getString("M_T_ID"));
-            m.setcataname(rs.getString("M_T_NAME"));
-            Menu_list.add(m);
+           Stock_Variable s = new Stock_Variable();
+            s.setstocknumber(rs.getInt("STOCK_NUMBER"));
+            s.setproductid(rs.getString("PRO_ID"));
+            s.setproductname(rs.getString("PRO_NAME"));
+            s.p.setprice(rs.getInt("PRO_PRICE"));
+            s.setstockexpdate(rs.getString("STOCK_EXP"));
+            s.setstockstartdate(rs.getString("STOCK_STARTDATE"));
+            s.setstockunits(rs.getDouble("STOCK_UNITS"));
+            s.setorderid(rs.getString("PO_ID"));
+            Stock_Array.add(s);
         }
         rs.close();
         st.close();
@@ -161,17 +177,30 @@ public String find(){
         }catch(Exception e){
             System.out.print(e);
         }
-        return Menu_list;
 }
-    public void show_product(){
-        ArrayList<Menu_variable>MenuList = MenuList();
-        DefaultTableModel model = (DefaultTableModel)menu_table.getModel();
-        Object[] row = new Object[4];
-        for(int i=0;i<MenuList.size();i++){
-            row[0]=MenuList.get(i).getid();
-            row[1]=MenuList.get(i).getname();
-            row[2]=MenuList.get(i).getprice();
-            row[3]=MenuList.get(i).getcataname();
+    public void showStock(){
+        DefaultTableModel model = (DefaultTableModel)stock_table.getModel();
+        Object[] row = new Object[6];
+        for(int i=0;i<Stock_Array.size();i++){
+            row[0]=Stock_Array.get(i).getstocknumber();
+            row[1]=Stock_Array.get(i).getproductname();
+            row[3]=Stock_Array.get(i).getstockunits();
+            row[2]=Stock_Array.get(i).p.getprice();
+            row[4]=Stock_Array.get(i).getstockstartdate();
+            row[5]=Stock_Array.get(i).getstockexpdate();
+            model.addRow(row);
+        }
+    }
+    public void showStock_Using(){
+        DefaultTableModel model = (DefaultTableModel)waste_stock_table.getModel();
+        Object[] row = new Object[6];
+        for(int i=0;i<Stock_Using_Array.size();i++){
+            row[0]=Stock_Using_Array.get(i).getstocknumber();
+            row[1]=Stock_Using_Array.get(i).getproductname();
+            row[2]=Stock_Using_Array.get(i).p.getprice();
+            row[3]=Stock_Using_Array.get(i).getstockunits();
+            row[4]=Stock_Using_Array.get(i).p.gettotal_price();
+            row[5]=Stock_Using_Array.get(i).getdetail();
             model.addRow(row);
         }
     }
@@ -184,94 +213,71 @@ public String find(){
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
-        menu_table = new javax.swing.JTable();
+        waste_stock_table = new javax.swing.JTable();
         showid_txt = new javax.swing.JTextField();
-        m_name_txt = new javax.swing.JTextField();
-        m_price_txt = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        m_cata_txt = new javax.swing.JComboBox<>();
-        jLabel11 = new javax.swing.JLabel();
-        delete = new javax.swing.JRadioButton();
-        jLabel12 = new javax.swing.JLabel();
-        create = new javax.swing.JRadioButton();
-        edit = new javax.swing.JRadioButton();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        stock_table = new javax.swing.JTable();
+        total_txt = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        m_cata_txt1 = new javax.swing.JComboBox<>();
+        jButton5 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1420, 700));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        menu_table.setModel(new javax.swing.table.DefaultTableModel(
+        waste_stock_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Name", "Price", "Catagory"
+                "รหัสสต๊อก", "ชื่อสินค้า", "ราคาต่อหน่วย", "จำนวนที่ทิ้ง", "มูลค่าทั้งหมด", "สาเหตุการทิ้ง"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        menu_table.getTableHeader().setReorderingAllowed(false);
-        menu_table.addMouseListener(new java.awt.event.MouseAdapter() {
+        waste_stock_table.getTableHeader().setReorderingAllowed(false);
+        waste_stock_table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menu_tableMouseClicked(evt);
+                waste_stock_tableMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(menu_table);
+        jScrollPane1.setViewportView(waste_stock_table);
+        if (waste_stock_table.getColumnModel().getColumnCount() > 0) {
+            waste_stock_table.getColumnModel().getColumn(0).setPreferredWidth(80);
+            waste_stock_table.getColumnModel().getColumn(1).setPreferredWidth(200);
+            waste_stock_table.getColumnModel().getColumn(2).setPreferredWidth(80);
+            waste_stock_table.getColumnModel().getColumn(3).setPreferredWidth(80);
+            waste_stock_table.getColumnModel().getColumn(4).setPreferredWidth(80);
+            waste_stock_table.getColumnModel().getColumn(5).setPreferredWidth(200);
+        }
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 0, 820, 680));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 30, 700, 520));
 
         showid_txt.setEditable(false);
         showid_txt.setEnabled(false);
-        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, 110, 30));
-        getContentPane().add(m_name_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 150, 370, 30));
-
-        m_price_txt.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                m_price_txtFocusGained(evt);
-            }
-        });
-        m_price_txt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                m_price_txtActionPerformed(evt);
-            }
-        });
-        getContentPane().add(m_price_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 220, 90, 30));
+        getContentPane().add(showid_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 40, 110, 30));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("ID:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
-
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel4.setText("Menu Name:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel6.setText("Price:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
 
         jButton1.setText("Close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -279,7 +285,7 @@ public String find(){
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 670, 120, 50));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 440, 120, 50));
 
         jButton2.setText("Submit");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -287,7 +293,7 @@ public String find(){
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 670, 120, 50));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 440, 120, 50));
 
         jButton3.setText("Clear");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -295,246 +301,212 @@ public String find(){
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 670, 120, 50));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 440, 120, 50));
 
-        m_cata_txt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        getContentPane().add(m_cata_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, 130, 30));
+        stock_table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel11.setText("Catagory:");
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
+            },
+            new String [] {
+                "รหัสสต๊อก", "ชื่อสินค้า", "ราคาต่อหน่วย", "จำนวน", "วันรับเข้า", "วันหมดอายุ"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
 
-        delete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteActionPerformed(evt);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-        getContentPane().add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 620, -1, -1));
-
-        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel12.setText("Function:");
-        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 620, -1, -1));
-
-        create.setSelected(true);
-        create.setEnabled(false);
-        create.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createActionPerformed(evt);
-            }
-        });
-        getContentPane().add(create, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 620, -1, -1));
-
-        edit.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                editFocusLost(evt);
-            }
-        });
-        edit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editActionPerformed(evt);
-            }
-        });
-        getContentPane().add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 620, -1, -1));
-
-        jLabel13.setText("Delete");
-        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 620, -1, -1));
-
-        jLabel14.setText("Create");
-        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 620, -1, -1));
-
-        jLabel15.setText("Edit");
-        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 620, -1, -1));
-
-        jLabel1.setForeground(new java.awt.Color(0, 0, 255));
-        jLabel1.setText("Create catagory here!!");
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+        stock_table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel1MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel1MouseExited(evt);
+                stock_tableMouseClicked(evt);
             }
         });
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 255, -1, -1));
+        jScrollPane3.setViewportView(stock_table);
+        if (stock_table.getColumnModel().getColumnCount() > 0) {
+            stock_table.getColumnModel().getColumn(0).setResizable(false);
+            stock_table.getColumnModel().getColumn(0).setPreferredWidth(50);
+            stock_table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        }
 
-        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel16.setText("Employee:");
-        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 80, -1, -1));
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 110, 610, 210));
 
-        m_cata_txt1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        getContentPane().add(m_cata_txt1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 80, 130, 30));
+        total_txt.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        total_txt.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        total_txt.setText("0.00");
+        getContentPane().add(total_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 590, 200, 20));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setText("มูลค่ารวม:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 590, -1, -1));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("บาท");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1350, 590, -1, -1));
+
+        jButton5.setText("?");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 320, 40, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void menu_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_tableMouseClicked
-       if(editnaja==true||deletenaja==true){
-        showid_txt.setText(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),0).toString());
-        m_name_txt.setText(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),1).toString());
-        m_price_txt.setText(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),2).toString());
-        m_cata_txt.setSelectedItem(menu_table.getModel().getValueAt(menu_table.getSelectedRow(),3));
-        }
-    }//GEN-LAST:event_menu_tableMouseClicked
+    private void waste_stock_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_waste_stock_tableMouseClicked
+
+    }//GEN-LAST:event_waste_stock_tableMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String id = showid_txt.getText();
-        String menu_name = m_name_txt.getText();
-        String menu = find();
-        String menu_price = m_price_txt.getText();
-        if(createnaja==true){
-        String eiei = "INSERT INTO MENU VALUE('"+id+"','"+menu_name+"','"+menu_price+"','"+menu+"','N')";  
-        System.out.print(eiei);
-        try{
-        Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection(d.url(),d.username(),d.password());
-        pat = con.prepareStatement(eiei);
-        pat.executeUpdate(eiei);
-        JOptionPane.showMessageDialog(null,"Adding Menu success");
-        pat.close();
-        con.close();
-        }catch(Exception e){
-            System.out.print(e);
-        }
-        DefaultTableModel dm = (DefaultTableModel)menu_table.getModel();
-        while(dm.getRowCount() > 0)
-        {       
-        dm.removeRow(0);
-        }
-        show_product();
-        id();
-        clear();
-        }else if(editnaja==true){
-            String edit = "UPDATE MENU SET MENU_NAME = '"+menu_name+"',MENU_PRICE = '"+menu_price+"',M_T_ID = '"+menu+"' WHERE MENU_ID = '"+id+"'";  
-            System.out.print(edit);
+        if(Stock_Using_Array.isEmpty()==true){
+            JOptionPane.showMessageDialog(null,"คุณยังไม่ได้ใส่สินค้าที่ต้องการจะทิ้ง กรุณาทำรายการใหม่ด้วยครับ",null,ERROR_MESSAGE);
+            clear();
+        }else{
+            String date = LocalDate.now().toString()+" "+LocalTime.now().toString().substring(0,8);
+            String createwaste = "INSERT WASTE VALUES('"+createid+"','"+Stock_Using_Array.size()+"','"+date+"','"+totalall+"','"+e.getshowid()+"','N')";
+            //System.out.println(createwaste);
             try{
-               Class.forName("com.mysql.jdbc.Driver");
-                con = DriverManager.getConnection(d.url(),d.username(),d.password());
-                pat = con.prepareStatement(edit);
-                pat.executeUpdate(edit);
+                pat = getcon().prepareStatement(createwaste);
+                pat.executeUpdate(createwaste);
                 pat.close();
-                clear();
-                JOptionPane.showMessageDialog(null,"Update Success");
-                con.close(); 
+                getcon().close();
+                for(Stock_Variable s:Stock_Using_Array){
+                    String createwastelist = "INSERT WASTE_LIST VALUES('"+getwaste_list_id()+"','"+s.getstockunits()+"','"+s.getdetail()+"','"+s.p.gettotal_price()+"','"+s.getproductid()+"','"+createid+"','N')";
+                    String updateproduct = "UPDATE PRODUCT SET PRO_UNITS = PRO_UNITS-'"+s.getstockunits()+"' WHERE PRO_ID = '"+s.getproductid()+"'";
+                    String updatestock = "UPDATE STOCK SET STOCK_UNITS = STOCK_UNITS-'"+s.getstockunits()+"' WHERE STOCK_NUMBER = '"+s.getstocknumber()+"'";
+                    //System.out.println(createwastelist);
+                    //System.err.println(updateproduct);
+                    //System.out.println("+"+updatestock);
+                    try{
+                        pat = getcon().prepareStatement(createwastelist);
+                        pat.executeUpdate(createwastelist);
+                        pat.close();
+                            pat = getcon().prepareStatement(updateproduct);
+                            pat.executeUpdate(updateproduct);
+                            pat.close();
+                                pat = getcon().prepareStatement(updatestock);
+                                pat.executeUpdate(updatestock);
+                                pat.close();
+                        getcon().close();
+                    }catch(Exception e){
+                        System.out.println(e);
+                    }
+                boolean delete = false;
+                String find = "SELECT STOCK_UNITS FROM STOCK WHERE STOCK_DEL = 'N' AND STOCK_NUMBER = '"+s.getstocknumber()+"'";
+                try{
+                    pat = getcon().prepareStatement(find);
+                    rs = pat.executeQuery(find);
+                    while(rs.next()){
+                        if(rs.getDouble("STOCK_UNITS")<=0){
+                            delete=true;
+                        }
+                    }
+                    rs.close();
+                    pat.close();
+                    if(delete==true){
+                        String deletenaja = "UPDATE STOCK SET STOCK_DEL = 'Y' WHERE STOCK_NUMBER = '"+s.getstocknumber()+"'";
+                        //System.out.println(delete);
+                        try{
+                            pat = getcon().prepareStatement(deletenaja);
+                            pat.executeUpdate(deletenaja);
+                            pat.close();
+                        }catch(Exception e){
+                            System.out.println(e);
+                        }
+                    }
+                    getcon().close();
+                }catch(Exception e){
+                    System.out.println(e);
+                }
+                
+                }
             }catch(Exception e){
-                System.out.print(e);
+                System.out.println(e);
             }
-                  DefaultTableModel dm = (DefaultTableModel)menu_table.getModel();
-        System.out.print(dm.getRowCount());
-        while(dm.getRowCount() > 0)
-        {       
-        dm.removeRow(0);
-        }
-        show_product();  
-        }else if(deletenaja==true){
-            String delete = "UPDATE MENU SET MENU_DEL = 'Y' WHERE MENU_ID ='"+id+"'";
-            System.out.print(delete);
-            try{
-               Class.forName("com.mysql.jdbc.Driver");
-                con = DriverManager.getConnection(d.url(),d.username(),d.password());
-                pat = con.prepareStatement(delete);
-                pat.executeUpdate(delete);
-                pat.close();
-                clear();
-                JOptionPane.showMessageDialog(null,"Delete Success");
-                con.close(); 
-            }catch(Exception e){
-                System.out.print(e);
-            }
-        DefaultTableModel dm = (DefaultTableModel)menu_table.getModel();
-        System.out.print(dm.getRowCount());
-        while(dm.getRowCount() > 0)
-        {       
-        dm.removeRow(0);
-        }
-        show_product();
+            clear();
+            JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
+            this.setVisible(false);
+            Waste w = new Waste();
+            w.setVisible(true);   
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void m_price_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_price_txtActionPerformed
-
-    }//GEN-LAST:event_m_price_txtActionPerformed
-
-    private void m_price_txtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_m_price_txtFocusGained
-
-    }//GEN-LAST:event_m_price_txtFocusGained
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        clear();
-        showid_txt.setText(createid);
-        menu_table.getSelectionModel().clearSelection();
+            clear();
     }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
-        unlock(); 
-        clear();
-        menu_table.getSelectionModel().clearSelection();
-        System.out.print("create!!");         
-        create.setEnabled(false);       
-        edit.setEnabled(true);        
-        delete.setEnabled(true);
-        showid_txt.setText(createid);
-        delete.setSelected(false);
-        edit.setSelected(false);
-        createnaja = true;
-        editnaja = false;
-        deletenaja = false;
-    }//GEN-LAST:event_createActionPerformed
-
-    private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
-        unlock();
-        clear();
-        menu_table.getSelectionModel().clearSelection();
-        System.out.print("edit!!");
-        edit.setEnabled(false);
-        create.setEnabled(true);                    
-        delete.setEnabled(true);
-        delete.setSelected(false);
-        create.setSelected(false);
-        editnaja=true;
-        createnaja = false;
-        deletenaja = false;
-    }//GEN-LAST:event_editActionPerformed
-
-    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        lock(); 
-        clear();
-        menu_table.getSelectionModel().clearSelection();
-        System.out.print("delete!!");
-                    delete.setEnabled(false);
-                    create.setEnabled(true);
-                    edit.setEnabled(true);
-        create.setSelected(false);
-        edit.setSelected(false);
-        deletenaja = true;
-               editnaja = false;
-        createnaja = false;
-    }//GEN-LAST:event_deleteActionPerformed
-
-    private void editFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_editFocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editFocusLost
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
      this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
-        jLabel1.setForeground(Color.white);
-        jLabel1.setCursor(new Cursor(HAND_CURSOR));
-    }//GEN-LAST:event_jLabel1MouseEntered
+    private void stock_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stock_tableMouseClicked
+        if(doubleclick.equals(stock_table.getValueAt(stock_table.getSelectedRow(),0).toString())){
+            if(JOptionPane.showConfirmDialog(null,"คุณต้องการที่จะทิ้งวัตถุดิบในสต๊อกหมายเลขที่ "+doubleclick+" จริงหรือไม่",null,YES_NO_OPTION)==YES_OPTION){
+                
+            double input = 0;
+            try{
+                input = Double.parseDouble(JOptionPane.showInputDialog(null,"กรุณากรอกจำนวนที่ต้องการจะทิ้งด้วยครับ"));
+                if(input<=0){
+                    throw new NumberFormatException();
+                }
+                System.out.println(input);
+                System.err.println(Double.parseDouble(stock_table.getValueAt(stock_table.getSelectedRow(),3).toString()));
+                if(input>Double.parseDouble(stock_table.getValueAt(stock_table.getSelectedRow(),3).toString())){
+                    throw new NumberFormatException();
+                }
+                String detail = JOptionPane.showInputDialog(null,"กรุณากรอกสาเหตุการทิ้งด้วยครับ");
+                title = input;
+                for(Stock_Variable s:Stock_Array){
+                if(s.getstocknumber()==(Integer.parseInt(doubleclick))){
+                Stock_Variable ss = new Stock_Variable();
+                ss = Stock_Array.get(stock_table.getSelectedRow());
+                ss.setdetail(detail);
+                ss.setstockunits(title);
+                ss.p.settotal_price(title*s.p.getprice());
+                Stock_Using_Array.add(ss);
+                Stock_Array.remove(s);
+                totalall += s.p.getprice()*title;
+                break;
+                }
+                }
+                DefaultTableModel model1 = (DefaultTableModel)stock_table.getModel();
+                while(model1.getRowCount()>0){
+                    model1.removeRow(0);
+                }
+                showStock();
+                DefaultTableModel model2 = (DefaultTableModel)waste_stock_table.getModel();
+                while(model2.getRowCount()>0){
+                    model2.removeRow(0);
+                }
+                showStock_Using();
+                title = 0;
+                total_txt.setText(""+totalall);
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null,"คุณกรอกจำนวนไม่ถูกต้อง\nกรุณาทำรายการใหม่ครับ");
+            }
+            
+            }else{
+                doubleclick = "";
+            }
+        }else{
+            doubleclick = stock_table.getValueAt(stock_table.getSelectedRow(),0).toString();
+        }
+    }//GEN-LAST:event_stock_tableMouseClicked
 
-    private void jLabel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseExited
-        jLabel1.setForeground(Color.blue);
-        jLabel1.setCursor(new Cursor(DEFAULT_CURSOR));
-    }//GEN-LAST:event_jLabel1MouseExited
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        if(count==0){
+            count = 1;
+        JOptionPane.showMessageDialog(null,"คุณสามารถดับเบิ้ลคลิ๊กที่ตารางสต๊อกเพื่อเลือกวัตถุดิบที่จะทิ้งได้ครับ");
+        }
+    }//GEN-LAST:event_formWindowOpened
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        Menu_type_panel p = new Menu_type_panel();
-        p.setVisible(true);
-    }//GEN-LAST:event_jLabel1MouseClicked
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        JOptionPane.showMessageDialog(null,"คุณสามารถดับเบิ้ลคลิ๊กที่ตารางสต๊อกเพื่อเลือกวัตถุดิบที่จะทิ้งได้ครับ");
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -587,28 +559,19 @@ public String find(){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton create;
-    private javax.swing.JRadioButton delete;
-    private javax.swing.JRadioButton edit;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JComboBox<String> m_cata_txt;
-    private javax.swing.JComboBox<String> m_cata_txt1;
-    private javax.swing.JTextField m_name_txt;
-    private javax.swing.JTextField m_price_txt;
-    private javax.swing.JTable menu_table;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField showid_txt;
+    private javax.swing.JTable stock_table;
+    private javax.swing.JLabel total_txt;
+    private javax.swing.JTable waste_stock_table;
     // End of variables declaration//GEN-END:variables
 }

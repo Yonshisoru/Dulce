@@ -29,6 +29,7 @@ public class Employee_Table extends javax.swing.JFrame {
     Statement pat = null;
     ResultSet rs = null;
     int count = 0;
+    int eiei =0;
     static public String usingid = null;
     String old = null;
     ArrayList<Employee> EmployeeList = new ArrayList<>();
@@ -95,8 +96,8 @@ public class Employee_Table extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         emp_table = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(900, 550));
@@ -108,6 +109,9 @@ public class Employee_Table extends javax.swing.JFrame {
             }
             public void windowDeactivated(java.awt.event.WindowEvent evt) {
                 formWindowDeactivated(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -142,15 +146,12 @@ public class Employee_Table extends javax.swing.JFrame {
             emp_table.getColumnModel().getColumn(7).setPreferredWidth(100);
         }
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 860, -1));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 860, 350));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("ตารางพนักงาน");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 10, 830, -1));
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 153));
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 550));
 
         jButton1.setText("ปิด");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -158,7 +159,15 @@ public class Employee_Table extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 550, 70, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 470, 130, 50));
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 153));
+        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel1MouseClicked(evt);
+            }
+        });
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 550));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -223,8 +232,27 @@ public class Employee_Table extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowDeactivated
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Main_variable mk = new Main_variable();
+        mk.setleavenaja(false);
+        mk.setleave(0);
+        mk.setchange(false);
+        mk.seteditenable(0);
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPanel1MouseClicked
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        if(m.getleavenaja()==true&&eiei==0){
+            eiei=1;
+            JOptionPane.showMessageDialog(null,"ดับเบิ้ลคลิ๊กที่ชื่อพนักงานเพื่อดูรายละเอียดการลาของพนักงาน");
+        }else if(m.getchange()==true&&eiei==0){
+            eiei=1;
+            JOptionPane.showMessageDialog(null,"ดับเบิ้ลคลิ๊กที่ชื่อพนักงานเพื่อแก้ไขการลงเวลางานของพนักงาน");
+        }
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments

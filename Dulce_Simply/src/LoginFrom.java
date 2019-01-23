@@ -71,7 +71,7 @@ public class LoginFrom extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         processlogin = new javax.swing.JProgressBar();
         processlogin_label = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Dulce Simply");
@@ -142,8 +142,8 @@ public class LoginFrom extends javax.swing.JFrame {
         processlogin_label.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
         getContentPane().add(processlogin_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 290, 40, -1));
 
-        jLabel4.setText("jLabel4");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, -10, 530, 370));
+        jPanel1.setBackground(new java.awt.Color(153, 255, 153));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-40, -30, 540, 410));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -283,7 +283,7 @@ public class LoginFrom extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar processlogin;
     private javax.swing.JLabel processlogin_label;
     // End of variables declaration//GEN-END:variables

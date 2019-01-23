@@ -175,13 +175,16 @@ public class Product_Order_view extends javax.swing.JFrame {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         if(m.getorderpay()==1){
-            
+            if(count == 0){
+          JOptionPane.showMessageDialog(null,"คุณสามารถดับเบิ้ลคลิ๊กเพื่อจ่ายเงินในการสั่งสินค้ารายการต่างๆได้");  
+          count = 1;
+            }
         }else{
         if(count == 0){
         JOptionPane.showMessageDialog(null,"คุณสามารถดับเบิ้ลคลิ๊กเพื่อดูรายละเอียดของการสั่งสินค้ารายการต่างๆได้");
         count = 1;
         }
-        }
+            }
     }//GEN-LAST:event_formWindowActivated
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

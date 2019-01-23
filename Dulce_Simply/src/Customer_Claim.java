@@ -46,7 +46,7 @@ int eiei = 0;
      */
     public Customer_Claim() {
         initComponents();
-        t.setid("01");
+        //t.setid("02");
         tableid_txt.setText(t.getid());
         //System.out.println(tableid);
         getMenu();
@@ -215,7 +215,7 @@ public void setStock(){
         Object[] row = new Object[5];
         for(Menu_variable mv:Ordering_Array){
             //System.out.println(mv.c.gettable());
-            if(mv.c.gettable().equals(t.getid())){
+            if(mv.c.gettable().equals(t.getid())&&mv.c.getpaytype().isEmpty()==true){
                 //System.out.println("eiei"+ mv.c.getorderid());
                 t.setorderid(orderid);
                 orderid = mv.c.getorderid();

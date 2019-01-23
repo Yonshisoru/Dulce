@@ -49,7 +49,7 @@ public class Employee_edit extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1400, 647));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 

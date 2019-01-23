@@ -1,3 +1,13 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,14 +20,70 @@
  * @author Yonshisoru
  */
 public class Employee_in_Schedule extends javax.swing.JFrame {
-
+ArrayList<Employee>Employee_Array = new ArrayList<>();
+Database d = new Database();
+Employee e = new Employee();
+    Claim_Variable c=  new Claim_Variable();
+//-----------------------------Initilize variable---------------------------------------//
+    Connection con = null;
+    Statement st = null;
+    PreparedStatement pat = null;
+    ResultSet rs = null;
     /**
      * Creates new form Employee_in_Schedule
      */
     public Employee_in_Schedule() {
         initComponents();
+        date_txt.setText(LocalDate.now().toString());
+        getemp();
+        setemp();
     }
-
+    public Connection getcon(){
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            return DriverManager.getConnection(d.url(),d.username(),d.password());
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            System.out.println("Didn't connect");
+            throw new RuntimeException(e);
+        }
+    }
+    public void getemp(){
+        String sql = "SELECT SL_NUMBER,SC_DATE,SC_ID,EMP_ID,EMP_FNAME,EMP_LNAME,SL_CAUSE,SL_STATUS FROM (SCHEDULE_LIST NATURAL JOIN SCHEDULE) NATURAL JOIN EMPLOYEE WHERE SC_DATE = '"+LocalDate.now().toString()+"'";
+        System.out.println(sql);
+        try{
+            pat = getcon().prepareStatement(sql);
+            rs = pat.executeQuery(sql);
+            while(rs.next()){
+                Employee e = new Employee();
+                e.setid(rs.getString("EMP_ID"));
+                e.setfname(rs.getString("EMP_FNAME"));
+                e.setlname(rs.getString("EMP_LNAME"));
+                e.setcause(rs.getString("SL_CAUSE"));
+                e.setstatus(rs.getString("SL_STATUS"));
+                Employee_Array.add(e);
+            }
+        }catch(Exception e){
+            
+        }
+    }
+    public void setemp(){
+        DefaultTableModel model = (DefaultTableModel)emp_table.getModel();
+        Object[] row = new Object[4];
+        for(int i =0;i<Employee_Array.size();i++){
+            row[0] = Employee_Array.get(i).getid();
+            row[1] = Employee_Array.get(i).getfname()+" "+Employee_Array.get(i).getlname();
+            if(Employee_Array.get(i).getstatus().equals("N")){
+                row[2] = "อยู่ในเวลางาน";
+            }else if(Employee_Array.get(i).getstatus().equals("Y")){
+                row[2] = "ลงเวลาออกเรียบร้อยแล้ว";
+            }else if(Employee_Array.get(i).getstatus().equals("O")){
+                row[2] = "ลา/วันหยุด";
+            }
+            row[3] = Employee_Array.get(i).getcause();
+            model.addRow(row);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,19 +94,21 @@ public class Employee_in_Schedule extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        emp_table = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        date_txt = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(650, 470));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        emp_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "รหัสพนักงาน", "ชื่อ", "สถานะ", "สาเหตุ"
+                "รหัสพนักงาน", "ชื่อ", "สถานะ", "สาเหตุการลา"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -51,27 +119,32 @@ public class Employee_in_Schedule extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(emp_table);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 577, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 74, 577, 300));
+
+        jButton1.setText("ปิด");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 380, 90, 40));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("พนักงานทั้งหมดที่เข้างานในวันที่");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 10, -1, -1));
+
+        date_txt.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        date_txt.setText("jLabel2");
+        getContentPane().add(date_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 40, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -109,7 +182,10 @@ public class Employee_in_Schedule extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel date_txt;
+    private javax.swing.JTable emp_table;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

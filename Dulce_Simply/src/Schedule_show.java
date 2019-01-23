@@ -43,11 +43,11 @@ public class Schedule_show extends javax.swing.JFrame {
         while(rs.next()){
             Schedule e = new Schedule(rs.getString("SC_ID"),rs.getString("SC_DATE"),rs.getString("SCS_NAME"),rs.getInt("SC_EMPLIMIT"),rs.getInt("SC_EMPCUR"),rs.getInt("SC_LEAVE"));
             if(rs.getString("SL_STATUS").equals("N")){
-                 e.setstatus("CURRENT");
+                 e.setstatus("อยู่ในเวลางาน");
             }else if(rs.getString("SL_STATUS").equals("Y")){
-            e.setstatus("IN-TIME");
+            e.setstatus("ลงเวลาออกเรียบร้อยแล้ว");
             }else if(rs.getString("SL_STATUS").equals("O")){
-            e.setstatus("OFF");  
+            e.setstatus("ลา/วันหยุด");  
             }
             e.setlistid(rs.getInt("SL_NUMBER"));
             Schedulelist.add(e);
@@ -94,7 +94,7 @@ public class Schedule_show extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Date", "Period", "Status"
+                "วันที่", "กะเวลา", "สถานะ"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -110,8 +110,8 @@ public class Schedule_show extends javax.swing.JFrame {
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 650, 270));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel1.setText("Schedule");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 10, 166, 59));
+        jLabel1.setText("ตารางงาน");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 10, 166, 59));
 
         jButton1.setText("Close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

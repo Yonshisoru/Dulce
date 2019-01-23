@@ -374,7 +374,7 @@ public void refresh(){
         promotion_help_btn = new javax.swing.JButton();
         refresh_btn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1020, 590));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -513,6 +513,11 @@ public void refresh(){
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
 
         close_btn.setText("ปิด");
+        close_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                close_btnActionPerformed(evt);
+            }
+        });
         getContentPane().add(close_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 480, 110, 50));
 
         submit_btn.setText("ยืนยัน");
@@ -968,6 +973,10 @@ public void refresh(){
             i=-1;
         }
     }//GEN-LAST:event_formWindowOpened
+
+    private void close_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_close_btnActionPerformed
+       this.setVisible(false);
+    }//GEN-LAST:event_close_btnActionPerformed
 
     /**
      * @param args the command line arguments

@@ -44,6 +44,13 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
         showSchedule();
         
     }
+    public void clear(){
+        Date_txt.setText("");
+        Period_txt.setText("");
+        M_E_txt.setText("");
+        C_E_txt.setText("");
+        L_E_txt.setText("");
+    }
     public ArrayList<Schedule>ScheduleList(){
         /*System.out.print("select SC_ID,SC_DATE,SCS_ID,SCS_NAME,SC_EMPLIMIT,SC_EMPCUR,SC_LEAVE,SC_DEL FROM SCHEDULE NATURAL JOIN SC_SHIFT WHERE SC_DEL = 'N' AND SC_DATE BETWEEN "+year+"-"+month+"-"+day+" AND "+year+"-"+month+"-"+(day+5));*/
         ArrayList<Schedule> Schedulelist = new ArrayList<>();
@@ -105,7 +112,7 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
         Enroll_btn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(850, 600));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         ScheduleTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -113,7 +120,7 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Date", "Period", "Max", "Current", "Leave"
+                "วันที่", "กะเวลา", "ลิมิตพนักงาน", "พนักงานขณะนี้", "พนักงานลา"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -148,16 +155,16 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
         getContentPane().add(Period_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 140, 119, 34));
 
         Date.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        Date.setText("Date:");
+        Date.setText("วันที่:");
         getContentPane().add(Date, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, -1, -1));
 
         Period.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        Period.setText("Period:");
-        getContentPane().add(Period, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, -1, -1));
+        Period.setText("กะเวลา:");
+        getContentPane().add(Period, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, -1, -1));
 
         M_Employee.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        M_Employee.setText("Max Employee:");
-        getContentPane().add(M_Employee, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, -1, -1));
+        M_Employee.setText("ลิมิตพนักงาน:");
+        getContentPane().add(M_Employee, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, -1, -1));
 
         M_E_txt.setText(" ");
         M_E_txt.setEnabled(false);
@@ -169,8 +176,8 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
         getContentPane().add(M_E_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 200, 119, 34));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel2.setText("Current Employee:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, -1, -1));
+        jLabel2.setText("พนักงานขณะนี้:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, -1, -1));
 
         C_E_txt.setText(" ");
         C_E_txt.setEnabled(false);
@@ -182,8 +189,8 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
         getContentPane().add(C_E_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 260, 119, 34));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel3.setText("Leave Employee:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, -1, -1));
+        jLabel3.setText("พนักงานลา:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 330, -1, -1));
 
         L_E_txt.setText(" ");
         L_E_txt.setEnabled(false);
@@ -194,7 +201,7 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
         });
         getContentPane().add(L_E_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 320, 119, 34));
 
-        Close_btn.setText("Close");
+        Close_btn.setText("ปิด");
         Close_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Close_btnActionPerformed(evt);
@@ -202,7 +209,7 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
         });
         getContentPane().add(Close_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 390, 110, 50));
 
-        Enroll_btn.setText("Enroll");
+        Enroll_btn.setText("ลงเวลา");
         Enroll_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Enroll_btnActionPerformed(evt);
@@ -338,7 +345,7 @@ public class Schedule_Enroll_timeshift extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(null,"This period was limited.\nYou can't enrolled to this period!");
         }
-            
+          clear();  
         
     }//GEN-LAST:event_Enroll_btnActionPerformed
 

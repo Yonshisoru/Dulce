@@ -48,6 +48,7 @@ public class Stock_panel extends javax.swing.JFrame {
     public String id = null;
 //----------------------------------------------------
     int max = 0;
+    int status = 0;
 //------------------------------------------------------
     boolean editnaja = false;
     boolean createnaja = true;
@@ -275,7 +276,7 @@ public Connection getcon(){
         unit_label = new javax.swing.JLabel();
         unit_txt = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -423,13 +424,13 @@ public Connection getcon(){
         });
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1360, 650, -1, -1));
 
-        jButton5.setText("jButton5");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        jCheckBox1.setText("ไม่มีวันหมดอายุ");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                jCheckBox1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 180, -1, -1));
+        getContentPane().add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 220, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -494,6 +495,9 @@ public Connection getcon(){
         id = showid_txt.getText();
         try{
         unit = Double.parseDouble(unit_txt.getText());
+        if(unit==0){
+            throw new NumberFormatException();
+        }
         }catch(NumberFormatException e){
             throw new NumberFormatException();
         }
@@ -507,6 +511,9 @@ public Connection getcon(){
         String expdate = sdf.format(exp_date.getSelectedDate().getTime());
         String mftdate = sdf.format(mft_date.getSelectedDate().getTime());
         String addingstock = "INSERT INTO STOCK VALUES('"+id+"','"+productid+"','"+expdate+"','"+mftdate+"','"+unit+"','','N')";
+        if(status==1){
+            addingstock = "INSERT INTO STOCK VALUES('"+id+"','"+productid+"','9999-12-31','"+mftdate+"','"+unit+"','','N')";
+        }
         String addingproduct = "UPDATE PRODUCT SET PRO_UNITS = PRO_UNITS+'"+unit+"' WHERE PRO_ID = '"+productid+"'";
         try{
             System.err.println(addingstock);
@@ -518,6 +525,7 @@ public Connection getcon(){
                 pat.executeUpdate(addingproduct);
                 pat.close();
             getcon().close();
+            JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
         }catch(Exception e){
             System.out.print(e);
         }
@@ -577,11 +585,11 @@ public Connection getcon(){
         showid_txt.setText("NAN");
         Product_Array.clear();
         getProduct();
+        JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
        }catch(Exception e){
            
        }
     }
-    JOptionPane.showMessageDialog(null,"ทำรายการเสร็จสิ้น");
                 /*
         if(createnaja==true){
         String eiei = "INSERT INTO MENU VALUE('"+id+"','"+menu_name+"','"+menu_price+"','"+menu+"','N')";
@@ -719,13 +727,15 @@ public Connection getcon(){
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        exp_date.setEnabled(true);
-        mft_date.setEnabled(true);
-        clear();
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        if(status == 0){
         exp_date.setEnabled(false);
-        mft_date.setEnabled(false);
-    }//GEN-LAST:event_jButton5ActionPerformed
+        status = 1;
+        }else if(status == 1){
+           exp_date.setEnabled(true); 
+           status = 0;
+        }
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -802,7 +812,7 @@ public Connection getcon(){
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
